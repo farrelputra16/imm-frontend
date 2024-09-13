@@ -1,0 +1,181 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap");
+body {
+    font-family: "Roboto", sans-serif;
+    padding-top: 70px;
+    /* Add padding to avoid content being hidden behind fixed navbar */
+    background-color: #ffffff;
+    font-family: "Quicksand", sans-serif;
+}
+
+.content {
+    background-color: #f7f6fb;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px;
+    text-align: justify;
+    /* Add some space between each section */
+}
+
+.form-control-select {
+    width: 315px;
+    height: 49px;
+    background-color: #5940cb;
+    color: white;
+    font-size: 20px;
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+}
+
+.form-control {
+    height: 47px;
+    width: 100%;
+    border: 2px solid #5940cb;
+}
+
+.btn-tambah-bagian {
+    cursor: pointer;
+    color: white;
+    background-color: #5940cb;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 32px;
+    font-family: "Quicksand", sans-serif;
+    font-weight: bold;
+}
+
+.btn-tambah {
+    width: 315px;
+    height: 49px;
+    background-color: #5940cb;
+    border: 3px solid #5940cb;
+    border-radius: 6px;
+    color: white;
+    font-size: 20px;
+    font-family: "Quicksand", sans-serif;
+    font-weight: bold;
+}
+
+.form-esay,
+.form-pilihan-ganda,
+.form-skala {
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.radio-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.radio-item input {
+    margin-bottom: 5px;
+}
+
+.btn-tambah.hidden {
+    display: none;
+}
+
+.angka {
+    height: 54px;
+    width: 35px;
+    background-color: #5940cb;
+    font-size: 20px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    color: white;
+}
+
+.radio-item {
+    display: flex;
+    align-items: center;
+}
+
+.radio-item input[type="radio"] {
+    margin-right: 5px;
+}
+
+.form-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.form-container>div {
+    flex: 1 1 30%;
+    /* Adjust the percentage as needed to control the width */
+    margin: 10px;
+}
+
+.btn {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.btn-lihat {
+    width: 226px;
+    height: 49px;
+    background-color: white;
+    border: 3px solid #5940cb;
+    border-radius: 6px;
+    color: #5940cb;
+    font-size: 20px;
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+}
+
+.btn-mulai,
+.btn-akhiri,
+.btn-lihat-responden {
+    width: 200px;
+    height: 49px;
+    background-color: #5940cb;
+    border: 3px solid #5940cb;
+    border-radius: 6px;
+    color: white;
+    font-size: 20px;
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+}
+
+.btn-lihat-responden {
+    width: 300px;
+}
+
+.btn-simpan {
+    width: 240px;
+    height: 49px;
+    background-color: #5940cb;
+    border: 3px solid #5940cb;
+    border-radius: 6px;
+    color: white;
+    font-size: 20px;
+    font-family: "Quicksand", sans-serif;
+    font-weight: bold;
+}
+
+.metric-item:hover {
+    filter: brightness(0.95);
+}
+
+.metric-checkbox {
+    width: 20px;
+    height: 20px;
+}
+
+.text-primary {
+    color: #5940cb !important;
+}
+
+.sub-content {
+    background-color: #e5e2f2;
+    width: 100%;
+    height: 182px;
+    justify-content: center;
+    display: flex;
+    margin-bottom: 30px;
+}

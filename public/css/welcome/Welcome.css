@@ -1,0 +1,1012 @@
+body {
+    font-family: "Roboto", sans-serif;
+    text-decoration: none;
+    list-style-type: none;
+}
+
+
+/* Navbar */
+
+
+/* Media query for responsiveness */
+
+@media only screen and (max-width: 768px) {
+    .brand-info,
+    .footer-links,
+    .social-media {
+        flex-basis: 100%;
+        /* Set width to 100% on small screens */
+        text-align: center;
+    }
+    .footer {
+        background-color: #5940cb;
+        color: #ffffff;
+        padding: 0px;
+        text-align: center;
+        position: absolute;
+        bottom: -10px;
+        width: 90%;
+        left: 5%;
+        top: 600px;
+    }
+    .social-media {
+        margin-right: auto;
+        position: absolute;
+        top: 29px;
+        right: 23px;
+    }
+    .social-media a {
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 20px;
+        margin-left: 10px;
+    }
+    .footer-nav ul {
+        list-style-type: none;
+        padding: 0px;
+        margin: 0;
+        position: absolute;
+        top: 30px;
+        right: 86px;
+    }
+}
+
+.notification-section {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    position: relative;
+    top: 90px;
+    width: 1130px;
+    cursor: pointer;
+}
+
+.row {
+    display: flex;
+    width: 100%;
+    /* Ensure the row takes full width */
+    justify-content: space-between;
+    align-items: center;
+}
+
+.col-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+
+#notificationText {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#dropdownContent {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #f9f9f9;
+    min-width: 100%;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#dropdownContent a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+#dropdownContent a:hover {
+    background-color: #f1f1f1;
+}
+
+.notification-section.active #dropdownContent {
+    display: block;
+}
+
+.notification-section p {
+    margin: 8px;
+    font-weight: bold;
+    position: absolute;
+    top: -20px;
+    right: 427px;
+}
+
+.notification-section i {
+    cursor: pointer;
+    position: relative;
+    top: -2px;
+    right: -19px;
+    font-size: 23px;
+}
+
+.notification-section i:hover {
+    color: #007bff;
+    /* Change icon color on hover */
+}
+
+.dropdown-content {
+    display: none;
+    /* Initially hide the dropdown content */
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+@media only screen and (max-width: 768px) {
+    .notification-section {
+        background-color: #f8f9fa;
+        padding: 0px 0;
+        border-bottom: 3px solid #e9ecef;
+        position: relative;
+        top: 81px;
+        right: -60px;
+        width: 100%;
+        max-width: 255px;
+    }
+    .notification-section p {
+        margin: 0;
+        /* Remove default margin */
+        font-weight: bold;
+        /* Make the text bold */
+        position: absolute;
+        /* Position the text absolutely */
+        top: -11px;
+        right: -61px;
+    }
+    .notification-section i {
+        font-size: 16px;
+        color: #6c757d;
+        cursor: pointer;
+        position: absolute;
+        top: -11px;
+        right: -177px;
+    }
+    .notification-section i:hover {
+        color: #007bff;
+        /* Change icon color on hover */
+    }
+    .dropdown-content {
+        display: none;
+        /* Initially hide the dropdown content */
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+    .dropdown-content a:hover {
+        background-color: #ddd;
+    }
+}
+
+.notification-section #notificationText .fa-bell {
+    margin-right: -103px;
+    margin-top: 2px;
+}
+
+.notification-section #notificationText .fa-bell {
+    font-size: 20px;
+    /* Ukuran ikon lonceng */
+}
+
+.notification-section #notificationText .fa-bell {
+    color: #ffcc00;
+    /* Warna ikon lonceng */
+}
+
+@media only screen and (max-width: 768px) {
+    .notification-section #notificationText .fa-bell {
+        margin-right: 154px;
+        margin-top: 13px;
+    }
+    .notification-section #notificationText .fa-bell {
+        font-size: 20px;
+        /* Ukuran ikon lonceng */
+    }
+    #notificationText {
+        display: flex;
+        align-items: center;
+        font-size: 13px;
+        font-weight: bold;
+    }
+    .notification-section #notificationText .fa-bell {
+        font-size: 14px;
+        position: absolute;
+        top: -9px;
+        right: -100px;
+    }
+}
+
+.process-circle {
+    width: 246px;
+    height: 129px;
+    border-radius: 9px;
+    background-color: #5940cb;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 14px;
+    top: 112px;
+    left: -97px;
+}
+
+.process-circle.absensi::before {
+    background-color: #5940cb;
+    /* Warna untuk Absensi */
+}
+
+.process-circle.assignment::before {
+    background-color: #5940cb;
+    /* Warna untuk Assignment */
+}
+
+.process-circle.progress::before {
+    background-color: #5940cb;
+    /* Warna untuk Progress */
+}
+
+.process-circle::before {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+}
+
+.process-text {
+    z-index: 1;
+    color: #fff;
+    /* Warna teks */
+    font-weight: bold;
+    font-size: 16px;
+    position: absolute;
+    top: 1px;
+    left: 30px;
+}
+
+.progress-circle {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    /* Warna border */
+    border-top-color: #fff;
+    /* Warna lingkaran */
+    /* animation: spin 2s linear infinite; */
+    /* Animasi putar */
+    top: 39px;
+    left: 135px;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* Memberikan jarak antara setiap kotak */
+
+.col-4 {
+    padding: 0 61px;
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #050505;
+    margin-bottom: 11px;
+}
+
+@media only screen and (max-width: 768px) {
+    .process-circle.absensi::before {
+        background-color: #5940cb;
+        /* Warna untuk Absensi */
+    }
+    .process-circle.assignment::before {
+        background-color: #5940cb;
+        /* Warna untuk Assignment */
+    }
+    .process-circle.progress::before {
+        background-color: #5940cb;
+        /* Warna untuk Progress */
+    }
+    .process-circle::before {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        position: absolute;
+        top: 15px;
+        left: 15px;
+    }
+    .process-text {
+        z-index: 1;
+        color: #ffffff;
+        font-weight: bold;
+        font-size: 12px;
+        position: absolute;
+        top: 9px;
+        left: 19px;
+    }
+    .progress-circle {
+        position: absolute;
+        width: 27px;
+        height: 28px;
+        border-radius: 52%;
+        border: 5px solid rgba(255, 255, 255, 0.3);
+        border-top-color: #fff;
+        animation: spin 2s linear infinite;
+        top: 36px;
+        left: 64px;
+    }
+    @keyframes spin {
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+    /* Memberikan jarak antara setiap kotak */
+    .col-4 {
+        padding: 0 15px;
+        margin-right: -57px;
+        margin-left: -92px;
+    }
+    h2 {
+        font-size: 16px;
+        font-weight: bold;
+        color: #000000;
+        position: relative;
+        margin-bottom: 44px;
+        top: -71px;
+        right: -5px;
+    }
+}
+
+.progress-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #5940cb;
+    position: absolute;
+    top: 28%;
+    left: 70%;
+    margin: 0 auto;
+}
+
+.progress-percent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    /* Warna teks persentase */
+    font-size: 20px;
+}
+
+@media only screen and (max-width: 768px) {
+    .progress-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #5940cb;
+        position: absolute;
+        top: 53%;
+        left: 69%;
+        margin: 0 auto;
+    }
+    .progress-percent {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #fff;
+        /* Warna teks persentase */
+        font-size: 12px;
+    }
+}
+
+.dashboard-image {
+    width: 89px;
+    height: auto;
+    position: relative;
+    top: -19px;
+    right: 392px;
+}
+
+.dashboard-image2 {
+    width: 77px;
+    height: auto;
+    position: relative;
+    top: -106px;
+    right: 53px;
+}
+
+.dashboard-image3 {
+    width: 80px;
+    height: auto;
+    position: relative;
+    top: -201px;
+    right: -288px;
+}
+
+@media only screen and (max-width: 768px) {
+    .dashboard-image {
+        width: 38px;
+        height: auto;
+        position: relative;
+        top: -150px;
+        right: 109px;
+    }
+    .dashboard-image2 {
+        width: 35px;
+        height: auto;
+        position: relative;
+        top: -189px;
+        right: 10px;
+    }
+    .dashboard-image3 {
+        width: 37px;
+        height: auto;
+        position: relative;
+        top: -242px;
+        right: -87px;
+    }
+}
+
+.image-container {
+    position: relative;
+}
+
+.image-container img {
+    max-width: 115%;
+    height: 201px;
+    position: inherit;
+    top: -191px;
+    right: 30px;
+    border-radius: 0;
+}
+
+.image-text {
+    position: absolute;
+    bottom: 295px;
+    left: 22%;
+    font-size: 21px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.loading-overlay {
+    position: absolute;
+    top: 32%;
+    left: 17px;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+.loader {
+    position: relative;
+    width: 61%;
+    height: 9px;
+    background-color: #ffffff;
+    border-radius: 37px;
+}
+
+.loader::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 50%;
+    /* Bagian yang selesai (putih) setelah 50% */
+    background-color: #fff;
+    /* Warna putih untuk bagian yang sudah selesai */
+    border-radius: 37px;
+}
+
+.loader::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 328px;
+    height: 100%;
+    width: 32%;
+    background-color: #3498db;
+    animation: loading 2s linear infinite;
+}
+
+.percentage {
+    position: absolute;
+    top: -2%;
+    left: 28%;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+@keyframes loading {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.section-img {
+    width: 100%;
+    height: 255px;
+    border-radius: 20px;
+    background-image: url("/images/bg-homee.png");
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.third-image {
+    width: 145px;
+    height: auto;
+}
+
+.containerr {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.calendar {
+    width: 432px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 701px;
+    right: 58px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.calendar-header {
+    background-color: #5940cb;
+    color: #ffffff;
+    padding: 12px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    padding: 10px;
+}
+
+.calendar-day {
+    text-align: center;
+    padding: 7px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.calendar-day:nth-child(7n) {
+    color: red;
+    /* Hari Minggu berwarna merah */
+}
+
+.calendar-day:hover {
+    background-color: #f0f0f0;
+}
+
+.calendar-footer {
+    padding: 10px;
+    text-align: center;
+}
+
+.dot {
+    display: block;
+    width: 6px;
+    height: 6px;
+    background-color: #312a2a;
+    /* Warna titik merah */
+    border-radius: 50%;
+    margin: 4px auto 0;
+    /* Jarak antara tanggal dan titik */
+}
+
+
+/* Gaya untuk tabel Hari Raya */
+
+.table {
+    border: 1px solid black;
+    border-radius: 15px;
+}
+
+.table-hari-raya {
+    border-collapse: collapse;
+    width: 51%;
+    margin-left: 80px;
+    margin-right: auto;
+    margin-top: 178px;
+    margin-bottom: 22px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.table-hari-raya th,
+.table-hari-raya td {
+    border: 2px solid #5940cb;
+    /* Warna border untuk setiap sel */
+    padding: 8px;
+    text-align: center;
+}
+
+.table-hari-raya th {
+    background-color: #5940cb;
+    /* Warna latar belakang header */
+    color: white;
+    /* Warna teks header */
+}
+
+
+/* Gaya untuk tabel Catatan */
+
+.table-catatan {
+    border-collapse: collapse;
+    width: 35%;
+    margin-left: 773px;
+    margin-right: auto;
+    margin-top: -99px;
+    margin-bottom: 122px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.table-catatan th,
+.table-catatan td {
+    border: 2px solid #5940cb;
+    /* Warna border untuk setiap sel */
+    padding: 8px;
+    text-align: center;
+}
+
+.table-catatan th {
+    background-color: #5940cb;
+    /* Warna latar belakang header */
+    color: white;
+    /* Warna teks header */
+}
+
+
+/* Gaya untuk kontainer tabel */
+
+.table-container {
+    position: absolute;
+    top: 671px;
+    right: 543px;
+}
+
+
+/* Gaya untuk tabel kotak */
+
+.box-table {
+    width: 100%;
+    height: 108px;
+    background-color: #5940cb;
+    color: #ffffff;
+    border-radius: 16px;
+    margin-bottom: 14px;
+}
+
+
+/* Gaya untuk teks atas */
+
+.box-table .top-text {
+    position: relative;
+    top: 18px;
+    right: -162px;
+}
+
+
+/* Gaya untuk teks bawah */
+
+.box-table .bottom-text {
+    position: relative;
+    top: -10px;
+    right: -161px;
+}
+
+
+/* Gaya untuk judul tabel */
+
+.table-title {
+    text-align: left;
+    color: #000000;
+    font-size: 22px;
+    margin-bottom: 0px;
+}
+
+
+/* CSS untuk gaya placeholder */
+
+[data-placeholder]::before {
+    content: attr(data-placeholder);
+    color: #999;
+    /* warna placeholder */
+    font-style: italic;
+}
+
+@media only screen and (max-width: 768px) {
+    .navbar-logo {
+        margin-left: 20px;
+    }
+    .navbar-links {
+        margin-left: 0;
+    }
+    .brand-info h3,
+    .brand-info p,
+    .footer-nav ul,
+    .social-media {
+        position: static;
+        text-align: center;
+    }
+    .footer-nav ul {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .footer-nav ul li {
+        margin-bottom: 10px;
+    }
+    .notification-section {
+        width: auto;
+        max-width: none;
+        right: 0;
+        left: 0;
+        top: 23px;
+        margin: 70px 10px;
+    }
+    .notification-section p,
+    .notification-section i {
+        position: static;
+        margin-right: -23px;
+    }
+    .process-circle {
+        width: 77px;
+        height: 55px;
+        margin: 40px auto;
+        top: -46px;
+        left: -45px;
+    }
+    .process-text {
+        font-size: 9px;
+        top: 3px;
+        left: 13px;
+    }
+    .progress-circle {
+        width: 34px;
+        height: 34px;
+        top: 23px;
+        left: 52px;
+    }
+    .col-4 {
+        width: 100%;
+        max-width: 100%;
+        padding: 0 10px;
+        margin: 0 auto;
+    }
+    .image-container img {
+        top: -264px;
+        right: -11px;
+        height: auto;
+        max-width: 100%;
+    }
+    .loading-overlay {
+        transform: translateY(-50%);
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+    }
+    .image-text {
+        position: absolute;
+        bottom: 286px;
+        left: 26%;
+        font-size: 7px;
+        color: #fff;
+        font-weight: bold;
+    }
+    .third-image {
+        width: 28px;
+        height: auto;
+        top: -302px;
+        position: relative;
+        right: -44px;
+    }
+    .calendar {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .calendar-header {
+        background-color: #5940cb;
+        color: #ffffff;
+        padding: 0px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        text-align: center;
+        font-size: 13px;
+    }
+    .calendar-days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        padding: 10px;
+        border: 3px solid #000000;
+    }
+    .calendar-day {
+        text-align: center;
+        padding: 1px;
+        font-size: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .calendar-day:nth-child(7n) {
+        color: red;
+        /* Hari Minggu berwarna merah */
+    }
+    .calendar-day:hover {
+        background-color: #f0f0f0;
+    }
+    .calendar-footer {
+        padding: 2px;
+        text-align: center;
+        font-size: 11px;
+    }
+    .dot {
+        display: block;
+        width: 6px;
+        height: 6px;
+        background-color: #312a2a;
+        /* Warna titik merah */
+        border-radius: 50%;
+        margin: 4px auto 0;
+        /* Jarak antara tanggal dan titik */
+    }
+    .table-hari-raya {
+        width: 43%;
+        margin: 31px auto;
+        left: -87px;
+        position: relative;
+        top: -194px;
+    }
+    .navbar-light .navbar-brand {
+        color: rgba(0, 0, 0, 0.9);
+        position: relative;
+        right: -20px;
+    }
+    .table-catatan {
+        border-collapse: collapse;
+        width: 40%;
+        font-size: 7px;
+        font-weight: 500;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        position: relative;
+        top: -196px;
+        right: 580px;
+    }
+    .table-hari-raya th,
+    .table-hari-raya td {
+        border: 2px solid #5940cb;
+        padding: 8px;
+        text-align: center;
+        font-size: 7px;
+    }
+    .table thead th {
+        vertical-align: bottom;
+        border-bottom: 2px solid #dee2e6;
+        font-size: 8px;
+    }
+    .table-container {
+        width: 90%;
+        margin: 20px auto;
+        top: auto;
+        right: 0;
+        left: 0;
+    }
+    .box-table {
+        width: 48%;
+        height: 42px;
+        padding: 19px;
+        position: relative;
+        top: -612px;
+        border-radius: 8px;
+    }
+    .table-title {
+        text-align: left;
+        color: #000000;
+        position: relative;
+        font-size: 12px;
+        margin-bottom: -14px;
+        top: -626px;
+        right: -8px;
+    }
+    .box-table .top-text {
+        position: relative;
+        top: 7px;
+        font-size: 6px;
+        right: -6px;
+    }
+    .box-table .bottom-text {
+        position: relative;
+        top: -5px;
+        font-size: 7px;
+        right: -7px;
+    }
+    .navbar-light .navbar-toggler {
+        position: relative;
+        color: rgba(0, 0, 0, 0.5);
+        border-color: rgba(0, 0, 0, 0.1);
+        right: 40px;
+    }
+}
+
+
+/* Efek loading */
+
+#loading {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#loading img {
+    width: 100px;
+    /* Ukuran gambar loading */
+    height: 100px;
+    /* Ukuran gambar loading */
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* Menambahkan transisi pada

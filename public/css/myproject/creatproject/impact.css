@@ -1,0 +1,497 @@
+body {
+    font-family: "Roboto", sans-serif;
+    padding-top: 70px;
+    /* Add padding to avoid content being hidden behind fixed navbar */
+    background-color: #f8f9fa;
+    /* Adjusted height */
+}
+
+.navbar {
+    background-color: #ffffff;
+    color: #000000;
+    padding: 15px 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1000;
+    border-bottom: 3px solid #5940cb;
+}
+
+.navbar-nav {
+    margin-left: 10px;
+    margin-right: auto;
+}
+
+.navbar-links {
+    list-style-type: none;
+    display: flex;
+    margin-left: -580px;
+}
+
+.navbar-links li {
+    margin-right: 20px;
+}
+
+.navbar-links li:last-child {
+    margin-right: 0;
+}
+
+.navbar-links a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.navbar-links a:hover {
+    text-decoration: underline;
+}
+
+.navbar-actions {
+    display: flex;
+    margin-right: 20px;
+}
+
+.footer {
+    background-color: #5940cb;
+    color: #ffffff;
+    height: 167px;
+    text-align: center;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    width: 100%;
+}
+
+.footer ul {
+    text-decoration: none;
+    list-style-type: none;
+}
+
+.footer ul li {
+    color: #fff;
+    font-size: 12px;
+}
+
+.span-footer {
+    font-size: 15px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.sosmed {
+    gap: 15px;
+}
+
+.sosmed a {
+    color: #fff;
+    gap: 30px;
+    margin: 0 10px;
+}
+
+.col-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.chart-container {
+    display: block;
+    box-sizing: border-box;
+    height: 357px;
+    width: 690px;
+    position: relative;
+    top: 10px;
+    right: -182px;
+}
+
+.chart-containerr {
+    position: relative;
+    width: 100%;
+    height: 14px;
+    margin: auto;
+}
+
+.month-row {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.month-row div {
+    text-align: center;
+}
+
+.input-row {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.input-row input {
+    width: 60px;
+    text-align: center;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.slider {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.label {
+    margin-bottom: 10px;
+    text-align: left;
+    width: 100%;
+}
+
+button {
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    /* Add animation */
+}
+
+button:hover {
+    transform: scale(1.05);
+    /* Grow slightly on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Add shadow on hover */
+}
+
+.btn-outline-primary {
+    background-color: #5940cb;
+    color: #f8f9fa;
+    border: 1px solid #007bff;
+}
+
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn-primary {
+    background-color: #5940cb;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+
+/* Additional CSS for new content */
+
+.months-new {
+    border-bottom: 2px solid #5940cb;
+    padding-bottom: 10px;
+}
+
+.months-new span {
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+.months-new span:hover {
+    color: #5940cb;
+    border-bottom: 2px solid #5940cb;
+}
+
+.files-new {
+    justify-content: space-between;
+}
+
+.files-new .file-item {
+    border: 1px solid #ddd;
+    padding: 20px;
+    width: 22%;
+    /* Adjust width for better spacing */
+    margin: 10px 0;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    /* Add animation */
+}
+
+.files-new .file-item:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+    transform: scale(1.05);
+    /* Grow slightly on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Add shadow on hover */
+}
+
+.files-new .file-item i {
+    color: #ccc;
+}
+
+.files-new .file-item p {
+    margin-top: 10px;
+    color: #888;
+}
+
+.btn-reset {
+    position: relative;
+    top: -10px;
+    right: -810px;
+    background-color: #5940cb;
+    /* Outline button color */
+    border: 1px solid #007bff;
+    /* Outline color */
+    color: #ffffff;
+    /* Text color */
+    padding: 10px 20px;
+    /* Padding for the button */
+    border-radius: 4px;
+    /* Rounded corners */
+    cursor: pointer;
+    /* Pointer cursor on hover */
+}
+
+.btn-reset:hover {
+    background-color: #0056b3;
+    /* Background color on hover */
+    color: #ffffff;
+    /* Text color on hover */
+}
+
+.btn-save {
+    position: relative;
+    top: -10px;
+    /* Adjust the value as needed */
+    right: -835px;
+    /* Adjust the value as needed */
+    background-color: #5940cb;
+    /* Primary button color */
+    border: none;
+    /* Remove border */
+    color: #ffffff;
+    /* Text color */
+    padding: 10px 20px;
+    /* Padding for the button */
+    border-radius: 4px;
+    /* Rounded corners */
+    cursor: pointer;
+    /* Pointer cursor on hover */
+}
+
+.btn-save:hover {
+    background-color: #0056b3;
+    /* Background color on hover */
+}
+
+.btn-dokumen {
+    position: relative;
+    top: -10px;
+    right: -940px;
+    background-color: #5940cb;
+    /* Outline button color */
+    border: 1px solid #007bff;
+    /* Outline color */
+    color: #ffffff;
+    /* Text color */
+    padding: 10px 20px;
+    /* Padding for the button */
+    border-radius: 4px;
+    /* Rounded corners */
+    cursor: pointer;
+    /* Pointer cursor on hover */
+}
+
+.btn-dokumen:hover {
+    background-color: #0056b3;
+    /* Background color on hover */
+    color: #ffffff;
+    /* Text color on hover */
+}
+
+.survey-support-container {
+    margin-top: 50px;
+}
+
+.start-survey-btn {
+    background-color: #5940cb;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    /* Add animation */
+    float: right;
+    top: 10px;
+    right: 96px;
+}
+
+.start-survey-btn:hover {
+    background-color: #0056b3;
+    /* Warna lebih gelap saat hover */
+    transform: scale(1.05);
+    /* Grow slightly on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Add shadow on hover */
+}
+
+.months-survey {
+    border-bottom: 2px solid #5940cb;
+    padding-bottom: 10px;
+}
+
+.months-survey span {
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+.months-survey span:hover {
+    color: #5940cb;
+    border-bottom: 2px solid #5940cb;
+}
+
+.files-survey {
+    justify-content: space-between;
+}
+
+.file-item-survey {
+    border: 1px solid #ddd;
+    padding: 20px;
+    width: 22%;
+    /* Adjust width for better spacing */
+    margin: 10px 0;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    /* Add animation */
+}
+
+.file-item-survey:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+    transform: scale(1.05);
+    /* Grow slightly on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Add shadow on hover */
+}
+
+.file-item-survey i {
+    color: #ccc;
+}
+
+.file-item-survey p {
+    margin-top: 10px;
+    color: #888;
+}
+
+.matrix-report-container {
+    margin-top: 50px;
+}
+
+.add-report-btn {
+    background-color: #5940cb;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    /* Add animation */
+    float: right;
+    position: relative;
+    top: 160px;
+    right: 10px;
+    text-decoration: none;
+    /* Remove underline for link */
+    display: inline-block;
+    /* Ensure it behaves like a button */
+}
+
+.add-report-btn:hover {
+    background-color: #434190;
+    /* Warna lebih gelap saat hover */
+    transform: scale(1.05);
+    /* Grow slightly on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Add shadow on hover */
+}
+
+.file-report {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.file-item-report {
+    border: 1px solid #ddd;
+    padding: 29px;
+    width: 212px;
+    margin: 10px 0;
+    border-radius: 8px;
+    position: relative;
+    background-color: #f8f9fa;
+    right: -362px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    /* Add animation */
+}
+
+.file-item-report:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+    transform: scale(1.05);
+    /* Grow slightly on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Add shadow on hover */
+}
+
+.file-item-report i {
+    color: #ccc;
+}
+
+.file-item-report p {
+    margin-top: 10px;
+    color: #888;
+}
+
+
+/* Animasi umum untuk elemen lainnya */
+
+
+/* 
+.content-container h1,
+.date-box,
+.chart-container,
+.analysis-matrix .content-box,
+.target-check .target-check-box,
+.icon-box .icon-item,
+.btn {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.content-container h1:hover,
+.date-box:hover,
+.chart-container:hover,
+.analysis-matrix .content-box:hover,
+.target-check .target-check-box:hover,
+.icon-box .icon-item:hover,
+.btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+} */
+
+
+/* Menambahkan transisi pada navbar */
+
+.navbar {
+    transition: background-color 0.3s ease;
+}
+
+.navbar:hover {
+    background-color: #e3e3e3;
+}

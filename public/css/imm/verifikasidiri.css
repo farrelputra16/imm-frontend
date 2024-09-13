@@ -1,0 +1,123 @@
+body {
+    font-family: "Roboto", sans-serif;
+}
+
+
+/* Media query for responsiveness */
+
+@media only screen and (max-width: 768px) {
+    .brand-info,
+    .footer-links,
+    .social-media {
+        flex-basis: 100%;
+        /* Set width to 100% on small screens */
+        text-align: center;
+    }
+    .footer {
+        background-color: #5940cb;
+        color: #ffffff;
+        padding: 48px 0;
+        text-align: center;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        left: 0%;
+        border-top-left-radius: 60px;
+        border-top-right-radius: 60px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        z-index: 1000;
+    }
+    .social-media {
+        margin-right: auto;
+        position: absolute;
+        top: 29px;
+        right: 23px;
+    }
+    .social-media a {
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 20px;
+        margin-left: 10px;
+    }
+    .footer-nav ul {
+        list-style-type: none;
+        padding: 0px;
+        margin: 0;
+        position: absolute;
+        top: 30px;
+        right: 86px;
+    }
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-form {
+    width: 609px;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    right: -11px;
+    position: relative;
+}
+
+table {
+    width: 100%;
+}
+
+td {
+    padding: 10px;
+}
+
+.input-icon {
+    display: inline-block;
+    width: 40px;
+    text-align: center;
+}
+
+.input-icon i {
+    font-size: 18px;
+    line-height: 40px;
+}
+
+input[type="email"],
+input[type="number"] {
+    width: calc(100% - 40px);
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.btn-login {
+    width: 90%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #5940cb;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+    /* Menambahkan efek transisi untuk perubahan background */
+}
+
+.notification {
+    display: none;
+    /* Sembunyikan notifikasi secara default */
+    background-color: #f2f2f2;
+    color: #333;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 5px;
+}

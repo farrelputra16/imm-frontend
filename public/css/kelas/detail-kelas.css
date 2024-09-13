@@ -1,0 +1,399 @@
+@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+body {}
+
+
+/* font-family: "Mulish", sans-serif;
+font-optical-sizing: auto;
+font-weight: <weight>;
+font-style: normal; */
+
+
+/* Navbar */
+
+.navbar {
+    background-color: #ffffff;
+    color: #000000;
+    padding: 15px 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1000;
+    border-bottom: 3px solid #5940cb;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.customer-review-title {
+    font-family: Poppins, sans-serif;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.rating-summary {
+    display: flex;
+    align-items: center;
+}
+
+.average-rating {
+    font-family: Poppins, sans-serif;
+    font-weight: bold;
+    font-size: 48px;
+}
+
+.total-reviews {
+    font-family: Poppins, sans-serif;
+    font-weight: 200;
+    font-size: 23px;
+    margin-left: 10px;
+}
+
+.star-ratings {
+    margin-top: 10px;
+}
+
+.rating-item {
+    display: flex;
+    align-items: center;
+    width: 70%;
+    margin-bottom: 10px;
+    margin-left: 190px;
+}
+
+.label {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.progress-bar {
+    flex: 4;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-right: 10px;
+    margin-right: 10px;
+    height: 10px;
+}
+
+.progress {
+    height: 100%;
+    background-color: #FFD700;
+}
+
+.rating-value {
+    flex: 1;
+}
+
+.row {
+    display: flex;
+    width: 100%;
+}
+
+.col-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+
+.navbar-logo {
+    font-size: 24px;
+    margin-left: 60px;
+}
+
+.navbar-links {
+    list-style-type: none;
+    display: flex;
+    margin-left: -580px;
+}
+
+.navbar-links li {
+    margin-right: 20px;
+}
+
+.navbar-links li:last-child {
+    margin-right: 0;
+}
+
+.navbar-links a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.navbar-links a:hover {
+    text-decoration: underline;
+}
+
+.navbar-actions .btn {
+    text-decoration: none;
+    color: black;
+    padding: 6px 17px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    margin: 0 5px;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.navbar-actions .btn-primary {
+    background-color: #ffffff21;
+    /* Warna latar biru */
+    border-color: #6d4ff3cc;
+}
+
+.navbar-actions .btn-primary:hover,
+.navbar-actions .btn-primary:focus {
+    background-color: #a191e7cc;
+    /* Warna latar saat hover atau fokus */
+    box-shadow: 0 2px 8px rgba(101, 58, 241, 0.6);
+    /* Menambah bayangan */
+    transform: translateY(-2px);
+    /* Bergerak sedikit ke atas saat hover */
+}
+
+.navbar-actions .btn-outline-primary {
+    color: #fdfdff;
+    background-color: #5940cb;
+    border: 2px solid #5940cb;
+}
+
+.navbar-actions .btn-outline-primary:hover,
+.navbar-actions .btn-outline-primary:focus {
+    color: white;
+    /* Warna teks saat hover atau fokus */
+    background-color: #5940cb;
+    /* Latar belakang biru saat hover atau fokus */
+    transform: translateY(-2px);
+    /* Bergerak sedikit ke atas saat hover */
+    box-shadow: 0 2px 8px rgba(108, 52, 211, 0.6);
+    /* Menambah bayangan */
+}
+
+.navbar-actions .btn:active {
+    transform: translateY(1px);
+    /* Bergerak sedikit ke bawah saat diklik */
+}
+
+
+/* Footer */
+
+.footer {
+    background-color: #5940cb;
+    color: #ffffff;
+    padding: 48px 0;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 80%;
+    left: 10%;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    z-index: 1000;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-info h3 {
+    margin: 0;
+    font-size: 20px;
+    position: absolute;
+    right: 860px;
+    top: 20px;
+}
+
+.brand-info p {
+    margin-top: 5px;
+    font-size: 14px;
+    position: absolute;
+    top: 50px;
+    right: 750px;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 40px;
+    right: 280px;
+}
+
+.footer-nav ul li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.footer-nav ul li:last-child {
+    margin-right: 0;
+}
+
+.footer-nav ul li a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.footer-nav ul li a:hover {
+    text-decoration: underline;
+}
+
+.social-media {
+    margin-right: auto;
+    position: absolute;
+    top: 29px;
+    right: 23px;
+}
+
+.social-media a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.footer-description {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.footer-social-media {
+    margin-bottom: -10px;
+    /* Jarak antara teks Social Media dan ikon */
+    position: relative;
+    top: -19px;
+    right: -5px;
+}
+
+.banner {
+    width: 100%;
+    height: 610px;
+    display: flex;
+    align-items: center;
+}
+
+.content-2 {
+    margin-bottom: 100px;
+}
+
+img {
+    background-size: cover;
+    width: 100%;
+    height: auto;
+}
+
+.star {
+    color: rgba(156, 138, 240, 0.15);
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-top: -25px;
+}
+
+.star,
+.star1::before {
+    content: '\2605';
+    /* Unicode for a filled star */
+}
+
+.star1 {
+    color: rgba(156, 138, 240, 0.15);
+    font-size: 2.5rem;
+    cursor: pointer;
+    margin-top: -25px;
+}
+
+.search-container {
+    display: flex;
+    justify-content: start;
+    margin-bottom: 40px;
+}
+
+.btn-beli {
+    border-radius: 5px;
+    width: 300px;
+    height: 40px;
+    background-color: #5940cb;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.search-container button i {
+    font-size: 16px;
+    color: white;
+}
+
+.circle-image {
+    width: 70px;
+    /* Adjust the size as needed */
+    height: 70px;
+    /* Ensure it's equal to width for a perfect circle */
+    border-radius: 50%;
+    /* Makes the image circular */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Adds shadow around the image */
+    object-fit: cover;
+    /* Ensures the image covers the entire container without distortion */
+    display: block;
+    border: 5px solid white;
+    /* Optional: remove the small gap below the image */
+}
+
+
+/* Optional: Center the image in the container */
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    /* Adjust the height as needed */
+}
+
+.class {
+    height: 597px;
+    width: 100%;
+    background-color: #5940cb;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* .subclas{
+    height: ;
+} */
+
+.content {
+    margin-top: 170px;
+}
+
+.btn-rkelas {
+    border: 1px solid #5940cb;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 5px;
+    background-color: transparent;
+    width: 259px;
+    height: 55px;
+}

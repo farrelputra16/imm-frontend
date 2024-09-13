@@ -1,0 +1,256 @@
+body {
+    font-family: "Roboto", sans-serif;
+    text-decoration: none;
+    list-style-type: none;
+    background-color: #fff;
+}
+
+
+/* Navbar */
+
+.indicator-item {
+    margin-left: 115px;
+}
+
+.tags-container {
+    gap: 5px;
+}
+
+.tag-button {
+    border-radius: 10px;
+}
+
+.tag-button {
+    background-color: rgba(89, 64, 203, 0.502);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+}
+
+.tag-button.selected {
+    background-color: #5940cb;
+}
+
+.tag-button:hover {
+    background-color: #5940cb;
+}
+
+.sdg-description {
+    width: 100%;
+    /* or set a fixed width like 300px */
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    margin-top: 10px;
+    display: none;
+    /* Ensure it starts hidden */
+    word-wrap: break-word;
+    /* Ensures long words break to the next line */
+}
+
+.section-img {
+    width: 100%;
+}
+
+.unggah-image,
+.choose-file-label {
+    width: 100%;
+    height: 131px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid #000;
+    border-radius: 5px;
+}
+
+#previewImage {
+    max-width: 55%;
+    text-align: center;
+    max-height: 100%;
+    font-style: italic;
+}
+
+.metric-checkbox {
+    min-width: 20px;
+    min-height: 20px;
+    padding: 10px;
+}
+
+.sdg-item {
+    cursor: pointer;
+    position: relative;
+    margin-top: 15px;
+}
+
+.sdg-item img {
+    width: 50px;
+    /* Set a fixed width for the image */
+    height: 50px;
+    /* Set a fixed height for the image */
+    margin-right: 10px;
+    /* Space between image and text */
+}
+
+.sdg-name {
+    max-width: 84%;
+}
+
+.sdg-name-metric {
+    max-width: 90%;
+}
+
+.sdg-toggle {
+    margin-left: auto;
+    /* Push the toggle icon to the far right */
+}
+
+.metric-text {
+    cursor: pointer;
+}
+
+.rotate-180 {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+}
+
+.sdg-checkbox {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+
+/* Tags Section */
+
+.tags-container {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tag {
+    background-color: #6f42c1;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.tag .remove-tag {
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+
+/* Upload Box */
+
+.upload-box {
+    background-color: #5940cb;
+    color: white;
+    text-align: center;
+    padding: 30px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.upload-box i {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+
+/* Footer */
+
+
+/* Media query for responsiveness */
+
+@media only screen and (max-width: 768px) {
+    .brand-info,
+    .footer-links,
+    .social-media {
+        flex-basis: 100%;
+        /* Set width to 100% on small screens */
+        text-align: center;
+    }
+    .footer {
+        background-color: #5940cb;
+        color: #ffffff;
+        padding: 48px 0;
+        text-align: center;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        left: 0;
+        border-top-left-radius: 60px;
+        border-top-right-radius: 60px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        z-index: 1000;
+    }
+    .social-media {
+        margin-right: auto;
+        position: absolute;
+        top: 29px;
+        right: 23px;
+    }
+    .social-media a {
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 20px;
+        margin-left: 10px;
+    }
+    .footer-nav ul {
+        list-style-type: none;
+        padding: 0px;
+        margin: 0;
+        position: absolute;
+        top: 30px;
+        right: 86px;
+    }
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #5940cb;
+    border-color: #6f42c129;
+}
+
+
+/* Efek loading */
+
+
+/* Animasi umum untuk elemen lainnya */
+
+.content-container h1,
+.date-box,
+.chart-container,
+.analysis-matrix .content-box,
+.target-check .target-check-box,
+.icon-box .icon-item,
+.btn {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.content-container h1:hover,
+.date-box:hover,
+.chart-container:hover,
+.analysis-matrix .content-box:hover,
+.target-check .target-check-box:hover,
+.icon-box .icon-item:hover,
+.btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Menambahkan transisi pada navbar */

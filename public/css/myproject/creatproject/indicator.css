@@ -1,0 +1,239 @@
+body {
+    font-family: "Roboto", sans-serif;
+    padding-top: 70px;
+    /* Add padding to avoid content being hidden behind fixed navbar */
+    background-color: #f8f9fa;
+}
+
+.navbar {
+    background-color: #ffffff;
+    color: #000000;
+    padding: 15px 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1000;
+    border-bottom: 3px solid #5940cb;
+}
+
+.navbar-nav {
+    margin-left: 10px;
+    margin-right: auto;
+}
+
+.navbar-links {
+    list-style-type: none;
+    display: flex;
+    margin-left: -580px;
+}
+
+.navbar-links li {
+    margin-right: 20px;
+}
+
+.navbar-links li:last-child {
+    margin-right: 0;
+}
+
+.navbar-links a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.navbar-links a:hover {
+    text-decoration: underline;
+}
+
+.navbar-actions {
+    display: flex;
+    margin-right: 20px;
+}
+
+.footer {
+    background-color: #5940cb;
+    color: #ffffff;
+    height: 167px;
+    text-align: center;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    width: 100%;
+}
+
+.footer ul {
+    text-decoration: none;
+    list-style-type: none;
+}
+
+.footer ul li {
+    color: #fff;
+    font-size: 12px;
+}
+
+.span-footer {
+    font-size: 15px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.sosmed {
+    gap: 10px;
+}
+
+.sosmed a {
+    color: #fff;
+    gap: 30px;
+    margin: 0 10px;
+}
+
+.col-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.footer {
+    background-color: #5940cb;
+    color: #ffffff;
+    height: 167px;
+    text-align: center;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    width: 100%;
+}
+
+.footer ul {
+    text-decoration: none;
+    list-style-type: none;
+}
+
+.footer ul li {
+    color: #fff;
+    font-size: 12px;
+}
+
+.span-footer {
+    font-size: 15px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.sosmed {
+    gap: 10px;
+}
+
+.sosmed a {
+    color: #fff;
+    gap: 30px;
+    margin: 0 10px;
+}
+
+.col-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.social-media {
+    margin-right: auto;
+    position: absolute;
+    top: 29px;
+    right: 23px;
+}
+
+.social-media a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.footer-description {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.footer-social-media {
+    margin-bottom: -10px;
+    /* Jarak antara teks Social Media dan ikon */
+    position: relative;
+    top: -19px;
+    right: -5px;
+}
+
+.btn-continue {
+    background-color: #5940cb;
+}
+
+.btn-continue:hover {
+    background-color: #432b9b;
+}
+
+
+/* Efek loading */
+
+#loading {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 5px;
+}
+
+#loading img {
+    width: 100px;
+    /* Ukuran gambar loading */
+    height: 100px;
+    /* Ukuran gambar loading */
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* Animasi umum untuk elemen lainnya */
+
+.content-container h1,
+.date-box,
+.chart-container,
+.analysis-matrix .content-box,
+.target-check .target-check-box,
+.icon-box .icon-item,
+.btn {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.content-container h1:hover,
+.date-box:hover,
+.chart-container:hover,
+.analysis-matrix .content-box:hover,
+.target-check .target-check-box:hover,
+.icon-box .icon-item:hover,
+.btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+#sub-container {
+    display: none;
+}
+
+
+/* Menambahkan transisi pada navbar */
+
+.navbar {
+    transition: background-color 0.3s ease;
+}
+
+.navbar:hover {
+    background-color: #e3e3e3;
+}

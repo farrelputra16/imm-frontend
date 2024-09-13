@@ -1,0 +1,341 @@
+body {
+    font-family: "Roboto", sans-serif;
+}
+
+
+/* Navbar */
+
+.navbar {
+    background-color: #ffffff;
+    color: #000000;
+    padding: 15px 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1000;
+    border-bottom: 3px solid #5940cb;
+}
+
+.navbar-brand {
+    margin-right: 34px;
+    margin-left: 2px;
+}
+
+a {
+    color: #010101;
+}
+
+.navbar-nav {
+    margin-left: 10px;
+    margin-right: auto;
+}
+
+.navbar-links {
+    list-style-type: none;
+    display: flex;
+    margin-left: -580px;
+}
+
+.navbar-links li {
+    margin-right: 20px;
+}
+
+.navbar-links li:last-child {
+    margin-right: 0;
+}
+
+.navbar-links a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.navbar-links a:hover {
+    text-decoration: underline;
+}
+
+.navbar-actions {
+    display: flex;
+    margin-right: 20px;
+}
+
+
+/* Footer */
+
+.footer {
+    background-color: #5940cb;
+    color: #ffffff;
+    height: 167px;
+    text-align: center;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    width: 100%;
+}
+
+.footer ul {
+    text-decoration: none;
+    list-style-type: none;
+}
+
+.footer ul li {
+    color: #fff;
+    font-size: 12px;
+}
+
+.span-footer {
+    font-size: 15px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.sosmed {
+    gap: 10px;
+}
+
+.sosmed a {
+    color: #fff;
+    gap: 30px;
+    margin: 0 10px;
+}
+
+.col-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+/* Media query for responsiveness */
+
+@media only screen and (max-width: 768px) {
+    .brand-info,
+    .footer-links,
+    .social-media {
+        flex-basis: 100%;
+        /* Set width to 100% on small screens */
+        text-align: center;
+    }
+    .footer {
+        background-color: #5940cb;
+        color: #ffffff;
+        padding: 48px 0;
+        text-align: center;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        left: 0%;
+        border-top-left-radius: 60px;
+        border-top-right-radius: 60px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        z-index: 1000;
+    }
+    .social-media {
+        margin-right: auto;
+        position: absolute;
+        top: 29px;
+        right: 23px;
+    }
+    .social-media a {
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 20px;
+        margin-left: 10px;
+    }
+    .footer-nav ul {
+        list-style-type: none;
+        padding: 0px;
+        margin: 0;
+        position: absolute;
+        top: 30px;
+        right: 86px;
+    }
+}
+
+form {
+    margin-top: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-control {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 25px;
+    font-size: 1rem;
+    color: #333;
+}
+
+.form-control::placeholder {
+    color: #bbb;
+}
+
+.btn-primary {
+    background-color: #6c63ff;
+    border: none;
+    padding: 10px 30px;
+    font-size: 1.4rem;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.berita {
+    height: 192px;
+    width: 100%;
+    border-radius: 8px;
+}
+
+.text-orang {
+    width: 335px;
+    height: 49px;
+}
+
+.tombol {
+    margin-bottom: 190px;
+}
+
+.number {
+    width: 30px;
+    height: 38px;
+    background-color: #524eff;
+    color: white;
+    font-size: 24;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    margin-right: 25px;
+}
+
+.unggah {
+    width: 129px;
+    height: 42px;
+    background-color: #5940cb;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.preview {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    width: 120px;
+    /* Set a fixed width to keep previews consistent */
+}
+
+.preview img {
+    max-width: 100px;
+    max-height: 100px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.preview p {
+    margin: 0;
+    font-size: 12px;
+    /* Reduced font size to fit better within the fixed width */
+    text-align: center;
+    /* Center the file name text */
+}
+
+.remove-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.report {
+    margin-bottom: 20px;
+}
+
+.btntambah {
+    background-color: transparent;
+    border: 3px solid #524eff;
+    padding: 10px 30px;
+    font-size: 1.4rem;
+    border-radius: 8px;
+    color: #000;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #524eff;
+}
+
+.mt-5,
+.my-5 {
+    margin-top: 7rem !important;
+}
+
+
+/* Efek loading */
+
+
+/* Animasi umum untuk elemen lainnya */
+
+.content-container h1,
+.date-box,
+.chart-container,
+.analysis-matrix .content-box,
+.target-check .target-check-box,
+.icon-box .icon-item,
+.btn {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.content-container h1:hover,
+.date-box:hover,
+.chart-container:hover,
+.analysis-matrix .content-box:hover,
+.target-check .target-check-box:hover,
+.icon-box .icon-item:hover,
+.btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Menambahkan transisi pada navbar */
+
+.navbar {
+    transition: background-color 0.3s ease;
+}
+
+.navbar:hover {
+    background-color: #e3e3e3;
+}

@@ -1,0 +1,117 @@
+body {
+    font-family: "Roboto", sans-serif;
+}
+
+
+/* Navbar */
+
+.banner {
+    width: 100%;
+    height: 610px;
+    display: flex;
+    align-items: center;
+}
+
+.content-2 {
+    margin-bottom: 100px;
+}
+
+img {
+    background-size: cover;
+    width: 100%;
+    height: auto;
+}
+
+.star {
+    color: rgba(156, 138, 240, 0.15);
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-top: -25px;
+}
+
+.star::before {
+    content: "\2605";
+    content: "\2605";
+    /* Unicode for a filled star */
+}
+
+.search-container {
+    display: flex;
+    justify-content: start;
+    margin-bottom: 40px;
+}
+
+.search-container input {
+    padding: 10px;
+    border: 2px solid #5940cb;
+    border-radius: 0 5px 5px 0;
+    font-size: 16px;
+    width: 430px;
+}
+
+.search-container button {
+    border: 2px solid #5940cb;
+    border-left: none;
+    padding: 0 25px;
+    background-color: #fff;
+    border-radius: 5px 0 0 5px;
+    cursor: pointer;
+    background-color: #5940cb;
+}
+
+.search-container button i {
+    font-size: 16px;
+    color: white;
+}
+
+.class {
+    height: 597px;
+    width: 100%;
+    background-color: #5940cb;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* .subclas{
+    height: ;
+} */
+
+.btn-rkelas {
+    border: 1px solid #5940cb;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 5px;
+    background-color: transparent;
+    width: 259px;
+    height: 55px;
+}
+
+
+/* Efek loading */
+
+#loading {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 5px;
+}
+
+#loading img {
+    width: 100px;
+    height: 100px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
