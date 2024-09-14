@@ -27,7 +27,7 @@ Auth::routes(['verify' => true]);
 
 // Rute yang bisa diakses tanpa login (Login dan Register)
 Route::get('/', function () {
-    return view('home');
+    return view('landingpage');
 });
 
 Route::get('/home', function () {
