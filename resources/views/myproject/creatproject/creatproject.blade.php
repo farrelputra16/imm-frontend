@@ -11,10 +11,66 @@
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .popup-notification {
+            position: fixed; /* Relative untuk posisi tombol "X" */
+            background-color: white;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+            z-index: 1000;
+            animation: pop-up 1s ease-out;
+        }
+
+        /* Tombol "X" di pojok kanan atas */
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #c72828;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        /* Overlay untuk membuat layar menjadi gelap di belakang pop-up */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+        }
+    </style>
 @endsection
 @section('content')
 
     <body>
+        {{-- Membuat notifikasi bila terjadi input yang belum di isi di dalam form required --}}
+        <div class="popup-overlay" id="popup-overlay"></div>
+        <div class="popup-notification" id="form-notification" style="display: none">
+            <button class="close-button" id="close-notification">X</button>
+            <div style="display: flex; flex-direction: column; gap: 20px; align-items: center;">
+                <img src="images/Warning_icon.svg" alt="Warning!" style="width: 100px;">
+                <b>Harap Isi Semua Data Yang Diperlukan</b>
+            </div>
+        </div>
+        {{-- Akhir dari notifikasi --}}        
         <div class="container mt-5">
             <form action="{{ route('projects.store') }}" method="POST" enctype="multipart/form-data">
                 <h1 class="mb-5" id="buatproject">Buat Projek Baru</h1>
@@ -36,7 +92,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="tujuan">Tujuan Proyek</label>
-                                <textarea class="form-control" name="tujuan" id="tujuan" rows="5"></textarea>
+                                <textarea class="form-control" name="tujuan" id="tujuan" rows="5" required></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="start_date">Tanggal Mulai Proyek</label>
@@ -49,7 +105,7 @@
                             
                             <div class="form-group">
                                 <label for="provinsi">Provinsi</label>
-                                <select class="form-control" name="provinsi" id="provinsi" required onchange="populateCities()">
+                                <select class="form-control" name="provinsi" id="provinsi" required>
                                     <!-- Placeholder option -->
                                     <option value="" disabled selected>Pilih Provinsi</option>
                                 </select>
@@ -74,7 +130,7 @@
                                 <div class="form-group mt-3">
                                     <label for="jumlah_pendanaan">Jumlah Dana Keseluruhan</label>
                                     <input type="number" class="form-control" name="jumlah_pendanaan"
-                                        id="jumlah_pendanaan" >
+                                        id="jumlah_pendanaan" required>
                                 </div>
                                 <label for="otherFunds">Pendanaan Lainnya</label>
 
@@ -145,14 +201,14 @@
                                             <tr>
                                                 <td>
                                                     <input type="text" class="form-control"
-                                                        name="target_pelanggans[0][status]" >
+                                                        name="target_pelanggans[0][status]" required>
                                                 </td>
                                                 <td>
                                                     <input type="text" class="form-control"
-                                                        name="target_pelanggans[0][rentang_usia]">
+                                                        name="target_pelanggans[0][rentang_usia]" required>
                                                 </td>
                                                 <td>
-                                                    <textarea class="form-control" name="target_pelanggans[0][deskripsi_pelanggan]"></textarea>
+                                                    <textarea class="form-control" name="target_pelanggans[0][deskripsi_pelanggan]" required></textarea>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -339,6 +395,23 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <script>
+            function validationSection(sectionId){
+                let section = document.getElementById(sectionId);
+                let inputs = section.querySelectorAll('input[required], select[required], textarea[required]');
+                let isValid = true;
+                inputs.forEach(function(input){
+                    if(input.value === ''){
+                        isValid = false;
+                        input.classList.add('is-invalid');
+                    }else{
+                        input.classList.remove('is-invalid');
+                    }
+                });
+                return isValid;
+            }
+        </script>
         
         <script>
             // Ambil elemen select untuk provinsi dan kota/kabupaten
@@ -385,6 +458,7 @@
                     })
                     .catch(error => console.error(`Error fetching regencies for provinsi ${selectedProvinsiId}:`, error));
             }
+
 
             // Fungsi untuk mendapatkan ID provinsi berdasarkan nama
             function getProvinsiIdByName(name) {
@@ -510,9 +584,9 @@
                         '<td><input type="text" class="form-control" name="target_pelanggans[' + index +
                         '][status]" required></td>' +
                         '<td><input type="text" class="form-control" name="target_pelanggans[' + index +
-                        '][rentang_usia]"></td>' +
+                        '][rentang_usia]" required></td>' +
                         '<td><textarea class="form-control" name="target_pelanggans[' + index +
-                        '][deskripsi_pelanggan]"></textarea></td>' +
+                        '][deskripsi_pelanggan]" required></textarea></td>' +
                         '<td><button type="button" class="btn btn-danger btn-remove-pelanggan"><i class="fa-solid fa-minus" style="color: #ffffff;"></i></button></td>' +
                         '</tr>';
                     $('.target-pelanggan tbody').append(newRow);
@@ -557,11 +631,24 @@
                     $(".btn-add-dana").prop('disabled', false);
                 });
 
+                // Tombol Next ke SDG section ditambahkan check input required
                 $('#next-to-sdg-section').on('click', function() {
-                    $('#form-section').hide();
-                    $('#buatproject').hide();
-                    $('#sdg-section').show();
-
+                    // Validasi section form-section sebelum pindah
+                    if (validationSection('form-section')) {
+                        $('#form-section').hide();
+                        $('#buatproject').hide();
+                        $('#sdg-section').show();
+                    } else {
+                        console.log('Ada field yang kosong');
+                        // Tampilkan notifikasi kalau ada field yang kosong
+                        document.getElementById('form-notification').style.display = 'block';
+                        document.getElementById('popup-overlay').style.display = 'block';
+                        document.getElementById('close-notification').addEventListener('click', function() {
+                            document.getElementById('form-notification').style.display = 'none';
+                            document.getElementById('popup-overlay').style.display = 'none';
+                        });
+                        window.scrollTo(0, 0); // Scroll ke atas untuk menampilkan notifikasi
+                    }
                 });
 
                 $('#next-to-metric-section').on('click', function() {
@@ -587,16 +674,40 @@
                     $('#buatproject').show();
                 });
 
+                // Melakukan penambahan logic untuk mengatur indicator sdg yang dipilih
+                // Menyimpan SDG yang dipilih sebelumnya
+                var previousSdgs = [];
+
+                // Fungsi untuk mendapatkan SDG yang dipilih
+                function getSelectedSdgs() {
+                    return $('.sdg-checkbox:checked').map(function() {
+                        return $(this).val();
+                    }).get();
+                }
+
+                // Fungsi untuk mengecek apakah ada perubahan pada SDG hanya jika SDG berkurang
+                function hasSdgDecreased() {
+                    var currentSdgs = getSelectedSdgs();
+                    if (currentSdgs.length ===  previousSdgs.length) {
+                        return JSON.stringify(currentSdgs) !== JSON.stringify(previousSdgs); // Mengecek apakah SDG saat ini berubah
+                    }
+                    return currentSdgs.length < previousSdgs.length; // Mengecek apakah SDG saat ini berkurang
+                }
+
                 $('#next-to-indicator-section').on('click', function() {
                     const projectName = $('#nama').val();
                     const projectDescription = $('#deskripsi').val();
+                    
+                    // Mendapatkan gambar SDG yang dipilih
                     const selectedSdgImages = $('.sdg-checkbox:checked').map(function() {
                         return $(this).closest('.sdg-item').find('img').attr('src');
                     }).get();
 
+                    // Mengisi judul dan deskripsi proyek
                     $('#project-title').text(projectName);
                     $('#project-long-description').text(projectDescription);
 
+                    // Menampilkan gambar SDG yang dipilih
                     $('#sdg-images-container').html('');
                     selectedSdgImages.forEach(function(src) {
                         $('#sdg-images-container').append('<img src="' + src +
@@ -604,15 +715,14 @@
                         );
                     });
 
-                    // Simpan selectedTags (tag_ids yang dipilih)
-                    var selectedTags = $('input[name="tag_ids[]"]:checked').map(function() {
-                        return $(this).val();
-                    }).get();
+                    // Mengecek apakah ada perubahan pada SDG
+                    if (hasSdgDecreased()) {
+                        // Jika SDG berubah, kosongkan checklist indikator
+                        $('.indicator-checkbox').prop('checked', false);
+                    } 
 
-                    // Simpan selectedIndicators (indicator_ids yang dipilih)
-                    var selectedIndicators = $('.indicator-checkbox:checked').map(function() {
-                        return $(this).val();
-                    }).get();
+                    // Menyimpan SDG yang dipilih ke dalam previousSdgs setelah perpindahan halaman
+                    previousSdgs = getSelectedSdgs();
 
                     // Menyembunyikan SDG Section dan menampilkan Indicator Section
                     $('#sdg-section').hide();
@@ -625,12 +735,21 @@
                     $('#sdg-section').show();
                 });
 
+                // Menambahkan untuk menghilangkan checklist indikator yang terkait bila sdg nya tidak dicentang
                 $('.sdg-checkbox').on('change', function() {
                     var sdgId = $(this).val();
                     $('.goal-description').hide();
                     $('#goal' + sdgId + '-description').show();
                     $('#goal' + sdgId + '-description .sub-container').hide();
                     $('#goal' + sdgId + '-description .sub-container[data-level="2"]').show();
+
+                    // Jika SDG tidak dicentang, hilangkan checklist indikator yang terkait
+                    if (!$(this).is(':checked')) {
+                        // Temukan semua indikator yang terkait dengan SDG ini
+                        var relatedIndicators = $('.indicator-checkbox[data-sdg="' + sdgId + '"]');
+                        // Uncheck indikator terkait dan sembunyikan sub-container
+                        relatedIndicators.prop('checked', false).closest('.sub-container').hide();
+                    }
                 });
 
                 $(document).on('change', '.indicator-checkbox', function() {
@@ -690,11 +809,12 @@
                     }
                 });
             });
-
+            // namabah baru
             $(document).ready(function() {
                 var metricsPerPage = 15; // Jumlah metrik per halaman
                 var currentPage = 1; // Halaman saat ini
                 var metricsData = []; // Array untuk menyimpan data metrik dari response
+
                 // Fungsi untuk menampilkan metrik pada halaman tertentu
                 function displayMetrics(page) {
                     var startIndex = (page - 1) * metricsPerPage;
@@ -704,20 +824,19 @@
                     $('#metrics').empty(); // Kosongkan container metrik terlebih dahulu
                     $.each(metricsSlice, function(index, metric) {
                         var metricHtml = `
-                <div class="d-flex align-items-center justify-content-between p-3 my-3 border ">
-                    <div class="metric-text">
-                        <h5 style="color:#5940CB">(${metric.code}) ${metric.name}</h5>
-                        <p class="mb-0 sdg-name-metric">${metric.definition}</p>
-                    </div>
-                    <input type="checkbox" class="metric-checkbox" name="metric_ids[]" value="${metric.id}">
-                </div>
-            `;
+                            <div class="d-flex align-items-center justify-content-between p-3 my-3 border">
+                                <div class="metric-text">
+                                    <h5 style="color:#5940CB">(${metric.code}) ${metric.name}</h5>
+                                    <p class="mb-0 sdg-name-metric">${metric.definition}</p>
+                                </div>
+                                <input type="checkbox" class="metric-checkbox" name="metric_ids[]" value="${metric.id}">
+                            </div>
+                        `;
                         $('#metrics').append(metricHtml);
                     });
 
                     // Update pagination links
                     updatePagination();
-
                 }
 
                 // Fungsi untuk membuat dan mengatur tombol-tombol pagination
@@ -772,6 +891,7 @@
                 });
             });
 
+            // Menambahkan logika untuk menyesuaikan matriks dengan indikator yang dipilih
             $('#next-to-metric-section').on('click', function() {
                 var selectedTags = $('input[name="tag_ids[]"]:checked').map(function() {
                     return $(this).val();
@@ -785,9 +905,21 @@
                     var totalPages = 1; // Total pages, will be updated after receiving response from server
                     var selectedMetricsIds = {}; // Object to store selected metric IDs
                     var allMetrics = {}; // Object to store all fetched metrics
+                    var isFirstLoad = true; // Flag untuk check apakah ini load pertama kali
+
+                    // Fungsi untuk mereset metrik
+                    function resetMetrics() {
+                        $('#metrics').empty(); // Clear metrics yang sebelumnya ditampilkan
+                        selectedMetricsIds = {}; // Reset metrics yang dipilih
+                    }
 
                     // Function to fetch metrics based on selected tags and indicators
                     function fetchMetrics() {
+                        // Check jika ini load pertama kali
+                        if (isFirstLoad) {
+                            resetMetrics();
+                            isFirstLoad = false;
+                        }
                         $.ajax({
                             url: '{{ route('projects.filterMetrics') }}',
                             method: 'POST',
@@ -798,23 +930,25 @@
                                 page: currentPage // Send current page number to server
                             },
                             success: function(response) {
-                                // $('#metrics').empty(); // Clear existing metrics
+                                console.log("Metrics fetched successfully:", response); // Debugging log
+                                if (response.data.length === 0) {
+                                    console.log("No metrics found."); // Debugging log
+                                }
 
                                 // Iterate through metrics and append to #metrics container
                                 $.each(response.data, function(index, metric) {
                                     // Check if this metric is selected
-                                    var isChecked = selectedMetricsIds[metric.id] ?
-                                        'checked' : '';
+                                    var isChecked = selectedMetricsIds[metric.id] ? 'checked' : '';
 
                                     var metricHtml = `
-                    <div class="d-flex align-items-center justify-content-between p-3 my-3 border">
-                        <div class="metric-text">
-                            <h5 style="color:#5940CB">(${metric.code}) ${metric.name}</h5>
-                            <p class="mb-0 sdg-name-metric">${metric.definition}</p>
-                        </div>
-                        <input type="checkbox" class="metric-checkbox" name="metric_ids[]" value="${metric.id}" ${isChecked}>
-                    </div>
-                `;
+                                        <div class="d-flex align-items-center justify-content-between p-3 my-3 border">
+                                            <div class="metric-text">
+                                                <h5 style="color:#5940CB">(${metric.code}) ${metric.name}</h5>
+                                                <p class="mb-0 sdg-name-metric">${metric.definition}</p>
+                                            </div>
+                                            <input type="checkbox" class="metric-checkbox" name="metric_ids[]" value="${metric.id}" ${isChecked}>
+                                        </div>
+                                    `;
                                     $('#metrics').append(metricHtml);
                                 });
 
@@ -834,34 +968,28 @@
                     }
 
                     function updatePagination() {
+                        console.log("Updating pagination..."); // Debugging log
                         $('#pagination-links').empty(); // Clear existing pagination links
 
                         var startPage = Math.max(currentPage - 5, 1);
                         var endPage = Math.min(currentPage + 5, totalPages);
 
-
                         // Add first page button if startPage is greater than 1
                         if (startPage > 1) {
                             $('#pagination-links').append(`
-                <li class="page-item">
-                    <button type="button" class="btn btn-link page-link page-number">1</button>
-                </li>
-                <li class="page-item disabled"><span class="page-link">...</span></li>
-            `);
+                                <li class="page-item">
+                                    <button type="button" class="btn btn-link page-link page-number">1</button>
+                                </li>
+                                <li class="page-item disabled"><span class="page-link">...</span></li>
+                            `);
                         }
-
-
-
-
 
                         // Add next button
                         $('#pagination-links').append(`
-            <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}" id="next-page-li">
-                <button type="button" class="btn btn-primary page-link" id="next-page">Berikutnya</button>
-            </li>
-        `);
-
-
+                            <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}" id="next-page-li">
+                                <button type="button" class="btn btn-primary page-link" id="next-page">Berikutnya</button>
+                            </li>
+                        `);
 
                         $('#next-page').on('click', function() {
                             if (currentPage < totalPages) {
@@ -873,14 +1001,13 @@
 
                     // Function to initialize event handlers for checkboxes
                     function initializeCheckboxEventHandlers() {
+                        console.log("Initializing checkbox event handlers..."); // Debugging log
                         $('.metric-checkbox').on('change', function() {
                             var metricId = $(this).val();
                             if ($(this).prop('checked')) {
-                                selectedMetricsIds[metricId] =
-                                    true; // Store the ID in selectedMetricsIds
+                                selectedMetricsIds[metricId] = true; // Store the ID in selectedMetricsIds
                             } else {
-                                delete selectedMetricsIds[
-                                    metricId]; // Remove the ID from selectedMetricsIds
+                                delete selectedMetricsIds[metricId]; // Remove the ID from selectedMetricsIds
                             }
                         });
                         // Make the metric-text div clickable to toggle the checkbox
@@ -891,17 +1018,23 @@
                         });
                     }
 
+                    // Event handler untuk "Kembali" button untuk reset isFirstLoad
+                    $('#back-to-indicator-section').on('click', function() {
+                        $('#metric-section').hide();
+                        $('#indicator-section').show();
+                        isFirstLoad = true; // Reset flag ke true ketika "Kembali" button ditekan
+                    });
+
                     // Initial fetch for metrics
                     fetchMetrics();
                 });
-
-
             });
 
             $('#back-to-indicator-section').on('click', function() {
                 $('#metric-section').hide();
                 $('#indicator-section').show();
             });
+
             $(document).ready(function() {
                 // Function to update review section with selected project details
                 function updateReviewSection() {
@@ -1158,7 +1291,5 @@
 
             });
         </script>
-
     </body>
-
 @endsection
