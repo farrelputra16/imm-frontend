@@ -9,8 +9,8 @@
 
     h2 {
         font-size: 2rem;
-        color: #5940CB;
-        text-align: center;
+        color: #5940CB; /* Mengubah warna tulisan COMPANIES */
+        text-align: center; /* Menempatkan tulisan COMPANIES di tengah */
         margin-bottom: 30px;
     }
 
@@ -30,7 +30,8 @@
     }
 
     .btn-primary {
-        background-color: #5940CB;
+        background-color: #5940CB; /* Warna tombol Search */
+        color: white; /* Warna teks tombol */
         border: none;
         font-size: 1rem;
         padding: 10px 20px;
@@ -39,7 +40,7 @@
     }
 
     .btn-primary:hover {
-        background-color: #4838b1;
+        background-color: #4838b1; /* Warna tombol saat hover */
     }
 
     /* Table Styles */
@@ -53,7 +54,7 @@
     }
 
     thead {
-        background-color: #5940CB;
+        background-color: #5940CB; /* Warna header tabel */
         color: white;
     }
 
@@ -84,7 +85,9 @@
 @endpush
 
 @section('content')
-    <h2><b>COMPANIES</b></h2>
+    <h2><b>COMPANIES</b></h2> <!-- Judul COMPANIES di tengah dengan warna #5940CB -->
+
+    <!-- Form Pencarian -->
     <form method="GET" action="{{ url('/') }}" class="mb-4">
         <div class="row g-3">
             <div class="col-md-3">
@@ -138,4 +141,3 @@
             </tbody>
         </table>
 @endsection
-
