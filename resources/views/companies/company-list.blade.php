@@ -4,11 +4,29 @@
 {{-- Masukkan style yang dibutuhkan --}}
 <style>
     body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: white;
-        overflow-x: hidden;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    h2 {
+        font-size: 2rem;
+        color: #5940CB;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    /* Search Form Styles */
+    form {
+        padding: 20px;
+        background-color: #f7f7f7;
+        border-radius: 8px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    input[type="text"] {
+        font-size: 1rem;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
     }
 
     .table-responsive {
@@ -140,7 +158,6 @@
                     <tbody>
                         @foreach ($companies as $company)
                         <tr>
-                            {{ dd($company) }}
                             <td><input type="checkbox" class="check" value="{{ $company->id }}"></td>
                             <td>{{ $company->nama }}</td>
                             <td>{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('F j, Y') : 'N/A' }}</td>
