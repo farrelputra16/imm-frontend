@@ -128,7 +128,7 @@
     <!-- Navbar Menu -->
     <div class="nav-wrapper">
         <div class="navbar">
-            <a href="#">Companies</a>
+            <a href="{{ route('companies.list') }}">Companies</a>
             <a href="{{ route('investors.index') }}">Investors</a>
             <a href="#">Events</a>
             <a href="{{ route('home') }}">IMM</a>
