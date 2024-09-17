@@ -128,11 +128,12 @@
         margin-bottom: 30px;
     }
 
-/* Grid for the table */
-.grid-tables {
+    /* Grid for the table */
+    .grid-tables {
         display: flex;
-        justify-content: flex-start; /* Align table to the left */
-        margin: 50px 0;
+        justify-content: space-evenly; /* Align tables side by side */
+        margin: 50px auto;
+        max-width: 80%; /* Set a max width for the container */
     }
 
     .grid-tables > div {
@@ -141,7 +142,7 @@
         border-radius: 10px;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         border: 1px solid #5940CB;
-        max-width: 60%; /* Set the table width to 60% of the container */
+        max-width: 40%; /* Set the table width to 40% */
         width: 100%;
         overflow: hidden; /* Ensure content doesn't overflow */
     }
@@ -156,9 +157,9 @@
     }
 
     th, td {
-        padding: 10px; /* Increased padding slightly */
+        padding: 10px;
         border-bottom: 1px solid #ddd;
-        font-size: 16px; /* Increased font size for readability */
+        font-size: 10px;
     }
 
     th {
@@ -166,68 +167,11 @@
         color: black;
     }
 
-    /* Center the "Top Investors" title inside the table */
+    /* Center the "Top Investors" and "Top Companies" titles inside the tables */
     .grid-tables h3 {
         text-align: center;
         margin-bottom: 15px;
-        font-size: 20px;
-    }
-
-    /* Hover effect for expanding */
-    table:hover {
-        transform: scale(1.05);
-    }
-
-    /* Mobile responsiveness */
-    @media (max-width: 768px) {
-        .hero-section, .reverse-section {
-            flex-direction: column;
-            text-align: center;
-        }
-
-/* Grid for the table */
-.grid-tables {
-        display: flex;
-        justify-content: flex-start; /* Align table to the left */
-        margin: 50px 0;
-    }
-
-    .grid-tables > div {
-        background-color: #f9f9f9;
-        padding: 10px; /* Reduced padding */
-        border-radius: 10px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        border: 1px solid #5940CB;
-        max-width: 30%; /* Further reduced the width to 30% of the container */
-        width: 100%;
-        overflow: hidden; /* Ensure content doesn't overflow */
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        text-align: left;
-        transition: transform 0.3s ease;
-        table-layout: fixed; /* Fixed layout ensures table stays within the container */
-        word-wrap: break-word; /* Ensure long words break and stay within the table */
-    }
-
-    th, td {
-        padding: 4px; /* Further reduced padding */
-        border-bottom: 1px solid #ddd;
-        font-size: 10px; /* Further reduced font size */
-    }
-
-    th {
-        background-color: transparent;
-        color: black;
-    }
-
-    /* Center the "Top Investors" title inside the table */
-    .grid-tables h3 {
-        text-align: center;
-        margin-bottom: 10px;
-        font-size: 14px; /* Reduced font size */
+        font-size: 16px;
     }
 
     /* Hover effect for expanding */
@@ -243,16 +187,17 @@
         }
 
         .grid-tables {
+            flex-direction: column;
             justify-content: center; /* Center the table on small screens */
         }
 
         .grid-tables > div {
-            margin: 0;
+            margin-bottom: 20px;
             max-width: 100%;
         }
 
         th, td {
-            font-size: 8px; /* Make the font smaller for small screens */
+            font-size: 10px; /* Make the font smaller for small screens */
         }
     }
 </style>
@@ -292,7 +237,7 @@
         </div>
     </div>
 
-    <!-- Grid Section for the Investors Table -->
+    <!-- Grid Section for the Investors and Companies Tables -->
     <div class="grid-tables">
         <!-- Investors List -->
         <div>
@@ -315,6 +260,37 @@
                             <td>{{ $investor->number_of_investments }}</td>
                             <td>{{ $investor->location }}</td>
                             <td>{{ $investor->departments }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Companies List -->
+        <div>
+            <h3>Top Companies</h3>
+            <table>
+                <thead class="table-light">
+                    <tr>
+                        <th>Organization Name</th>
+                        <th>Founded Date</th>
+                        <th>Last Funding Date</th>
+                        <th>Last Funding Type</th>
+                        <th>Number of Employees</th>
+                        <th>Industries</th>
+                        <th>Job Departments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($companies as $company)
+                        <tr>
+                            <td>{{ $company->nama }}</td>
+                            <td>{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('F j, Y') : 'N/A' }}</td>
+                            <td>{{ $company->last_funding_date ? \Carbon\Carbon::parse($company->last_funding_date)->format('F j, Y') : 'N/A' }}</td>
+                            <td>{{ $company->last_funding_type }}</td>
+                            <td>{{ $company->number_of_employees }}</td>
+                            <td>{{ $company->industries }}</td>
+                            <td>{{ $company->job_departments }}</td>
                         </tr>
                     @endforeach
                 </tbody>

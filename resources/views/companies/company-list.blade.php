@@ -9,8 +9,8 @@
 
     h2 {
         font-size: 2rem;
-        color: #5940CB;
-        text-align: center;
+        color: #5940CB; /* Mengubah warna tulisan COMPANIES */
+        text-align: center; /* Menempatkan tulisan COMPANIES di tengah */
         margin-bottom: 30px;
     }
 
@@ -30,7 +30,8 @@
     }
 
     .btn-primary {
-        background-color: #5940CB;
+        background-color: #5940CB; /* Warna tombol Search */
+        color: white; /* Warna teks tombol */
         border: none;
         font-size: 1rem;
         padding: 10px 20px;
@@ -39,7 +40,7 @@
     }
 
     .btn-primary:hover {
-        background-color: #4838b1;
+        background-color: #4838b1; /* Warna tombol saat hover */
     }
 
     /* Table Styles */
@@ -53,7 +54,7 @@
     }
 
     thead {
-        background-color: #5940CB;
+        background-color: #5940CB; /* Warna header tabel */
         color: white;
     }
 
@@ -84,7 +85,9 @@
 @endpush
 
 @section('content')
-    <h2><b>COMPANIES</b></h2>
+    <h2><b>COMPANIES</b></h2> <!-- Judul COMPANIES di tengah dengan warna #5940CB -->
+
+    <!-- Form Pencarian -->
     <form method="GET" action="{{ url('/') }}" class="mb-4">
         <div class="row g-3">
             <div class="col-md-3">
@@ -103,31 +106,30 @@
     </form>
 
     <!-- Table -->
-        <table class="table table-hover mt-4">
-            <thead class="table-light">
+    <table class="table table-hover mt-4">
+        <thead class="table-light">
+            <tr>
+                <th>Organization Name</th>
+                <th>Founded Date</th>
+                <th>Last Funding Date</th>
+                <th>Last Funding Type</th>
+                <th>Number of Employees</th>
+                <th>Industries</th>
+                <th>Job Departments</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($companies as $company)
                 <tr>
-                    <th>Organization Name</th>
-                    <th>Founded Date</th>
-                    <th>Last Funding Date</th>
-                    <th>Last Funding Type</th>
-                    <th>Number of Employees</th>
-                    <th>Industries</th>
-                    <th>Job Departments</th>
+                    <td>{{ $company->nama }}</td>
+                    <td>{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('F j, Y') : 'N/A' }}</td>
+                    <td>{{ $company->last_funding_date ? \Carbon\Carbon::parse($company->last_funding_date)->format('F j, Y') : 'N/A' }}</td>
+                    <td>{{ $company->last_funding_type }}</td>
+                    <td>{{ $company->number_of_employees }}</td>
+                    <td>{{ $company->industries }}</td>
+                    <td>{{ $company->job_departments }}</td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach ($companies as $company)
-                    <tr>
-                        <td>{{ $company->nama }}</td>
-                        <td>{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('F j, Y') : 'N/A' }}</td>
-                        <td>{{ $company->last_funding_date ? \Carbon\Carbon::parse($company->last_funding_date)->format('F j, Y') : 'N/A' }}</td>
-                        <td>{{ $company->last_funding_type }}</td>
-                        <td>{{ $company->number_of_employees }}</td>
-                        <td>{{ $company->industries }}</td>
-                        <td>{{ $company->job_departments }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+            @endforeach
+        </tbody>
+    </table>
 @endsection
-
