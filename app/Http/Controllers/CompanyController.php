@@ -124,15 +124,36 @@ class CompanyController extends Controller
 
     // Pada bagian di bawah ini merupkan kode untuk menampilkan data company list yang sudah pernah dibuat oleh seluruh user ditambah dengan beberapa data dari luar yaitu danas
     public function companyList() {
-        // Mengambil companies beserta incomes dan project yang disorting berdasarkan project_id
-        $companies = Company::with(['incomes', 'projects' => function($query) {
-            // Mengambil project beserta dana yang disorting berdasarkan project_id
-            $query->with(['dana' => function($query) {
-                    $query->orderBy('project_id', 'desc');
-                }])->orderBy('created_at', 'desc'); // Mengurutkan project berdasarkan project_id
+        $companies = Company::with(['incomes' => function($query) {
+            // Ambil income terbaru berdasarkan tanggal
+            $query->orderBy('date', 'desc');
+        }, 'projects' => function($query) {
+            // Ambil proyek terbaru (MAX id berarti proyek terbaru per company_id)
+            $query->whereIn('id', function($subQuery) {
+                $subQuery->selectRaw('MAX(id)')
+                         ->from('projects')
+                         ->groupBy('company_id');
+            })
+            ->with(['dana' => function($query) {
+                // Urutkan dana berdasarkan created_at untuk ambil dana terbaru
+                $query->orderBy('created_at', 'desc');
+            }]);
         }])->get();
-        
+    
+        // Iterate setiap perusahaan dan atur income terbaru dan dana terbaru untuk proyek
+        $companies->each(function($company) {
+            // Ambil income terbaru untuk perusahaan
+            $company->latest_income_date = $company->incomes->first() ? $company->incomes->first()->date : null;
+    
+            // Ambil proyek terbaru untuk perusahaan dan dana terbaru
+            $latest_project = $company->projects->first(); // Hanya ambil proyek terbaru
+            if ($latest_project) {
+                $company->latest_project_dana = $latest_project->dana->first(); // Ambil dana terbaru dari proyek
+            } else {
+                $company->latest_project_dana = null;
+            }
+        });
+    
         return view('companies.company-list', compact('companies'));
-    }    
-
+    }       
 }

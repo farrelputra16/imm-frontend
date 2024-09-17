@@ -117,14 +117,22 @@
             </thead>
             <tbody>
                 @foreach ($companies as $company)
-                    <tr>
+                    <tr onclick="window.location.href='{{ route('companies.show', $company->id) }}'">
                         <td>{{ $company->nama }}</td>
                         <td>{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('F j, Y') : 'N/A' }}</td>
-                        <td>{{ $company->last_funding_date ? \Carbon\Carbon::parse($company->last_funding_date)->format('F j, Y') : 'N/A' }}</td>
-                        <td>{{ $company->last_funding_type }}</td>
-                        <td>{{ $company->number_of_employees }}</td>
-                        <td>{{ $company->industries }}</td>
-                        <td>{{ $company->job_departments }}</td>
+                        <td>{{ $company->latest_income_date ? \Carbon\Carbon::parse($company->latest_income_date)->format('F j, Y') : 'N/A' }}</td>
+                        <td>
+                            @if ($company->latest_project_dana)
+                                <div>
+                                    {{ $company->latest_project_dana->jenis_dana }} 
+                                </div>
+                            @else
+                                No project data available
+                            @endif
+                        </td>
+                        <td>{{ $company->jumlah_karyawan }}</td>
+                        <td>{{ $company->tipe }}</td>
+                        <td>{{ $company->posisi_pic }}</td>
                     </tr>
                 @endforeach
             </tbody>
