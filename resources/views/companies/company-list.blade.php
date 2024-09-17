@@ -88,16 +88,16 @@
     <h2><b>COMPANIES</b></h2> <!-- Judul COMPANIES di tengah dengan warna #5940CB -->
 
     <!-- Form Pencarian -->
-    <form method="GET" action="{{ url('/') }}" class="mb-4">
+    <form method="GET" action="{{ route('companies.list') }}" class="mb-4">
         <div class="row g-3">
             <div class="col-md-3">
-                <input type="text" name="location" class="form-control" placeholder="Location" value="{{ request()->location }}">
+                <input type="text" name="location" class="form-control" placeholder="Location" value="{{ request()->kabupaten }}">
             </div>
             <div class="col-md-3">
-                <input type="text" name="industry" class="form-control" placeholder="Industry" value="{{ request()->industry }}">
+                <input type="text" name="industry" class="form-control" placeholder="Industry" value="{{ request()->tipe }}">
             </div>
             <div class="col-md-3">
-                <input type="text" name="departments" class="form-control" placeholder="Departments" value="{{ request()->departments }}">
+                <input type="text" name="departments" class="form-control" placeholder="Model Bisnis" value="{{ request()->posisi_pic }}">
             </div>
             <div class="col-md-2">
                 <button type="submit" class="btn btn-primary">Search</button>

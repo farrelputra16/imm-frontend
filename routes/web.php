@@ -75,9 +75,13 @@ Route::get('password/reset/{token}', [ResetPasswordController::class, 'showReset
 // Mengatur ulang password
 Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
 
-// Pembuatan Route untuk bagian view list company pada bagian tampilan table company yang tidak memerlukan autentikasi
+/**
+ * Pembuatan Route untuk bagian view list company pada 
+ *  bagian tampilan table company yang tidak memerlukan autentikasi
+ * */ 
 Route::get('/companies-list', [CompanyController::class, 'companyList'])->name('companies.list');
 Route::get('/companies/{id}', [CompanyController::class, 'show'])->name('companies.show');
+
 
 // Rute yang memerlukan autentikasi
 Route::middleware(['auth'])->group(function () {
