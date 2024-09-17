@@ -20,6 +20,13 @@
 
     .header .logo img {
         height: 50px;
+        transition: transform 0.5s ease-in-out, filter 0.5s ease-in-out; /* Smooth transition */
+    }
+
+    /* Logo hover effect with a slight bounce and glow */
+    .header .logo img:hover {
+        transform: scale(1.1) rotate(360deg); /* Slight scaling and rotation */
+        filter: drop-shadow(0 0 10px #5940CB); /* Glow effect */
     }
 
     .header .tagline h5 {
