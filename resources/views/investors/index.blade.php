@@ -1,4 +1,4 @@
-@extends('layouts.app-investors')
+@extends('layouts.app-table')
 
 @section('content')
 <!-- Custom Font from Google Fonts -->
