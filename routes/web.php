@@ -20,15 +20,19 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MetricProjectController;
+use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\InvestorController;
 
 // Rute untuk autentikasi
 Auth::routes();
 Auth::routes(['verify' => true]);
 
 // Rute yang bisa diakses tanpa login (Login dan Register)
-Route::get('/', function () {
-    return view('landingpage');
-});
+Route::get('/', [LandingPageController::class, 'index'])->name('landingpage');
+Route::get('/investors', [InvestorController::class, 'index'])->name('investors.index');
+Route::get('/investors/{id}', [InvestorController::class, 'show'])->name('investors.show');
+
+
 
 Route::get('/home', function () {
     return view('home');

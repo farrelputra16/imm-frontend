@@ -57,10 +57,10 @@
                 <a href="https://www.facebook.com" target="_blank" class="social-icon">
                     <i class="fab fa-facebook"></i>
                 </a>
-                <a href="https://www.instagram.com" target="_blank" class="social-icon">
+                <a href="https://www.instagram.com/tbn.indonesia" target="_blank" class="social-icon">
                     <i class="fab fa-instagram"></i>
                 </a>
-                <a href="https://www.linkedin.com" target="_blank" class="social-icon">
+                <a href="https://www.linkedin.com/in/tbn-indonesia-210705251/" target="_blank" class="social-icon">
                     <i class="fab fa-linkedin"></i>
                 </a>
             </div>

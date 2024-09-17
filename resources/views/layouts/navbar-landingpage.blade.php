@@ -16,9 +16,17 @@
         border-bottom: 1px solid #5940CB;
     }
 
+    /* Animating the logo */
     .header .logo img {
         height: 40px;
         margin-left: 20px;
+        transition: transform 0.5s ease-in-out, filter 0.5s ease-in-out; /* Smooth transition */
+    }
+
+    /* Logo hover effect with a slight bounce and glow */
+    .header .logo img:hover {
+        transform: scale(1.1) rotate(360deg); /* Slight scaling and rotation */
+        filter: drop-shadow(0 0 10px #5940CB); /* Glow effect */
     }
 
     /* Navbar Menu */
@@ -66,17 +74,41 @@
         border-right: 1px solid #eaeaea;
     }
 
-    /* Minimal search icon on the right */
+    /* Search Icon */
     .search-icon {
-        color: #333;
-        font-size: 1.2rem;
-        cursor: pointer;
+        position: relative;
         margin-right: 20px;
     }
 
-    /* Apple-like hover effect on the search icon */
-    .search-icon:hover {
+    /* Search Input Field */
+    .search-icon input {
+        width: 0;
+        opacity: 0;
+        border: none;
+        border-radius: 20px;
+        padding: 5px 10px;
+        outline: none;
+        transition: width 0.5s ease, opacity 0.5s ease;
+    }
+
+    .search-icon:hover input {
+        width: 150px; /* Expand input field when hovered */
+        opacity: 1;
+        border: 1px solid #5940CB; /* Add border */
+    }
+
+    /* Search Icon Styles */
+    .search-icon i {
+        color: #333;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: transform 0.3s ease, color 0.3s ease; /* Smooth transition */
+    }
+
+    /* Search Icon hover effect with animation */
+    .search-icon:hover i {
         color: #5940CB;
+        transform: scale(1.2) rotate(15deg); /* Scale and rotate the icon */
     }
 
     /* Centering logo and navbar items */
@@ -97,15 +129,16 @@
     <div class="nav-wrapper">
         <div class="navbar">
             <a href="#">Companies</a>
-            <a href="#">Investors</a>
+            <a href="{{ route('investors.index') }}">Investors</a>
             <a href="#">Events</a>
             <a href="{{ route('home') }}">IMM</a>
         </div>
     </div>
 
-    <!-- Search Icon -->
+    <!-- Search Icon with expanding input field -->
     <div class="search-icon">
         <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search...">
     </div>
 </div>
 
