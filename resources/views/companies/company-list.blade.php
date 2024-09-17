@@ -140,7 +140,7 @@
                     <tbody>
                         @foreach ($companies as $company)
                         <tr>
-
+                            {{ dd($company) }}
                             <td><input type="checkbox" class="check" value="{{ $company->id }}"></td>
                             <td>{{ $company->nama }}</td>
                             <td>{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('F j, Y') : 'N/A' }}</td>
