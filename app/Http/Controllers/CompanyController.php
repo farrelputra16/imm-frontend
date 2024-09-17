@@ -88,7 +88,8 @@ class CompanyController extends Controller
     public function show(Company $company)
     {
         return view('companies.show', compact('company'));
-    }public function index()
+    }
+    public function index()
     {
         $user = Auth::user();
         $companies = Company::where('user_id', $user->id)->get();
@@ -120,4 +121,18 @@ class CompanyController extends Controller
         return redirect()->route('companies.index')
             ->with('success', 'Company deleted successfully.');
     }
+
+    // Pada bagian di bawah ini merupkan kode untuk menampilkan data company list yang sudah pernah dibuat oleh seluruh user ditambah dengan beberapa data dari luar yaitu danas
+    public function companyList() {
+        // Mengambil companies beserta incomes dan project yang disorting berdasarkan project_id
+        $companies = Company::with(['incomes', 'projects' => function($query) {
+            // Mengambil project beserta dana yang disorting berdasarkan project_id
+            $query->with(['dana' => function($query) {
+                    $query->orderBy('project_id', 'desc');
+                }])->orderBy('created_at', 'desc'); // Mengurutkan project berdasarkan project_id
+        }])->get();
+        
+        return view('companies.company-list', compact('companies'));
+    }    
+
 }
