@@ -185,7 +185,7 @@
             text-align: center;
         }
 
-//* Grid for the table */
+/* Grid for the table */
 .grid-tables {
         display: flex;
         justify-content: flex-start; /* Align table to the left */
@@ -194,11 +194,11 @@
 
     .grid-tables > div {
         background-color: #f9f9f9;
-        padding: 15px;
+        padding: 10px; /* Reduced padding */
         border-radius: 10px;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         border: 1px solid #5940CB;
-        max-width: 40%; /* Set the table width to 40% of the container */
+        max-width: 30%; /* Further reduced the width to 30% of the container */
         width: 100%;
         overflow: hidden; /* Ensure content doesn't overflow */
     }
@@ -213,9 +213,9 @@
     }
 
     th, td {
-        padding: 6px; /* Slightly reduced padding */
+        padding: 4px; /* Further reduced padding */
         border-bottom: 1px solid #ddd;
-        font-size: 12px; /* Reduced font size */
+        font-size: 10px; /* Further reduced font size */
     }
 
     th {
@@ -226,8 +226,8 @@
     /* Center the "Top Investors" title inside the table */
     .grid-tables h3 {
         text-align: center;
-        margin-bottom: 15px;
-        font-size: 16px; /* Reduced font size */
+        margin-bottom: 10px;
+        font-size: 14px; /* Reduced font size */
     }
 
     /* Hover effect for expanding */
@@ -252,7 +252,7 @@
         }
 
         th, td {
-            font-size: 10px; /* Make the font smaller for small screens */
+            font-size: 8px; /* Make the font smaller for small screens */
         }
     }
 </style>

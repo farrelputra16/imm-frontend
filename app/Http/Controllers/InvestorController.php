@@ -28,7 +28,7 @@ class InvestorController extends Controller
         }
 
         // Paginate the results
-        $investors = $query->paginate(10);
+        $investors = $query->get();
 
         return view('investors.index', compact('investors'));
     }
