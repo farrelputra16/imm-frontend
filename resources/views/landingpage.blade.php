@@ -35,7 +35,7 @@
     }
 
     /* Hero Section with Two Columns */
-    .hero-section, .reverse-section {
+    .hero-section, .reverse-section, .normal-section {
         padding: 60px 40px;
         display: flex;
         justify-content: space-between;
@@ -48,14 +48,14 @@
         text-align: left;
     }
 
-    .reverse-content {
+    .reverse-content, .normal-content {
         flex: 1;
         max-width: 50%;
         text-align: right;
         margin-left: auto;
     }
 
-    .hero-content h1, .reverse-content h1 {
+    .hero-content h1, .reverse-content h1, .normal-content h1 {
         font-size: 2.5rem;
         font-weight: bold;
         background: linear-gradient(90deg, #5940CB, black);
@@ -63,7 +63,7 @@
         -webkit-text-fill-color: transparent;
     }
 
-    .hero-content p, .reverse-content p {
+    .hero-content p, .reverse-content p, .normal-content p {
         font-size: 1.2rem;
         margin: 20px 0;
     }
@@ -86,21 +86,29 @@
     }
 
     /* GIF Alignment */
-    .hero-gif, .reverse-gif {
-        flex: 1;
-        max-width: 50%;
-        animation: gifBounce 3s ease-in-out infinite; /* Apply the bounce animation */
-    }
+/* GIF Alignment */
+.hero-gif, .reverse-gif, .normal-gif {
+    flex: 1;
+    width: 80px; /* Set specific width */
+    height: auto; /* Keep aspect ratio */
+    animation: gifBounce 3s ease-in-out infinite; /* Apply the bounce animation */
+}
 
-    .hero-gif img, .reverse-gif img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 10px;
+.hero-gif img, .reverse-gif img, .normal-gif img {
+    width: 60%; /* Ensure the image fits its container */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 10px;
+}
+
+
+    .hero-gif {
+        text-align: right;
     }
-    .hero-gif{
+    .normal-gif{
         text-align: right;
     }
 
+    /* CTA Section */
     .cta-section {
         padding: 60px 20px;
         background-color: #f0f4ff;
@@ -181,7 +189,7 @@
 
     /* Mobile responsiveness */
     @media (max-width: 768px) {
-        .hero-section, .reverse-section {
+        .hero-section, .reverse-section, .normal-section {
             flex-direction: column;
             text-align: center;
         }
@@ -224,16 +232,29 @@
         <a href="{{ route('home') }}" class="cta-button">Try IMM</a>
     </div>
 
-    <!-- New Reverse Section with Text on the Right and GIF on the Left -->
+    <!-- Reverse Section with GIF on the Left and Text on the Right -->
     <div class="reverse-section">
         <div class="reverse-gif">
-            <img src="images/investor.jpeg" alt="GIF showcasing technology">
+            <img src="images/investors.png" alt="GIF showcasing technology">
         </div>
 
         <div class="reverse-content">
             <h1>Find an Investor!</h1>
             <p>Need Fund for your Project? Search for an Investor.</p>
             <a href="{{ route('investors.index') }}" class="btn-cta">Discover More</a>
+        </div>
+    </div>
+
+    <!-- New Section with GIF on the Right and Text on the Left -->
+    <div class="normal-section">
+        <div class="normal-content">
+            <h1>Explore Your Next Big Idea</h1>
+            <p>Discover innovative projects and partnerships to bring your vision to life.</p>
+            <a href="{{ route('companies.list') }}" class="btn-cta">Explore Companies</a>
+        </div>
+
+        <div class="normal-gif">
+            <img src="images/companies.png" alt="GIF showcasing projects">
         </div>
     </div>
 
