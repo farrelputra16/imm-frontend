@@ -85,10 +85,14 @@ class CompanyController extends Controller
      * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function show(Company $company)
+    public function show($id)
     {
+        $company = Company::findOrFail($id);
+        $company->load('projects');
+        dd($company);
         return view('companies.show', compact('company'));
     }
+
     public function index()
     {
         $user = Auth::user();
@@ -126,7 +130,7 @@ class CompanyController extends Controller
     public function companyList(Request $request)
     {
         // Ambil data company dari model Company
-        $companies = Company::getFilteredCompanies($request)->paginate(10)->withQueryString();
+        $companies = Company::getFilteredCompanies($request);
         // Return view dengan data companies
         return view('companies.company-list', compact('companies'));
     }
