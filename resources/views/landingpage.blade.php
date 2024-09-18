@@ -165,7 +165,7 @@
     th, td {
         padding: 10px;
         border-bottom: 1px solid #ddd;
-        font-size: 10px;
+        font-size: 9px;
     }
 
     th {

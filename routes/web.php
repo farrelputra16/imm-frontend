@@ -23,7 +23,7 @@ use App\Http\Controllers\MetricProjectController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\InvestorController;
 use App\Http\Controllers\PeopleController;
-
+use App\Http\Controllers\HubsController;
 // Rute untuk autentikasi
 Auth::routes();
 Auth::routes(['verify' => true]);
@@ -36,6 +36,9 @@ Route::get('/investors/{id}', [InvestorController::class, 'show'])->name('invest
 
 Route::get('/people', [PeopleController::class, 'index'])->name('people.index');
 Route::get('/people/{id}', [PeopleController::class, 'show'])->name('people.show');
+
+Route::get('/hubs', [HubsController::class, 'index'])->name('hubs.index');
+Route::get('/hubs/{id}', [HubsController::class, 'show'])->name('hubs.show');
 
 
 Route::get('/home', function () {
