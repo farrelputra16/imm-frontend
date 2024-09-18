@@ -16,25 +16,7 @@
         100% { transform: translateY(0); }
     }
 
-    @keyframes moveAcross {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(100px); }
-    }
-
-    /* Keyframes for GIF Animation */
-    @keyframes gifBounce {
-        0% {
-            transform: translateY(0);
-        }
-        50% {
-            transform: translateY(-10px); /* Move up */
-        }
-        100% {
-            transform: translateY(0); /* Move back down */
-        }
-    }
-
-    /* Hero Section with Two Columns */
+    /* General Section Styles */
     .hero-section, .reverse-section, .normal-section {
         padding: 60px 40px;
         display: flex;
@@ -55,7 +37,7 @@
         margin-left: auto;
     }
 
-    .hero-content h1, .reverse-content h1, .normal-content h1 {
+    h1 {
         font-size: 2.5rem;
         font-weight: bold;
         background: linear-gradient(90deg, #5940CB, black);
@@ -63,7 +45,7 @@
         -webkit-text-fill-color: transparent;
     }
 
-    .hero-content p, .reverse-content p, .normal-content p {
+    p {
         font-size: 1.2rem;
         margin: 20px 0;
     }
@@ -85,25 +67,11 @@
         transform: scale(1.05);
     }
 
-    /* GIF Alignment */
     .hero-gif, .reverse-gif, .normal-gif {
         flex: 1;
-        width: 80px; /* Set specific width */
-        height: auto; /* Keep aspect ratio */
-        animation: gifBounce 3s ease-in-out infinite; /* Apply the bounce animation */
-    }
-
-    .hero-gif img, .reverse-gif img, .normal-gif img {
-        width: 60%; /* Ensure the image fits its container */
-        height: auto; /* Maintain aspect ratio */
-        border-radius: 10px;
-    }
-
-    .hero-gif {
-        text-align: right;
-    }
-    .normal-gif {
-        text-align: right;
+        width: 80px;
+        height: auto;
+        animation: gifBounce 3s ease-in-out infinite;
     }
 
     /* CTA Section */
@@ -136,10 +104,11 @@
 
     /* Grid for the table */
     .grid-tables {
-        display: flex;
-        justify-content: space-evenly; /* Align tables side by side */
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Two tables per row */
+        gap: 20px;
         margin: 50px auto;
-        max-width: 80%; /* Set a max width for the container */
+        max-width: 80%;
     }
 
     .grid-tables > div {
@@ -148,9 +117,8 @@
         border-radius: 10px;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         border: 1px solid #5940CB;
-        max-width: 40%; /* Set the table width to 40% */
         width: 100%;
-        overflow: hidden; /* Ensure content doesn't overflow */
+        overflow: hidden;
     }
 
     table {
@@ -158,8 +126,8 @@
         border-collapse: collapse;
         text-align: left;
         transition: transform 0.3s ease;
-        table-layout: fixed; /* Fixed layout ensures table stays within the container */
-        word-wrap: break-word; /* Ensure long words break and stay within the table */
+        table-layout: fixed;
+        word-wrap: break-word;
     }
 
     th, td {
@@ -193,17 +161,11 @@
         }
 
         .grid-tables {
-            flex-direction: column;
-            justify-content: center; /* Center the table on small screens */
-        }
-
-        .grid-tables > div {
-            margin-bottom: 20px;
-            max-width: 100%;
+            grid-template-columns: 1fr; /* Single column on small screens */
         }
 
         th, td {
-            font-size: 10px; /* Make the font smaller for small screens */
+            font-size: 10px;
         }
     }
 </style>
@@ -256,7 +218,7 @@
         </div>
     </div>
 
-    <!-- Grid Section for the Investors, Companies, and People Tables -->
+    <!-- Grid Section for the Investors, Companies, People, and Hubs Tables -->
     <div class="grid-tables">
         <!-- Investors List -->
         <div>
@@ -347,6 +309,35 @@
                             <td>{{ $person->primary_organization }}</td>
                             <td>{{ $person->location }}</td>
                             <td>{{ $person->phone_number }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Hubs List -->
+        <div>
+            <h3>Top Hubs</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Hub Name</th>
+                        <th>Location</th>
+                        <th>Number of Organizations</th>
+                        <th>Number of People</th>
+                        <th>Number of Events</th>
+                        <th>Rank</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($hubs as $hub)
+                        <tr>
+                            <td>{{ $hub->name }}</td>
+                            <td>{{ $hub->location }}</td>
+                            <td>{{ $hub->number_of_organizations }}</td>
+                            <td>{{ $hub->number_of_people }}</td>
+                            <td>{{ $hub->number_of_events }}</td>
+                            <td>{{ $hub->rank }}</td>
                         </tr>
                     @endforeach
                 </tbody>

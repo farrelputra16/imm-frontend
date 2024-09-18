@@ -117,6 +117,33 @@
         justify-content: center;
         flex-grow: 1;
     }
+
+    /* Styles for the login button */
+    .login-btn {
+        background-color: #5940CB;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        font-size: 1rem;
+        font-family: 'Montserrat', sans-serif;
+        cursor: pointer;
+        text-decoration: none; /* Remove underline */
+        transition: transform 0.3s ease, background-color 0.3s ease; /* Smooth transform on hover */
+    }
+
+    .login-btn:hover {
+        transform: scale(1.1); /* Grow on hover */
+        background-color: #5940CB; /* Keep the same color */
+        color: white; /* Keep text color the same */
+    }
+
+    .login-btn:focus,
+    .login-btn:active {
+        outline: none; /* Remove outline on click */
+        background-color: #5940CB; /* Keep the same background color */
+        color: white; /* Keep text color the same */
+    }
 </style>
 
 <div class="header">
@@ -141,6 +168,9 @@
         <i class="fas fa-search"></i>
         <input type="text" placeholder="Search...">
     </div>
+
+    <!-- Log In Button -->
+    <a href="{{ route('login') }}" class="login-btn">Log In</a>
 </div>
 
 <!-- Font Awesome for icons -->
