@@ -54,6 +54,30 @@
     .back-btn:hover {
         background-color: #ff7a00;
     }
+
+    .linkedin-link {
+        display: inline-block;
+        margin-top: 15px;
+    }
+
+    .linkedin-icon {
+        width: 32px;
+        height: 32px;
+        margin-right: 10px;
+        vertical-align: middle;
+    }
+
+    .linkedin-text {
+        vertical-align: middle;
+        color: #0077b5;
+        font-weight: bold;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .linkedin-text:hover {
+        color: #005582;
+    }
 </style>
 
 <div class="container">
@@ -79,6 +103,16 @@
         <div class="detail-item">
             <span class="highlight">Gmail:</span> {{ $people->gmail }}
         </div>
+
+        <!-- LinkedIn Link -->
+        @if ($people->linkedin_link)
+            <div class="linkedin-link">
+                <a href="{{ $people->linkedin_link }}" target="_blank" class="linkedin-text">
+                    <img src="/images/linkedin.png" alt="LinkedIn" class="linkedin-icon">
+                    Visit
+                </a>
+            </div>
+        @endif
     </div>
 
     <!-- Back button to go back to the list of people -->
