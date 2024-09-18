@@ -10,10 +10,35 @@
         overflow-x: hidden;
     }
 
-    @keyframes float {
-        0% { transform: translateY(0); }
-        50% { transform: translateY(-30px); }
-        100% { transform: translateY(0); }
+    /* Animasi untuk GIF agar bergerak */
+    @keyframes moveSideToSide {
+        0% { transform: translateX(0); }
+        50% { transform: translateX(-20px); }
+        100% { transform: translateX(0); }
+    }
+
+    /* Animasi untuk teks besar slide in dari kiri */
+    @keyframes slideInLeft {
+        0% {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    /* Animasi untuk teks besar slide in dari kanan */
+    @keyframes slideInRight {
+        0% {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
     }
 
     /* General Section Styles */
@@ -28,6 +53,7 @@
         flex: 1;
         max-width: 50%;
         text-align: left;
+        animation: slideInLeft 1s ease-out; /* Teks masuk dari kiri */
     }
 
     .reverse-content, .normal-content {
@@ -35,6 +61,7 @@
         max-width: 50%;
         text-align: right;
         margin-left: auto;
+        animation: slideInRight 1s ease-out; /* Teks masuk dari kanan */
     }
 
     h1 {
@@ -67,11 +94,20 @@
         transform: scale(1.05);
     }
 
+    /* Menambahkan animasi GIF agar bergerak dari sisi ke sisi */
     .hero-gif, .reverse-gif, .normal-gif {
         flex: 1;
         width: 80px;
         height: auto;
-        animation: gifBounce 3s ease-in-out infinite;
+        animation: moveSideToSide 4s ease-in-out infinite;
+    }
+
+    .hero-gif {
+        text-align: right;
+    }
+
+    .normal-gif {
+        text-align: right;
     }
 
     /* CTA Section */
@@ -87,6 +123,7 @@
         color: #5940CB;
         font-weight: bold;
         margin-bottom: 20px;
+        animation: slideInLeft 1s ease-out;
     }
 
     .cta-section h3 {
