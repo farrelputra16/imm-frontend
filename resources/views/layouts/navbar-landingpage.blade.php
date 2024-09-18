@@ -134,7 +134,7 @@
 
     .login-btn:hover {
         transform: scale(1.1); /* Grow on hover */
-        background-color: #5940CB; /* Keep the same color */
+        background-color: #4829a0; /* Keep the same color */
         color: white; /* Keep text color the same */
     }
 

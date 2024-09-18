@@ -29,6 +29,18 @@
         filter: drop-shadow(0 0 10px #5940CB); /* Glow effect */
     }
 
+    /* Tagline animation */
+    @keyframes slideIn {
+        0% {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
     .header .tagline h5 {
         font-weight: bold;
         font-size: 18px;
@@ -37,6 +49,52 @@
         -webkit-text-fill-color: transparent;
         background-clip: text;
         text-fill-color: transparent;
+        animation: slideIn 1s ease-out; /* Apply slide-in animation */
+    }
+
+    /* Navbar styling */
+    .nav-wrapper {
+        background-color: white;
+        padding: 10px 30px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        font-weight: 500;
+        font-size: 1rem;
+        color: #333;
+    }
+
+    .navbar a {
+        color: #333;
+        text-decoration: none;
+        padding: 10px 15px;
+        position: relative;
+        transition: color 0.3s ease;
+    }
+
+    /* Hover effect with underline animation */
+    .navbar a::after {
+        content: '';
+        display: block;
+        width: 0;
+        height: 2px;
+        background: #5940CB;
+        transition: width 0.3s ease;
+        position: absolute;
+        left: 0;
+        bottom: -5px;
+    }
+
+    .navbar a:hover::after {
+        width: 100%;
+    }
+
+    .navbar a:hover {
+        color: #5940CB;
     }
 
     /* Form container styling */
@@ -83,7 +141,6 @@
     .btn-primary:hover {
         background-color: #ff7a00; /* Lighter shade on hover */
     }
-
 </style>
 <body>
 
@@ -97,6 +154,16 @@
         </div>
         <div class="tagline">
             <h5>Empowering Innovation, Measuring Impact</h5>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <div class="nav-wrapper">
+        <div class="navbar">
+            <a href="{{ route('companies.list') }}">Companies</a>
+            <a href="{{ route('investors.index') }}">Investors</a>
+            <a href="{{ route('people.index') }}">People</a>
+            <a href="{{ route('hubs.index') }}">Hubs</a>
         </div>
     </div>
 

@@ -91,13 +91,13 @@
     <form method="GET" action="{{ route('companies.list') }}" class="mb-4">
         <div class="row g-3">
             <div class="col-md-3">
-                <input type="text" name="location" class="form-control" placeholder="Location" value="{{ request()->kabupaten }}">
+                <input type="text" name="location" class="form-control" placeholder="Location" value="{{ request()->location }}">
             </div>
             <div class="col-md-3">
-                <input type="text" name="industry" class="form-control" placeholder="Industry" value="{{ request()->tipe }}">
+                <input type="text" name="industry" class="form-control" placeholder="Industry" value="{{ request()->industry }}">
             </div>
             <div class="col-md-3">
-                <input type="text" name="departments" class="form-control" placeholder="Model Bisnis" value="{{ request()->posisi_pic }}">
+                <input type="text" name="departments" class="form-control" placeholder="Departments" value="{{ request()->departments }}">
             </div>
             <div class="col-md-2">
                 <button type="submit" class="btn btn-primary">Search</button>
@@ -106,38 +106,38 @@
     </form>
 
     <!-- Table -->
-        <table class="table table-hover mt-4">
-            <thead class="table-light">
-                <tr>
-                    <th>Organization Name</th>
-                    <th>Founded Date</th>
-                    <th>Last Funding Date</th>
-                    <th>Last Funding Type</th>
-                    <th>Number of Employees</th>
-                    <th>Industries</th>
-                    <th>Job Departments</th>
+    <table class="table table-hover mt-4">
+        <thead class="table-light">
+            <tr>
+                <th>Organization Name</th>
+                <th>Founded Date</th>
+                <th>Last Funding Date</th>
+                <th>Last Funding Type</th>
+                <th>Number of Employees</th>
+                <th>Industries</th>
+                <th>Job Departments</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($companies as $company)
+                <tr onclick="window.location.href='{{ route('companies.show', $company->id) }}'">
+                    <td>{{ $company->nama }}</td>
+                    <td>{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('F j, Y') : 'N/A' }}</td>
+                    <td>{{ $company->latest_income_date ? \Carbon\Carbon::parse($company->latest_income_date)->format('F j, Y') : 'N/A' }}</td>
+                    <td>
+                        @if ($company->latest_project_dana)
+                            <div>
+                                {{ $company->latest_project_dana->jenis_dana }}
+                            </div>
+                        @else
+                            No project data available
+                        @endif
+                    </td>
+                    <td>{{ $company->jumlah_karyawan }}</td>
+                    <td>{{ $company->tipe }}</td>
+                    <td>{{ $company->posisi_pic }}</td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach ($companies as $company)
-                    <tr onclick="window.location.href='{{ route('companies.show', $company->id) }}'">
-                        <td>{{ $company->nama }}</td>
-                        <td>{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('F j, Y') : 'N/A' }}</td>
-                        <td>{{ $company->latest_income_date ? \Carbon\Carbon::parse($company->latest_income_date)->format('F j, Y') : 'N/A' }}</td>
-                        <td>
-                            @if ($company->latest_project_dana)
-                                <div>
-                                    {{ $company->latest_project_dana->jenis_dana }} 
-                                </div>
-                            @else
-                                No project data available
-                            @endif
-                        </td>
-                        <td>{{ $company->jumlah_karyawan }}</td>
-                        <td>{{ $company->tipe }}</td>
-                        <td>{{ $company->posisi_pic }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+            @endforeach
+        </tbody>
+    </table>
 @endsection
