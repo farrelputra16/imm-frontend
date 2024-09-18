@@ -318,7 +318,7 @@
                             </td>
                             <td>{{ $company->jumlah_karyawan }}</td>
                             <td>{{ $company->tipe }}</td>
-                            <td>{{Str::limit( $company->startup_summary, 10, '...') }}</td>
+                            <td>{{Str::limit( $company->startup_summary, 20, '...') }}</td>
                             <td>{{ $company->posisi_pic }}</td>
                         </tr>
                     @endforeach
