@@ -26,7 +26,7 @@ class CompanyIncome extends Model
         'pengirim',
         'bank_asal',
         'bank_tujuan',
-        'jumlah_hibah',
+        'jumlah',
         'company_id',
     ];
 

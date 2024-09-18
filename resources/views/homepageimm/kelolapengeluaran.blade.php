@@ -199,7 +199,7 @@ input[type="number"] {
     </a>
 </div>
 <div class="container">
-<span class="biaya">Dana Hibah</span>
+<span class="biaya">Dana Masuk</span>
 </div>
 <div class="container mt-3">
     
@@ -212,6 +212,8 @@ input[type="number"] {
                 <th>Bank Asal</th>
                 <th>Bank Tujuan</th>
                 <th>Jumlah (Rp)</th>
+                <th>Funding Type</th>
+                <th>Tipe Investasi</th>
             </tr>
         </thead>
         <tbody>
@@ -221,7 +223,15 @@ input[type="number"] {
                 <td>{{ $income->pengirim }}</td>
                 <td>{{ $income->bank_asal }}</td>
                 <td>{{ $income->bank_tujuan }}</td>
-                <td>Rp{{ number_format($income->jumlah_hibah, 0, ',', '.') }}</td>
+                <td>Rp{{ number_format($income->jumlah, 0, ',', '.') }}</td>
+                <td>{{ $income->funding_type }}</td>
+                <td>
+                    @if ($income->tipe_investasi)
+                        {{ $income->tipe_investasi }}
+                    @else
+                        Tidak ada tipe investasi
+                    @endif
+                </td>
             </tr>
             @endforeach
         </tbody>
