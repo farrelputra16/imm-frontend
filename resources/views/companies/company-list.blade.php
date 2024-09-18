@@ -115,6 +115,7 @@
                 <th>Last Funding Type</th>
                 <th>Number of Employees</th>
                 <th>Industries</th>
+                <th>Description</th>
                 <th>Job Departments</th>
             </tr>
         </thead>
@@ -125,16 +126,17 @@
                     <td>{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('F j, Y') : 'N/A' }}</td>
                     <td>{{ $company->latest_income_date ? \Carbon\Carbon::parse($company->latest_income_date)->format('F j, Y') : 'N/A' }}</td>
                     <td>
-                        @if ($company->latest_project_dana)
+                        @if ($company->latest_funding_type)
                             <div>
-                                {{ $company->latest_project_dana->jenis_dana }}
+                                {{ $company->latest_funding_type }}
                             </div>
                         @else
-                            No project data available
+                            No funding data available
                         @endif
                     </td>
                     <td>{{ $company->jumlah_karyawan }}</td>
                     <td>{{ $company->tipe }}</td>
+                    <td>{{Str::limit( $company->startup_summary, 100, '...') }}</td>
                     <td>{{ $company->posisi_pic }}</td>
                 </tr>
             @endforeach

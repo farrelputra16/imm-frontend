@@ -297,17 +297,28 @@
                         <th>Last Funding Type</th>
                         <th>Number of Employees</th>
                         <th>Industries</th>
+                        <th>Description</th>
                         <th>Job Departments</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($companies as $company)
-                        <tr onclick="window.location='{{ route('companies.list') }}'">
+                        <tr onclick="window.location.href='{{ route('companies.show', $company->id) }}'">
                             <td>{{ $company->nama }}</td>
                             <td>{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('F j, Y') : 'N/A' }}</td>
                             <td>{{ $company->latest_income_date ? \Carbon\Carbon::parse($company->latest_income_date)->format('F j, Y') : 'N/A' }}</td>
+                            <td>
+                                @if ($company->latest_funding_type)
+                                    <div>
+                                        {{ $company->latest_funding_type }}
+                                    </div>
+                                @else
+                                    No funding data available
+                                @endif
+                            </td>
                             <td>{{ $company->jumlah_karyawan }}</td>
                             <td>{{ $company->tipe }}</td>
+                            <td>{{Str::limit( $company->startup_summary, 10, '...') }}</td>
                             <td>{{ $company->posisi_pic }}</td>
                         </tr>
                     @endforeach

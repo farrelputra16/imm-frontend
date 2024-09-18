@@ -56,11 +56,7 @@ class Company extends Model
                 $subQuery->selectRaw('MAX(id)')
                         ->from('projects')
                         ->groupBy('company_id');
-            })
-            ->with(['dana' => function($query) {
-                // Urutkan dana berdasarkan created_at untuk ambil dana terbaru
-                $query->orderBy('created_at', 'desc');
-            }]);
+            });
         }]);
 
         // Kondisi pencarian berdasarkan lokasi
@@ -87,14 +83,7 @@ class Company extends Model
         $companies->each(function($company) {
             // Ambil income terbaru untuk perusahaan
             $company->latest_income_date = $company->incomes->first() ? $company->incomes->first()->date : null;
-
-            // Ambil proyek terbaru untuk perusahaan dan dana terbaru
-            $latest_project = $company->projects->first(); // Hanya ambil proyek terbaru
-            if ($latest_project) {
-                $company->latest_project_dana = $latest_project->dana->first(); // Ambil dana terbaru dari proyek
-            } else {
-                $company->latest_project_dana = null;
-            }
+            $company->latest_funding_type = $company->incomes->first() ? $company->incomes->first()->funding_type : null;
         });
 
         return $companies;
