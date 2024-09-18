@@ -24,6 +24,7 @@ class CompanyController extends Controller
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
             'profile' => 'required|string|max:255',
+            'founded_date' => 'required|date',
             'tipe' => 'required|string|max:255',
             'nama_pic' => 'required|string|max:255',
             'posisi_pic' => 'required|string|max:255',
@@ -32,6 +33,7 @@ class CompanyController extends Controller
             'provinsi' => 'required|string|max:255',
             'kabupaten' => 'required|string|max:255',
             'jumlah_karyawan' => 'required|integer',
+            'startup_summary' => 'required|string', // Update this rule
         ]);
 
         // Temukan Company berdasarkan ID
@@ -50,6 +52,7 @@ class CompanyController extends Controller
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
             'profile' => 'required|string|max:255',
+            'founded_date' => 'required|date',
             'tipe' => 'required|string|max:255',
             'nama_pic' => 'required|string|max:255',
             'posisi_pic' => 'required|string|max:255',
@@ -58,6 +61,7 @@ class CompanyController extends Controller
             'provinsi' => 'required|string|max:255',
             'kabupaten' => 'required|string|max:255',
             'jumlah_karyawan' => 'required|integer',
+            'startup_summary' => 'required|string', // Update this rule
         ]);
 
         // Simpan data ke dalam database
@@ -65,6 +69,7 @@ class CompanyController extends Controller
             'user_id' => Auth::id(),
             'nama' => $validated['nama'],
             'profile' => $validated['profile'],
+            'founded_date' => $validated['founded_date'],
             'tipe' => $validated['tipe'],
             'nama_pic' => $validated['nama_pic'],
             'posisi_pic' => $validated['posisi_pic'],
@@ -73,6 +78,7 @@ class CompanyController extends Controller
             'provinsi' => $validated['provinsi'],
             'kabupaten' => $validated['kabupaten'],
             'jumlah_karyawan' => $validated['jumlah_karyawan'],
+            'startup_summary' => $validated['startup_summary'],
         ]);
 
         // Redirect ke homepage

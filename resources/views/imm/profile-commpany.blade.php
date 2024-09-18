@@ -124,6 +124,11 @@ body {
                             <label for="formGroupExampleInput2" class="form-label">Profil Perusahaan</label>
                             <input type="text" name="profile" class="form-control" id="formGroupExampleInput2" placeholder="Profil Perusahaan" value="{{ $company->profile }}" readonly>
                         </div>
+                        <!-- Tambahan untuk Founded Date -->
+                        <div class="mb-3">
+                            <label for="formGroupExampleInput11" class="form-label">Tanggal Berdiri</label>
+                            <input type="date" name="founded_date" class="form-control" id="formGroupExampleInput11" placeholder="Tanggal Berdiri" value="{{ $company->founded_date }}" readonly>
+                        </div>
                         <div class="mb-3">
                             <label for="formGroupExampleInput3" class="form-label">Nama PIC</label>
                             <input type="text" name="nama_pic" class="form-control" id="formGroupExampleInput3" placeholder="Nama PIC" value="{{ $company->nama_pic }}" readonly>
@@ -155,6 +160,12 @@ body {
                         <div class="mb-3">
                             <label for="formGroupExampleInput7" class="form-label">Tipe Perusahaan</label>
                             <input type="text" name="tipe" class="form-control" id="formGroupExampleInput7" placeholder="Tipe Perusahaan" value="{{ $company->tipe }}" readonly>
+                        </div>
+                         
+                        <!-- Tambahan untuk Startup Summary -->
+                        <div class="mb-3">
+                            <label for="formGroupExampleInput12" class="form-label">Ringkasan Startup</label>
+                            <textarea name="startup_summary" class="form-control" id="formGroupExampleInput12" placeholder="Ringkasan Singkat Startup" rows="5" readonly>{{ $company->startup_summary }}</textarea>
                         </div>
                     </div>
                 </div>

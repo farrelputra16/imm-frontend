@@ -86,6 +86,7 @@ class ProfileController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'profile' => 'required|string|max:255',
+            'founded_date' => 'required|date',
             'tipe' => 'required|string|max:255',
             'nama_pic' => 'required|string|max:255',
             'posisi_pic' => 'required|string|max:255',
@@ -94,12 +95,14 @@ class ProfileController extends Controller
             'provinsi' => 'required|string|max:255',
             'kabupaten' => 'required|string|max:255',
             'jumlah_karyawan' => 'required|integer',
+            'startup_summary' => 'required|string',
         ]);
 
         $company = Company::findOrFail($id);
         $company->update([
             'nama' => $request->input('nama'),
             'profile' => $request->input('profile'),
+            'founded_date' => $request->input('founded_date'),
             'tipe' => $request->input('tipe'),
             'nama_pic' => $request->input('nama_pic'),
             'posisi_pic' => $request->input('posisi_pic'),
@@ -108,6 +111,7 @@ class ProfileController extends Controller
             'provinsi' => $request->input('provinsi'),
             'kabupaten' => $request->input('kabupaten'),
             'jumlah_karyawan' => $request->input('jumlah_karyawan'),
+            'startup_summary' => $request->input('startup_summary'),
         ]);
 
         return redirect()->route('profile-commpany')->with('success', 'Profil perusahaan berhasil diperbarui.');

@@ -12,6 +12,7 @@ class Company extends Model
     protected $fillable = [
         'nama',
         'profile',
+        'founded_date',
         'tipe',
         'nama_pic',
         'posisi_pic',
@@ -20,6 +21,7 @@ class Company extends Model
         'provinsi',
         'kabupaten',
         'jumlah_karyawan',
+        'startup_summary',
         'user_id',
     ];
 

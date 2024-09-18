@@ -32,6 +32,10 @@
                         <small class="form-text text-muted">Dalam bentuk website, media sosial, atau lainnya</small>
                     </div>
                     <div class="form-group">
+                        <label for="founded_date">Perusahaan didirikan</label>
+                        <input type="date" class="form-control" id="founded_date" name="founded_date" required>
+                    </div>                    
+                    <div class="form-group">
                         <label for="nama_pic">Nama PIC</label>
                         <input type="text" class="form-control" id="nama_pic" name="nama_pic" placeholder="Masukkan Nama PIC" required>
                     </div>
@@ -65,6 +69,13 @@
                         <label for="tipe">Tipe Perusahaan</label>
                         <input type="text" class="form-control" id="tipe" name="tipe" placeholder="Masukkan Tipe Perusahaan" required>
                     </div>
+                    <div class="form-group">
+                        <label for="startup_summary">Deskripsi Perusahaan</label>
+                        <textarea id="startup_summary" name="startup_summary" class="form-control" rows="5" required></textarea>
+                        <small class="form-text text-muted">
+                            Deskripsikan perusahaan Anda dengan jelas, termasuk segmentasi operasional, layanan dan produk utama, komitmen terhadap tanggung jawab sosial, dan ringkasan misi serta nilai-nilai perusahaan.
+                        </small>
+                    </div>                    
                 </div>
                 <div class="col-12 text-center">
                     <button class="btn btn-primary" type="submit" id="simpanBtn">Simpan Data</button>
