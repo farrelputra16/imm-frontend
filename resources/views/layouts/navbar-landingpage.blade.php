@@ -130,7 +130,7 @@
         <div class="navbar">
             <a href="{{ route('companies.list') }}">Companies</a>
             <a href="{{ route('investors.index') }}">Investors</a>
-            <a href="#">Events</a>
+            <a href="{{ route('people.index') }}">People</a>
             <a href="{{ route('home') }}">IMM</a>
         </div>
     </div>

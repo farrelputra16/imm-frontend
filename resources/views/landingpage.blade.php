@@ -86,25 +86,23 @@
     }
 
     /* GIF Alignment */
-/* GIF Alignment */
-.hero-gif, .reverse-gif, .normal-gif {
-    flex: 1;
-    width: 80px; /* Set specific width */
-    height: auto; /* Keep aspect ratio */
-    animation: gifBounce 3s ease-in-out infinite; /* Apply the bounce animation */
-}
+    .hero-gif, .reverse-gif, .normal-gif {
+        flex: 1;
+        width: 80px; /* Set specific width */
+        height: auto; /* Keep aspect ratio */
+        animation: gifBounce 3s ease-in-out infinite; /* Apply the bounce animation */
+    }
 
-.hero-gif img, .reverse-gif img, .normal-gif img {
-    width: 60%; /* Ensure the image fits its container */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 10px;
-}
-
+    .hero-gif img, .reverse-gif img, .normal-gif img {
+        width: 60%; /* Ensure the image fits its container */
+        height: auto; /* Maintain aspect ratio */
+        border-radius: 10px;
+    }
 
     .hero-gif {
         text-align: right;
     }
-    .normal-gif{
+    .normal-gif {
         text-align: right;
     }
 
@@ -175,7 +173,7 @@
         color: black;
     }
 
-    /* Center the "Top Investors" and "Top Companies" titles inside the tables */
+    /* Center the "Top Investors", "Top Companies", and "Top People" titles inside the tables */
     .grid-tables h3 {
         text-align: center;
         margin-bottom: 15px;
@@ -258,7 +256,7 @@
         </div>
     </div>
 
-    <!-- Grid Section for the Investors and Companies Tables -->
+    <!-- Grid Section for the Investors, Companies, and People Tables -->
     <div class="grid-tables">
         <!-- Investors List -->
         <div>
@@ -320,6 +318,35 @@
                             <td>{{ $company->jumlah_karyawan }}</td>
                             <td>{{ $company->tipe }}</td>
                             <td>{{ $company->posisi_pic }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <!-- People List -->
+        <div>
+            <h3>Top People</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Primary Job Title</th>
+                        <th>Primary Organization</th>
+                        <th>Location</th>
+                        <th>Phone Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($people as $person)
+                        <tr>
+                            <td>{{ $person->name }}</td>
+                            <td>{{ ucfirst($person->role) }}</td>
+                            <td>{{ $person->primary_job_title }}</td>
+                            <td>{{ $person->primary_organization }}</td>
+                            <td>{{ $person->location }}</td>
+                            <td>{{ $person->phone_number }}</td>
                         </tr>
                     @endforeach
                 </tbody>

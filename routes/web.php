@@ -22,6 +22,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MetricProjectController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\InvestorController;
+use App\Http\Controllers\PeopleController;
 
 // Rute untuk autentikasi
 Auth::routes();
@@ -32,6 +33,9 @@ Route::get('/', [LandingPageController::class, 'index'])->name('landingpage');
 Route::get('/investors', [InvestorController::class, 'index'])->name('investors.index');
 Route::get('/investors/{id}', [InvestorController::class, 'show'])->name('investors.show');
 
+
+Route::get('/people', [PeopleController::class, 'index'])->name('people.index');
+Route::get('/people/{id}', [PeopleController::class, 'show'])->name('people.show');
 
 
 Route::get('/home', function () {
@@ -76,9 +80,9 @@ Route::get('password/reset/{token}', [ResetPasswordController::class, 'showReset
 Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
 
 /**
- * Pembuatan Route untuk bagian view list company pada 
+ * Pembuatan Route untuk bagian view list company pada
  *  bagian tampilan table company yang tidak memerlukan autentikasi
- * */ 
+ * */
 Route::get('/companies-list', [CompanyController::class, 'companyList'])->name('companies.list');
 Route::get('/companies/{id}', [CompanyController::class, 'show'])->name('companies.show');
 

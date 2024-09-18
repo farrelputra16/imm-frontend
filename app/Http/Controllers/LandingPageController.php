@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Investor;
 use App\Models\Company;
+use App\Models\People;
 use GuzzleHttp\Psr7\Request;
 
 class LandingPageController extends Controller
@@ -16,7 +17,10 @@ class LandingPageController extends Controller
         // Ambil 10 data company dari database
         $companies = Company::getFilteredCompanies();
 
-        // Kirim data investor dan company ke view landingpage
-        return view('landingpage', compact('investors', 'companies'));
+        // Ambil 10 data people dari database
+        $people = People::take(5)->get();
+
+        // Kirim data investor, company, dan people ke view landingpage
+        return view('landingpage', compact('investors', 'companies', 'people'));
     }
 }

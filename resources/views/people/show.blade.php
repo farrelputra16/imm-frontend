@@ -10,7 +10,7 @@
         font-family: 'Poppins', sans-serif;
     }
 
-    .investor-details {
+    .people-details {
         background-color: #f7f7f7;
         padding: 30px;
         border-radius: 10px;
@@ -24,7 +24,7 @@
         font-size: 2rem;
     }
 
-    .investor-description {
+    .people-description {
         font-size: 1.2rem;
         color: #333;
         margin-bottom: 20px;
@@ -57,25 +57,31 @@
 </style>
 
 <div class="container">
-    <div class="investor-details">
-        <h2>{{ $investor->org_name }}</h2>
-        <p class="investor-description">{{ $investor->description }}</p>
+    <div class="people-details">
+        <h2>{{ $people->primary_job_title }}</h2>
+        <p class="people-description">{{ $people->description }}</p>
 
         <div class="detail-item">
-            <span class="highlight">Location:</span> {{ $investor->location }}
+            <span class="highlight">Name:</span> {{ ucfirst($people->name) }}
         </div>
         <div class="detail-item">
-            <span class="highlight">Number of Contacts:</span> {{ $investor->number_of_contacts }}
+            <span class="highlight">Role:</span> {{ ucfirst($people->role) }}
         </div>
         <div class="detail-item">
-            <span class="highlight">Number of Investments:</span> {{ $investor->number_of_investments }}
+            <span class="highlight">Primary Organization:</span> {{ $people->primary_organization }}
         </div>
         <div class="detail-item">
-            <span class="highlight">Departments:</span> {{ $investor->departments }}
+            <span class="highlight">Location:</span> {{ $people->location }}
+        </div>
+        <div class="detail-item">
+            <span class="highlight">Phone Number:</span> {{ $people->phone_number }}
+        </div>
+        <div class="detail-item">
+            <span class="highlight">Gmail:</span> {{ $people->gmail }}
         </div>
     </div>
 
-    <!-- Back button to go back to the list of investors -->
-    <a href="{{ route('investors.index') }}" class="back-btn">Back to Investors List</a>
+    <!-- Back button to go back to the list of people -->
+    <a href="{{ route('people.index') }}" class="back-btn">Back to People List</a>
 </div>
 @endsection
