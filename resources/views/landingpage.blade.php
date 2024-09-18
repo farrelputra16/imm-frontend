@@ -171,6 +171,7 @@
         padding: 10px;
         border-bottom: 1px solid #ddd;
         font-size: 9px;
+        cursor: pointer; /* Add pointer cursor for interactivity */
     }
 
     th {
@@ -272,7 +273,7 @@
                 </thead>
                 <tbody>
                     @foreach ($investors as $investor)
-                        <tr>
+                        <tr onclick="window.location='{{ route('investors.index') }}'">
                             <td>{{ $investor->org_name }}</td>
                             <td>{{ $investor->number_of_contacts }}</td>
                             <td>{{ $investor->number_of_investments }}</td>
@@ -301,19 +302,10 @@
                 </thead>
                 <tbody>
                     @foreach ($companies as $company)
-                        <tr>
+                        <tr onclick="window.location='{{ route('companies.list') }}'">
                             <td>{{ $company->nama }}</td>
                             <td>{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('F j, Y') : 'N/A' }}</td>
                             <td>{{ $company->latest_income_date ? \Carbon\Carbon::parse($company->latest_income_date)->format('F j, Y') : 'N/A' }}</td>
-                            <td>
-                                @if ($company->latest_project_dana)
-                                    <div>
-                                        {{ $company->latest_project_dana->jenis_dana }}
-                                    </div>
-                                @else
-                                    No project data available
-                                @endif
-                            </td>
                             <td>{{ $company->jumlah_karyawan }}</td>
                             <td>{{ $company->tipe }}</td>
                             <td>{{ $company->posisi_pic }}</td>
@@ -339,7 +331,7 @@
                 </thead>
                 <tbody>
                     @foreach ($people as $person)
-                        <tr>
+                        <tr onclick="window.location='{{ route('people.index') }}'">
                             <td>{{ $person->name }}</td>
                             <td>{{ ucfirst($person->role) }}</td>
                             <td>{{ $person->primary_job_title }}</td>
@@ -368,7 +360,7 @@
                 </thead>
                 <tbody>
                     @foreach ($hubs as $hub)
-                        <tr>
+                        <tr onclick="window.location='{{ route('hubs.index') }}'">
                             <td>{{ $hub->name }}</td>
                             <td>{{ $hub->location }}</td>
                             <td>{{ $hub->number_of_organizations }}</td>
