@@ -13,8 +13,6 @@
 
 <body>
 
-   
-
 
     <div class="register-container">
         <h2>Daftarkan Perusahaan Anda</h2>
@@ -34,7 +32,7 @@
                     <div class="form-group">
                         <label for="founded_date">Perusahaan didirikan</label>
                         <input type="date" class="form-control" id="founded_date" name="founded_date" required>
-                    </div>                    
+                    </div>
                     <div class="form-group">
                         <label for="nama_pic">Nama PIC</label>
                         <input type="text" class="form-control" id="nama_pic" name="nama_pic" placeholder="Masukkan Nama PIC" required>
@@ -75,7 +73,7 @@
                         <small class="form-text text-muted">
                             Deskripsikan perusahaan Anda dengan jelas, termasuk segmentasi operasional, layanan dan produk utama, komitmen terhadap tanggung jawab sosial, dan ringkasan misi serta nilai-nilai perusahaan.
                         </small>
-                    </div>                    
+                    </div>
                 </div>
                 <div class="col-12 text-center">
                     <button class="btn btn-primary" type="submit" id="simpanBtn">Simpan Data</button>
@@ -84,16 +82,16 @@
         </form>
     </div>
 
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const teleponInput = document.getElementById('formGroupExampleInput5');
             const jumlahKaryawanInput = document.getElementById('formGroupExampleInput6');
-    
+
             teleponInput.addEventListener('input', function() {
                 this.value = this.value.replace(/[^0-9]/g, '');
             });
-    
+
             jumlahKaryawanInput.addEventListener('input', function() {
                 this.value = this.value.replace(/[^0-9]/g, '');
             });

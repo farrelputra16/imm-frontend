@@ -10,6 +10,7 @@ use Carbon\Carbon;
 
 class EventController extends Controller
 {
+
     public function index()
     {
 
@@ -63,6 +64,7 @@ class EventController extends Controller
 
     public function store(Request $request)
     {
+
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -77,8 +79,8 @@ class EventController extends Controller
         $event = Event::create($validatedData);
         if (isset($validatedData['users'])) {
             $event->users()->attach($validatedData['users']);
-        }
-
+        };
+        dd($event);
         return redirect()->route('events.index')->with('success', 'Event created successfully.');
     }
 
@@ -96,10 +98,10 @@ class EventController extends Controller
         $user->pekerjaan = $request->pekerjaan;
         $user->instansi = $request->instansi;
 
-        $user->save();
+        $user->save;
 
         $event = Event::findOrFail($request->event_id);
-        $user->events()->attach($event);
+        $user->events->attach($event);
 
         return view('event.succes', compact('event'));
     }

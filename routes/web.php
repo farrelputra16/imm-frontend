@@ -438,3 +438,5 @@ Route::delete('survey/{survey}', [SurveyController::class, 'destroy'])->name('su
 Route::get('survey-result/{survey}', [SurveyController::class, 'results'])->name('surveys.results');
 
 Route::get('/about', [HomeController::class, 'about']);
+
+
