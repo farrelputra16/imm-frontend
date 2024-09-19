@@ -88,7 +88,7 @@
     <h2><b>COMPANIES</b></h2> <!-- Judul COMPANIES di tengah dengan warna #5940CB -->
 
     <!-- Form Pencarian -->
-    <form method="GET" action="{{ route('companies.list') }}" class="mb-4">
+    <form method="GET" action="{{ route('companies.list') }}" class="mb-4" id="companySearchForm">
         <div class="row g-3">
             <div class="col-md-3">
                 <input type="text" name="location" class="form-control" placeholder="Location" value="{{ request()->location }}">
@@ -98,6 +98,27 @@
             </div>
             <div class="col-md-3">
                 <input type="text" name="departments" class="form-control" placeholder="Departments" value="{{ request()->departments }}">
+            </div>
+            <div class="col-md-3">  
+                <div class="form-group">
+                    <select name="funding_type" id="funding_type" class="form-control" required>
+                        <option value="" {{ request()->get('funding_type') === null ? 'selected' : '' }}>Funding Type</option>
+                        <option value="pre_seed" {{ request()->get('funding_type') === 'pre_seed' ? 'selected' : '' }}>Pre-seed Funding</option>
+                        <option value="seed" {{ request()->get('funding_type') === 'seed' ? 'selected' : '' }}>Seed Funding</option>
+                        <option value="series_a" {{ request()->get('funding_type') === 'series_a' ? 'selected' : '' }}>Series A Funding</option>
+                        <option value="series_b" {{ request()->get('funding_type') === 'series_b' ? 'selected' : '' }}>Series B Funding</option>
+                        <option value="series_c" {{ request()->get('funding_type') === 'series_c' ? 'selected' : '' }}>Series C Funding</option>
+                        <option value="series_d" {{ request()->get('funding_type') === 'series_d' ? 'selected' : '' }}>Series D Funding</option>
+                        <option value="series_e" {{ request()->get('funding_type') === 'series_e' ? 'selected' : '' }}>Series E Funding</option>
+                        <option value="debt" {{ request()->get('funding_type') === 'debt' ? 'selected' : '' }}>Debt Funding</option>
+                        <option value="equity" {{ request()->get('funding_type') === 'equity' ? 'selected' : '' }}>Equity Funding</option>
+                        <option value="convertible_debt" {{ request()->get('funding_type') === 'convertible_debt' ? 'selected' : '' }}>Convertible Debt</option>
+                        <option value="grants" {{ request()->get('funding_type') === 'grants' ? 'selected' : '' }}>Grants</option>
+                        <option value="revenue_based" {{ request()->get('funding_type') === 'revenue_based' ? 'selected' : '' }}>Revenue-Based Financing</option>
+                        <option value="private_equity" {{ request()->get('funding_type') === 'private_equity' ? 'selected' : '' }}>Private Equity</option>
+                        <option value="ipo" {{ request()->get('funding_type') === 'ipo' ? 'selected' : '' }}>Initial Public Offering (IPO)</option>
+                    </select>
+                </div>                
             </div>
             <div class="col-md-2">
                 <button type="submit" class="btn btn-primary">Search</button>
@@ -142,4 +163,10 @@
             @endforeach
         </tbody>
     </table>
+
+    <script>
+        document.getElementById('funding_type').addEventListener('change', function() {
+            document.getElementById('companySearchForm').submit();
+        });
+    </script>
 @endsection

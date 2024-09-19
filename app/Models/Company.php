@@ -58,7 +58,6 @@ class Company extends Model
                         ->groupBy('company_id');
             });
         }]);
-
         // Kondisi pencarian berdasarkan lokasi
         if($request){
             if($request->has('location') && !empty($request->location)) {
@@ -73,6 +72,11 @@ class Company extends Model
             // Kondisi pencarian berdasarkan model bisnis (departemen)
             if($request->has('departments') && !empty($request->departments)) {
                 $query->where('posisi_pic', 'like', '%'.$request->departments.'%');
+            }
+            if(isset($request->funding_type)){
+                $query->whereHas('incomes', function($query) use ($request) {
+                    $query->where('funding_type', $request->funding_type);
+                });
             }
         }
 

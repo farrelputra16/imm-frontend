@@ -95,8 +95,9 @@ class CompanyController extends Controller
     {
         $company = Company::findOrFail($id);
         $company->load('projects');
-        dd($company);
-        return view('companies.show', compact('company'));
+        $company->load('incomes');
+        // dd($company->incomes);
+        return view('companies.view', compact('company'));
     }
 
     public function index()
