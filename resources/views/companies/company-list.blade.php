@@ -1,5 +1,6 @@
 @extends('layouts.app-table')
 {{-- Masukkan style yang dibutuhkan --}}
+@push('styles')
 <style>
     body {
         font-family: 'Poppins', sans-serif;
@@ -80,6 +81,8 @@
         font-weight: 600;
     }
 </style>
+@endpush
+
 
 
 @section('content')

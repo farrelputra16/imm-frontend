@@ -13,8 +13,10 @@
     height: 150px;
     object-fit: cover;
     border-radius: 50%;
-    border: 3px solid #5940CB;
+    border: 3px solid #7b68ee; /* Adjusted softer purple */
 }
+
+
 
 .custom-link {
     display: flex;
@@ -22,9 +24,9 @@
     justify-content: space-between;
     width: 100%;
     height: 50px;
-    background-color: #5940CB;
+    background-color: #7b68ee; /* Softer purple */
     color: #fff;
-    border: solid 1px #5940CB;
+    border: solid 1px #7b68ee;
     font-size: 1rem;
     padding: 10px;
     border-radius: 8px;
@@ -37,13 +39,15 @@
 }
 
 .custom-link:hover {
-    background-color: #4735A3;
+    background-color: #6a5acd; /* Lighter hover effect */
 }
 
-.company-label {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
+
+.company-label .icon {
+    margin-right: 8px;
+    margin-left: 15px;
+    font-size: 1.5rem;
+    color: #6a5acd; /* Adjusted to softer hue */
 }
 
 .company-label .icon {
@@ -90,7 +94,7 @@
     background: #ffffff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 12px;
-    transition: transform 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .highlight-box:hover {
@@ -104,9 +108,71 @@
 }
 
 .highlight-content h5 {
-    color: #4735A3;
+    color: #6a5acd; /* Matching primary color */
+}
+/* Mengatur lebar kolom tabel */
+table.dataTable th,
+table.dataTable td {
+    white-space: nowrap;
 }
 
+/* Mengatur hover */
+table.dataTable tbody tr:hover {
+    background-color: #f2f2f2;
+    cursor: pointer;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 15px;
+}
+
+h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #4b6584; /* Muted darker blue */
+}
+
+.card {
+    background-color: #f9fafb; /* Slightly lighter background */
+    border-radius: 20px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #4b6584; /* Muted greyish-blue */
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #747d8c; /* Muted text color */
+}
+
+.card-hover:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); /* Softer hover effect */
+}
+
+.text-primary {
+    color: #4b6584 !important; /* Muted darker blue */
+}
+
+.text-info {
+    color: #17a2b8;
+}
+
+.text-info:hover {
+    text-decoration: underline;
+    color: #29527b; /* Softer transition */
+}
+
+.fs-1 {
+    font-size: 2rem;
+}
 </style>
 
 @section('content')
@@ -166,61 +232,79 @@
             </div>
         </div>
         <div class="container mt-5">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h4 class="card-title mb-4">Company Details</h4>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex align-items-center">
-                            <i class="bi bi-building me-2"></i>
-                            <span>Profile: {{ $company->profile }}</span>
-                        </li>
-                        <li class="list-group-item d-flex align-items-center">
-                            <i class="bi bi-calendar me-2"></i>
-                            <span>Founded Date: {{ $company->founded_date }}</span>
-                        </li>
-                        <li class="list-group-item d-flex align-items-center">
-                            <i class="bi bi-person me-2"></i>
-                            <span>PIC Name: {{ $company->nama_pic }}</span>
-                        </li>
-                        <li class="list-group-item d-flex align-items-center">
-                            <i class="bi bi-briefcase me-2"></i>
-                            <span>PIC Position: {{ $company->posisi_pic }}</span>
-                        </li>
-                        <li class="list-group-item d-flex align-items-center">
-                            <i class="bi bi-telephone me-2"></i>
-                            <span>Phone: {{ $company->telepon }}</span>
-                        </li>
-                        <li class="list-group-item d-flex align-items-center">
-                            <i class="bi bi-geo-alt me-2"></i>
-                            <span>Country: {{ $company->negara }}</span>
-                        </li>
-                        <li class="list-group-item d-flex align-items-center">
-                            <i class="bi bi-geo-alt me-2"></i>
-                            <span>Province: {{ $company->provinsi }}</span>
-                        </li>
-                        <li class="list-group-item d-flex align-items-center">
-                            <i class="bi bi-geo-alt me-2"></i>
-                            <span>City: {{ $company->kabupaten }}</span>
-                        </li>
-                        <li class="list-group-item d-flex align-items-center">
-                            <i class="bi bi-people me-2"></i>
-                            <span>Employees: {{ $company->jumlah_karyawan }}</span>
-                        </li>
-                        <li class="list-group-item">
-                            <h5>Description</h5>
-                            <p>{{ $company->startup_summary }}</p>
-                        </li>
-                    </ul>
+            <h2 class="text-center mb-5 text-primary">Company Overview</h2>
+            <div class="row g-4 align-items-stretch">
+                <!-- Founded Date -->
+                <div class="col-md-4 d-flex">
+                    <div class="card card-hover shadow-sm border-0 rounded-lg flex-grow-1 d-flex flex-column">
+                        <div class="card-body text-center flex-grow-1">
+                            <i class="bi bi-calendar2-date text-primary fs-1 mb-3"></i>
+                            <h5 class="card-title">Founded Date</h5>
+                            <p class="card-text">{{ $company->founded_date }}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Team -->
+                <div class="col-md-4 d-flex">
+                    <div class="card card-hover shadow-sm border-0 rounded-lg flex-grow-1 d-flex flex-column">
+                        <div class="card-body text-center flex-grow-1">
+                            <i class="bi bi-people text-primary fs-1 mb-3"></i>
+                            <h5 class="card-title">Team</h5>
+                            <p class="card-text">{{ $company->team }}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- PIC Info -->
+                <div class="col-md-4 d-flex">
+                    <div class="card card-hover shadow-sm border-0 rounded-lg flex-grow-1 d-flex flex-column">
+                        <div class="card-body text-center flex-grow-1">
+                            <i class="bi bi-person-badge text-primary fs-1 mb-3"></i>
+                            <h5 class="card-title">PIC Info</h5>
+                            <p class="card-text">{{ $company->nama_pic }} - {{ $company->posisi_pic }}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Phone -->
+                <div class="col-md-4 d-flex">
+                    <div class="card card-hover shadow-sm border-0 rounded-lg flex-grow-1 d-flex flex-column">
+                        <div class="card-body text-center flex-grow-1">
+                            <i class="bi bi-telephone text-primary fs-1 mb-3"></i>
+                            <h5 class="card-title">Phone</h5>
+                            <p class="card-text">{{ $company->telepon }}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- City -->
+                <div class="col-md-4 d-flex">
+                    <div class="card card-hover shadow-sm border-0 rounded-lg flex-grow-1 d-flex flex-column">
+                        <div class="card-body text-center flex-grow-1">
+                            <i class="bi bi-geo-alt text-primary fs-1 mb-3"></i>
+                            <h5 class="card-title">City</h5>
+                            <p class="card-text">{{ $company->kabupaten }}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Products -->
+                <div class="col-md-4 d-flex">
+                    <div class="card card-hover shadow-sm border-0 rounded-lg flex-grow-1 d-flex flex-column">
+                        <div class="card-body text-center flex-grow-1">
+                            <i class="bi bi-box-seam text-primary fs-1 mb-3"></i>
+                            <h5 class="card-title">Products</h5>
+                            <p><a href="/products/{{ $company->id }}" class="text-decoration-none text-info">View Products</a></p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>  
-        <div class="container mt-5" style="margin-bottom:50px; ">
+            
+            
+        </div>             
+        <div class="container mt-5" style="margin-bottom:50px;">
             <div class="card shadow-sm">
                 <div class="card-body">
                     <h4 class="card-title mb-4">Investor List</h4>
-                    
-                    <!-- Tabel Investor -->
-                    <table id="investorTable" class="table table-striped table-bordered">
+        
+                    <!-- Tabel Investor dengan kelas datatable -->
+                    <table id="investorTable" class="table table-striped table-hover">
                         <thead>
                             <tr>
                                 <th>Investor Name</th>
@@ -233,9 +317,8 @@
                             @foreach($company->incomes as $income)
                                 <tr>
                                     <td>{{ $income->pengirim }}</td>
-                                    <!-- Menentukan lead investor berdasarkan funding_type -->
                                     <td>
-                                        @if($income->funding_type == 'pre-seed' || $income->funding_type == 'seed' || $income->funding_type == 'series_a' || $income->funding_type == 'series_b' || $income->funding_type == 'series_c')
+                                        @if(in_array($income->funding_type, ['pre-seed', 'seed', 'series_a', 'series_b', 'series_c']))
                                             Yes
                                         @else
                                             No
@@ -246,10 +329,27 @@
                                 </tr>
                             @endforeach
                         </tbody>
-                    </table>                      
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<!-- Tambahkan ini di bagian bawah body sebelum penutup tag body -->
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#investorTable').DataTable({
+            paging: false, // Hilangkan pagination jika tidak dibutuhkan
+            ordering: true, // Pengurutan otomatis
+            info: false, // Hilangkan informasi jumlah data
+            responsive: true, // Tabel responsive
+            columnDefs: [
+                { targets: 1, orderable: false } // Nonaktifkan sorting untuk kolom 'Lead Investor'
+            ]
+        });
+    });
+</script>
+
 @endsection
