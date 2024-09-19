@@ -1,6 +1,4 @@
 @extends('layouts.app-table')
-
-@push('styles')
 {{-- Masukkan style yang dibutuhkan --}}
 <style>
     body {
@@ -82,7 +80,7 @@
         font-weight: 600;
     }
 </style>
-@endpush
+
 
 @section('content')
     <h2><b>COMPANIES</b></h2> <!-- Judul COMPANIES di tengah dengan warna #5940CB -->

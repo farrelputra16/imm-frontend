@@ -247,7 +247,6 @@ footer {
                     <label for="nama_depan" class="form-label">Nama Instansi/Perusahaan ( Opsional )</label>
                     <input type="text" name="instansi" id="nama_depan" class="form-control" placeholder="Isi disini">
                 </div>
-
                 <input type="hidden" name="event_id" value="{{ $event->id }}">
                 <button type="submit" class="btn-simpan mt-5"
                         style="font-size: 20px; font-weight:bold">Simpan Data</button>
