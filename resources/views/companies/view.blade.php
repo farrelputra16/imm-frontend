@@ -1,6 +1,10 @@
 @extends('layouts.app-table')
 
 <style>
+.company-profile-container {
+    display: flex;
+}
+
 .company-profile-wrapper {
     text-align: start;
     margin-bottom: 20px;
@@ -16,7 +20,11 @@
     border: 3px solid #7b68ee; /* Adjusted softer purple */
 }
 
-
+.company-name h3 {
+    margin: 0;
+    margin-left: 50px;
+    font-size: 1.5rem; /* Adjust size of company name */
+}
 
 .custom-link {
     display: flex;
@@ -178,8 +186,13 @@ h2 {
 @section('content')
 <div class="container mt-5">
     <div class="card shadow">
-        <div class="company-profile-wrapper">
-            <img class="company-profile" src="{{ asset('images/imm.png') }}" alt="Company Profile Image">
+        <div class="company-profile-container d-flex align-items-center">
+            <div class="company-profile-wrapper">
+                <img class="company-profile" src="{{ asset('images/imm.png') }}" alt="Company Profile Image">
+            </div>
+            <div class="company-name ms-3">
+                <h3>{{ $company->nama }}</h3>
+            </div>
         </div>
 
         <div class="row" style="padding-left: 50px;">
