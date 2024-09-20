@@ -10,4 +10,15 @@ class Team extends Model
     use HasFactory;
     protected $table = 'team'; // Explicitly define the table if needed
     protected $fillable = ['company_id', 'people_id', 'position'];
+    // Relasi dengan Company
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    // Relasi dengan People
+    public function person()
+    {
+        return $this->belongsTo(People::class, 'people_id');
+    }
 }

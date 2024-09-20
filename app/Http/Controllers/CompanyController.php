@@ -141,17 +141,4 @@ class CompanyController extends Controller
         // Return view dengan data companies
         return view('companies.company-list', compact('companies'));
     }
-
-    /**
-     * Menampilkan team dari suatu perusahaan berdasarkan ID mereka
-     */
-    public function showTeam($id)
-    {
-        // Ambil data company berdasarkan ID
-        $company = Company::findOrFail($id);
-        // Ambil data team dari company
-        $team = $company->team;
-        // Return view dengan data team
-        return view('companies.team', compact('team'));
-    }
 }

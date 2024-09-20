@@ -44,10 +44,10 @@ class Company extends Model
     {
         return $this->hasMany(CompanyIncome::class);
     }
-    // Relationship with People through Team
+    // Relasi many-to-many dengan People melalui tabel team
     public function teamMembers()
     {
-        return $this->belongsToMany(People::class, 'team')->withPivot('position');
+        return $this->belongsToMany(People::class, 'team')->withPivot('position')->withTimestamps();
     }
     public static function getFilteredCompanies($request = null)
     {
