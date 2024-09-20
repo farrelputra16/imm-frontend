@@ -88,6 +88,7 @@ Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('
  * */
 Route::get('/companies-list', [CompanyController::class, 'companyList'])->name('companies.list');
 Route::get('/companies/{id}', [CompanyController::class, 'show'])->name('companies.show');
+Route::get('/companies/{id}/team', [CompanyController::class, 'showTeam'])->name('companies.team');
 
 
 // Rute yang memerlukan autentikasi

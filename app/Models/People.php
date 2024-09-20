@@ -36,4 +36,10 @@ class People extends Model
     protected $casts = [
         'phone_number' => 'string',
     ];
+
+    // Relationship with Company through Team
+    public function companies()
+    {
+        return $this->belongsToMany(Company::class, 'team')->withPivot('position');
+    }
 }
