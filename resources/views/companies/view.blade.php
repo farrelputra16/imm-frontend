@@ -258,7 +258,7 @@ h2 {
                     </div>
                 </div>
                 <!-- Team -->
-                <div class="col-md-4 d-flex">
+                <div class="col-md-4 d-flex" onclick="window.location.href='{{ route('companies.team', $company->id) }}'">
                     <div class="card card-hover shadow-sm border-0 rounded-lg flex-grow-1 d-flex flex-column">
                         <div class="card-body text-center flex-grow-1">
                             <i class="bi bi-people text-primary fs-1 mb-3"></i>
