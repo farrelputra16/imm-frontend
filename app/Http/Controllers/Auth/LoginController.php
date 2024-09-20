@@ -11,17 +11,6 @@ use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
     use AuthenticatesUsers;
 
     /**
@@ -36,8 +25,6 @@ class LoginController extends Controller
      *
      * @return void
      */
-
-
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
@@ -50,79 +37,59 @@ class LoginController extends Controller
      * @return bool
      */
     protected function attemptLogin(Request $request)
-{
-    $credentials = $this->credentials($request);
-    $user = \App\Models\User::where('email', $credentials['email'])->first();
+    {
+        $credentials = $this->credentials($request);
+        $user = \App\Models\User::where('email', $credentials['email'])->first();
 
-    // Check for user existence and complete profile ONLY for 'USER' role
-    if ($user && $user->role === 'USER') {
-        if (is_null($user->nik) || is_null($user->negara) || is_null($user->provinsi)) {
-            return false;
+        // Check for user existence and handle specific validation for 'USER' role
+        if ($user && $user->role === 'USER') {
+            if (is_null($user->nik) || is_null($user->negara) || is_null($user->provinsi)) {
+                return false;
+            }
         }
+
+        // Attempt login for all users regardless of role
+        return Auth::attempt($credentials, $request->filled('remember'));
     }
 
-    // Attempt login for all users, regardless of role
-    $attempt = Auth::attempt($credentials, $request->filled('remember'));
+    /**
+     * Redirect based on the user role after login.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        // Check the user role and redirect accordingly
+        if ($user->role === 'INVESTOR') {
+            return redirect()->route('companies.list'); // Customize this route
+        } elseif ($user->role === 'PEOPLE') {
+            return redirect()->route('people.index'); // Customize this route
+        }
 
-    if ($attempt) {
-        Log::info('Login attempt successful for user: ' . $user->email);
-    } else {
-        Log::info('Login attempt failed for user: ' . $credentials['email']);
+        return redirect()->route('home');
     }
 
-    return $attempt;
-}
-
-
-protected function authenticated(Request $request, $user)
-{
-    // Check if user has a company
-    if ($user->companies) {
-        return redirect()->route('homepage');
-    }
-
-    return redirect()->route('home');
-}
-
-protected function sendFailedLoginResponse(Request $request)
+    /**
+     * Custom failed login response for user with missing fields (only for 'USER' role).
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function sendFailedLoginResponse(Request $request)
     {
         $user = \App\Models\User::where('email', $request->email)->first();
 
-        if ($user && $user->role === 'USER') {
-            if (is_null($user->nik) || is_null($user->negara) || is_null($user->provinsi)) {
-                return redirect()->back()
-                    ->withInput($request->only($this->username(), 'remember'))
-                    ->withErrors([
-                        $this->username() => 'These credentials do not match our records.',
-                    ])->with('error', 'These credentials do not match our records.');
-            }
+        if ($user && $user->role === 'USER' && (is_null($user->nik) || is_null($user->negara) || is_null($user->provinsi))) {
+            return redirect()->back()
+                ->withInput($request->only($this->username(), 'remember'))
+                ->withErrors([$this->username() => 'These credentials do not match our records.'])
+                ->with('error', 'Please complete your profile with required information.');
         }
 
         return redirect()->back()
             ->withInput($request->only($this->username(), 'remember'))
-            ->withErrors([
-                $this->username() => trans('auth.failed'),
-            ])->with('error', trans('auth.failed'));
+            ->withErrors([$this->username() => trans('auth.failed')]);
     }
-
-    public function login(Request $request)
-    {
-        $this->validateLogin($request);
-
-        if (method_exists($this, 'hasTooManyLoginAttempts') &&
-            $this->hasTooManyLoginAttempts($request)) {
-            $this->fireLockoutEvent($request);
-
-            return $this->sendLockoutResponse($request);
-        }
-
-        if ($this->attemptLogin($request)) {
-            return $this->sendLoginResponse($request)->with('success', 'Login successful!');
-        }
-
-        $this->incrementLoginAttempts($request);
-
-        return $this->sendFailedLoginResponse($request);
-    }
-
 }
