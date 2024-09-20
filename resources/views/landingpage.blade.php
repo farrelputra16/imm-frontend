@@ -214,7 +214,7 @@
         <div class="hero-content">
             <h1>Empowering Innovation, Measuring Impact</h1>
             <p>Captures the essence of empowering companies with innovation while providing measurable results.</p>
-            <button class="btn-cta">Explore</button>
+            <a href="{{ route('home') }}" class="btn-cta">Explore</a>
         </div>
 
         <div class="hero-gif">
