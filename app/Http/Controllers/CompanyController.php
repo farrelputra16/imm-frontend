@@ -141,4 +141,24 @@ class CompanyController extends Controller
         // Return view dengan data companies
         return view('companies.company-list', compact('companies'));
     }
+
+    /**
+     * Menampilkan halaman untuk anggota team company tersebut
+     */
+    public function showTeam($id)
+    {
+        $company = Company::findOrFail($id);
+        $team = $company->teamMembers;
+        return view('companies.team', compact('team', 'company'));
+    }
+
+    /**
+     * Menampilkan halaman untuk macam macam product yang dimiliki oleh company tersebut
+     */
+    public function showProducts($id)
+    {
+        $company = Company::findOrFail($id);
+        $products = $company->products;
+        return view('companies.products', compact('products', 'company'));
+    }
 }

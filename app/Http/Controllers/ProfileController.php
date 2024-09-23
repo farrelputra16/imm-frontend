@@ -36,12 +36,13 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         $company = $user->companies;
+        $team = $company->teamMembers;
     
         if (!$company) {
             return redirect('/imm');
         }
     
-        return view('imm.profile-commpany', compact('company', 'user'));
+        return view('imm.profile-commpany', compact('company', 'user', 'team'));
     }
 
     public function edit()
