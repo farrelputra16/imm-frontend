@@ -623,7 +623,7 @@ body {
     <script>
       $(document).ready(function() {
         // Menangani input pencarian orang
-            $('#searchPeople').on('input', function() {
+        $('#searchPeople').on('input', function() {
                 var query = $(this).val();
 
                 if (query.length > 2) {
@@ -661,7 +661,6 @@ body {
             $('#selectedPersonId').val(personId);
         });
 
-
         //Menyimpan ID orang yang dipilih 
         $('#peopleResults').on('click', '.person', function() {
             var personId = $(this).data('id');
@@ -672,57 +671,61 @@ body {
         $('#peopleResults').on('click', '.person', function() {
             var selectedId = $(this).data('id');
             $('#selectedPersonId').val(selectedId); // Menyimpan ID orang terpilih
-            $('#searchPeople').val($(this).text()); // Mengganti input dengan nama orang yang dipilih
+            $('#searchPeople').val($(this).find('h5').text()); // Mengganti input dengan nama orang yang dipilih (hanya nama)
             $('#peopleResults').html(''); // Menghapus hasil pencarian
         });
 
         // Menyimpan anggota tim ketika tombol "Save" diklik
         $('#saveTeamMember').on('click', function() {
-            var personId = $('#selectedPersonId').val();
-            var companyId = $('#companyId').val();
-            var position = $('#position').val();
+            $('#confirmModal').modal('show');
 
-            if (personId && position) {
-                // Kirim data ke backend
-                $.ajax({
-                    url: '/team/store', // Endpoint backend untuk menambah anggota tim
-                    method: 'POST',
-                    data: {
-                        person_id: personId,
-                        company_id: companyId,
-                        position: position,
-                        _token: "{{ csrf_token() }}" // tambahkan CSRF token untuk keamanan
-                    },
-                    success: function(response) {
-                        alert('Team member added successfully!');
-                        // Tutup modal setelah berhasil disimpan
-                        $('#addTeamModal').modal('hide');
-                        location.reload(); // Reload halaman untuk memperbarui daftar tim
-                    },
-                    error: function(xhr) {
-                        // Menangani kesalahan server (500) dan kesalahan validasi (422)
-                        if (xhr.status === 422) {
-                            // Kesalahan validasi
-                            var errors = xhr.responseJSON.errors;
-                            var errorMessages = [];
-                            for (var key in errors) {
-                                if (errors.hasOwnProperty(key)) {
-                                    errorMessages.push(errors[key].join(', ')); // Menggabungkan pesan kesalahan
+            $('#confirmSaveButton').off('click').on('click', function(){
+                var personId = $('#selectedPersonId').val();
+                var companyId = $('#companyId').val();
+                var position = $('#position').val();
+    
+                if (personId && position) {
+                    // Kirim data ke backend
+                    $.ajax({
+                        url: '/team/store', // Endpoint backend untuk menambah anggota tim
+                        method: 'POST',
+                        data: {
+                            person_id: personId,
+                            company_id: companyId,
+                            position: position,
+                            _token: "{{ csrf_token() }}" // tambahkan CSRF token untuk keamanan
+                        },
+                        success: function(response) {
+                            alert('Team member added successfully!');
+                            // Tutup modal setelah berhasil disimpan
+                            $('#addTeamModal').modal('hide');
+                            location.reload(); // Reload halaman untuk memperbarui daftar tim
+                        },
+                        error: function(xhr) {
+                            // Menangani kesalahan server (500) dan kesalahan validasi (422)
+                            if (xhr.status === 422) {
+                                // Kesalahan validasi
+                                var errors = xhr.responseJSON.errors;
+                                var errorMessages = [];
+                                for (var key in errors) {
+                                    if (errors.hasOwnProperty(key)) {
+                                        errorMessages.push(errors[key].join(', ')); // Menggabungkan pesan kesalahan
+                                    }
                                 }
+                                alert('Validation Error: \n' + errorMessages.join('\n'));
+                            } else if (xhr.status === 500) {
+                                // Kesalahan server
+                                alert('Server Error: Please try again later.');
+                            } else {
+                                // Kesalahan lain
+                                alert('Error adding team member: ' + xhr.responseText);
                             }
-                            alert('Validation Error: \n' + errorMessages.join('\n'));
-                        } else if (xhr.status === 500) {
-                            // Kesalahan server
-                            alert('Server Error: Please try again later.');
-                        } else {
-                            // Kesalahan lain
-                            alert('Error adding team member: ' + xhr.responseText);
                         }
-                    }
-                });
-            } else {
-                alert('Please select a person and enter a position.');
-            }
+                    });
+                } else {
+                    alert('Please select a person and enter a position.');
+                }
+            })
         });
 
         // Menangani klik pada tombol edit
@@ -748,50 +751,54 @@ body {
 
         // Update team member position
         $('#updateTeamMember').on('click', function(event) {
-            event.preventDefault(); // Mencegah perilaku default dari form
+            event.preventDefault(); // Mencegah default behavior form
+            $('#confirmModal').modal('show'); // Tampilkan modal konfirmasi
 
-            var teamId = $('#editTeamId').val();
-            var position = $('#editPosition').val();
+            $('#confirmSaveButton').off('click').on('click', function() {
+                var teamId = $('#editTeamId').val();
+                var position = $('#editPosition').val();
 
-            // Kirim data ke backend
-            $.ajax({
-                url: '/team/' + teamId, // Endpoint untuk update anggota tim
-                method: 'PUT',
-                data: {
-                    position: position,
-                    _token: "{{ csrf_token() }}" // Tambahkan CSRF token untuk keamanan
-                },
-                success: function(response) {
-                    alert('Team member position updated successfully!');
-                    $('#editTeamModal').modal('hide');
-                    location.reload(); // Reload halaman untuk memperbarui daftar tim
-                },
-                error: function(xhr) {
-                    if (xhr.status === 422) {
-                        // Kesalahan validasi
-                        var errors = xhr.responseJSON.errors;
-                        var errorMessages = [];
-                        for (var key in errors) {
-                            if (errors.hasOwnProperty(key)) {
-                                errorMessages.push(errors[key].join(', '));
+                $.ajax({
+                    url: '/team/' + teamId,
+                    method: 'PUT',
+                    data: {
+                        position: position,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        alert('Team member position updated successfully!');
+                        $('#editTeamModal').modal('hide');
+                        location.reload();
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 422) {
+                            var errors = xhr.responseJSON.errors;
+                            var errorMessages = [];
+                            for (var key in errors) {
+                                if (errors.hasOwnProperty(key)) {
+                                    errorMessages.push(errors[key].join(', '));
+                                }
                             }
+                            alert('Validation Error: \n' + errorMessages.join('\n'));
+                        } else {
+                            alert('Error updating team member.');
                         }
-                        alert('Validation Error: \n' + errorMessages.join('\n'));
-                    } else {
-                        alert('Error updating team member.');
                     }
-                }
+                });
             });
         });
+
 
         // Menangani klik pada tombol delete
         $('.btn-delete').on('click', function(event) {
             var teamId = $(this).data('id');
-            var companyId = $(this).data('company-id'); // Ambil company_id dari data attribute
+            var companyId = $(this).data('company-id');
 
-            if (confirm('Are you sure you want to delete this team member?')) {
+            $('#confirmModal').modal('show'); // Tampilkan modal konfirmasi
+
+            $('#confirmSaveButton').off('click').on('click', function() {
                 $.ajax({
-                    url: '/team/' + teamId + '/' + companyId + '/delete', // Kirim kedua ID
+                    url: '/team/' + teamId + '/' + companyId + '/delete',
                     method: 'DELETE',
                     data: {
                         _token: '{{ csrf_token() }}'
@@ -804,7 +811,7 @@ body {
                         alert('Error deleting team member: ' + xhr.responseJSON.error || 'Unknown error');
                     }
                 });
-            }
+            });
         });
     });
     </script>  
@@ -815,43 +822,49 @@ body {
         // Menangani klik pada tombol tambah produk
         $('#addProductForm').submit(function(e){
             e.preventDefault();
-            var formData = new FormData(this);  // Membuat FormData termasuk company_id
+            $('#confirmModal').modal('show'); // Tampilkan modal konfirmasi
+            $('#confirmSaveButton').off('click').on('click', function(){
+                var formData = new FormData(this);  // Membuat FormData termasuk company_id
 
-            $.ajax({
-                url: '/companies/' + $('#companyId').val() + '/products',  // Kirim dengan company_id
-                method: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(response){
-                    alert('Product added successfully!');
-                    location.reload();  // Reload page
-                },
-                error: function(xhr){
-                    alert('Error adding product: ' + xhr.responseText);
-                }
+                $.ajax({
+                    url: '/companies/' + $('#companyId').val() + '/products',  // Kirim dengan company_id
+                    method: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response){
+                        alert('Product added successfully!');
+                        location.reload();  // Reload page
+                    },
+                    error: function(xhr){
+                        alert('Error adding product: ' + xhr.responseText);
+                    }
+                });
             });
         });
 
         $('#editProductForm').submit(function(e) {
             e.preventDefault();
-            var formData = new FormData(this); // Ini sudah memasukkan semua input termasuk company_id
-            var productId = $('#editProductId').val();
-            
-            console.log('Request URL:', '/companies/' + $('#editCompanyId').val() + '/products/' + productId);
-            $.ajax({
-                url: '/companies/' + $('#editCompanyId').val() + '/products/' + productId,
-                method: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    alert('Product updated successfully!');
-                    location.reload();
-                },
-                error: function(xhr) {
-                    alert('Error updating product: ' + xhr.responseText);
-                }
+            $('#confirmModal').modal('show'); // Tampilkan modal konfirmasi
+
+            $('#confirmSaveButton').off('click').on('click', function() {
+                var formData = new FormData($('#editProductForm')[0]);
+                var productId = $('#editProductId').val();
+
+                $.ajax({
+                    url: '/companies/' + $('#editCompanyId').val() + '/products/' + productId,
+                    method: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        alert('Product updated successfully!');
+                        location.reload();
+                    },
+                    error: function(xhr) {
+                        alert('Error updating product: ' + xhr.responseText);
+                    }
+                });
             });
         });
 
@@ -872,12 +885,14 @@ body {
         });
 
          // Menangani klik pada tombol delete
-         $('.btn-delete-product').on('click', function(event) {
+        $('.btn-delete-product').on('click', function(event) {
             var productId = $(this).data('id');
 
-            if (confirm('Are you sure you want to delete this product?')) {
+            $('#confirmModal').modal('show'); // Tampilkan modal konfirmasi
+
+            $('#confirmSaveButton').off('click').on('click', function() {
                 $.ajax({
-                    url: '/companies/products/delete/' + productId, // Kirim ID produk
+                    url: '/companies/products/delete/' + productId,
                     method: 'DELETE',
                     data: {
                         _token: '{{ csrf_token() }}'
@@ -888,10 +903,10 @@ body {
                         location.reload();
                     },
                     error: function(xhr) {
-                        alert('Error deleting team member: ' + xhr.responseJSON.error || 'Unknown error');
+                        alert('Error deleting product: ' + xhr.responseJSON.error || 'Unknown error');
                     }
                 });
-            }
+            });
         });
     });
     </script>
