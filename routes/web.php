@@ -1,29 +1,30 @@
 <?php
 
-use App\Models\Company;
 use App\Models\User;
+use App\Models\Company;
 use App\Models\Project;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\CompanyOutcomeController;
-use App\Http\Controllers\CompanyIncomeController;
-use App\Http\Controllers\HomepageController;
-use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\VerificationController;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\EventController;
-use App\Http\Controllers\SurveyController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\MetricProjectController;
-use App\Http\Controllers\LandingPageController;
-use App\Http\Controllers\InvestorController;
-use App\Http\Controllers\PeopleController;
 use App\Http\Controllers\HubsController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\TeamController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\PeopleController;
+use App\Http\Controllers\SurveyController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\HomepageController;
+use App\Http\Controllers\InvestorController;
+use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\VerificationController;
+use App\Http\Controllers\CompanyIncomeController;
+use App\Http\Controllers\MetricProjectController;
+use App\Http\Controllers\CompanyOutcomeController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 // Rute untuk autentikasi
 Auth::routes();
 Auth::routes(['verify' => true]);
@@ -89,6 +90,7 @@ Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('
 Route::get('/companies-list', [CompanyController::class, 'companyList'])->name('companies.list');
 Route::get('/companies/{id}', [CompanyController::class, 'show'])->name('companies.show');
 Route::get('/companies/{id}/team', [CompanyController::class, 'showTeam'])->name('companies.team');
+Route::get('/companies/{id}/product', [CompanyController::class, 'showProduct'])->name('companies.product');
 
 
 // Rute yang memerlukan autentikasi
@@ -249,8 +251,14 @@ Route::get('metric-projects/{projectId}/impact', [MetricProjectController::class
     Route::get('/profile-commpany', [ProfileController::class, 'editCompanyProfile'])
         ->name('profile-commpany')
         ->middleware('check.company');
-
     Route::get('/profile-commpany', [ProfileController::class, 'editCompanyProfile'])->name('profile-commpany')->middleware('check.company');
+
+    // routes/web.php
+    Route::get('/search-people', [TeamController::class, 'searchPeople']);
+    Route::post('/team/store', [TeamController::class, 'store']);
+    Route::get('/team/{id}/edit', [TeamController::class, 'editTeam'])->name('team.edit');
+    Route::put('/team/{id}', [TeamController::class, 'updateTeam'])->name('team.update');
+    Route::delete('/team/{id}/{companies_id}/delete', [TeamController::class, 'destroyTeam']);
 });
 
 Route::get('/verifikasidiri', function () {

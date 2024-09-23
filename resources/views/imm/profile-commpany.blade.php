@@ -6,7 +6,7 @@
 
 <style>
     @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Quicksand:wght@300..700&display=swap");
-html,
+    html,
 body {
     margin: 0;
     font-family: "Poppins", sans-serif;
@@ -98,6 +98,115 @@ body {
     cursor: pointer;
     color: #5940cb;
 }
+    .team-section {
+        text-align: center;
+        margin-top: 50px;
+    }
+    .team-title {
+        font-size: 36px;
+        font-weight: bold;
+        margin-bottom: 40px;
+    }
+    .team-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+    .team-card {
+        width: 250px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 15px;
+        text-align: center;
+        box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
+    }
+    .team-photo {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 10px;
+    }
+    .team-name {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .team-role {
+        font-size: 14px;
+        color: #888;
+        margin-bottom: 10px;
+    }
+    .action-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+    .btn-edit, .btn-delete {
+        background-color: #5940cb;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+    .btn-edit:hover, .btn-delete:hover {
+        background-color: #5e41de;
+    }
+    .btn-add {
+        background-color: #5940cb;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        margin-top: 30px;
+    }
+    .btn-add:hover {
+        background-color: #5e41de;
+    }
+    .people-results {
+        position: absolute; /* Pastikan hasil pencarian terletak di atas elemen lainnya */
+        width: 100%;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        max-height: 300px;
+        overflow-y: auto;
+        z-index: 1000; /* Menempatkan hasil di atas elemen lainnya */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Bayangan lebih kuat untuk efek kedalaman */
+    }
+
+    .person {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .person:hover {
+        background-color: #f0f0f0; /* Efek hover */
+    }
+
+    .profile-pic {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 10px;
+        object-fit: cover; /* Memastikan gambar tidak terdistorsi */
+    }
+
+    .person-info h5 {
+        margin: 0;
+        font-size: 1.1em;
+    }
+
+    .person-info p {
+        margin: 0;
+        color: #666;
+        font-size: 0.9em; /* Ukuran font lebih kecil untuk email */
+    }
+
 </style>
 @endsection
 
@@ -170,6 +279,98 @@ body {
                     </div>
                 </div>
             </section>
+            {{-- Ini merupakan bagian untuk anggota team dari suatu company tersebut --}}
+            <section>
+                <div class="container team-section">
+                    <h2 class="team-title">Our Team</h2>
+                    <div class="team-container">
+                        @if (!$team->isEmpty())
+                            @foreach ($team as $person)
+                                <div class="team-card">
+                                    <img src="{{ isset($person->image) ? asset('images/' . $person->image) : asset('images/1720765715.webp') }}" alt="{{ $person->name }}" class="rounded-circle mb-3" width="100" height="100">
+                                    <div class="team-name">{{ $person->name }}</div>
+                                    <div class="team-role">{{ $person->pivot->position }}</div>
+                                    <div class="action-buttons">
+                                        <button class="btn-edit" data-id="{{ $person->id }}" data-name="{{ $person->name }}" data-role="{{ $person->pivot->position }}" data-photo="{{ isset($person->image) ? asset('images/' . $person->image) : asset('images/1720765715.web') }}" data-toggle="modal" data-target="#editTeamModal">Edit</button>
+                                        <button class="btn-delete" data-id="{{ $person->id }}" data-company-id="{{ $company->id }}" id="team-member-{{ $person->id }}">
+                                            Delete
+                                        </button>                                                 
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <p>No team members available. Please add new members.</p>
+                        @endif
+                    </div>
+                    <button type="button" class="btn-add" data-toggle="modal" data-target="#addTeamModal">Add New Team Member</button>
+                </div>
+
+                <!-- Add Team Member Modal -->
+                <div class="modal fade" id="addTeamModal" tabindex="-1" aria-labelledby="addTeamModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content" style="height: 500px;">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addTeamModalLabel">Add Team Member</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="addTeamForm">
+                                    <div class="form-group">
+                                        <label for="searchPeople">Search People</label>
+                                        <input type="text" class="form-control" id="searchPeople" placeholder="Name or email">
+                                        <!-- Menampilkan hasil pencarian -->
+                                        <div id="peopleResults" class="people-results"></div>
+                                        <!-- Hidden input untuk menyimpan ID orang -->
+                                        <input type="hidden" id="selectedPersonId">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="companyId">Company ID</label>
+                                        <input type="text" class="form-control" id="companyId" value="{{ $company->id }}" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="position">Position</label>
+                                        <input type="text" class="form-control" id="position" placeholder="Position">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="saveTeamMember">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Team Member Modal -->
+                <div class="modal fade" id="editTeamModal" tabindex="-1" aria-labelledby="editTeamModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editTeamModalLabel">Edit Team Member Position</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="editTeamForm">
+                                    <input type="hidden" id="editTeamId"> <!-- Hidden input untuk ID anggota tim -->
+                                    <div class="form-group">
+                                        <label for="editPosition">Position</label>
+                                        <input type="text" class="form-control" id="editPosition" placeholder="Position">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="updateTeamMember">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <section>
                 <div class="row my-3 d-flex justify-content-center align-items-center">
                     <button type="button" id="saveButton" class="btn-masukkk" style="display: none;" data-toggle="modal" data-target="#confirmModal">
@@ -245,5 +446,199 @@ body {
             document.getElementById('companyForm').submit();
         });
     </script>
+    <!-- JavaScript for handling AJAX requests -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script>
+      $(document).ready(function() {
+            $('#searchPeople').on('input', function() {
+                var query = $(this).val();
+
+                if (query.length > 2) {
+                    console.log('Searching for: ', query);
+                    $.ajax({
+                        url: '/search-people',
+                        method: 'GET',
+                        data: { query: query },
+                        success: function(response) {
+                            console.log('Response from server: ', response);
+                            var peopleList = '';
+                            response.forEach(function(person) {
+                                peopleList += `
+                                    <div class="person" data-id="${person.id}">
+                                        <img src="${person.photo_url || 'images/1720765715.webp'}" alt="${person.name}" class="profile-pic">
+                                        <div class="person-info">
+                                            <h5>${person.name}</h5>
+                                            <p>${person.gmail}</p>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                            $('#peopleResults').html(peopleList).show();
+                        },
+                        error: function(xhr) {
+                            console.error('AJAX error: ', xhr);
+                        }
+                    });
+                } else {
+                    $('#peopleResults').html('').hide();
+                }
+         });
+
+        // Add click event to person list items
+        $('#peopleResults').on('click', '.person', function() {
+            var personId = $(this).data('id');
+            $('#selectedPersonId').val(personId);
+            console.log('Selected person ID: ', personId);
+        });
+
+
+        // Add click event to person list items
+        $('#peopleResults').on('click', '.person', function() {
+            var personId = $(this).data('id');
+            $('#selectedPersonId').val(personId);
+            console.log('Selected person ID: ', personId);
+        });
+
+        // Menyimpan ID orang yang dipilih
+        $('#peopleResults').on('click', '.person', function() {
+            var selectedId = $(this).data('id');
+            $('#selectedPersonId').val(selectedId); // Menyimpan ID orang terpilih
+            $('#searchPeople').val($(this).text()); // Mengganti input dengan nama orang yang dipilih
+            $('#peopleResults').html(''); // Menghapus hasil pencarian
+        });
+
+        // Menyimpan anggota tim ketika tombol "Save" diklik
+        $('#saveTeamMember').on('click', function() {
+            var personId = $('#selectedPersonId').val();
+            var companyId = $('#companyId').val();
+            var position = $('#position').val();
+
+            if (personId && position) {
+                // Kirim data ke backend
+                $.ajax({
+                    url: '/team/store', // Endpoint backend untuk menambah anggota tim
+                    method: 'POST',
+                    data: {
+                        person_id: personId,
+                        company_id: companyId,
+                        position: position,
+                        _token: "{{ csrf_token() }}" // tambahkan CSRF token untuk keamanan
+                    },
+                    success: function(response) {
+                        alert('Team member added successfully!');
+                        // Tutup modal setelah berhasil disimpan
+                        $('#addTeamModal').modal('hide');
+                        location.reload(); // Reload halaman untuk memperbarui daftar tim
+                    },
+                    error: function(xhr) {
+                        // Menangani kesalahan server (500) dan kesalahan validasi (422)
+                        if (xhr.status === 422) {
+                            // Kesalahan validasi
+                            var errors = xhr.responseJSON.errors;
+                            var errorMessages = [];
+                            for (var key in errors) {
+                                if (errors.hasOwnProperty(key)) {
+                                    errorMessages.push(errors[key].join(', ')); // Menggabungkan pesan kesalahan
+                                }
+                            }
+                            alert('Validation Error: \n' + errorMessages.join('\n'));
+                        } else if (xhr.status === 500) {
+                            // Kesalahan server
+                            alert('Server Error: Please try again later.');
+                        } else {
+                            // Kesalahan lain
+                            alert('Error adding team member: ' + xhr.responseText);
+                        }
+                    }
+                });
+            } else {
+                alert('Please select a person and enter a position.');
+            }
+        });
+
+        // Menangani klik pada tombol edit
+        $('.btn-edit').on('click', function(event) {
+            event.preventDefault(); // Mencegah refresh
+
+            var teamId = $(this).data('id'); // Ambil ID anggota tim dari data attribute
+            $('#editTeamId').val(teamId); // Set ID ke input hidden
+
+            // Ambil data anggota tim
+            $.ajax({
+                url: '/team/' + teamId + '/edit',
+                method: 'GET',
+                success: function(data) {
+                    $('#editPosition').val(data.position); // Set nilai posisi ke input
+                    $('#editTeamModal').modal('show'); // Tampilkan modal
+                },
+                error: function(xhr) {
+                    alert('Error fetching team member data.');
+                }
+            });
+        });
+
+        // Update team member position
+        $('#updateTeamMember').on('click', function(event) {
+            event.preventDefault(); // Mencegah perilaku default dari form
+
+            var teamId = $('#editTeamId').val();
+            var position = $('#editPosition').val();
+
+            // Kirim data ke backend
+            $.ajax({
+                url: '/team/' + teamId, // Endpoint untuk update anggota tim
+                method: 'PUT',
+                data: {
+                    position: position,
+                    _token: "{{ csrf_token() }}" // Tambahkan CSRF token untuk keamanan
+                },
+                success: function(response) {
+                    alert('Team member position updated successfully!');
+                    $('#editTeamModal').modal('hide');
+                    location.reload(); // Reload halaman untuk memperbarui daftar tim
+                },
+                error: function(xhr) {
+                    if (xhr.status === 422) {
+                        // Kesalahan validasi
+                        var errors = xhr.responseJSON.errors;
+                        var errorMessages = [];
+                        for (var key in errors) {
+                            if (errors.hasOwnProperty(key)) {
+                                errorMessages.push(errors[key].join(', '));
+                            }
+                        }
+                        alert('Validation Error: \n' + errorMessages.join('\n'));
+                    } else {
+                        alert('Error updating team member.');
+                    }
+                }
+            });
+        });
+
+        // Menangani klik pada tombol delete
+        $('.btn-delete').on('click', function(event) {
+            var teamId = $(this).data('id');
+            var companyId = $(this).data('company-id'); // Ambil company_id dari data attribute
+
+            if (confirm('Are you sure you want to delete this team member?')) {
+                $.ajax({
+                    url: '/team/' + teamId + '/' + companyId + '/delete', // Kirim kedua ID
+                    method: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(data) {
+                        alert(data.message);
+                        $('#team-member-' + teamId).remove();
+                    },
+                    error: function(xhr) {
+                        alert('Error deleting team member: ' + xhr.responseJSON.error || 'Unknown error');
+                    }
+                });
+            }
+        });
+    });
+    </script>   
 </div>
 @endsection
