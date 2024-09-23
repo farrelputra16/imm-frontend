@@ -258,47 +258,19 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
-                    @if (Auth::check() && Auth::user()->companies)
-                        <!-- Navbar untuk user yang sudah mendaftarkan perusahaan -->
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::is('homepage') ? 'active' : '' }}"
-                                href="{{ route('homepage') }}">Beranda</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::is('myproject') ? 'active' : '' }}"
-                                href="{{ route('myproject.myproject') }}">Proyek Saya</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::is('event') ? 'active' : '' }}" href="/event">Event</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::is('blog') ? 'active' : '' }}" href="/blog">Artikel</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::is('profile-commpany') ? 'active' : '' }}"
-                                href="{{ route('profile-commpany') }}">Perusahaan Saya</a>
-                        </li>
-                    @else
-                        <!-- Navbar untuk user yang belum mendaftarkan perusahaan -->
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::is('home') ? 'active' : '' }}"
-                                href="{{ route('home') }}">Beranda</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::is('homepage') ? 'active' : '' }}"
-                                href="{{ route('homepage') }}">Proyek Saya</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::is('event') ? 'active' : '' }}" href="/event">Event</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::is('blog') ? 'active' : '' }}" href="/blog">Artikel</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::is('profile-commpany') ? 'active' : '' }}"
-                                href="{{ route('profile-commpany') }}">Perusahaan Saya</a>
-                        </li>
-                    @endif
+                    <li class="nav-item">
+                        <a class="nav-link {{ Request::is('investor-home') ? 'active' : '' }}" href="{{ route('investor.home') }}">Beranda</a>
+                    </li>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ Request::is('event') ? 'active' : '' }}" href="/event">Event</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ Request::is('blog') ? 'active' : '' }}" href="/blog">Artikel</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ Request::is('company-list') ? 'active' : '' }}" href="{{ route('companies.list') }}">Cari Perusahaan</a>
+                    </li>
                 </ul>
 
                 <!-- User is logged in -->

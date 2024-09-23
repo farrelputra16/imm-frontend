@@ -17,14 +17,18 @@ class RedirectIfAuthenticated
      * @param  string|null  ...$guards
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next, ...$guards)
+    public function handle($request, Closure $next, $guard = null)
     {
-        $guards = empty($guards) ? [null] : $guards;
+        if (Auth::guard($guard)->check()) {
+            $user = Auth::user();
 
-        foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+            // Check if the user is an INVESTOR
+            if ($user->role === 'INVESTOR') {
+                return redirect()->route('investor.home'); // Redirect to investor dashboard
             }
+
+            // Redirect all other users to the default home page
+            return redirect('/home');
         }
 
         return $next($request);
