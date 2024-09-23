@@ -70,9 +70,16 @@ class User extends Authenticatable
      */
     public function setRoleAttribute($value)
     {
-        $this->attributes['role'] = in_array($value, ['ADMIN', 'USER']) ? $value : 'USER';
+        $this->attributes['role'] = in_array($value, ['ADMIN', 'USER','INVESTOR', 'EVENT ORGANIZER', 'PEOPLE']) ? $value : 'USER';
     }
-
+    public function people()
+    {
+        return $this->hasOne(People::class, 'user_id');
+    }
+    public function investor()
+    {
+        return $this->hasOne(Investor::class, 'user_id');
+    }
     public function companies()
     {
         return $this->hasOne(Company::class, 'user_id');

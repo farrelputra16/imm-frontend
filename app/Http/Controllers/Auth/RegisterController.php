@@ -9,6 +9,7 @@ use App\Models\People;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log; // Import Log facade
 use Illuminate\Http\Request;
 
 class RegisterController extends Controller
@@ -22,44 +23,57 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-    // Show registration form
+    // Menampilkan form registrasi
     public function showRegistrationForm()
     {
-        return view('auth.register'); // View includes role selection
+        Log::info('Menampilkan form registrasi.');
+        return view('auth.register');
     }
 
-    // Handle registration form submission
+    // Proses registrasi
     protected function register(Request $request)
     {
-        // Validate the input based on role
+        Log::info('Memulai proses registrasi untuk email: ' . $request->email);
+
+        // Validasi input berdasarkan role
         $this->validator($request->all())->validate();
+        Log::info('Validasi berhasil untuk email: ' . $request->email);
 
-        // Create the user based on the input
+        // Membuat user berdasarkan input
         $user = $this->create($request->all());
+        Log::info('User berhasil dibuat dengan ID: ' . $user->id . ' dan role: ' . $user->role);
 
-        // Handle post-registration logic for Investor or People roles
+        // Proses logika tambahan jika role Investor atau People
         if ($user->role === 'INVESTOR') {
             $this->createInvestor($user, $request->all());
+            Log::info('Investor berhasil dibuat untuk user ID: ' . $user->id);
         } elseif ($user->role === 'PEOPLE') {
             $this->createPeople($user, $request->all());
+            Log::info('People berhasil dibuat untuk user ID: ' . $user->id);
         }
 
-        return redirect($this->redirectTo)->with('success', 'Registration successful! Please login.');
+        // Login otomatis setelah registrasi
+        $this->guard()->login($user);
+        Log::info('User berhasil login setelah registrasi dengan ID: ' . $user->id);
+
+        return redirect($this->redirectTo)->with('success', 'Registrasi berhasil! Silakan login.');
     }
 
-    // Validate registration form data based on role
+    // Validasi input form registrasi berdasarkan role
     protected function validator(array $data)
     {
-        $role = $data['role'] ?? 'USER'; // Default to USER role if not specified
+        $role = $data['role'] ?? 'USER'; // Default ke USER jika role tidak dipilih
+        Log::info('Validasi untuk role: ' . $role);
 
-        // Common validation rules
+        // Aturan validasi umum
         $rules = [
-            'nama' => ['required', 'string', 'max:255'],
+            'nama_depan' => ['required', 'string', 'max:255'],
+            'nama_belakang' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'confirmed', 'min:8'],
         ];
 
-        // Additional rules based on role
+        // Tambahan aturan validasi berdasarkan role
         if ($role === 'USER') {
             $rules = array_merge($rules, [
                 'nik' => ['required', 'digits:16', 'unique:users,nik'],
@@ -71,55 +85,95 @@ class RegisterController extends Controller
         } elseif ($role === 'INVESTOR') {
             $rules = array_merge($rules, [
                 'org_name' => ['required', 'string', 'max:255'],
-                'contact_number' => ['required', 'string', 'max:15'],
+                'number_of_contacts' => 'required|integer|min:0',
+                'number_of_investments' => 'required|integer|min:0',
+                'location' => 'required|string|max:255',
+                'description' => 'required|string',
+                'departments' => 'required|string|max:255',
+                'nama_depan' => 'required|string|max:255',
+                'nama_belakang' => 'required|string|max:255',
+                'email' => 'required|email|unique:users',
+                'password' => 'required|string|min:6',
             ]);
         } elseif ($role === 'PEOPLE') {
             $rules = array_merge($rules, [
-                'job_title' => ['required', 'string', 'max:255'],
-                'primary_organization' => ['required', 'string', 'max:255'],
+                'name' => 'required|string|max:255',
+                'role' => 'required|in:mentor,pekerja,konsultan',
+                'primary_job_title' => 'required|string|max:255',
+                'primary_organization' => 'required|string|max:255',
+                'location' => 'required|string|max:255',
+                'regions' => 'required|string|max:255',
+                'gender' => 'required|in:male,female,other',
+                'linkedin_link' => 'nullable|url',
+                'description' => 'nullable|string',
+                'phone_number' => 'required|string|max:15',
+                'email' => 'required|email|max:255|unique:users,email', // Unique email validation for users table
+
+                // Additional user fields
+                'password' => 'required|string|min:6',
+                'nama_depan' => 'required|string|max:255',
+                'nama_belakang' => 'required|string|max:255',
             ]);
         }
 
         return Validator::make($data, $rules);
     }
 
-    // Create a new user instance after a valid registration
+    // Membuat instance user baru setelah validasi berhasil
     protected function create(array $data)
     {
-        return User::create([
-            'nama_depan' => $data['nama'],
+        Log::info('Membuat user baru dengan email: ' . $data['email']);
+
+        $user = User::create([
+            'nama_depan' => $data['nama_depan'],
+            'nama_belakang' => $data['nama_belakang'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'role' => $data['role'],
         ]);
+
+        Log::info('User berhasil dibuat dengan ID: ' . $user->id);
+        return $user;
     }
 
-    // Create an Investor entry after a user with role INVESTOR is created
+    // Membuat entri Investor setelah user dengan role INVESTOR dibuat
     protected function createInvestor(User $user, array $data)
     {
+        Log::info('Membuat investor untuk user ID: ' . $user->id);
+
         Investor::create([
-            'user_id' => $user->id,
             'org_name' => $data['org_name'],
-            'number_of_contacts' => 0,
-            'number_of_investments' => 0,
-            'location' => $data['location'] ?? 'Unknown',
-            'description' => $data['description'] ?? 'No description',
-            'departments' => $data['departments'] ?? 'General',
+            'number_of_contacts' => $data['number_of_contacts'],
+            'number_of_investments' => $data['number_of_investments'],
+            'location' => $data['location'],
+            'description' => $data['description'],
+            'departments' => $data['departments'],
+            'user_id' => $user->id, // Link ke user yang baru dibuat
         ]);
+
+        Log::info('Investor berhasil dibuat untuk user ID: ' . $user->id);
     }
 
-    // Create a People entry after a user with role PEOPLE is created
+    // Membuat entri People setelah user dengan role PEOPLE dibuat
     protected function createPeople(User $user, array $data)
     {
+        Log::info('Membuat people untuk user ID: ' . $user->id);
+
         People::create([
-            'user_id' => $user->id,
-            'name' => $data['nama'],
-            'role' => $data['people_role'], // Mentor, Pekerja, Konsultan
-            'primary_job_title' => $data['job_title'],
+            'user_id' => $user->id, // Associate user with people
+            'name' => $data['name'],
+            'role' => $data['role'],
+            'primary_job_title' => $data['primary_job_title'],
             'primary_organization' => $data['primary_organization'],
-            'location' => $data['location'] ?? 'Unknown',
-            'phone_number' => $data['telepon'],
-            'gmail' => $data['email'],
+            'location' => $data['location'],
+            'regions' => $data['regions'],
+            'gender' => $data['gender'],
+            'linkedin_link' => $data['linkedin_link'],
+            'description' => $data['description'],
+            'phone_number' => $data['phone_number'],
+            'gmail' => $data['gmail'],
         ]);
+
+        Log::info('People berhasil dibuat untuk user ID: ' . $user->id);
     }
 }

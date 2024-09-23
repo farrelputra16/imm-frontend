@@ -119,6 +119,11 @@ Route::middleware(['auth'])->group(function () {
             return view('investorspage.home'); // Return the view for investor homepage
         })->name('investor.home');
     });
+    Route::group(['middleware' => ['auth', 'people']], function () {
+        Route::get('/people-home', function () {
+            return view('peoplepage.home'); // Return the view for investor homepage
+        })->name('people.home');
+    });
 
     Route::get('/hubungi-sekarang/{event_id}', [EventController::class, 'hubungiSekarang'])->name('hubungi.sekarang');
 
