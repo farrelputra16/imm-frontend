@@ -59,12 +59,13 @@
         background-color: white;
         padding: 10px 30px;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: space-between; /* To keep profile/login on the right */
     }
 
     .navbar {
         display: flex;
         gap: 20px;
-        justify-content: center;
         font-weight: 500;
         font-size: 1rem;
         color: #333;
@@ -99,6 +100,31 @@
         color: #5940CB;
     }
 
+    /* Profile Image */
+    .profile-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+    .ml-2 {
+        color:black;
+        margin-left:15px;
+    }
+
+    /* Dropdown Menu Styling */
+    .dropdown-menu {
+        background-color: #5940CB;
+        border: none;
+    }
+
+    .dropdown-menu .dropdown-item {
+        color: #fff;
+    }
+
+    .dropdown-menu .dropdown-item:hover {
+        background-color: #4b0082;
+    }
+
     /* Form container styling */
     .form-container {
         background-color: white;
@@ -112,9 +138,10 @@
 
     /* Form input styling */
     .form-control {
-        border-radius: 30px;
-        padding: 15px;
+        border-radius: 8px;
+        padding: 20px;
         border: 1px solid #ccc;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         transition: border-color 0.3s ease-in-out;
     }
 
@@ -130,18 +157,16 @@
 
     /* Button styling */
     .btn-primary {
-        background-color: #ff9f0a; /* Using palette */
+        background-color: #5940CB; /* Using palette */
         border: none;
-        border-radius: 30px;
-        padding: 15px 30px;
-        font-size: 1.1rem;
-        font-weight: bold;
-        width: 100%;
+        font-size: 1rem;
+        padding: 20px 20px;
+        border-radius: 8px;
         transition: background-color 0.3s ease;
     }
 
     .btn-primary:hover {
-        background-color: #ff7a00; /* Lighter shade on hover */
+        background-color:  #4b0082; /* Lighter shade on hover */
     }
 </style>
 <body>
@@ -167,6 +192,31 @@
             <a href="{{ route('people.index') }}">People</a>
             <a href="{{ route('hubs.index') }}">Hubs</a>
         </div>
+
+        <!-- Authenticated User Profile or Login -->
+        @auth
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdownMenuLink"
+                    role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <!-- Display User Profile Image and Name -->
+                    <img src="{{ Auth::user()->img ? asset('images/' . Auth::user()->img) : asset('images/default_user.webp') }}"
+                        alt="Profile Picture" class="profile-img">
+                    <span class="ml-2">{{ Auth::user()->nama_depan }}</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                    <li><a class="dropdown-item" href="{{ route('profile') }}">Profil Saya</a></li>
+                    <li>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="dropdown-item">Log Out</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        @else
+            <!-- Log In Button -->
+            <a href="{{ route('login') }}" class="btn btn-primary">Log In</a>
+        @endauth
     </div>
 
     <!-- Content Section -->

@@ -36,7 +36,7 @@
         background-color: #5940CB;
         border: none;
         font-size: 1rem;
-        padding: 10px 20px;
+        padding: 20px 20px;
         border-radius: 8px;
         transition: background-color 0.3s ease;
     }

@@ -204,8 +204,8 @@
     </div>
     <div class="container section-ukur d-flex justify-content-center">
         <div class="section-content1 text-center">
-            <h5 id="title">Ukur dampak anda dengan <strong>percaya diri</strong></h5>
-            <button class="btn btn-primary btn-mulai" onclick="window.location.href='/login';">Mulai Sekarang</button>
+            <h5 id="title">Mulai Investasi <strong>Sekarang</strong></h5>
+            <button class="btn btn-primary btn-mulai" onclick="window.location.href='/companies-list';">Cari Perusahaan</button>
         </div>
     </div>
 
