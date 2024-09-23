@@ -303,7 +303,7 @@ h2 {
                         <div class="card-body text-center flex-grow-1">
                             <i class="bi bi-box-seam text-primary fs-1 mb-3"></i>
                             <h5 class="card-title">Products</h5>
-                            <p><a href="/products/{{ $company->id }}" class="text-decoration-none text-info">View Products</a></p>
+                            <p><a href="{{ route('companies.product', ['id' => $company->id]) }}" class="text-decoration-none text-info">View Products</a></p>
                         </div>
                     </div>
                 </div>

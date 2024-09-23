@@ -207,6 +207,68 @@ body {
         font-size: 0.9em; /* Ukuran font lebih kecil untuk email */
     }
 
+    /* 
+        Styling untuk bagian company product
+    */
+    .product-section {
+        text-align: center;
+        margin-top: 50px;
+    }
+
+    .product-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .product-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 400px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 15px;
+        text-align: center;
+        box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-card img {
+        width: 100%; /* Mengisi lebar kotak */
+        height: 300px; /* Tinggi tetap */
+        object-fit: cover; /* Menjaga rasio aspek */
+        border-radius: 0; /* Menghilangkan sudut bulat */
+        margin-bottom: 1rem;
+    }
+    .btn-add-product{
+        background-color: #5940cb;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        margin-top: 30px;
+    }
+    .product-price{
+        margin: 20px;
+        border: none;
+        background-color: #5940cb;
+        padding: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+        color: white;
+        border-radius: 30px;
+    }
+    .btn-edit-product, .btn-delete-product {
+        background-color: #5940cb;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+    .btn-edit-product:hover, .btn-delete-product:hover {
+        background-color: #5e41de;
+    }
 </style>
 @endsection
 
@@ -279,6 +341,18 @@ body {
                     </div>
                 </div>
             </section>
+            
+            <section>
+                <div class="row my-3 d-flex justify-content-center align-items-center">
+                    <button type="button" id="saveButton" class="btn-masukkk" style="display: none;" data-toggle="modal" data-target="#confirmModal">
+                        <div class="out d-flex justify-content-center align-items-center" style="gap: 10px">
+                            <span>Simpan Perubahan Data Perusahaan</span>
+                            <img src="{{ asset('images/icon-save.svg') }}" width="20" alt="">
+                        </div>
+                    </button>
+                </div>
+            </section>
+
             {{-- Ini merupakan bagian untuk anggota team dari suatu company tersebut --}}
             <section>
                 <div class="container team-section">
@@ -371,14 +445,109 @@ body {
                 </div>
             </section>
 
+            {{-- Ini merupakan bagian untuk product dari suatu company tersebut --}}
             <section>
-                <div class="row my-3 d-flex justify-content-center align-items-center">
-                    <button type="button" id="saveButton" class="btn-masukkk" style="display: none;" data-toggle="modal" data-target="#confirmModal">
-                        <div class="out d-flex justify-content-center align-items-center" style="gap: 10px">
-                            <span>Simpan Perubahan Data Perusahaan</span>
-                            <img src="{{ asset('images/icon-save.svg') }}" width="20" alt="">
+                <div class="container product-section">
+                    <h2 class="team-title">Our Products</h2>
+                    <div class="product-container">
+                        @if (!$products->isEmpty())
+                            @foreach ($products as $product)
+                                <div class="product-card">
+                                    <img src="{{ isset($product->image) ? asset('images/products/' . $product->image) : asset('images/imm.png') }}" alt="{{ $product->name }}">
+                                    <div class="team-name">{{ $product->name }}</div>
+                                    <div class="product-description">{{ $product->description }}</div>
+                                    <div class="product-price">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
+                                    <div class="action-buttons">
+                                        <button class="btn-edit-product" data-id="{{ $product->id }}" data-name="{{ $product->name }}" data-description="{{ $product->description }}" data-photo="{{ isset($product->image) ? asset('images/products/' . $product->image) : asset('images/imm.png') }}" data-toggle="modal" data-target="#editProductModal" data-price="{{ $product->price }}" data-company-id="{{ $product->company->id }}">Edit</button>
+                                        <button class="btn-delete-product" data-id="{{ $product->id }}" id="product-{{ $product->id }}">Delete</button>  
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <p>No products available. Please add new products.</p>
+                        @endif
+                    </div>
+                    <button type="button" class="btn-add-product" data-toggle="modal" data-target="#addProductModal">Add New Product</button>
+                </div>        
+                <!-- Add Product Modal -->
+                <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content" style="height: 100%; width:100%;">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addProductModalLabel">Add New Product</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form id="addProductForm" enctype="multipart/form-data">
+                                @csrf
+                                <input type="hidden" id="companyId" name="company_id" value="{{ $company->id }}">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="productName">Product Name</label>
+                                        <input type="text" class="form-control" id="productName" name="name" placeholder="Enter product name">
+                                    </div>
+                                    <div class="form-group" style="width: 100%;">
+                                        <label for="productDescription">Product Description</label>
+                                        <textarea class="form-control" id="productDescription" name="description" rows="3" placeholder="Enter product description"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="productPrice">Product Price</label>
+                                        <input type="number" class="form-control" id="productPrice" name="price" placeholder="Enter product price">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="productImage">Product Image</label>
+                                        <input type="file" class="form-control-file" id="productImage" name="image" accept=".jpg,.jpeg,.png">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary" id="saveProduct">Save</button>
+                                </div>
+                            </form>
                         </div>
-                    </button>
+                    </div>
+                </div>
+
+                <!-- Edit Product Modal -->
+                <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content" style="width: 100%; height:100%;">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form id="editProductForm" enctype="multipart/form-data">
+                                <input type="hidden" id="editCompanyId" name="company_id">
+                                @csrf
+                                <div class="modal-body">
+                                    <input type="hidden" id="editProductId" name="id"> <!-- Hidden input for product id -->
+                                    <div class="form-group">
+                                        <label for="editProductName">Product Name</label>
+                                        <input type="text" class="form-control" id="editProductName" name="name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editProductDescription">Product Description</label>
+                                        <textarea class="form-control" id="editProductDescription" name="description" rows="3"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editProductPrice">Product Price</label>
+                                        <input type="number" class="form-control" id="editProductPrice" name="price">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editProductImage">Product Image</label>
+                                        <input type="file" class="form-control-file" id="editProductImage" name="image">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary" id="updateProduct">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </section>
         </form>
@@ -449,19 +618,20 @@ body {
     <!-- JavaScript for handling AJAX requests -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+
+    {{-- ! Javascript untuk menangani handle terkait team baik untuk menambahkan menghapus dan mencari orang --}}
     <script>
       $(document).ready(function() {
+        // Menangani input pencarian orang
             $('#searchPeople').on('input', function() {
                 var query = $(this).val();
 
                 if (query.length > 2) {
-                    console.log('Searching for: ', query);
                     $.ajax({
                         url: '/search-people',
                         method: 'GET',
                         data: { query: query },
                         success: function(response) {
-                            console.log('Response from server: ', response);
                             var peopleList = '';
                             response.forEach(function(person) {
                                 peopleList += `
@@ -485,19 +655,17 @@ body {
                 }
          });
 
-        // Add click event to person list items
+        // Menambahkan event click pada setiap item orang
         $('#peopleResults').on('click', '.person', function() {
             var personId = $(this).data('id');
             $('#selectedPersonId').val(personId);
-            console.log('Selected person ID: ', personId);
         });
 
 
-        // Add click event to person list items
+        //Menyimpan ID orang yang dipilih 
         $('#peopleResults').on('click', '.person', function() {
             var personId = $(this).data('id');
             $('#selectedPersonId').val(personId);
-            console.log('Selected person ID: ', personId);
         });
 
         // Menyimpan ID orang yang dipilih
@@ -639,6 +807,93 @@ body {
             }
         });
     });
-    </script>   
+    </script>  
+    
+    {{-- ! Javascript untuk menangani handle terkait product baik untuk menambahkan edit dan menghapus --}}
+    <script>
+        $(document).ready(function(){
+        // Menangani klik pada tombol tambah produk
+        $('#addProductForm').submit(function(e){
+            e.preventDefault();
+            var formData = new FormData(this);  // Membuat FormData termasuk company_id
+
+            $.ajax({
+                url: '/companies/' + $('#companyId').val() + '/products',  // Kirim dengan company_id
+                method: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response){
+                    alert('Product added successfully!');
+                    location.reload();  // Reload page
+                },
+                error: function(xhr){
+                    alert('Error adding product: ' + xhr.responseText);
+                }
+            });
+        });
+
+        $('#editProductForm').submit(function(e) {
+            e.preventDefault();
+            var formData = new FormData(this); // Ini sudah memasukkan semua input termasuk company_id
+            var productId = $('#editProductId').val();
+            
+            console.log('Request URL:', '/companies/' + $('#editCompanyId').val() + '/products/' + productId);
+            $.ajax({
+                url: '/companies/' + $('#editCompanyId').val() + '/products/' + productId,
+                method: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    alert('Product updated successfully!');
+                    location.reload();
+                },
+                error: function(xhr) {
+                    alert('Error updating product: ' + xhr.responseText);
+                }
+            });
+        });
+
+
+        $('.btn-edit-product').on('click', function() {
+            var productId = $(this).data('id');
+            var companyId = $(this).data('company-id'); // Ambil company_id
+
+            console.log('Company ID:', companyId); // Debugging
+            console.log('Product ID:', productId); // Debugging
+
+            // Set nilai pada input yang sesuai
+            $('#editCompanyId').val(companyId); // Set company ID
+            $('#editProductId').val(productId);
+            $('#editProductName').val($(this).data('name'));
+            $('#editProductDescription').val($(this).data('description'));
+            $('#editProductPrice').val($(this).data('price'));
+        });
+
+         // Menangani klik pada tombol delete
+         $('.btn-delete-product').on('click', function(event) {
+            var productId = $(this).data('id');
+
+            if (confirm('Are you sure you want to delete this product?')) {
+                $.ajax({
+                    url: '/companies/products/delete/' + productId, // Kirim ID produk
+                    method: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(data) {
+                        alert(data.message);
+                        $('#product-' + productId).remove();
+                        location.reload();
+                    },
+                    error: function(xhr) {
+                        alert('Error deleting team member: ' + xhr.responseJSON.error || 'Unknown error');
+                    }
+                });
+            }
+        });
+    });
+    </script>
 </div>
 @endsection

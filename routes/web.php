@@ -14,6 +14,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\PeopleController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\HomepageController;
@@ -90,7 +91,7 @@ Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('
 Route::get('/companies-list', [CompanyController::class, 'companyList'])->name('companies.list');
 Route::get('/companies/{id}', [CompanyController::class, 'show'])->name('companies.show');
 Route::get('/companies/{id}/team', [CompanyController::class, 'showTeam'])->name('companies.team');
-Route::get('/companies/{id}/product', [CompanyController::class, 'showProduct'])->name('companies.product');
+Route::get('/companies/{id}/product', [CompanyController::class, 'showProducts'])->name('companies.product');
 
 
 
@@ -258,12 +259,22 @@ Route::get('metric-projects/{projectId}/impact', [MetricProjectController::class
         ->middleware('check.company');
     Route::get('/profile-commpany', [ProfileController::class, 'editCompanyProfile'])->name('profile-commpany')->middleware('check.company');
 
-    // routes/web.php
+    // routes untuk anggota team dari company
     Route::get('/search-people', [TeamController::class, 'searchPeople']);
     Route::post('/team/store', [TeamController::class, 'store']);
     Route::get('/team/{id}/edit', [TeamController::class, 'editTeam'])->name('team.edit');
     Route::put('/team/{id}', [TeamController::class, 'updateTeam'])->name('team.update');
     Route::delete('/team/{id}/{companies_id}/delete', [TeamController::class, 'destroyTeam']);
+
+    /* 
+        Berikut ini merupakan rute untuk product dari company 
+    */
+    // Menambahkan produk baru untuk perusahaan tertentu
+    Route::post('/companies/{companyId}/products', [ProductController::class, 'store']);
+    // Mengedit produk untuk perusahaan tertentu
+    Route::post('/companies/{companyId}/products/{id}', [ProductController::class, 'update']);
+    // Menghapus produk untuk perusahaan tertentu
+    Route::delete('/companies/products/delete/{id}', [ProductController::class, 'destroy']);
 });
 
 Route::get('/verifikasidiri', function () {
