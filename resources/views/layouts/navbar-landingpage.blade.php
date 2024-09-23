@@ -1,4 +1,3 @@
-<!-- resources/views/layouts/navbar-landingpage.blade.php -->
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap'); /* Using Montserrat font */
 
@@ -144,6 +143,31 @@
         background-color: #5940CB; /* Keep the same background color */
         color: white; /* Keep text color the same */
     }
+
+    /* Profile Image */
+    .profile-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+    .ml-2{
+        color:black;
+        margin-left:10px;
+    }
+
+    /* Profile Dropdown */
+    .navbar .dropdown-menu {
+        background-color: #5940CB;
+        border: none;
+    }
+
+    .navbar .dropdown-menu .dropdown-item {
+        color: #fff;
+    }
+
+    .navbar .dropdown-menu .dropdown-item:hover {
+        background-color: #4b0082;
+    }
 </style>
 
 <div class="header">
@@ -169,9 +193,36 @@
         <input type="text" placeholder="Search...">
     </div>
 
-    <!-- Log In Button -->
-    <a href="{{ route('login') }}" class="login-btn">Log In</a>
+    <!-- Authenticated User Section -->
+    @auth
+        <div class="dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdownMenuLink"
+                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <!-- Display User Profile Image and Name -->
+                <img src="{{ Auth::user()->img ? asset('/images/' . Auth::user()->img) : asset('/images/default_user.webp') }}"
+                    alt="Profile Picture" class="profile-img">
+                <span class="ml-2">{{ Auth::user()->nama_depan }}</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="{{ route('profile') }}">Profil Saya</a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="dropdown-item">
+                        <i class="fas fa-sign-out-alt"></i> Log Out
+                    </button>
+                </form>
+            </div>
+        </div>
+    @else
+        <!-- Log In Button -->
+        <a href="{{ route('login') }}" class="login-btn">Log In</a>
+    @endauth
 </div>
 
 <!-- Font Awesome for icons -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+<!-- Full version of jQuery (not slim) -->
+<!-- Popper.js for Bootstrap's dropdowns and tooltips -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -93,6 +93,7 @@ Route::get('/companies/{id}/team', [CompanyController::class, 'showTeam'])->name
 Route::get('/companies/{id}/product', [CompanyController::class, 'showProduct'])->name('companies.product');
 
 
+
 // Rute yang memerlukan autentikasi
 Route::middleware(['auth'])->group(function () {
     Route::get('/myproject', [ProjectController::class, 'index'])->name('myproject.myproject');
@@ -111,6 +112,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/detail-biaya/{project_id}', [CompanyOutcomeController::class, 'detailOutcome'])->name('homepageimm.detailbiaya');
     Route::get('/tambah-penggunaan-dana/{project_id}', [CompanyOutcomeController::class, 'create'])->name('tambah.penggunaan.dana');
     Route::post('/store-company-outcome', [CompanyOutcomeController::class, 'store'])->name('store-company-outcome');
+
+    Route::group(['middleware' => ['auth', 'investor']], function () {
+        Route::get('/investor-home', function () {
+            return view('investorspage.home'); // Return the view for investor homepage
+        })->name('investor.home');
+    });
 
     Route::get('/hubungi-sekarang/{event_id}', [EventController::class, 'hubungiSekarang'])->name('hubungi.sekarang');
 
@@ -243,8 +250,6 @@ Route::get('metric-projects/{projectId}/impact', [MetricProjectController::class
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
-
-
 
     Route::get('/profile-commpany', [ProfileController::class, 'editCompanyProfile'])->name('profile-commpany');
     Route::put('/profile-commpany/{id}', [ProfileController::class, 'updateCompanyProfile'])->name('profile-commpany.update');
