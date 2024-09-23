@@ -65,7 +65,7 @@ class LoginController extends Controller
         if ($user->role === 'INVESTOR') {
             return redirect()->route('investor.home'); // Customize this route
         } elseif ($user->role === 'PEOPLE') {
-            return redirect()->route('people.index'); // Customize this route
+            return redirect()->route('people.home'); // Customize this route
         }
 
         return redirect()->route('home');

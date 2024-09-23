@@ -26,6 +26,7 @@ class People extends Model
         'description',
         'phone_number',
         'gmail',
+        'user_id'
     ];
 
     /**
@@ -36,7 +37,10 @@ class People extends Model
     protected $casts = [
         'phone_number' => 'string',
     ];
-
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     // Relasi many-to-many dengan Company melalui tabel team
     public function companies()
     {

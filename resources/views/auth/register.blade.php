@@ -155,12 +155,12 @@
                     <div id="userFields" class="role-section">
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="fullName">Nama Lengkap</label>
-                                <input type="text" id="fullName" name="nama" placeholder="Masukkan nama lengkap anda" value="{{ old('nama') }}" required />
+                                <label for="nama_depan">Nama Depan</label>
+                                <input type="text" id="nama_depan" name="nama_depan" placeholder="Masukkan nama depan anda" value="{{ old('nama_depan') }}" required />
                             </div>
                             <div class="form-group">
-                                <label for="negara">Negara</label>
-                                <input type="text" id="negara" name="negara" placeholder="Masukkan negara anda" value="{{ old('negara') }}" required />
+                                <label for="nama_belakang">Nama Belakang</label>
+                                <input type="text" id="nama_belakang" name="nama_belakang" placeholder="Masukkan nama belakang anda" value="{{ old('nama_belakang') }}" required />
                             </div>
                         </div>
                         <div class="form-row">
@@ -170,14 +170,14 @@
                                 <div id="error-message" class="error text-danger"></div>
                             </div>
                             <div class="form-group">
-                                <label for="provinsi">Provinsi</label>
-                                <input type="text" id="provinsi" name="provinsi" placeholder="Masukkan provinsi anda" value="{{ old('provinsi') }}" required />
+                                <label for="negara">Negara</label>
+                                <input type="text" id="negara" name="negara" placeholder="Masukkan negara anda" value="{{ old('negara') }}" required />
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="address">Alamat Lengkap</label>
-                                <input type="text" id="address" name="alamat" placeholder="Masukkan alamat lengkap anda" value="{{ old('alamat') }}" required />
+                                <label for="provinsi">Provinsi</label>
+                                <input type="text" id="provinsi" name="provinsi" placeholder="Masukkan provinsi anda" value="{{ old('provinsi') }}" required />
                             </div>
                             <div class="form-group">
                                 <label for="telepon">Nomor Telepon</label>
@@ -186,37 +186,49 @@
                         </div>
                     </div>
 
-                    {{-- INVESTOR Role Fields --}}
-                    <div id="investorFields" class="role-section">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="org_name">Nama Organisasi</label>
-                                <input type="text" id="org_name" name="org_name" placeholder="Masukkan nama organisasi" value="{{ old('org_name') }}" />
-                            </div>
-                            <div class="form-group">
-                                <label for="contact_number">Nomor Kontak</label>
-                                <input type="text" id="contact_number" name="contact_number" placeholder="Masukkan nomor kontak" value="{{ old('contact_number') }}" />
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="number_of_investments">Jumlah Investasi</label>
-                                <input type="number" id="number_of_investments" name="number_of_investments" placeholder="Jumlah investasi" value="{{ old('number_of_investments') }}" min="0" />
-                            </div>
-                            <div class="form-group">
-                                <label for="location">Lokasi</label>
-                                <input type="text" id="location" name="location" placeholder="Masukkan lokasi" value="{{ old('location') }}" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="description">Deskripsi</label>
-                            <textarea id="description" name="description" placeholder="Masukkan deskripsi" rows="3">{{ old('description') }}</textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="departments">Departemen</label>
-                            <input type="text" id="departments" name="departments" placeholder="Departemen" value="{{ old('departments') }}" />
-                        </div>
-                    </div>
+                    <!-- INVESTOR Role Fields -->
+<div id="investorFields" class="role-section">
+    <div class="form-row">
+        <!-- Nama Depan dan Nama Belakang (diperlukan oleh semua role) -->
+        <div class="form-group">
+            <label for="nama_depan">Nama Depan</label>
+            <input type="text" id="nama_depan" name="nama_depan" placeholder="Masukkan nama depan anda" value="{{ old('nama_depan') }}" required />
+        </div>
+        <div class="form-group">
+            <label for="nama_belakang">Nama Belakang</label>
+            <input type="text" id="nama_belakang" name="nama_belakang" placeholder="Masukkan nama belakang anda" value="{{ old('nama_belakang') }}" required />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group">
+            <label for="org_name">Nama Organisasi</label>
+            <input type="text" id="org_name" name="org_name" placeholder="Masukkan nama organisasi" value="{{ old('org_name') }}" required />
+        </div>
+        <div class="form-group">
+            <label for="contact_number">Nomor Kontak</label>
+            <input type="text" id="contact_number" name="contact_number" placeholder="Masukkan nomor kontak" value="{{ old('number_of_contacts') }}" required />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group">
+            <label for="number_of_investments">Jumlah Investasi</label>
+            <input type="number" id="number_of_investments" name="number_of_investments" placeholder="Jumlah investasi" value="{{ old('number_of_investments') }}" min="0" required />
+        </div>
+        <div class="form-group">
+            <label for="location">Lokasi</label>
+            <input type="text" id="location" name="location" placeholder="Masukkan lokasi" value="{{ old('location') }}" required />
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="description">Deskripsi</label>
+        <textarea id="description" name="description" placeholder="Masukkan deskripsi" rows="3" required>{{ old('description') }}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="departments">Departemen</label>
+        <input type="text" id="departments" name="departments" placeholder="Departemen" value="{{ old('departments') }}" required />
+    </div>
+</div>
+
 
                     {{-- PEOPLE Role Fields --}}
                     <div id="peopleFields" class="role-section">
@@ -302,36 +314,59 @@
 
     <!-- SweetAlert2 Library -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Font Awesome for Icons -->
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const roleSelect = document.getElementById('role');
-            const userFields = document.getElementById('userFields');
-            const investorFields = document.getElementById('investorFields');
-            const peopleFields = document.getElementById('peopleFields');
+    const roleSelect = document.getElementById('role');
+    const userFields = document.getElementById('userFields');
+    const investorFields = document.getElementById('investorFields');
+    const peopleFields = document.getElementById('peopleFields');
 
-            function toggleFields() {
-                const selectedRole = roleSelect.value;
-                userFields.style.display = 'none';
-                investorFields.style.display = 'none';
-                peopleFields.style.display = 'none';
-
-                if (selectedRole === 'USER') {
-                    userFields.style.display = 'block';
-                } else if (selectedRole === 'INVESTOR') {
-                    investorFields.style.display = 'block';
-                } else if (selectedRole === 'PEOPLE') {
-                    peopleFields.style.display = 'block';
-                }
-            }
-
-            // Initialize fields based on old input
-            toggleFields();
-
-            roleSelect.addEventListener('change', toggleFields);
+    // Function to remove 'required' attribute from fields within a section
+    function removeRequiredAttributes(section) {
+        const inputs = section.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.removeAttribute('required');
         });
+    }
+
+    // Function to add 'required' attribute to fields within a section
+    function addRequiredAttributes(section) {
+        const inputs = section.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.setAttribute('required', 'required');
+        });
+    }
+
+    function toggleFields() {
+        const selectedRole = roleSelect.value;
+        userFields.style.display = 'none';
+        investorFields.style.display = 'none';
+        peopleFields.style.display = 'none';
+
+        // Remove 'required' from all fields initially
+        removeRequiredAttributes(userFields);
+        removeRequiredAttributes(investorFields);
+        removeRequiredAttributes(peopleFields);
+
+        if (selectedRole === 'USER') {
+            userFields.style.display = 'block';
+            addRequiredAttributes(userFields); // Add 'required' to the visible section
+        } else if (selectedRole === 'INVESTOR') {
+            investorFields.style.display = 'block';
+            addRequiredAttributes(investorFields); // Add 'required' to the visible section
+        } else if (selectedRole === 'PEOPLE') {
+            peopleFields.style.display = 'block';
+            addRequiredAttributes(peopleFields); // Add 'required' to the visible section
+        }
+    }
+
+    // Initialize fields based on old input
+    toggleFields();
+
+    roleSelect.addEventListener('change', toggleFields);
+});
+
 
         // Function to validate form and show SweetAlert2 popups
         function validateForm(event) {
