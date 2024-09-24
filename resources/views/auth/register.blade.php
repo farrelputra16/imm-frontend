@@ -152,39 +152,39 @@
                     </div>
 
                     {{-- USER Role Fields --}}
-                <div id="userFields" class="role-section">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="user_nama_depan">Nama Depan</label>
-                            <input type="text" id="user_nama_depan" name="nama_depan" placeholder="Masukkan nama depan anda" value="{{ old('nama_depan') }}" required />
+                    <div id="userFields" class="role-section">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nama_depan">Nama Depan</label>
+                                <input type="text" id="nama_depan" name="nama_depan" placeholder="Masukkan nama depan anda" value="{{ old('nama_depan') }}" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="nama_belakang">Nama Belakang</label>
+                                <input type="text" id="nama_belakang" name="nama_belakang" placeholder="Masukkan nama belakang anda" value="{{ old('nama_belakang') }}" required />
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="user_nama_belakang">Nama Belakang</label>
-                            <input type="text" id="user_nama_belakang" name="nama_belakang" placeholder="Masukkan nama belakang anda" value="{{ old('nama_belakang') }}" required />
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nik">NIK</label>
+                                <input type="text" id="nik" name="nik" placeholder="Masukkan NIK anda" value="{{ old('nik') }}" required minlength="16" maxlength="16" />
+                                <div id="error-message" class="error text-danger"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="negara">Negara</label>
+                                <input type="text" id="negara" name="negara" placeholder="Masukkan negara anda" value="{{ old('negara') }}" required />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="provinsi">Provinsi</label>
+                                <input type="text" id="provinsi" name="provinsi" placeholder="Masukkan provinsi anda" value="{{ old('provinsi') }}" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="telepon">Nomor Telepon</label>
+                                <input type="text" id="telepon" name="telepon" placeholder="Masukkan nomor telepon anda" value="{{ old('telepon') }}" required />
+                            </div>
                         </div>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="nik">NIK</label>
-                            <input type="text" id="nik" name="nik" placeholder="Masukkan NIK anda" value="{{ old('nik') }}" required minlength="16" maxlength="16" />
-                            <div id="error-message" class="error text-danger"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="negara">Negara</label>
-                            <input type="text" id="negara" name="negara" placeholder="Masukkan negara anda" value="{{ old('negara') }}" required />
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="alamat">Alamat</label>
-                            <input type="text" id="alamat" name="alamat" placeholder="Masukkan alamat anda" value="{{ old('alamat') }}" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="telepon">Nomor Telepon</label>
-                            <input type="text" id="telepon" name="telepon" placeholder="Masukkan nomor telepon anda" value="{{ old('telepon') }}" required />
-                        </div>
-                    </div>
-                </div>
 
                     <!-- INVESTOR Role Fields -->
 <div id="investorFields" class="role-section">
