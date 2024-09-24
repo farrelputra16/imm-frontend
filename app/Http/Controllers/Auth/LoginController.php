@@ -38,14 +38,20 @@ class LoginController extends Controller
      * @return bool
      */
     protected function attemptLogin(Request $request)
-{
-    $credentials = $this->credentials($request);
-    $user = \App\Models\User::where('email', $credentials['email'])->first();
-    Log::info('Attempting login with credentials: ', $credentials);
-    Log::info('Attempting login for email: ' . $credentials['email']);
-    Log::info('User found with role: ' . ($user ? $user->role : 'User not found'));
+    {
+        $credentials = $this->credentials($request);
+        $user = \App\Models\User::where('email', $credentials['email'])->first();
 
-    if ($user) {
+        // Logging untuk membantu debugging
+        Log::info('Attempting login for email: ' . $credentials['email']);
+        Log::info('User found with role: ' . ($user ? $user->role : 'User not found'));
+
+        // Validasi pengguna ditemukan
+        if (!$user) {
+            Log::error('User not found with email: ' . $credentials['email']);
+            return false;
+        }
+
         // Cek apakah password cocok dengan hash di database
         if (Hash::check($credentials['password'], $user->password)) {
             Log::info('Password is valid for user: ' . $user->email);
@@ -53,36 +59,24 @@ class LoginController extends Controller
             Log::error('Password is invalid for user: ' . $user->email);
             return false; // Jika password salah, hentikan login
         }
-    }
 
-    if ($user && $user->role === 'USER') {
-        if (is_null($user->nik) || is_null($user->negara) || is_null($user->provinsi)) {
-            Log::error('Profile incomplete for USER');
+        // Validasi tambahan untuk pengguna dengan role 'USER'
+        if ($user->role === 'USER') {
+            if (is_null($user->nik) || is_null($user->negara) || is_null($user->provinsi)) {
+                Log::error('Profile incomplete for USER');
+                return false;
+            }
+        }
+
+        // Jika semua validasi lolos, coba login menggunakan Auth::attempt()
+        if (Auth::attempt($credentials, $request->filled('remember'))) {
+            Log::info('Login successful for user: ' . Auth::user()->email);
+            return true;
+        } else {
+            Log::error('Login failed for email: ' . $credentials['email']);
             return false;
         }
     }
-
-    if ($user && in_array($user->role, ['INVESTOR', 'PEOPLE'])) {
-        if (is_null($user->email)) {
-            Log::error('Invalid email for INVESTOR/PEOPLE');
-            return false;
-        }
-    }
-
-    // Panggil Auth::attempt setelah pengecekan role dan kondisi lain
-    if (Auth::attempt($credentials, $request->filled('remember'))) {
-        Log::info('Login successful for user: ' . Auth::user()->email);
-        return true;
-    } else {
-        Log::error('Login failed for email: ' . $credentials['email']);
-        return false;
-    }
-    if (Auth::guard('investor')->attempt($credentials, $request->filled('remember'))) {
-        Log::info('Login successful for investor: ' . Auth::user()->email);
-        return true;
-    }
-    
-}
 
     /**
      * Redirect based on the user role after login.
@@ -92,20 +86,18 @@ class LoginController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     protected function authenticated(Request $request, $user)
-{
-    Log::info('Redirecting user after login: ' . $user->role);
+    {
+        Log::info('Redirecting user after login: ' . $user->role);
 
-    if ($user->role === 'INVESTOR') {
-        Log::info('Redirecting to investor home');
-        return redirect()->route('investor.home');
-    } elseif ($user->role === 'PEOPLE') {
-        return redirect()->route('people.home');
+        if ($user->role === 'INVESTOR') {
+            Log::info('Redirecting to investor home');
+            return redirect()->route('investor.home');
+        } elseif ($user->role === 'PEOPLE') {
+            return redirect()->route('people.home');
+        }
+
+        return redirect()->route('home'); // Redirect default
     }
-
-    return redirect()->route('home'); // Redirect default
-}
-
-
 
     /**
      * Custom failed login response for user with missing fields (only for 'USER' role).
