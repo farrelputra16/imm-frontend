@@ -36,11 +36,16 @@ return [
     */
 
     'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
+    'investor' => [
+        'driver' => 'session',
+        'provider' => 'users', // Pastikan ini sesuai dengan provider
     ],
+    'web' => [
+        'driver' => 'session',
+        'provider' => 'users',
+    ],
+],
+
 
     /*
     |--------------------------------------------------------------------------

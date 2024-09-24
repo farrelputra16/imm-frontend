@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
@@ -40,25 +41,48 @@ class LoginController extends Controller
 {
     $credentials = $this->credentials($request);
     $user = \App\Models\User::where('email', $credentials['email'])->first();
+    Log::info('Attempting login with credentials: ', $credentials);
+    Log::info('Attempting login for email: ' . $credentials['email']);
+    Log::info('User found with role: ' . ($user ? $user->role : 'User not found'));
 
-    // Validasi khusus untuk role USER
+    if ($user) {
+        // Cek apakah password cocok dengan hash di database
+        if (Hash::check($credentials['password'], $user->password)) {
+            Log::info('Password is valid for user: ' . $user->email);
+        } else {
+            Log::error('Password is invalid for user: ' . $user->email);
+            return false; // Jika password salah, hentikan login
+        }
+    }
+
     if ($user && $user->role === 'USER') {
         if (is_null($user->nik) || is_null($user->negara) || is_null($user->provinsi)) {
+            Log::error('Profile incomplete for USER');
             return false;
         }
     }
 
-    // Tambahan validasi untuk role INVESTOR dan PEOPLE
     if ($user && in_array($user->role, ['INVESTOR', 'PEOPLE'])) {
         if (is_null($user->email)) {
-            return false; // Contoh validasi tambahan jika ada
+            Log::error('Invalid email for INVESTOR/PEOPLE');
+            return false;
         }
     }
 
-    // Attempt login for all roles
-    return Auth::attempt($credentials, $request->filled('remember'));
+    // Panggil Auth::attempt setelah pengecekan role dan kondisi lain
+    if (Auth::attempt($credentials, $request->filled('remember'))) {
+        Log::info('Login successful for user: ' . Auth::user()->email);
+        return true;
+    } else {
+        Log::error('Login failed for email: ' . $credentials['email']);
+        return false;
+    }
+    if (Auth::guard('investor')->attempt($credentials, $request->filled('remember'))) {
+        Log::info('Login successful for investor: ' . Auth::user()->email);
+        return true;
+    }
+    
 }
-
 
     /**
      * Redirect based on the user role after login.
@@ -68,16 +92,20 @@ class LoginController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     protected function authenticated(Request $request, $user)
-    {
-        // Check the user role and redirect accordingly
-        if ($user->role === 'INVESTOR') {
-            return redirect()->route('investor.home'); // Customize this route
-        } elseif ($user->role === 'PEOPLE') {
-            return redirect()->route('people.home'); // Customize this route
-        }
+{
+    Log::info('Redirecting user after login: ' . $user->role);
 
-        return redirect()->route('home');
+    if ($user->role === 'INVESTOR') {
+        Log::info('Redirecting to investor home');
+        return redirect()->route('investor.home');
+    } elseif ($user->role === 'PEOPLE') {
+        return redirect()->route('people.home');
     }
+
+    return redirect()->route('home'); // Redirect default
+}
+
+
 
     /**
      * Custom failed login response for user with missing fields (only for 'USER' role).

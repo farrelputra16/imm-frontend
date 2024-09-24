@@ -275,8 +275,8 @@ Route::get('metric-projects/{projectId}/impact', [MetricProjectController::class
     Route::put('/team/{id}', [TeamController::class, 'updateTeam'])->name('team.update');
     Route::delete('/team/{id}/{companies_id}/delete', [TeamController::class, 'destroyTeam']);
 
-    /* 
-        Berikut ini merupakan rute untuk product dari company 
+    /*
+        Berikut ini merupakan rute untuk product dari company
     */
     // Menambahkan produk baru untuk perusahaan tertentu
     Route::post('/companies/{companyId}/products', [ProductController::class, 'store']);
