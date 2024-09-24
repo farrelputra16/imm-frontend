@@ -8,15 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Wishlist extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'project_id'];
+    protected $fillable = ['user_id', 'company_id'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function project()
+    // Relasi dengan perusahaan
+    public function company()
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(Company::class);
     }
 }

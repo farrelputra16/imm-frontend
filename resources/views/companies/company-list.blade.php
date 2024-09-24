@@ -127,10 +127,18 @@
         </div>
     </form>
 
+    <!-- Tombol Simpan ke Wishlist -->
+    <form method="POST" action="{{ route('wishlist.add') }}" id="wishlistForm">
+        @csrf
+        <input type="hidden" name="company_ids" id="company_ids" value="">
+        <button type="submit" class="btn btn-primary wishlist-button">Simpan ke Wishlist</button>
+    </form>    
+
     <!-- Table -->
     <table class="table table-hover mt-4">
         <thead class="table-light">
             <tr>
+                <th><input type="checkbox" id="select_all"></th> <!-- Checkbox untuk memilih semua -->
                 <th>Organization Name</th>
                 <th>Founded Date</th>
                 <th>Last Funding Date</th>
@@ -143,22 +151,21 @@
         </thead>
         <tbody>
             @foreach ($companies as $company)
-                <tr onclick="window.location.href='{{ route('companies.show', $company->id) }}'">
+                <tr data-href="{{ route('companies.show', $company->id) }}">
+                    <td><input type="checkbox" class="select_company" data-id="{{ $company->id }}"></td>
                     <td>{{ $company->nama }}</td>
                     <td>{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('F j, Y') : 'N/A' }}</td>
                     <td>{{ $company->latest_income_date ? \Carbon\Carbon::parse($company->latest_income_date)->format('F j, Y') : 'N/A' }}</td>
                     <td>
                         @if ($company->latest_funding_type)
-                            <div>
-                                {{ $company->latest_funding_type }}
-                            </div>
+                            <div>{{ $company->latest_funding_type }}</div>
                         @else
                             No funding data available
                         @endif
                     </td>
                     <td>{{ $company->jumlah_karyawan }}</td>
                     <td>{{ $company->tipe }}</td>
-                    <td>{{Str::limit( $company->startup_summary, 100, '...') }}</td>
+                    <td>{{ Str::limit($company->startup_summary, 100, '...') }}</td>
                     <td>{{ $company->posisi_pic }}</td>
                 </tr>
             @endforeach
@@ -169,5 +176,44 @@
         document.getElementById('funding_type').addEventListener('change', function() {
             document.getElementById('companySearchForm').submit();
         });
+    </script>
+    <script>
+        // Handle row click event dan kalo misalnya yang di check bukan checkbox maka akan diarahkan ke halaman detail
+        document.querySelectorAll('tr[data-href]').forEach(tr => {
+            tr.addEventListener('click', function(e) {
+                // Check if the click was on the checkbox, if so, do nothing
+                if (e.target.type !== 'checkbox') {
+                    window.location.href = this.dataset.href;
+                }
+            });
+        });
+    
+        // Handle select all functionality
+        document.getElementById('select_all').addEventListener('change', function() {
+            const isChecked = this.checked;
+            document.querySelectorAll('.select_company').forEach(checkbox => {
+                checkbox.checked = isChecked;
+            });
+        });
+    
+        // Handle checkboxes dynamically using event delegation
+        document.querySelector('tbody').addEventListener('change', function(e) {
+            if (e.target.classList.contains('select_company')) {
+                updateWishlistButton();
+            }
+        });
+    
+        function updateWishlistButton() {
+            const selectedCompanies = Array.from(document.querySelectorAll('.select_company:checked')).map(cb => cb.dataset.id);
+            if (selectedCompanies.length > 0) {
+                // Show wishlist button
+                document.querySelector('.wishlist-button').style.display = 'inline-block';
+                document.getElementById('company_ids').value = selectedCompanies.join(',');
+            } else {
+                // Hide wishlist button
+                document.querySelector('.wishlist-button').style.display = 'none';
+                document.getElementById('company_ids').value = '';
+            }
+        }
     </script>
 @endsection

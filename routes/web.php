@@ -94,10 +94,14 @@ Route::get('/companies/{id}', [CompanyController::class, 'show'])->name('compani
 Route::get('/companies/{id}/team', [CompanyController::class, 'showTeam'])->name('companies.team');
 Route::get('/companies/{id}/product', [CompanyController::class, 'showProducts'])->name('companies.product');
 /**
- * Pembuatan Route untuk bagian melihat project pada compan yang tidak memerlukan autentikasi
+ * Pembuatan Route untuk bagian melihat project pada company yang tidak memerlukan autentikasi
  * */
 Route::get('companies/projects/{id}', [ProjectController::class, 'show'])->name('companies-project.show');
 Route::get('companies/project/{projectId}/metric/{metricId}/metricProject/{metricProjectId}/impact', [MetricProjectController::class, 'showImpact'])->name('companies-metric-impact.show');
+ /**
+ *  Berikut ini merupakan rute untuk menangani wishlist dari investor
+ */
+Route::post('/wishlist/add', [WishlistController::class, 'add'])->name('wishlist.add');
 
 
 // Rute yang memerlukan autentikasi
@@ -281,11 +285,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/companies/{companyId}/products/{id}', [ProductController::class, 'update']);
     // Menghapus produk untuk perusahaan tertentu
     Route::delete('/companies/products/delete/{id}', [ProductController::class, 'destroy']);
-
-    /**
-     *  Berikut ini merupakan rute untuk menangani wishlist dari investor
-     */
-    Route::post('/wishlist/add/{company}', [WishlistController::class, 'add'])->name('wishlist.add');
 
 });
 

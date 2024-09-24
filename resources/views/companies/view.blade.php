@@ -192,14 +192,6 @@ h2 {
             </div>
             <div class="company-name ms-3">
                 <h3>{{ $company->nama }}</h3>
-                @auth
-                    <form action="{{ route('wishlist.add', $company->id) }}" method="POST">
-                        @csrf
-                        <button type="submit" class="wishlist-button">Add to Wishlist</button>
-                    </form>
-                @else
-                    <p class="text-danger">You need to be logged in to add to your wishlist.</p>
-                @endauth
             </div>
         </div>
 
