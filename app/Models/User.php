@@ -88,5 +88,12 @@ class User extends Authenticatable
     public function events()
     {
     return $this->belongsToMany(Event::class);
-}
+    }
+
+    // Relasi one-to-many dengan Wishlist
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+
 }

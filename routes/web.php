@@ -19,6 +19,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\InvestorController;
+use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\CompanyIncomeController;
@@ -168,32 +169,28 @@ Route::middleware(['auth'])->group(function () {
     })->name('impact.impact');
 
 
-// Rute untuk menampilkan form kosong untuk menambahkan laporan baru
-Route::get('/metric-projects/{projectId}/matrixreport/create/{metricId}/{metricProjectId}', [MetricProjectController::class, 'createMatrixReport'])->name('metric-projects.createMatrixReport');
-Route::post('/metric-projects/{projectId}/matrixreport', [MetricProjectController::class, 'storeMatrixReport'])->name('metric-projects.storeMatrixReport');
+    // Rute untuk menampilkan form kosong untuk menambahkan laporan baru
+    Route::get('/metric-projects/{projectId}/matrixreport/create/{metricId}/{metricProjectId}', [MetricProjectController::class, 'createMatrixReport'])->name('metric-projects.createMatrixReport');
+    Route::post('/metric-projects/{projectId}/matrixreport', [MetricProjectController::class, 'storeMatrixReport'])->name('metric-projects.storeMatrixReport');
 
-Route::get('/metric-projects/{projectId}/matrixreport/{metricId}/{reportId}/{metricProjectId}', [MetricProjectController::class, 'showReport'])->name('metric-projects.showReport');
-Route::get('/projects/{id}', [ProjectController::class, 'view'])->name('myproject.detail');
+    Route::get('/metric-projects/{projectId}/matrixreport/{metricId}/{reportId}/{metricProjectId}', [MetricProjectController::class, 'showReport'])->name('metric-projects.showReport');
+    Route::get('/projects/{id}', [ProjectController::class, 'view'])->name('myproject.detail');
 
-Route::get('/project/{projectId}/metric/{metricId}/metricProject/{metricProjectId}/impact', [MetricProjectController::class, 'showMetricImpact'])->name('metric-impact.show');
-// Rute untuk menampilkan laporan yang sudah ada
+    Route::get('/project/{projectId}/metric/{metricId}/metricProject/{metricProjectId}/impact', [MetricProjectController::class, 'showMetricImpact'])->name('metric-impact.show');
+    // Rute untuk menampilkan laporan yang sudah ada
 
-// Rute untuk menampilkan halaman matrixreport (menampilkan laporan yang sudah ada)
-Route::get('/metric-projects/{id}/matrixreport', [MetricProjectController::class, 'matrixReport'])->name('metric-projects.matrixreport');
+    // Rute untuk menampilkan halaman matrixreport (menampilkan laporan yang sudah ada)
+    Route::get('/metric-projects/{id}/matrixreport', [MetricProjectController::class, 'matrixReport'])->name('metric-projects.matrixreport');
 
-// Rute untuk memperbarui laporan yang sudah ada
-Route::put('/metric-projects/{projectId}/matrixreport/{reportId}', [MetricProjectController::class, 'updateMatrixReport'])->name('metric-projects.updateMatrixReport');
+    // Rute untuk memperbarui laporan yang sudah ada
+    Route::put('/metric-projects/{projectId}/matrixreport/{reportId}', [MetricProjectController::class, 'updateMatrixReport'])->name('metric-projects.updateMatrixReport');
 
-// Rute untuk menampilkan halaman impact setelah menambah atau memperbarui laporan
-Route::get('metric-projects/{projectId}/impact', [MetricProjectController::class, 'impact'])->name('metric-projects.impact');
-
-
+    // Rute untuk menampilkan halaman impact setelah menambah atau memperbarui laporan
+    Route::get('metric-projects/{projectId}/impact', [MetricProjectController::class, 'impact'])->name('metric-projects.impact');
 
     Route::get('/matrixreport', function () {
         return view('myproject.creatproject.matrixreport');
     });
-
-
 
     Route::get('/review', function () {
         return view('myproject.creatproject.review');
@@ -284,6 +281,12 @@ Route::get('metric-projects/{projectId}/impact', [MetricProjectController::class
     Route::post('/companies/{companyId}/products/{id}', [ProductController::class, 'update']);
     // Menghapus produk untuk perusahaan tertentu
     Route::delete('/companies/products/delete/{id}', [ProductController::class, 'destroy']);
+
+    /**
+     *  Berikut ini merupakan rute untuk menangani wishlist dari investor
+     */
+    Route::post('/wishlist/add/{company}', [WishlistController::class, 'add'])->name('wishlist.add');
+
 });
 
 Route::get('/verifikasidiri', function () {
