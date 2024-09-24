@@ -77,5 +77,11 @@ class Project extends Model
     {
         return $this->belongsTo(User::class);
     }
+    // Relasi one-to-many dengan Wishlist
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+
 }
 
