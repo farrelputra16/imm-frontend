@@ -23,22 +23,15 @@ class ConfirmPasswordController extends Controller
      * @return void
      */
     public function __construct()
-    {
-        $this->middleware('auth');
+{
+    $this->middleware('auth');
+}
 
-        $this->redirectTo = $this->determineRedirectPath();
-    }
+protected function determineRedirectPath()
+{
+    $user = auth()->user();
 
-    /**
-     * Determine the redirect path based on the user's role.
-     *
-     * @return string
-     */
-    protected function determineRedirectPath()
-    {
-        $user = auth()->user(); // Get the authenticated user
-
-        // Check the role and determine the redirect path
+    if ($user) {
         if ($user->role === 'INVESTOR') {
             return '/companies/company-list';
         } elseif ($user->role === 'PEOPLE') {
@@ -46,8 +39,10 @@ class ConfirmPasswordController extends Controller
         } elseif ($user->role === 'USER') {
             return RouteServiceProvider::HOME;
         }
-
-        // Default redirect path
-        return RouteServiceProvider::HOME;
     }
+
+    return RouteServiceProvider::HOME;
+}
+
+
 }

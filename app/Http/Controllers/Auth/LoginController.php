@@ -37,20 +37,28 @@ class LoginController extends Controller
      * @return bool
      */
     protected function attemptLogin(Request $request)
-    {
-        $credentials = $this->credentials($request);
-        $user = \App\Models\User::where('email', $credentials['email'])->first();
+{
+    $credentials = $this->credentials($request);
+    $user = \App\Models\User::where('email', $credentials['email'])->first();
 
-        // Check for user existence and handle specific validation for 'USER' role
-        if ($user && $user->role === 'USER') {
-            if (is_null($user->nik) || is_null($user->negara) || is_null($user->provinsi)) {
-                return false;
-            }
+    // Validasi khusus untuk role USER
+    if ($user && $user->role === 'USER') {
+        if (is_null($user->nik) || is_null($user->negara) || is_null($user->provinsi)) {
+            return false;
         }
-
-        // Attempt login for all users regardless of role
-        return Auth::attempt($credentials, $request->filled('remember'));
     }
+
+    // Tambahan validasi untuk role INVESTOR dan PEOPLE
+    if ($user && in_array($user->role, ['INVESTOR', 'PEOPLE'])) {
+        if (is_null($user->email)) {
+            return false; // Contoh validasi tambahan jika ada
+        }
+    }
+
+    // Attempt login for all roles
+    return Auth::attempt($credentials, $request->filled('remember'));
+}
+
 
     /**
      * Redirect based on the user role after login.

@@ -152,39 +152,39 @@
                     </div>
 
                     {{-- USER Role Fields --}}
-                    <div id="userFields" class="role-section">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="nama_depan">Nama Depan</label>
-                                <input type="text" id="nama_depan" name="nama_depan" placeholder="Masukkan nama depan anda" value="{{ old('nama_depan') }}" required />
-                            </div>
-                            <div class="form-group">
-                                <label for="nama_belakang">Nama Belakang</label>
-                                <input type="text" id="nama_belakang" name="nama_belakang" placeholder="Masukkan nama belakang anda" value="{{ old('nama_belakang') }}" required />
-                            </div>
+                <div id="userFields" class="role-section">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="user_nama_depan">Nama Depan</label>
+                            <input type="text" id="user_nama_depan" name="nama_depan" placeholder="Masukkan nama depan anda" value="{{ old('nama_depan') }}" required />
                         </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="nik">NIK</label>
-                                <input type="text" id="nik" name="nik" placeholder="Masukkan NIK anda" value="{{ old('nik') }}" required minlength="16" maxlength="16" />
-                                <div id="error-message" class="error text-danger"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="negara">Negara</label>
-                                <input type="text" id="negara" name="negara" placeholder="Masukkan negara anda" value="{{ old('negara') }}" required />
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="provinsi">Provinsi</label>
-                                <input type="text" id="provinsi" name="provinsi" placeholder="Masukkan provinsi anda" value="{{ old('provinsi') }}" required />
-                            </div>
-                            <div class="form-group">
-                                <label for="telepon">Nomor Telepon</label>
-                                <input type="text" id="telepon" name="telepon" placeholder="Masukkan nomor telepon anda" value="{{ old('telepon') }}" required />
-                            </div>
+                        <div class="form-group">
+                            <label for="user_nama_belakang">Nama Belakang</label>
+                            <input type="text" id="user_nama_belakang" name="nama_belakang" placeholder="Masukkan nama belakang anda" value="{{ old('nama_belakang') }}" required />
                         </div>
                     </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nik">NIK</label>
+                            <input type="text" id="nik" name="nik" placeholder="Masukkan NIK anda" value="{{ old('nik') }}" required minlength="16" maxlength="16" />
+                            <div id="error-message" class="error text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="negara">Negara</label>
+                            <input type="text" id="negara" name="negara" placeholder="Masukkan negara anda" value="{{ old('negara') }}" required />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="alamat">Alamat</label>
+                            <input type="text" id="alamat" name="alamat" placeholder="Masukkan alamat anda" value="{{ old('alamat') }}" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="telepon">Nomor Telepon</label>
+                            <input type="text" id="telepon" name="telepon" placeholder="Masukkan nomor telepon anda" value="{{ old('telepon') }}" required />
+                        </div>
+                    </div>
+                </div>
 
                     <!-- INVESTOR Role Fields -->
 <div id="investorFields" class="role-section">
@@ -205,8 +205,8 @@
             <input type="text" id="org_name" name="org_name" placeholder="Masukkan nama organisasi" value="{{ old('org_name') }}" required />
         </div>
         <div class="form-group">
-            <label for="contact_number">Nomor Kontak</label>
-            <input type="text" id="contact_number" name="contact_number" placeholder="Masukkan nomor kontak" value="{{ old('number_of_contacts') }}" required />
+            <label for="number_of_contacts">Nomor Kontak</label>
+            <input type="number" id="number_of_contacts" name="number_of_contacts" placeholder="Masukkan nomor kontak" value="{{ old('number_of_contacts') }}" required />
         </div>
     </div>
     <div class="form-row">
@@ -324,7 +324,7 @@
 
     // Function to remove 'required' attribute from fields within a section
     function removeRequiredAttributes(section) {
-        const inputs = section.querySelectorAll('input, select');
+        const inputs = section.querySelectorAll('input, select, textarea');
         inputs.forEach(input => {
             input.removeAttribute('required');
         });
@@ -332,7 +332,7 @@
 
     // Function to add 'required' attribute to fields within a section
     function addRequiredAttributes(section) {
-        const inputs = section.querySelectorAll('input, select');
+        const inputs = section.querySelectorAll('input, select, textarea');
         inputs.forEach(input => {
             input.setAttribute('required', 'required');
         });
@@ -349,23 +349,26 @@
         removeRequiredAttributes(investorFields);
         removeRequiredAttributes(peopleFields);
 
+        // Show and apply 'required' only to the selected role
         if (selectedRole === 'USER') {
             userFields.style.display = 'block';
-            addRequiredAttributes(userFields); // Add 'required' to the visible section
+            addRequiredAttributes(userFields);
         } else if (selectedRole === 'INVESTOR') {
             investorFields.style.display = 'block';
-            addRequiredAttributes(investorFields); // Add 'required' to the visible section
+            addRequiredAttributes(investorFields);
         } else if (selectedRole === 'PEOPLE') {
             peopleFields.style.display = 'block';
-            addRequiredAttributes(peopleFields); // Add 'required' to the visible section
+            addRequiredAttributes(peopleFields);
         }
     }
 
     // Initialize fields based on old input
     toggleFields();
 
+    // Update fields on role change
     roleSelect.addEventListener('change', toggleFields);
 });
+
 
 
         // Function to validate form and show SweetAlert2 popups
