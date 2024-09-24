@@ -307,11 +307,11 @@ h2 {
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            
-        </div>             
-        <div class="container mt-5" style="margin-bottom:50px;">
+            </div>         
+        </div>    
+        
+        {{-- Bagian untuk investor list --}}
+        <div class="container mt-5" style="margin-bottom:20px;">
             <div class="card shadow-sm">
                 <div class="card-body">
                     <h4 class="card-title mb-4">Investor List</h4>
@@ -346,9 +346,75 @@ h2 {
                 </div>
             </div>
         </div>
+
+        {{-- Bagian untuk project list --}}
+
+        <!-- Display Ongoing Projects -->
+        <div class="container mt-5" style="margin-bottom:20px;">
+            <div class="section mt-5">
+                <h4 class="text-center mb-5">Ongoing Projects ({{ $ongoingProjects->count() }})</h4>
+                @if($ongoingProjects->isEmpty())
+                    <p class="text-center">No ongoing projects found.</p>
+                @else
+                    <div class="row">
+                        @foreach($ongoingProjects as $project)
+                            <div class="col-md-4 mb-4">
+                                <div class="card">
+                                    <img src="{{ $project->img ? asset('images/' . $project->img) : asset('images/default_project.png') }}" class="card-img-top" alt="Project Image">
+                                        <div class="card-body d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h5 class="card-title">{{ $project->nama }}</h5>
+                                                <p class="card-text">{{ Str::limit($project->deskripsi, 100) }}</p>
+                                                <p><strong>Status:</strong> {{ $project->status }}</p>
+                                            </div>
+                                            <!-- Tombol View Detail -->
+                                            <div class="ml-3">
+                                                <a href="{{ route('companies-project.show', $project->id) }}" class="btn btn-primary">View Detail</a>
+                                            </div>
+                                        </div>                                        
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        <!-- Display Completed Projects -->
+        <div class="container mt-5" style="margin-bottom: 50px;">
+            <div class="section mt-5">
+                <h4 class="text-center mb-5">Completed Projects ({{ $completedProjects->count() }})</h4>
+                @if($completedProjects->isEmpty())
+                    <p class="text-center">No completed projects found.</p>
+                @else
+                    <div class="row">
+                        @foreach($completedProjects as $project)
+                            <div class="col-md-4 mb-4">
+                                <div class="card">
+                                    <img src="{{ $project->img ? asset('images/' . $project->img) : asset('images/default_project.png') }}" 
+                                        class="card-img-top" alt="Project Image">
+                                        <div class="card-body d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h5 class="card-title">{{ $project->nama }}</h5>
+                                                <p class="card-text">{{ Str::limit($project->deskripsi, 100) }}</p>
+                                                <p><strong>Status:</strong> {{ $project->status }}</p>
+                                            </div>
+                                            <!-- Tombol View Detail -->
+                                            <div class="ml-3">
+                                                <a href="{{ route('companies-project.show', $project->id) }}" class="btn btn-primary">View Detail</a>
+                                            </div>
+                                        </div>     
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+        </div>
     </div>
 </div>
 <!-- Tambahkan ini di bagian bawah body sebelum penutup tag body -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
 <script>
@@ -358,6 +424,7 @@ h2 {
             ordering: true, // Pengurutan otomatis
             info: false, // Hilangkan informasi jumlah data
             responsive: true, // Tabel responsive
+            searching: false, // Sembunyikan search bar
             columnDefs: [
                 { targets: 1, orderable: false } // Nonaktifkan sorting untuk kolom 'Lead Investor'
             ]

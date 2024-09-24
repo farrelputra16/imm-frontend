@@ -17,9 +17,9 @@
         .navbar-brand {
             font-weight: bold;
         }
-.file-item-report{
-    color:  #5940CB;
-}
+        .file-item-report{
+            color:  #5940CB;
+        }
         .matrix-section {
             margin-top: 20px;
         }

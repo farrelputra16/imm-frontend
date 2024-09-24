@@ -93,11 +93,18 @@ class CompanyController extends Controller
      */
     public function show($id)
     {
+        // Find the company by ID, or fail if not found
         $company = Company::findOrFail($id);
-        $company->load('projects');
-        $company->load('incomes');
-        // dd($company->incomes);
-        return view('companies.view', compact('company'));
+        
+        // Load related projects and incomes for the company
+        $company->load('projects', 'incomes');
+        
+        // Separate projects by their status (Ongoing and Completed)
+        $ongoingProjects = $company->projects->where('status', 'Belum selesai');
+        $completedProjects = $company->projects->where('status', 'Selesai');
+        
+        // Return view to display the company details and projects
+        return view('companies.view', compact('company', 'ongoingProjects', 'completedProjects'));
     }
 
     public function index()
@@ -161,4 +168,5 @@ class CompanyController extends Controller
         $products = $company->products;
         return view('companies.products', compact('products', 'company'));
     }
+
 }
