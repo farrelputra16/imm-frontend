@@ -275,8 +275,8 @@
                             <a class="nav-link {{ Request::is('blog') ? 'active' : '' }}" href="/blog">Artikel</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ Request::is('profile-commpany') ? 'active' : '' }}"
-                                href="{{ route('profile-commpany') }}">Perusahaan Saya</a>
+                            <a class="nav-link {{ Request::is('profile-company') ? 'active' : '' }}"
+                                href="{{ route('profile-company') }}">Perusahaan Saya</a>
                         </li>
                     @else
                         <!-- Navbar untuk user yang belum mendaftarkan perusahaan -->
@@ -295,8 +295,8 @@
                             <a class="nav-link {{ Request::is('blog') ? 'active' : '' }}" href="/blog">Artikel</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ Request::is('profile-commpany') ? 'active' : '' }}"
-                                href="{{ route('profile-commpany') }}">Perusahaan Saya</a>
+                            <a class="nav-link {{ Request::is('profile-company') ? 'active' : '' }}"
+                                href="{{ route('profile-company') }}">Perusahaan Saya</a>
                         </li>
                     @endif
                 </ul>
@@ -386,7 +386,7 @@
                             <a class="text-white" href="/blog">Artikel</a>
                         </li>
                         <li class="text-white">
-                            <a class="text-white" href="{{ route('profile-commpany') }}">Perusahaan Saya</a>
+                            <a class="text-white" href="{{ route('profile-company') }}">Perusahaan Saya</a>
                         </li>
                     @else
                         <!-- Navbar untuk user yang belum mendaftarkan perusahaan -->
@@ -403,7 +403,7 @@
                             <a class="text-white" href="/blog">Artikel</a>
                         </li>
                         <li class="text-white">
-                            <a class="text-white" href="{{ route('profile-commpany') }}">Perusahaan Saya</a>
+                            <a class="text-white" href="{{ route('profile-company') }}">Perusahaan Saya</a>
                         </li>
                     @endif
                 </ul>

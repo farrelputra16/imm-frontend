@@ -275,7 +275,7 @@ body {
 @section('content')
 <div class="container propil">
     <div class="container">
-        <form method="POST" action="{{ route('profile-commpany.update', ['id' => $company->id]) }}" id="companyForm">
+        <form method="POST" action="{{ route('profile-company.update', ['id' => $company->id]) }}" id="companyForm">
             @csrf
             @method('PUT')
             <section>
@@ -791,6 +791,7 @@ body {
 
         // Menangani klik pada tombol delete
         $('.btn-delete').on('click', function(event) {
+            event.preventDefault(); // Mencegah refresh
             var teamId = $(this).data('id');
             var companyId = $(this).data('company-id');
 

@@ -358,7 +358,7 @@
                             <a class="text-white" href="/blog">Artikel</a>
                         </li>
                         <li class="text-white">
-                            <a class="text-white" href="{{ route('profile-commpany') }}">Perusahaan Saya</a>
+                            <a class="text-white" href="{{ route('profile-company') }}">Perusahaan Saya</a>
                         </li>
                     @else
                         <!-- Navbar untuk user yang belum mendaftarkan perusahaan -->
@@ -375,7 +375,7 @@
                             <a class="text-white" href="/blog">Artikel</a>
                         </li>
                         <li class="text-white">
-                            <a class="text-white" href="{{ route('profile-commpany') }}">Perusahaan Saya</a>
+                            <a class="text-white" href="{{ route('profile-company') }}">Perusahaan Saya</a>
                         </li>
                     @endif
                 </ul>

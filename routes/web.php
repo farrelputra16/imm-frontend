@@ -262,12 +262,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
-    Route::get('/profile-commpany', [ProfileController::class, 'editCompanyProfile'])->name('profile-commpany');
-    Route::put('/profile-commpany/{id}', [ProfileController::class, 'updateCompanyProfile'])->name('profile-commpany.update');
-    Route::get('/profile-commpany', [ProfileController::class, 'editCompanyProfile'])
-        ->name('profile-commpany')
+    Route::get('/profile-company', [ProfileController::class, 'editCompanyProfile'])->name('profile-company');
+    Route::put('/profile-company/{id}', [ProfileController::class, 'updateCompanyProfile'])->name('profile-company.update');
+    Route::get('/profile-company', [ProfileController::class, 'editCompanyProfile'])
+        ->name('profile-company')
         ->middleware('check.company');
-    Route::get('/profile-commpany', [ProfileController::class, 'editCompanyProfile'])->name('profile-commpany')->middleware('check.company');
+    Route::get('/profile-company', [ProfileController::class, 'editCompanyProfile'])->name('profile-company')->middleware('check.company');
 
     // routes untuk anggota team dari company
     Route::get('/search-people', [TeamController::class, 'searchPeople']);

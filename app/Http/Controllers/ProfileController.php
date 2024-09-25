@@ -26,7 +26,7 @@ class ProfileController extends Controller
         $user = User::find($id);
         $company = Company::where('user_id', $id)->first();
 
-        return view('imm.profile-commpany', [
+        return view('imm.profile-company', [
             'user' => $user,
             'company' => $company,
         ]);
@@ -43,7 +43,7 @@ class ProfileController extends Controller
             return redirect('/imm');
         }
     
-        return view('imm.profile-commpany', compact('company', 'user', 'team', 'products'));
+        return view('imm.profile-company', compact('company', 'user', 'team', 'products'));
     }
 
     public function edit()
@@ -116,7 +116,7 @@ class ProfileController extends Controller
             'startup_summary' => $request->input('startup_summary'),
         ]);
 
-        return redirect()->route('profile-commpany')->with('success', 'Profil perusahaan berhasil diperbarui.');
+        return redirect()->route('profile-company')->with('success', 'Profil perusahaan berhasil diperbarui.');
     }
 
 }

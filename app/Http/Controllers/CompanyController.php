@@ -43,7 +43,7 @@ class CompanyController extends Controller
         $company->update($validated);
 
         // Redirect ke halaman profil perusahaan dengan pesan sukses
-        return redirect()->route('profile-commpany.show', $company->id)->with('success', 'Data perusahaan berhasil diperbarui.');
+        return redirect()->route('profile-company.show', $company->id)->with('success', 'Data perusahaan berhasil diperbarui.');
     }
     
     public function store(Request $request)
