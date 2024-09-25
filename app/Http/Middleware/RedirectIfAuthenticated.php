@@ -21,8 +21,6 @@ class RedirectIfAuthenticated
     {
         if (Auth::guard($guard)->check()) {
             $user = Auth::user();
-
-            dd($user);
             // Check if the user is an INVESTOR
             if ($user->role === 'INVESTOR') {
                 return redirect()->route('investor.home'); // Redirect to investor dashboard
