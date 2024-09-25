@@ -422,7 +422,6 @@ class MetricProjectController extends Controller
             $labels = $dataPoints->map(function ($data) {
                 return $this->formatMonth($data->report_month) . ' ' . $data->report_year;
             });
-            dd($labels);
             $values = $dataPoints->pluck('value');
 
             $chart->labels($labels);

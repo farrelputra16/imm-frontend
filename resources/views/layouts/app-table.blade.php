@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Font Awesome CDN for social media icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <style>
     /* Header styling */
@@ -191,6 +193,7 @@
             <a href="{{ route('investors.index') }}">Investors</a>
             <a href="{{ route('people.index') }}">People</a>
             <a href="{{ route('hubs.index') }}">Hubs</a>
+            <a href="{{ route('events.index') }}">Events</a>
         </div>
 
         <!-- Authenticated User Profile or Login -->

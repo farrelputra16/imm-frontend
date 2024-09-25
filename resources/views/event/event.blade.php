@@ -1,15 +1,31 @@
-@extends('layouts.app-imm')
+@extends('layouts.app-table')
 @section('title', 'Event')
-
-@section('css')
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
+        * {
+            font-family: "Poppins", sans-serif;
+            text-decoration: none;
+            list-style-type: none;
+        }
         body,
         html {
             font-family: "Roboto", sans-serif;
             height: 100%;
-            padding-top: 30px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
         }
+
+        .btn {
+            margin-left: 10px;
+            gap: 10px;
+            /* Adjust margin between login/register buttons */
+        }.wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
         .btn:hover{
             color: white;
         }
@@ -23,6 +39,17 @@
             color:white;
         }
 
+        @media (max-width: 768px) {
+                footer {
+                    display: none;
+
+                }
+                .navbar-actions {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
         .search-container {
             display: flex;
             justify-content: center;
@@ -111,7 +138,6 @@
             margin-top: 50px;
         }
     </style>
-@endsection
 
 @section('content')
     <div class="container mt-5">

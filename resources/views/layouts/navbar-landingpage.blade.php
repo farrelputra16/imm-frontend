@@ -183,6 +183,7 @@
             <a href="{{ route('investors.index') }}">Investors</a>
             <a href="{{ route('people.index') }}">People</a>
             <a href="{{ route('hubs.index') }}">Hubs</a>
+            <a href="{{ route('events.index') }}">Events</a>
             <a href="{{ route('home') }}">IMM</a>
         </div>
     </div>

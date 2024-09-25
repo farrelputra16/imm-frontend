@@ -47,7 +47,7 @@ class EventController extends Controller
     {
         $users = User::all();
         return view('events.create', compact('users'));
-    }
+    }   
 
     public function edit($id)
     {
