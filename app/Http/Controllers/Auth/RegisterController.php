@@ -9,7 +9,7 @@ use App\Models\People;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Log; // Import Log facade
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 
 class RegisterController extends Controller
@@ -31,33 +31,43 @@ class RegisterController extends Controller
     }
 
     // Proses registrasi
-    protected function register(Request $request)
-    {
-        Log::info('Memulai proses registrasi untuk email: ' . $request->email);
+    // Proses registrasi
+protected function register(Request $request)
+{
+    Log::info('Memulai proses registrasi untuk email: ' . $request->email);
 
-        // Validasi input berdasarkan role
-        $this->validator($request->all())->validate();
-        Log::info('Validasi berhasil untuk email: ' . $request->email);
+    // Validasi input berdasarkan role
+    $this->validator($request->all())->validate();
+    Log::info('Validasi berhasil untuk email: ' . $request->email);
 
-        // Membuat user berdasarkan input
-        $user = $this->create($request->all());
-        Log::info('User berhasil dibuat dengan ID: ' . $user->id . ' dan role: ' . $user->role);
+    // Membuat user berdasarkan input
+    $user = $this->create($request->all());
+    Log::info('User berhasil dibuat dengan ID: ' . $user->id . ' dan role: ' . $user->role);
 
-        // Proses logika tambahan jika role Investor atau People
-        if ($user->role === 'INVESTOR') {
-            $this->createInvestor($user, $request->all());
-            Log::info('Investor berhasil dibuat untuk user ID: ' . $user->id);
-        } elseif ($user->role === 'PEOPLE') {
-            $this->createPeople($user, $request->all());
-            Log::info('People berhasil dibuat untuk user ID: ' . $user->id);
-        }
-
-        // Login otomatis setelah registrasi
-        $this->guard()->login($user);
-        Log::info('User berhasil login setelah registrasi dengan ID: ' . $user->id);
-
-        return redirect($this->redirectTo)->with('success', 'Registrasi berhasil! Silakan login.');
+    // Proses logika tambahan jika role Investor atau People
+    if ($user->role === 'INVESTOR') {
+        $this->createInvestor($user, $request->all());
+        Log::info('Investor berhasil dibuat untuk user ID: ' . $user->id);
+    } elseif ($user->role === 'PEOPLE') {
+        $this->createPeople($user, $request->all());
+        Log::info('People berhasil dibuat untuk user ID: ' . $user->id);
     }
+
+    // Login otomatis setelah registrasi
+    $this->guard()->login($user);
+    Log::info('User berhasil login setelah registrasi dengan ID: ' . $user->id);
+
+    // Redirect berdasarkan role
+    if ($user->role === 'INVESTOR') {
+        return redirect()->route('investor.home')->with('success', 'Registrasi berhasil!');
+    } elseif ($user->role === 'PEOPLE') {
+        return redirect()->route('people.home')->with('success', 'Registrasi berhasil!');
+    }
+
+    // Redirect default untuk role lain
+    return redirect()->route('home')->with('success', 'Registrasi berhasil!');
+}
+
 
     // Validasi input form registrasi berdasarkan role
     protected function validator(array $data)
@@ -90,29 +100,20 @@ class RegisterController extends Controller
                 'location' => 'required|string|max:255',
                 'description' => 'required|string',
                 'departments' => 'required|string|max:255',
-                'nama_depan' => 'required|string|max:255',
-                'nama_belakang' => 'required|string|max:255',
-                'email' => 'required|email|unique:users',
-                'password' => 'required|string|min:6',
             ]);
         } elseif ($role === 'PEOPLE') {
             $rules = array_merge($rules, [
                 'name' => 'required|string|max:255',
-                'role' => 'required|in:mentor,pekerja,konsultan',
                 'primary_job_title' => 'required|string|max:255',
                 'primary_organization' => 'required|string|max:255',
-                'location' => 'required|string|max:255',
-                'regions' => 'required|string|max:255',
-                'gender' => 'required|in:male,female,other',
+                'people_role' => 'required|in:Mentor,Pekerja,Konsultan',
+                'people_phone' => 'required|string|max:15',
+                'people_gmail' => 'required|email|max:255',
+                'people_location' => 'required|string|max:255',
+                'people_regions' => ['required', 'string', 'max:255'],
+                'gender' => 'required|in:Laki-laki,Perempuan',
                 'linkedin_link' => 'nullable|url',
-                'description' => 'nullable|string',
-                'phone_number' => 'required|string|max:15',
-                'email' => 'required|email|max:255|unique:users,email', // Unique email validation for users table
-
-                // Additional user fields
-                'password' => 'required|string|min:6',
-                'nama_depan' => 'required|string|max:255',
-                'nama_belakang' => 'required|string|max:255',
+                'people_description' => 'nullable|string',
             ]);
         }
 
@@ -156,24 +157,25 @@ class RegisterController extends Controller
 
     // Membuat entri People setelah user dengan role PEOPLE dibuat
     protected function createPeople(User $user, array $data)
-    {
-        Log::info('Membuat people untuk user ID: ' . $user->id);
+{
+    Log::info('Membuat people untuk user ID: ' . $user->id);
 
-        People::create([
-            'user_id' => $user->id, // Associate user with people
-            'name' => $data['name'],
-            'role' => $data['role'],
-            'primary_job_title' => $data['primary_job_title'],
-            'primary_organization' => $data['primary_organization'],
-            'location' => $data['location'],
-            'regions' => $data['regions'],
-            'gender' => $data['gender'],
-            'linkedin_link' => $data['linkedin_link'],
-            'description' => $data['description'],
-            'phone_number' => $data['phone_number'],
-            'gmail' => $data['gmail'],
-        ]);
+    People::create([
+        'user_id' => $user->id, // Associate user with people
+        'name' => $data['nama_depan'] . ' ' . $data['nama_belakang'],
+        'primary_job_title' => $data['primary_job_title'],
+        'primary_organization' => $data['primary_organization'],
+        'role' => $data['people_role'],
+        'phone_number' => $data['people_phone'],
+        'gmail' => $data['people_gmail'],
+        'location' => $data['people_location'],
+        'regions' => $data['people_regions'],
+        'gender' => $data['gender'],
+        'linkedin_link' => $data['linkedin_link'],
+        'description' => $data['people_description'],
+    ]);
 
-        Log::info('People berhasil dibuat untuk user ID: ' . $user->id);
-    }
+    Log::info('People berhasil dibuat untuk user ID: ' . $user->id);
+}
+
 }

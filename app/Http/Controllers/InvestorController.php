@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class InvestorController extends Controller
 {
+
+    public function __construct()
+    {
+        // Terapkan middleware pada metode 'show'
+        $this->middleware('checkrole:USER')->only('show');
+    }
     // Existing index method
     public function index(Request $request)
     {

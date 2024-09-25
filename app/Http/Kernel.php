@@ -66,8 +66,7 @@ class Kernel extends HttpKernel
         'check.company' => \App\Http\Middleware\CheckCompanyRegistration::class,
         'investor' => \App\Http\Middleware\InvestorMiddleware::class,
         'people' => \App\Http\Middleware\PeopleMiddleware::class,
-
-
+        'checkrole' => \App\Http\Middleware\CheckUserRole::class,
 
 
 
