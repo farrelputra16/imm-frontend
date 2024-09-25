@@ -51,12 +51,6 @@ class User extends Authenticatable
 
     return "{$this->nama_depan}";
 }
-    /**
-     * Set the user's password.
-     *
-     * @param string $value
-     * @return void
-     */
      /**
      * Set the default role for the user.
      *

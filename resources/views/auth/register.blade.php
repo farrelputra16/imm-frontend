@@ -151,18 +151,20 @@
                         </select>
                     </div>
 
+                    {{-- Field Umum --}}
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nama_depan">Nama Depan</label>
+                            <input type="text" id="nama_depan" name="nama_depan" placeholder="Masukkan nama depan anda" value="{{ old('nama_depan') }}" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="nama_belakang">Nama Belakang</label>
+                            <input type="text" id="nama_belakang" name="nama_belakang" placeholder="Masukkan nama belakang anda" value="{{ old('nama_belakang') }}" required />
+                        </div>
+                    </div>
+
                     {{-- USER Role Fields --}}
                     <div id="userFields" class="role-section">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="nama_depan">Nama Depan</label>
-                                <input type="text" id="nama_depan" name="nama_depan" placeholder="Masukkan nama depan anda" value="{{ old('nama_depan') }}" required />
-                            </div>
-                            <div class="form-group">
-                                <label for="nama_belakang">Nama Belakang</label>
-                                <input type="text" id="nama_belakang" name="nama_belakang" placeholder="Masukkan nama belakang anda" value="{{ old('nama_belakang') }}" required />
-                            </div>
-                        </div>
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="nik">NIK</label>
@@ -184,62 +186,58 @@
                                 <input type="text" id="telepon" name="telepon" placeholder="Masukkan nomor telepon anda" value="{{ old('telepon') }}" required />
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="alamat">Alamat</label>
+                            <input type="text" id="alamat" name="alamat" placeholder="Masukkan alamat anda" value="{{ old('alamat') }}" required />
+                        </div>
                     </div>
 
-                    <!-- INVESTOR Role Fields -->
-<div id="investorFields" class="role-section">
-    <div class="form-row">
-        <!-- Nama Depan dan Nama Belakang (diperlukan oleh semua role) -->
-        <div class="form-group">
-            <label for="nama_depan">Nama Depan</label>
-            <input type="text" id="nama_depan" name="nama_depan" placeholder="Masukkan nama depan anda" value="{{ old('nama_depan') }}" required />
-        </div>
-        <div class="form-group">
-            <label for="nama_belakang">Nama Belakang</label>
-            <input type="text" id="nama_belakang" name="nama_belakang" placeholder="Masukkan nama belakang anda" value="{{ old('nama_belakang') }}" required />
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="form-group">
-            <label for="org_name">Nama Organisasi</label>
-            <input type="text" id="org_name" name="org_name" placeholder="Masukkan nama organisasi" value="{{ old('org_name') }}" required />
-        </div>
-        <div class="form-group">
-            <label for="number_of_contacts">Nomor Kontak</label>
-            <input type="number" id="number_of_contacts" name="number_of_contacts" placeholder="Masukkan nomor kontak" value="{{ old('number_of_contacts') }}" required />
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="form-group">
-            <label for="number_of_investments">Jumlah Investasi</label>
-            <input type="number" id="number_of_investments" name="number_of_investments" placeholder="Jumlah investasi" value="{{ old('number_of_investments') }}" min="0" required />
-        </div>
-        <div class="form-group">
-            <label for="location">Lokasi</label>
-            <input type="text" id="location" name="location" placeholder="Masukkan lokasi" value="{{ old('location') }}" required />
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="description">Deskripsi</label>
-        <textarea id="description" name="description" placeholder="Masukkan deskripsi" rows="3" required>{{ old('description') }}</textarea>
-    </div>
-    <div class="form-group">
-        <label for="departments">Departemen</label>
-        <input type="text" id="departments" name="departments" placeholder="Departemen" value="{{ old('departments') }}" required />
-    </div>
-</div>
-
+                    {{-- INVESTOR Role Fields --}}
+                    <div id="investorFields" class="role-section">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="org_name">Nama Organisasi</label>
+                                <input type="text" id="org_name" name="org_name" placeholder="Masukkan nama organisasi" value="{{ old('org_name') }}" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="number_of_contacts">Nomor Kontak</label>
+                                <input type="number" id="number_of_contacts" name="number_of_contacts" placeholder="Masukkan nomor kontak" value="{{ old('number_of_contacts') }}" required />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="number_of_investments">Jumlah Investasi</label>
+                                <input type="number" id="number_of_investments" name="number_of_investments" placeholder="Jumlah investasi" value="{{ old('number_of_investments') }}" min="0" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="location">Lokasi</label>
+                                <input type="text" id="location" name="location" placeholder="Masukkan lokasi" value="{{ old('location') }}" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Deskripsi</label>
+                            <textarea id="description" name="description" placeholder="Masukkan deskripsi" rows="3" required>{{ old('description') }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="departments">Departemen</label>
+                            <input type="text" id="departments" name="departments" placeholder="Departemen" value="{{ old('departments') }}" required />
+                        </div>
+                    </div>
 
                     {{-- PEOPLE Role Fields --}}
                     <div id="peopleFields" class="role-section">
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="job_title">Jabatan Utama</label>
-                                <input type="text" id="job_title" name="job_title" placeholder="Masukkan jabatan utama" value="{{ old('job_title') }}" />
+                                <label for="name">Nama Lengkap</label>
+                                <input type="text" id="name" name="name" placeholder="Masukkan nama lengkap" value="{{ old('name') }}" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="primary_job_title">Jabatan Utama</label>
+                                <input type="text" id="primary_job_title" name="primary_job_title" placeholder="Masukkan jabatan utama" value="{{ old('primary_job_title') }}" required />
                             </div>
                             <div class="form-group">
                                 <label for="primary_organization">Organisasi Utama</label>
-                                <input type="text" id="primary_organization" name="primary_organization" placeholder="Masukkan organisasi utama" value="{{ old('primary_organization') }}" />
+                                <input type="text" id="primary_organization" name="primary_organization" placeholder="Masukkan organisasi utama" value="{{ old('primary_organization') }}" required />
                             </div>
                         </div>
                         <div class="form-row">
@@ -254,7 +252,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="people_phone">Nomor Telepon</label>
-                                <input type="text" id="people_phone" name="people_phone" placeholder="Masukkan nomor telepon" value="{{ old('people_phone') }}" />
+                                <input type="text" id="people_phone" name="people_phone" placeholder="Masukkan nomor telepon" value="{{ old('people_phone') }}" required />
                             </div>
                         </div>
                         <div class="form-group">
@@ -263,11 +261,11 @@
                         </div>
                         <div class="form-group">
                             <label for="people_location">Lokasi</label>
-                            <input type="text" id="people_location" name="people_location" placeholder="Masukkan lokasi" value="{{ old('people_location') }}" />
+                            <input type="text" id="people_location" name="people_location" placeholder="Masukkan lokasi" value="{{ old('people_location') }}" required />
                         </div>
                         <div class="form-group">
                             <label for="people_regions">Region</label>
-                            <input type="text" id="people_regions" name="people_regions" placeholder="Masukkan region" value="{{ old('people_regions') }}" />
+                            <input type="text" id="people_regions" name="people_regions" placeholder="Masukkan region" value="{{ old('people_regions') }}" required />
                         </div>
                         <div class="form-group">
                             <label for="gender">Jenis Kelamin</label>
@@ -287,7 +285,7 @@
                         </div>
                     </div>
 
-                    {{-- Common Fields for All Roles --}}
+                    {{-- Field Umum untuk Semua Role --}}
                     <div class="form-row">
                         <div class="form-group">
                             <label for="email">Email</label>
@@ -295,7 +293,7 @@
                         </div>
                         <div class="form-group">
                             <label for="password">Kata Sandi</label>
-                            <input type="password" id="password" name="password" placeholder="Masukkan kata sandi anda" value="{{ old('password') }}" required minlength="8" />
+                            <input type="password" id="password" name="password" placeholder="Masukkan kata sandi anda" required minlength="8" />
                         </div>
                     </div>
                     <div class="form-row">
@@ -317,59 +315,57 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-    const roleSelect = document.getElementById('role');
-    const userFields = document.getElementById('userFields');
-    const investorFields = document.getElementById('investorFields');
-    const peopleFields = document.getElementById('peopleFields');
+            const roleSelect = document.getElementById('role');
+            const userFields = document.getElementById('userFields');
+            const investorFields = document.getElementById('investorFields');
+            const peopleFields = document.getElementById('peopleFields');
 
-    // Function to remove 'required' attribute from fields within a section
-    function removeRequiredAttributes(section) {
-        const inputs = section.querySelectorAll('input, select, textarea');
-        inputs.forEach(input => {
-            input.removeAttribute('required');
+            // Function to remove 'required' attribute from fields within a section
+            function removeRequiredAttributes(section) {
+                const inputs = section.querySelectorAll('input, select, textarea');
+                inputs.forEach(input => {
+                    input.removeAttribute('required');
+                });
+            }
+
+            // Function to add 'required' attribute to fields within a section
+            function addRequiredAttributes(section) {
+                const inputs = section.querySelectorAll('input, select, textarea');
+                inputs.forEach(input => {
+                    input.setAttribute('required', 'required');
+                });
+            }
+
+            function toggleFields() {
+                const selectedRole = roleSelect.value;
+                userFields.style.display = 'none';
+                investorFields.style.display = 'none';
+                peopleFields.style.display = 'none';
+
+                // Remove 'required' from all fields initially
+                removeRequiredAttributes(userFields);
+                removeRequiredAttributes(investorFields);
+                removeRequiredAttributes(peopleFields);
+
+                // Show and apply 'required' only to the selected role
+                if (selectedRole === 'USER') {
+                    userFields.style.display = 'block';
+                    addRequiredAttributes(userFields);
+                } else if (selectedRole === 'INVESTOR') {
+                    investorFields.style.display = 'block';
+                    addRequiredAttributes(investorFields);
+                } else if (selectedRole === 'PEOPLE') {
+                    peopleFields.style.display = 'block';
+                    addRequiredAttributes(peopleFields);
+                }
+            }
+
+            // Initialize fields based on old input
+            toggleFields();
+
+            // Update fields on role change
+            roleSelect.addEventListener('change', toggleFields);
         });
-    }
-
-    // Function to add 'required' attribute to fields within a section
-    function addRequiredAttributes(section) {
-        const inputs = section.querySelectorAll('input, select, textarea');
-        inputs.forEach(input => {
-            input.setAttribute('required', 'required');
-        });
-    }
-
-    function toggleFields() {
-        const selectedRole = roleSelect.value;
-        userFields.style.display = 'none';
-        investorFields.style.display = 'none';
-        peopleFields.style.display = 'none';
-
-        // Remove 'required' from all fields initially
-        removeRequiredAttributes(userFields);
-        removeRequiredAttributes(investorFields);
-        removeRequiredAttributes(peopleFields);
-
-        // Show and apply 'required' only to the selected role
-        if (selectedRole === 'USER') {
-            userFields.style.display = 'block';
-            addRequiredAttributes(userFields);
-        } else if (selectedRole === 'INVESTOR') {
-            investorFields.style.display = 'block';
-            addRequiredAttributes(investorFields);
-        } else if (selectedRole === 'PEOPLE') {
-            peopleFields.style.display = 'block';
-            addRequiredAttributes(peopleFields);
-        }
-    }
-
-    // Initialize fields based on old input
-    toggleFields();
-
-    // Update fields on role change
-    roleSelect.addEventListener('change', toggleFields);
-});
-
-
 
         // Function to validate form and show SweetAlert2 popups
         function validateForm(event) {
@@ -451,13 +447,16 @@
                 });
             }
 
-            nikInput.addEventListener('keypress', restrictToNumbers);
-            teleponInput.addEventListener('keypress', restrictToNumbers);
+            if (nikInput) {
+                nikInput.addEventListener('keypress', restrictToNumbers);
+                enforceLength(nikInput, 16, 16);
+            }
+            if (teleponInput) {
+                teleponInput.addEventListener('keypress', restrictToNumbers);
+            }
             if (peoplePhoneInput) {
                 peoplePhoneInput.addEventListener('keypress', restrictToNumbers);
             }
-
-            enforceLength(nikInput, 16, 16);
         });
 
         // Attach form validation
