@@ -34,7 +34,9 @@ Auth::routes(['verify' => true]);
 // Rute yang bisa diakses tanpa login (Login dan Register)
 Route::get('/', [LandingPageController::class, 'index'])->name('landingpage');
 Route::get('/investors', [InvestorController::class, 'index'])->name('investors.index');
-Route::get('/investors/{id}', [InvestorController::class, 'show'])->name('investors.show');
+Route::get('/investors/{id}', [InvestorController::class, 'show'])
+    ->name('investors.show')
+    ->middleware('checkrole:USER');
 
 
 Route::get('/people', [PeopleController::class, 'index'])->name('people.index');
