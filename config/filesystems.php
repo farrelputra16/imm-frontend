@@ -52,7 +52,13 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
         ],
-
+        // Disk 'be' untuk akses backend storage
+        'be' => [
+            'driver' => 'local',
+            'root' => public_path('../../images'),  // Menunjukkan lokasi folder 'images' yang berada di luar folder frontend
+            'url' => env('APP_BACKEND_URL') . env('BACKEND_STORAGE_PATH'), // URL backend diambil dari .env
+            'visibility' => 'public',  // Mengatur visibilitas agar bisa diakses publik
+        ],
     ],
 
     /*

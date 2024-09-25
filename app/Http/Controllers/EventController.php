@@ -22,7 +22,7 @@ class EventController extends Controller
             ->get();
 
         foreach ($events as $event) {
-            $event->content = \Illuminate\Support\Str::limit($event->content, 100, $end = '...');
+            $event->description = \Illuminate\Support\Str::limit($event->description, 100, $end = '...');
             $event->cover_img = env('APP_BACKEND_URL') . '/images/' . $event->cover_img;
             $event->hero_img = env('APP_BACKEND_URL') . '/images/' . $event->hero_img;
         }
@@ -47,7 +47,7 @@ class EventController extends Controller
     {
         $users = User::all();
         return view('events.create', compact('users'));
-    }   
+    }
 
     public function edit($id)
     {
