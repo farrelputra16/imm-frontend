@@ -36,10 +36,6 @@ return [
     */
 
     'guards' => [
-    'investor' => [
-        'driver' => 'session',
-        'provider' => 'users', // Pastikan ini sesuai dengan provider
-    ],
     'web' => [
         'driver' => 'session',
         'provider' => 'users',
