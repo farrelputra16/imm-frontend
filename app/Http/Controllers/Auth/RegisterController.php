@@ -31,33 +31,43 @@ class RegisterController extends Controller
     }
 
     // Proses registrasi
-    protected function register(Request $request)
-    {
-        Log::info('Memulai proses registrasi untuk email: ' . $request->email);
+    // Proses registrasi
+protected function register(Request $request)
+{
+    Log::info('Memulai proses registrasi untuk email: ' . $request->email);
 
-        // Validasi input berdasarkan role
-        $this->validator($request->all())->validate();
-        Log::info('Validasi berhasil untuk email: ' . $request->email);
+    // Validasi input berdasarkan role
+    $this->validator($request->all())->validate();
+    Log::info('Validasi berhasil untuk email: ' . $request->email);
 
-        // Membuat user berdasarkan input
-        $user = $this->create($request->all());
-        Log::info('User berhasil dibuat dengan ID: ' . $user->id . ' dan role: ' . $user->role);
+    // Membuat user berdasarkan input
+    $user = $this->create($request->all());
+    Log::info('User berhasil dibuat dengan ID: ' . $user->id . ' dan role: ' . $user->role);
 
-        // Proses logika tambahan jika role Investor atau People
-        if ($user->role === 'INVESTOR') {
-            $this->createInvestor($user, $request->all());
-            Log::info('Investor berhasil dibuat untuk user ID: ' . $user->id);
-        } elseif ($user->role === 'PEOPLE') {
-            $this->createPeople($user, $request->all());
-            Log::info('People berhasil dibuat untuk user ID: ' . $user->id);
-        }
-
-        // Login otomatis setelah registrasi
-        $this->guard()->login($user);
-        Log::info('User berhasil login setelah registrasi dengan ID: ' . $user->id);
-
-        return redirect($this->redirectTo)->with('success', 'Registrasi berhasil! Silakan login.');
+    // Proses logika tambahan jika role Investor atau People
+    if ($user->role === 'INVESTOR') {
+        $this->createInvestor($user, $request->all());
+        Log::info('Investor berhasil dibuat untuk user ID: ' . $user->id);
+    } elseif ($user->role === 'PEOPLE') {
+        $this->createPeople($user, $request->all());
+        Log::info('People berhasil dibuat untuk user ID: ' . $user->id);
     }
+
+    // Login otomatis setelah registrasi
+    $this->guard()->login($user);
+    Log::info('User berhasil login setelah registrasi dengan ID: ' . $user->id);
+
+    // Redirect berdasarkan role
+    if ($user->role === 'INVESTOR') {
+        return redirect()->route('investor.home')->with('success', 'Registrasi berhasil!');
+    } elseif ($user->role === 'PEOPLE') {
+        return redirect()->route('people.home')->with('success', 'Registrasi berhasil!');
+    }
+
+    // Redirect default untuk role lain
+    return redirect()->route('home')->with('success', 'Registrasi berhasil!');
+}
+
 
     // Validasi input form registrasi berdasarkan role
     protected function validator(array $data)
