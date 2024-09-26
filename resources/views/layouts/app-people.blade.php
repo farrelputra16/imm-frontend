@@ -271,6 +271,9 @@
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('company-list') ? 'active' : '' }}" href="{{ route('companies.list') }}">Cari Perusahaan</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ Request::is('hubs.create.hubsubmission') ? 'active' : '' }}" href="{{ route('hubs.create.hubsubmission') }}">Cari Perusahaan</a>
+                    </li>
                 </ul>
 
                 <!-- User is logged in -->

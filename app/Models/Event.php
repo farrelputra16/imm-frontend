@@ -23,6 +23,10 @@ class Event extends Model
         'img',
     ];
 
+    public function hubs()
+    {
+        return $this->belongsToMany(Hubs::class, 'event_hubs', 'event_id', 'hub_id');
+    }
     public function users()
     {
         return $this->belongsToMany(User::class);

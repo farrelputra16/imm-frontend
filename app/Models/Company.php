@@ -33,10 +33,14 @@ class Company extends Model
         return $this->hasMany(Project::class);
     }
 
+    public function hubs()
+    {
+        return $this->belongsToMany(Hubs::class, 'company_hubs', 'company_id', 'hub_id');
+    }
     /**
      * Get the user that owns the company.
      */
-    public function user()
+        public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
@@ -44,7 +48,7 @@ class Company extends Model
     {
         return $this->hasMany(CompanyIncome::class);
     }
-    
+
     // Relasi many-to-many dengan People melalui tabel team
     public function teamMembers()
     {
@@ -76,12 +80,12 @@ class Company extends Model
             if($request->has('location') && !empty($request->location)) {
                 $query->where('kabupaten', 'like', '%'.$request->location.'%');
             }
-    
+
             // Kondisi pencarian berdasarkan industri
             if($request->has('industry') && !empty($request->industry)) {
                 $query->where('tipe', 'like', '%'.$request->industry.'%');
             }
-    
+
             // Kondisi pencarian berdasarkan model bisnis (departemen)
             if($request->has('departments') && !empty($request->departments)) {
                 $query->where('posisi_pic', 'like', '%'.$request->departments.'%');
