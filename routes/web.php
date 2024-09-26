@@ -104,7 +104,7 @@ Route::get('companies/project/{projectId}/metric/{metricId}/metricProject/{metri
  *  Berikut ini merupakan rute untuk menangani wishlist dari investor
  */
 Route::post('/wishlist/add', [WishlistController::class, 'add'])->name('wishlist.add');
-
+Route::delete('/wishlist/remove', [WishlistController::class, 'remove'])->name('wishlist.remove');
 
 // Rute yang memerlukan autentikasi
 Route::middleware(['auth'])->group(function () {

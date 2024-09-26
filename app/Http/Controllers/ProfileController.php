@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -15,11 +16,32 @@ class ProfileController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $user = Auth::user();
-        return view('profile.profile', compact('user'));
+        // Ambil jumlah baris dari permintaan, default ke 10 jika tidak ada
+        $rowsPerPage = $request->input('rows', 10);
+
+        // Ambil pengguna yang sedang login beserta wishlists mereka
+        $user = User::with('wishlists.company.incomes')->find(Auth::id());
+
+        // Ambil ID perusahaan dari wishlists pengguna
+        $companyIds = $user->wishlists->pluck('company_id');
+
+        // Ambil perusahaan dengan pendapatan berdasarkan ID perusahaan yang diambil dan paginate hasilnya
+        $companiesWithWishlist = Company::with('incomes')
+            ->whereIn('id', $companyIds)
+            ->paginate($rowsPerPage); // Gunakan jumlah yang dipilih untuk pagination
+
+        // Atur field tambahan untuk perusahaan
+        $companiesWithWishlist->each(function ($company) {
+            $latestIncome = $company->incomes->first();
+            $company->latest_income_date = $latestIncome ? $latestIncome->date : null;
+            $company->latest_funding_type = $latestIncome ? $latestIncome->funding_type : null;
+        });
+
+        return view('profile.profile', compact('user', 'companiesWithWishlist'));
     }
+
 
     public function show($id)
     {

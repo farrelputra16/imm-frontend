@@ -131,7 +131,7 @@
     <form method="POST" action="{{ route('wishlist.add') }}" id="wishlistForm">
         @csrf
         <input type="hidden" name="company_ids" id="company_ids" value="">
-        <button type="submit" class="btn btn-primary wishlist-button">Simpan ke Wishlist</button>
+        <button type="submit" class="btn btn-primary wishlist-button" style="display: none;">Simpan ke Wishlist</button>
     </form>    
 
     <!-- Table -->
@@ -154,8 +154,8 @@
                 <tr data-href="{{ route('companies.show', $company->id) }}">
                     <td><input type="checkbox" class="select_company" data-id="{{ $company->id }}"></td>
                     <td>{{ $company->nama }}</td>
-                    <td>{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('F j, Y') : 'N/A' }}</td>
-                    <td>{{ $company->latest_income_date ? \Carbon\Carbon::parse($company->latest_income_date)->format('F j, Y') : 'N/A' }}</td>
+                    <td>{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('j M, Y') : 'N/A' }}</td>
+                    <td>{{ $company->latest_income_date ? \Carbon\Carbon::parse($company->latest_income_date)->format('j M, Y') : 'N/A' }}</td>
                     <td>
                         @if ($company->latest_funding_type)
                             <div>{{ $company->latest_funding_type }}</div>

@@ -40,4 +40,32 @@ class WishlistController extends Controller
 
         return redirect()->back()->with('success', 'Companies added to wishlist.');
     }
+
+    public function remove(Request $request){
+        // Cek apakah pengguna sudah login
+        if (!Auth::check()) {
+            return Redirect::route('login')->with('error', 'You need to login to save to wishlist.');
+        }
+
+        // Ambil user yang login
+        $user = Auth::user();
+
+        // Ambil company IDs dari form
+        $companyIds = explode(',', $request->input('company_ids'));
+
+        // Hapus setiap company dari wishlist
+        foreach ($companyIds as $companyId) {
+            // Cek apakah wishlist sudah ada untuk company dan user ini
+            $existingWishlist = Wishlist::where('user_id', $user->id)
+                                        ->where('company_id', $companyId)
+                                        ->first();
+
+            // Jika ada, hapus dari wishlist
+            if ($existingWishlist) {
+                $existingWishlist->delete();
+            }
+        }
+
+        return redirect()->back()->with('success', 'Companies removed from wishlist.');
+    }
 }
