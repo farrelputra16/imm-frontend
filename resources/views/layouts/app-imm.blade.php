@@ -295,6 +295,10 @@
                             <a class="nav-link {{ Request::is('profile-company') ? 'active' : '' }}"
                                 href="{{ route('profile-company') }}">Perusahaan Saya</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::is('hubs.create.submission') ? 'active' : '' }}"
+                                href="{{ route('hubs.create.hubsubmission') }}">Daftarkan Hubs</a>
+                        </li>
                     @endif
                 </ul>
 

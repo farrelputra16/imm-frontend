@@ -42,6 +42,16 @@ Route::get('/investors/{id}', [InvestorController::class, 'show'])
 Route::get('/people', [PeopleController::class, 'index'])->name('people.index');
 Route::get('/people/{id}', [PeopleController::class, 'show'])->name('people.show');
 
+Route::middleware(['auth'])->group(function () {
+    // Route untuk menampilkan form pengajuan hub
+    Route::get('/hubs/create', [HubsController::class, 'create'])->name('hubs.create');
+    Route::post('/hubs/store', [HubsController::class, 'store'])->name('hubs.store');
+
+    // Route untuk menampilkan daftar pengajuan pengguna
+    Route::get('/hubs/hubsubmission', [HubsController::class, 'mySubmissions'])->name('hubs.create.hubsubmission');
+});
+
+// Route umum yang tidak memerlukan autentikasi
 Route::get('/hubs', [HubsController::class, 'index'])->name('hubs.index');
 Route::get('/hubs/{id}', [HubsController::class, 'show'])->name('hubs.show');
 

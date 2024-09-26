@@ -41,6 +41,10 @@ class People extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function hubs()
+    {
+        return $this->belongsToMany(Hubs::class, 'hubs_people', 'people_id', 'hub_id');
+    }
     // Relasi many-to-many dengan Company melalui tabel team
     public function companies()
     {

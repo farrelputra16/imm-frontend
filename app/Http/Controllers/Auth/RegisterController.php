@@ -31,43 +31,41 @@ class RegisterController extends Controller
     }
 
     // Proses registrasi
-    // Proses registrasi
-protected function register(Request $request)
-{
-    Log::info('Memulai proses registrasi untuk email: ' . $request->email);
+    protected function register(Request $request)
+    {
+        Log::info('Memulai proses registrasi untuk email: ' . $request->email);
 
-    // Validasi input berdasarkan role
-    $this->validator($request->all())->validate();
-    Log::info('Validasi berhasil untuk email: ' . $request->email);
+        // Validasi input berdasarkan role
+        $this->validator($request->all())->validate();
+        Log::info('Validasi berhasil untuk email: ' . $request->email);
 
-    // Membuat user berdasarkan input
-    $user = $this->create($request->all());
-    Log::info('User berhasil dibuat dengan ID: ' . $user->id . ' dan role: ' . $user->role);
+        // Membuat user berdasarkan input
+        $user = $this->create($request->all());
+        Log::info('User berhasil dibuat dengan ID: ' . $user->id . ' dan role: ' . $user->role);
 
-    // Proses logika tambahan jika role Investor atau People
-    if ($user->role === 'INVESTOR') {
-        $this->createInvestor($user, $request->all());
-        Log::info('Investor berhasil dibuat untuk user ID: ' . $user->id);
-    } elseif ($user->role === 'PEOPLE') {
-        $this->createPeople($user, $request->all());
-        Log::info('People berhasil dibuat untuk user ID: ' . $user->id);
+        // Proses logika tambahan jika role Investor atau People
+        if ($user->role === 'INVESTOR') {
+            $this->createInvestor($user, $request->all());
+            Log::info('Investor berhasil dibuat untuk user ID: ' . $user->id);
+        } elseif ($user->role === 'PEOPLE') {
+            $this->createPeople($user, $request->all());
+            Log::info('People berhasil dibuat untuk user ID: ' . $user->id);
+        }
+
+        // Login otomatis setelah registrasi
+        $this->guard()->login($user);
+        Log::info('User berhasil login setelah registrasi dengan ID: ' . $user->id);
+
+        // Redirect berdasarkan role
+        if ($user->role === 'INVESTOR') {
+            return redirect()->route('investor.home')->with('success', 'Registrasi berhasil!');
+        } elseif ($user->role === 'PEOPLE') {
+            return redirect()->route('people.home')->with('success', 'Registrasi berhasil!');
+        }
+
+        // Redirect default untuk role lain
+        return redirect()->route('home')->with('success', 'Registrasi berhasil!');
     }
-
-    // Login otomatis setelah registrasi
-    $this->guard()->login($user);
-    Log::info('User berhasil login setelah registrasi dengan ID: ' . $user->id);
-
-    // Redirect berdasarkan role
-    if ($user->role === 'INVESTOR') {
-        return redirect()->route('investor.home')->with('success', 'Registrasi berhasil!');
-    } elseif ($user->role === 'PEOPLE') {
-        return redirect()->route('people.home')->with('success', 'Registrasi berhasil!');
-    }
-
-    // Redirect default untuk role lain
-    return redirect()->route('home')->with('success', 'Registrasi berhasil!');
-}
-
 
     // Validasi input form registrasi berdasarkan role
     protected function validator(array $data)
@@ -125,13 +123,24 @@ protected function register(Request $request)
     {
         Log::info('Membuat user baru dengan email: ' . $data['email']);
 
-        $user = User::create([
+        $userData = [
             'nama_depan' => $data['nama_depan'],
             'nama_belakang' => $data['nama_belakang'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'role' => $data['role'],
-        ]);
+        ];
+
+        // Tambahkan field tambahan untuk role USER
+        if ($data['role'] === 'USER') {
+            $userData['nik'] = $data['nik'];
+            $userData['negara'] = $data['negara'];
+            $userData['provinsi'] = $data['provinsi'];
+            $userData['alamat'] = $data['alamat'];
+            $userData['telepon'] = $data['telepon'];
+        }
+
+        $user = User::create($userData);
 
         Log::info('User berhasil dibuat dengan ID: ' . $user->id);
         return $user;
@@ -157,25 +166,24 @@ protected function register(Request $request)
 
     // Membuat entri People setelah user dengan role PEOPLE dibuat
     protected function createPeople(User $user, array $data)
-{
-    Log::info('Membuat people untuk user ID: ' . $user->id);
+    {
+        Log::info('Membuat people untuk user ID: ' . $user->id);
 
-    People::create([
-        'user_id' => $user->id, // Associate user with people
-        'name' => $data['nama_depan'] . ' ' . $data['nama_belakang'],
-        'primary_job_title' => $data['primary_job_title'],
-        'primary_organization' => $data['primary_organization'],
-        'role' => $data['people_role'],
-        'phone_number' => $data['people_phone'],
-        'gmail' => $data['people_gmail'],
-        'location' => $data['people_location'],
-        'regions' => $data['people_regions'],
-        'gender' => $data['gender'],
-        'linkedin_link' => $data['linkedin_link'],
-        'description' => $data['people_description'],
-    ]);
+        People::create([
+            'user_id' => $user->id, // Associate user with people
+            'name' => $data['nama_depan'] . ' ' . $data['nama_belakang'],
+            'primary_job_title' => $data['primary_job_title'],
+            'primary_organization' => $data['primary_organization'],
+            'role' => $data['people_role'],
+            'phone_number' => $data['people_phone'],
+            'gmail' => $data['people_gmail'],
+            'location' => $data['people_location'],
+            'regions' => $data['people_regions'],
+            'gender' => $data['gender'],
+            'linkedin_link' => $data['linkedin_link'],
+            'description' => $data['people_description'],
+        ]);
 
-    Log::info('People berhasil dibuat untuk user ID: ' . $user->id);
-}
-
+        Log::info('People berhasil dibuat untuk user ID: ' . $user->id);
+    }
 }
