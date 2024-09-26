@@ -18,6 +18,7 @@ class Hubs extends Model
         'top_funding_types',
         'description',
         'status',
+        'user_id'
     ];
 
     protected $casts = [

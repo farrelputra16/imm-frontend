@@ -1,16 +1,14 @@
-<!-- resources/views/hubs/createhubs/my_submissions.blade.php -->
+@extends('layouts.app-hubsubmission')
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Pengajuan Innovation Hub Saya</title>
-    <!-- Menambahkan CSS Bootstrap -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
+@section('title', 'Ajukan Innovation Hub Baru')
 
-<body>
+@section('css')
+    <!-- Tambahkan CSS tambahan jika diperlukan -->
+@endsection
+
+@section('content')
 <div class="container mt-5">
-    <h1>Pengajuan Innovation Hub Saya</h1>
+    <h1>Pengajuan Innovation Hub</h1>
 
     <!-- Menampilkan pesan sukses -->
     @if (session('success'))
@@ -41,11 +39,11 @@
                         <td>{{ $hub->kota }}</td>
                         <td>
                             @if ($hub->status == 'pending')
-                                <span class="badge badge-warning">Pending</span>
+                                <span class="badge-pending">Pending</span>
                             @elseif ($hub->status == 'approved')
-                                <span class="badge badge-success">Disetujui</span>
+                                <span class="badge-approved">Disetujui</span>
                             @elseif ($hub->status == 'rejected')
-                                <span class="badge badge-danger">Ditolak</span>
+                                <span class="badge-rejected">Ditolak</span>
                             @endif
                         </td>
                         <td>{{ $hub->created_at->format('d M Y H:i') }}</td>
@@ -62,6 +60,4 @@
 
 <!-- Menambahkan jQuery dan JS Bootstrap (jika diperlukan) -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
-</body>
-</html>
+@endsection

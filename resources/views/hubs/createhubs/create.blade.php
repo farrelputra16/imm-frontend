@@ -1,16 +1,14 @@
-<!-- resources/views/hubs/createhubs/create.blade.php -->
+@extends('layouts.app-hubsubmission')
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Ajukan Innovation Hub Baru</title>
-    <!-- Menambahkan CSS Bootstrap -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
+@section('title', 'Ajukan Innovation Hub Baru')
 
-<body>
+@section('css')
+    <!-- Tambahkan CSS tambahan jika diperlukan -->
+@endsection
+
+@section('content')
 <div class="container mt-5">
-    <h1>Ajukan Innovation Hub Baru</h1>
+    <h1 class="mb-4">Ajukan Innovation Hub Baru</h1>
 
     @if (session('success'))
         <div class="alert alert-success">
@@ -21,7 +19,7 @@
     <!-- Menampilkan error validasi -->
     @if ($errors->any())
         <div class="alert alert-danger">
-            <ul>
+            <ul class="mb-0">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
@@ -64,9 +62,9 @@
             <label for="description">Deskripsi:</label>
             <textarea class="form-control" id="description" name="description" rows="4">{{ old('description') }}</textarea>
 
-            <!-- Organizations -->
-            <label for="organization_ids">Organizations:</label>
-            <select name="organization_ids[]" id="organization_ids" class="form-control" multiple>
+            <!-- Companies -->
+            <label for="company_ids">Companies:</label>
+            <select name="company_ids[]" id="company_ids" class="form-control" multiple>
                 @foreach($companies as $company)
                     <option value="{{ $company->id }}">{{ $company->nama }}</option>
                 @endforeach
@@ -91,10 +89,9 @@
         <button type="submit" class="btn btn-primary">Kirim Pengajuan</button>
     </form>
 </div>
+@endsection
 
-<!-- Menambahkan jQuery dan JS Bootstrap -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
+@section('scripts')
 <script>
     // Ambil elemen select untuk provinsi dan kota/kabupaten
     const provinsiSelect = document.getElementById('provinsi');
@@ -103,8 +100,12 @@
 
     // Fetch data provinsi saat halaman dimuat
     fetch('https://kanglerian.github.io/api-wilayah-indonesia/api/provinces.json')
-        .then(response => response.json())
+        .then(response => {
+            console.log('Fetching provinces...');
+            return response.json();
+        })
         .then(provinces => {
+            console.log('Provinces fetched:', provinces);
             provincesData = provinces; // Simpan data provinsi
             // Iterasi setiap provinsi dan tambahkan sebagai option ke select provinsi
             provinces.forEach(provinsi => {
@@ -121,6 +122,12 @@
     function populateCities() {
         const selectedProvinsiName = provinsiSelect.value;
         const selectedProvinsiId = getProvinsiIdByName(selectedProvinsiName);
+        console.log('Selected Provinsi Name:', selectedProvinsiName);
+        console.log('Selected Provinsi ID:', selectedProvinsiId);
+        if (!selectedProvinsiId) {
+            console.error('Provinsi ID tidak ditemukan untuk nama:', selectedProvinsiName);
+            return;
+        }
         const regenciesUrl = `https://kanglerian.github.io/api-wilayah-indonesia/api/regencies/${selectedProvinsiId}.json`;
 
         // Kosongkan dropdown kota/kabupaten saat memilih provinsi baru
@@ -128,8 +135,12 @@
 
         // Fetch data kota/kabupaten berdasarkan ID provinsi yang dipilih
         fetch(regenciesUrl)
-            .then(response => response.json())
+            .then(response => {
+                console.log(`Fetching regencies for provinsi ID: ${selectedProvinsiId}`);
+                return response.json();
+            })
             .then(regencies => {
+                console.log('Regencies fetched:', regencies);
                 // Iterasi setiap kota/kabupaten dan tambahkan sebagai option ke select kota/kabupaten
                 regencies.forEach(regency => {
                     const option = document.createElement('option');
@@ -144,12 +155,11 @@
     // Fungsi untuk mendapatkan ID provinsi berdasarkan nama
     function getProvinsiIdByName(name) {
         const provinsi = provincesData.find(provinsi => provinsi.name === name);
+        console.log('Finding provinsi ID for:', name);
         return provinsi ? provinsi.id : null;
     }
 
     // Tambahkan event listener untuk dropdown provinsi
     provinsiSelect.addEventListener('change', populateCities);
 </script>
-
-</body>
-</html>
+@endsection
