@@ -96,15 +96,11 @@ class CompanyController extends Controller
         // Find the company by ID, or fail if not found
         $company = Company::findOrFail($id);
         
-        // Load related projects and incomes for the company
-        $company->load('projects', 'incomes');
-        
-        // Separate projects by their status (Ongoing and Completed)
-        $ongoingProjects = $company->projects->where('status', 'Belum selesai');
-        $completedProjects = $company->projects->where('status', 'Selesai');
+        // Load related and incomes for the company
+        $company->load('incomes');
         
         // Return view to display the company details and projects
-        return view('companies.view', compact('company', 'ongoingProjects', 'completedProjects'));
+        return view('companies.view', compact('company'));
     }
 
     public function index()
@@ -160,13 +156,16 @@ class CompanyController extends Controller
     }
 
     /**
-     * Menampilkan halaman untuk macam macam product yang dimiliki oleh company tersebut
+     * Menampilkan halaman untuk macam macam project yang dimiliki oleh company tersebut
      */
     public function showProducts($id)
     {
         $company = Company::findOrFail($id);
-        $products = $company->products;
-        return view('companies.products', compact('products', 'company'));
+        $company->load('projects');
+        // Memisahkan projects berdasarkan status (Ongoing and Completed)
+        $ongoingProjects = $company->projects->where('status', 'Belum selesai');
+        $completedProjects = $company->projects->where('status', 'Selesai');
+        return view('companies.project', compact('company', 'ongoingProjects', 'completedProjects'));
     }
 
 }

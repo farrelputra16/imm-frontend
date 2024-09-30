@@ -104,7 +104,7 @@ Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('
 Route::get('/companies-list', [CompanyController::class, 'companyList'])->name('companies.list');
 Route::get('/companies/{id}', [CompanyController::class, 'show'])->name('companies.show');
 Route::get('/companies/{id}/team', [CompanyController::class, 'showTeam'])->name('companies.team');
-Route::get('/companies/{id}/product', [CompanyController::class, 'showProducts'])->name('companies.product');
+Route::get('/companies/{id}/project', [CompanyController::class, 'showProducts'])->name('companies.project');
 /**
  * Pembuatan Route untuk bagian melihat project pada company yang tidak memerlukan autentikasi
  * */
@@ -289,14 +289,14 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/team/{id}/{companies_id}/delete', [TeamController::class, 'destroyTeam']);
 
     /*
-        Berikut ini merupakan rute untuk product dari company
+        Berikut ini merupakan rute untuk project dari company
     */
     // Menambahkan produk baru untuk perusahaan tertentu
-    Route::post('/companies/{companyId}/products', [ProductController::class, 'store']);
+    Route::post('/companies/{companyId}/projects', [ProductController::class, 'store']);
     // Mengedit produk untuk perusahaan tertentu
-    Route::post('/companies/{companyId}/products/{id}', [ProductController::class, 'update']);
+    Route::post('/companies/{companyId}/projects/{id}', [ProductController::class, 'update']);
     // Menghapus produk untuk perusahaan tertentu
-    Route::delete('/companies/products/delete/{id}', [ProductController::class, 'destroy']);
+    Route::delete('/companies/projects/delete/{id}', [ProductController::class, 'destroy']);
 
 });
 

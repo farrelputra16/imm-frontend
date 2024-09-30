@@ -55,9 +55,9 @@ return [
         // Disk 'be' untuk akses backend storage
         'be' => [
             'driver' => 'local',
-            'root' => public_path('../../images'),  // Menunjukkan lokasi folder 'images' yang berada di luar folder frontend
-            'url' => env('APP_BACKEND_URL') . env('BACKEND_STORAGE_PATH'), // URL backend diambil dari .env
-            'visibility' => 'public',  // Mengatur visibilitas agar bisa diakses publik
+            'root' => public_path('../images'),
+            'url' => env('APP_URL').'/images',
+            'visibility' => 'public',
         ],
     ],
 

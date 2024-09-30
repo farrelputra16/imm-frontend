@@ -208,21 +208,21 @@ body {
     }
 
     /* 
-        Styling untuk bagian company product
+        Styling untuk bagian company project
     */
-    .product-section {
+    .project-section {
         text-align: center;
         margin-top: 50px;
     }
 
-    .product-container {
+    .project-container {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         gap: 20px;
     }
 
-    .product-card {
+    .project-card {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -234,14 +234,14 @@ body {
         box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
     }
 
-    .product-card img {
+    .project-card img {
         width: 100%; /* Mengisi lebar kotak */
         height: 300px; /* Tinggi tetap */
         object-fit: cover; /* Menjaga rasio aspek */
         border-radius: 0; /* Menghilangkan sudut bulat */
         margin-bottom: 1rem;
     }
-    .btn-add-product{
+    .btn-add-project{
         background-color: #5940cb;
         color: white;
         border: none;
@@ -249,7 +249,7 @@ body {
         border-radius: 5px;
         margin-top: 30px;
     }
-    .product-price{
+    .project-price{
         margin: 20px;
         border: none;
         background-color: #5940cb;
@@ -259,14 +259,14 @@ body {
         color: white;
         border-radius: 30px;
     }
-    .btn-edit-product, .btn-delete-product {
+    .btn-edit-project, .btn-delete-project {
         background-color: #5940cb;
         color: white;
         border: none;
         padding: 5px 10px;
         border-radius: 5px;
     }
-    .btn-edit-product:hover, .btn-delete-product:hover {
+    .btn-edit-project:hover, .btn-delete-project:hover {
         background-color: #5e41de;
     }
 </style>
@@ -445,36 +445,36 @@ body {
                 </div>
             </section>
 
-            {{-- Ini merupakan bagian untuk product dari suatu company tersebut --}}
+            {{-- Ini merupakan bagian untuk project dari suatu company tersebut --}}
             <section>
-                <div class="container product-section">
-                    <h2 class="team-title">Our Products</h2>
-                    <div class="product-container">
-                        @if (!$products->isEmpty())
-                            @foreach ($products as $product)
-                                <div class="product-card">
-                                    <img src="{{ isset($product->image) ? asset('images/products/' . $product->image) : asset('images/imm.png') }}" alt="{{ $product->name }}">
-                                    <div class="team-name">{{ $product->name }}</div>
-                                    <div class="product-description">{{ $product->description }}</div>
-                                    <div class="product-price">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
+                <div class="container project-section">
+                    <h2 class="team-title">Our Projects</h2>
+                    <div class="project-container">
+                        @if (!$projects->isEmpty())
+                            @foreach ($projects as $project)
+                                <div class="project-card">
+                                    <img src="{{ isset($project->image) ? asset('images/projects/' . $project->image) : asset('images/imm.png') }}" alt="{{ $project->name }}">
+                                    <div class="team-name">{{ $project->name }}</div>
+                                    <div class="project-description">{{ $project->description }}</div>
+                                    <div class="project-price">Rp {{ number_format($project->price, 0, ',', '.') }}</div>
                                     <div class="action-buttons">
-                                        <button class="btn-edit-product" data-id="{{ $product->id }}" data-name="{{ $product->name }}" data-description="{{ $product->description }}" data-photo="{{ isset($product->image) ? asset('images/products/' . $product->image) : asset('images/imm.png') }}" data-toggle="modal" data-target="#editProductModal" data-price="{{ $product->price }}" data-company-id="{{ $product->company->id }}">Edit</button>
-                                        <button class="btn-delete-product" data-id="{{ $product->id }}" id="product-{{ $product->id }}">Delete</button>  
+                                        <button class="btn-edit-project" data-id="{{ $project->id }}" data-name="{{ $project->name }}" data-description="{{ $project->description }}" data-photo="{{ isset($project->image) ? asset('images/projects/' . $project->image) : asset('images/imm.png') }}" data-toggle="modal" data-target="#editProductModal" data-price="{{ $project->price }}" data-company-id="{{ $project->company->id }}">Edit</button>
+                                        <button class="btn-delete-project" data-id="{{ $project->id }}" id="project-{{ $project->id }}">Delete</button>  
                                     </div>
                                 </div>
                             @endforeach
                         @else
-                            <p>No products available. Please add new products.</p>
+                            <p>No projects available. Please add new projects.</p>
                         @endif
                     </div>
-                    <button type="button" class="btn-add-product" data-toggle="modal" data-target="#addProductModal">Add New Product</button>
+                    <button type="button" class="btn-add-project" data-toggle="modal" data-target="#addProductModal">Add New Project</button>
                 </div>        
-                <!-- Add Product Modal -->
+                <!-- Add Project Modal -->
                 <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content" style="height: 100%; width:100%;">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="addProductModalLabel">Add New Product</h5>
+                                <h5 class="modal-title" id="addProductModalLabel">Add New Project</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -484,19 +484,19 @@ body {
                                 <input type="hidden" id="companyId" name="company_id" value="{{ $company->id }}">
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <label for="productName">Product Name</label>
-                                        <input type="text" class="form-control" id="productName" name="name" placeholder="Enter product name">
+                                        <label for="productName">Project Name</label>
+                                        <input type="text" class="form-control" id="productName" name="name" placeholder="Enter project name">
                                     </div>
                                     <div class="form-group" style="width: 100%;">
-                                        <label for="productDescription">Product Description</label>
-                                        <textarea class="form-control" id="productDescription" name="description" rows="3" placeholder="Enter product description"></textarea>
+                                        <label for="productDescription">Project Description</label>
+                                        <textarea class="form-control" id="productDescription" name="description" rows="3" placeholder="Enter project description"></textarea>
                                     </div>
                                     <div class="form-group">
-                                        <label for="productPrice">Product Price</label>
-                                        <input type="number" class="form-control" id="productPrice" name="price" placeholder="Enter product price">
+                                        <label for="productPrice">Project Price</label>
+                                        <input type="number" class="form-control" id="productPrice" name="price" placeholder="Enter project price">
                                     </div>
                                     <div class="form-group">
-                                        <label for="productImage">Product Image</label>
+                                        <label for="productImage">Project Image</label>
                                         <input type="file" class="form-control-file" id="productImage" name="image" accept=".jpg,.jpeg,.png">
                                     </div>
                                 </div>
@@ -509,12 +509,12 @@ body {
                     </div>
                 </div>
 
-                <!-- Edit Product Modal -->
+                <!-- Edit Project Modal -->
                 <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content" style="width: 100%; height:100%;">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
+                                <h5 class="modal-title" id="editProductModalLabel">Edit Project</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -523,21 +523,21 @@ body {
                                 <input type="hidden" id="editCompanyId" name="company_id">
                                 @csrf
                                 <div class="modal-body">
-                                    <input type="hidden" id="editProductId" name="id"> <!-- Hidden input for product id -->
+                                    <input type="hidden" id="editProductId" name="id"> <!-- Hidden input for project id -->
                                     <div class="form-group">
-                                        <label for="editProductName">Product Name</label>
+                                        <label for="editProductName">Project Name</label>
                                         <input type="text" class="form-control" id="editProductName" name="name">
                                     </div>
                                     <div class="form-group">
-                                        <label for="editProductDescription">Product Description</label>
+                                        <label for="editProductDescription">Project Description</label>
                                         <textarea class="form-control" id="editProductDescription" name="description" rows="3"></textarea>
                                     </div>
                                     <div class="form-group">
-                                        <label for="editProductPrice">Product Price</label>
+                                        <label for="editProductPrice">Project Price</label>
                                         <input type="number" class="form-control" id="editProductPrice" name="price">
                                     </div>
                                     <div class="form-group">
-                                        <label for="editProductImage">Product Image</label>
+                                        <label for="editProductImage">Project Image</label>
                                         <input type="file" class="form-control-file" id="editProductImage" name="image">
                                     </div>
                                 </div>
@@ -625,7 +625,6 @@ body {
         // Menangani input pencarian orang
         $('#searchPeople').on('input', function() {
                 var query = $(this).val();
-
                 if (query.length > 2) {
                     $.ajax({
                         url: '/search-people',
@@ -633,6 +632,7 @@ body {
                         data: { query: query },
                         success: function(response) {
                             var peopleList = '';
+                            console.log(response); // Lihat respons dari backend
                             response.forEach(function(person) {
                                 peopleList += `
                                     <div class="person" data-id="${person.id}">
@@ -645,6 +645,8 @@ body {
                                 `;
                             });
                             $('#peopleResults').html(peopleList).show();
+                            console.log($('#peopleResults').html()); // Lihat apakah konten sudah terisi
+
                         },
                         error: function(xhr) {
                             console.error('AJAX error: ', xhr);
@@ -670,6 +672,7 @@ body {
         // Menyimpan ID orang yang dipilih
         $('#peopleResults').on('click', '.person', function() {
             var selectedId = $(this).data('id');
+            console.log(selectedId);
             $('#selectedPersonId').val(selectedId); // Menyimpan ID orang terpilih
             $('#searchPeople').val($(this).find('h5').text()); // Mengganti input dengan nama orang yang dipilih (hanya nama)
             $('#peopleResults').html(''); // Menghapus hasil pencarian
@@ -817,7 +820,7 @@ body {
     });
     </script>  
     
-    {{-- ! Javascript untuk menangani handle terkait product baik untuk menambahkan edit dan menghapus --}}
+    {{-- ! Javascript untuk menangani handle terkait project baik untuk menambahkan edit dan menghapus --}}
     <script>
         $(document).ready(function(){
         // Menangani klik pada tombol tambah produk
@@ -828,17 +831,17 @@ body {
                 var formData = new FormData(this);  // Membuat FormData termasuk company_id
 
                 $.ajax({
-                    url: '/companies/' + $('#companyId').val() + '/products',  // Kirim dengan company_id
+                    url: '/companies/' + $('#companyId').val() + '/projects',  // Kirim dengan company_id
                     method: 'POST',
                     data: formData,
                     contentType: false,
                     processData: false,
                     success: function(response){
-                        alert('Product added successfully!');
+                        alert('Project added successfully!');
                         location.reload();  // Reload page
                     },
                     error: function(xhr){
-                        alert('Error adding product: ' + xhr.responseText);
+                        alert('Error adding project: ' + xhr.responseText);
                     }
                 });
             });
@@ -853,29 +856,29 @@ body {
                 var productId = $('#editProductId').val();
 
                 $.ajax({
-                    url: '/companies/' + $('#editCompanyId').val() + '/products/' + productId,
+                    url: '/companies/' + $('#editCompanyId').val() + '/projects/' + productId,
                     method: 'POST',
                     data: formData,
                     contentType: false,
                     processData: false,
                     success: function(response) {
-                        alert('Product updated successfully!');
+                        alert('Project updated successfully!');
                         location.reload();
                     },
                     error: function(xhr) {
-                        alert('Error updating product: ' + xhr.responseText);
+                        alert('Error updating project: ' + xhr.responseText);
                     }
                 });
             });
         });
 
 
-        $('.btn-edit-product').on('click', function() {
+        $('.btn-edit-project').on('click', function() {
             var productId = $(this).data('id');
             var companyId = $(this).data('company-id'); // Ambil company_id
 
             console.log('Company ID:', companyId); // Debugging
-            console.log('Product ID:', productId); // Debugging
+            console.log('Project ID:', productId); // Debugging
 
             // Set nilai pada input yang sesuai
             $('#editCompanyId').val(companyId); // Set company ID
@@ -886,25 +889,25 @@ body {
         });
 
          // Menangani klik pada tombol delete
-        $('.btn-delete-product').on('click', function(event) {
+        $('.btn-delete-project').on('click', function(event) {
             var productId = $(this).data('id');
 
             $('#confirmModal').modal('show'); // Tampilkan modal konfirmasi
 
             $('#confirmSaveButton').off('click').on('click', function() {
                 $.ajax({
-                    url: '/companies/products/delete/' + productId,
+                    url: '/companies/projects/delete/' + productId,
                     method: 'DELETE',
                     data: {
                         _token: '{{ csrf_token() }}'
                     },
                     success: function(data) {
                         alert(data.message);
-                        $('#product-' + productId).remove();
+                        $('#project-' + productId).remove();
                         location.reload();
                     },
                     error: function(xhr) {
-                        alert('Error deleting product: ' + xhr.responseJSON.error || 'Unknown error');
+                        alert('Error deleting project: ' + xhr.responseJSON.error || 'Unknown error');
                     }
                 });
             });

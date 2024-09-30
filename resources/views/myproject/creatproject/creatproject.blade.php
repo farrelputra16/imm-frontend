@@ -129,40 +129,64 @@
                             <div class="form-group">
                                 <div class="form-group mt-3">
                                     <label for="jumlah_pendanaan">Jumlah Dana Keseluruhan</label>
-                                    <input type="number" class="form-control" name="jumlah_pendanaan"
-                                        id="jumlah_pendanaan" required>
+                                    <input type="number" class="form-control" name="jumlah_pendanaan" id="jumlah_pendanaan" required>
                                 </div>
-                                <label for="otherFunds">Pendanaan Lainnya</label>
-
-                                <button type="button" class="btn btn-primary btn-add-dana ml-2 mb-2"><i
-                                        class="fa-solid fa-plus" style="color: #ffffff;"></i></button>
-                                <div class="spesifikasi-pendanaan">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Jenis Dana</th>
-
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <select class="form-control" name="dana[0][jenis_dana]" required>
-                                                        <option value="Hibah">Hibah</option>
-                                                        <option value="Investasi">Investasi</option>
-                                                        <option value="Pinjaman">Pinjaman</option>
-                                                        <option value="Lainnya">Lainnya</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="number" class="form-control" name="dana[0][nominal]"
-                                                        required>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                            
+                                <!-- Opsi Apakah Ada Pendanaan Eksternal -->
+                                <div class="form-group">
+                                    <label for="external_funding">Apakah Proyek Ini Memiliki Pendanaan Eksternal?</label>
+                                    <select class="form-control" id="external_funding" name="external_funding">
+                                        <option value="" disabled selected>Pilih Jawaban</option>
+                                        <option value="yes">Ya</option>
+                                        <option value="no">Tidak</option>
+                                    </select>
                                 </div>
-                            </div>
+                            
+                                <!-- Bagian untuk pendanaan eksternal (disembunyikan jika "Tidak") -->
+                                <div id="external-funding-section" style="display: none;">
+                                    <label for="otherFunds">Pendanaan Lainnya</label>
+                                    <button type="button" class="btn btn-primary btn-add-dana ml-2 mb-2"><i class="fa-solid fa-plus" style="color: #ffffff;"></i></button>
+                                    <div class="spesifikasi-pendanaan">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Jenis Dana</th>
+                                                    <th>Nominal</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="funding-rows">
+                                                <tr>
+                                                    <td>
+                                                        <select class="form-control" name="dana[0][jenis_dana]" required>
+                                                            <option value="Hibah">Hibah</option>
+                                                            <option value="Investasi">Investasi</option>
+                                                            <option value="Pinjaman">Pinjaman</option>
+                                                            <option value="Pre-seed Funding">Pre-seed Funding</option>
+                                                            <option value="Seed Funding">Seed Funding</option>
+                                                            <option value="Series A Funding">Series A Funding</option>
+                                                            <option value="Series B Funding">Series B Funding</option>
+                                                            <option value="Series C Funding">Series C Funding</option>
+                                                            <option value="Series D Funding">Series D Funding</option>
+                                                            <option value="Series E Funding">Series E Funding</option>
+                                                            <option value="Debt Funding">Debt Funding</option>
+                                                            <option value="Equity Funding">Equity Funding</option>
+                                                            <option value="Convertible Debt">Convertible Debt</option>
+                                                            <option value="Grants">Grants</option>
+                                                            <option value="Revenue-Based Financing">Revenue-Based Financing</option>
+                                                            <option value="Private Equity">Private Equity</option>
+                                                            <option value="IPO">IPO</option>
+                                                            <option value="Lainnya">Lainnya</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="form-control" name="dana[0][nominal]" required>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>                            
                             <div class="form-group">
 
                                 @if (auth()->check() && auth()->user()->companies)
@@ -598,31 +622,119 @@
                 });
 
                 var indexDana = 1;
+
+                // Tampilkan/ Sembunyikan bagian pendanaan eksternal berdasarkan pilihan
+                $("#external_funding").change(function() {
+                    var selectedValue = $(this).val();
+                    if (selectedValue === "yes") {
+                        $("#external-funding-section").show(); // Tampilkan bagian pendanaan
+                    } else {
+                        $("#external-funding-section").hide(); // Sembunyikan bagian pendanaan
+                        $(".spesifikasi-pendanaan tbody").empty(); // Reset semua baris jika memilih "Tidak"
+                        indexDana = 1;
+                    }
+                });
+
+                // Fungsi untuk menambahkan baris pendanaan baru
                 $(".btn-add-dana").click(function() {
                     var selectedOptions = $('.spesifikasi-pendanaan select').map(function() {
                         return $(this).val();
                     }).get();
-                    var options = ['Hibah', 'Investasi', 'Pinjaman', 'Lainnya'];
+
+                    var options = [
+                        'Hibah', 
+                        'Investasi', 
+                        'Pinjaman', 
+                        'Pre-seed Funding',
+                        'Seed Funding',
+                        'Series A Funding',
+                        'Series B Funding',
+                        'Series C Funding',
+                        'Series D Funding',
+                        'Series E Funding',
+                        'Debt Funding',
+                        'Equity Funding',
+                        'Convertible Debt',
+                        'Grants',
+                        'Revenue-Based Financing',
+                        'Private Equity',
+                        'IPO',
+                        'Lainnya'
+                    ];
+
                     var availableOptions = options.filter(function(option) {
                         return !selectedOptions.includes(option);
                     });
+
+                    if (availableOptions.length === 0) {
+                        return;
+                    }
+
                     var optionsHtml = availableOptions.map(function(option) {
                         return '<option value="' + option + '">' + option + '</option>';
                     }).join('');
-                    var newRow = '<tr>' +
-                        '<td><select class="form-control" name="dana[' + indexDana +
-                        '][jenis_dana]" required>' +
-                        optionsHtml +
-                        '</select></td>' +
-                        '<td><input type="number" class="form-control" name="dana[' + indexDana +
-                        '][nominal]" required></td>' +
-                        '<td><button type="button" class="btn btn-danger btn-remove-dana"><i class="fa-solid fa-minus" style="color: #ffffff;"></i></button></td>' +
-                        '</tr>';
+
+                    var newRow = `
+                        <tr>
+                            <td>
+                                <select class="form-control" name="dana[${indexDana}][jenis_dana]" required>
+                                    ${optionsHtml}
+                                </select>
+                            </td>
+                            <td>
+                                <input type="number" class="form-control" name="dana[${indexDana}][nominal]" required>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-remove-dana">
+                                    <i class="fa-solid fa-minus" style="color: #ffffff;"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+
                     $('.spesifikasi-pendanaan tbody').append(newRow);
                     indexDana++;
 
                     if (availableOptions.length === 1) {
                         $(".btn-add-dana").prop('disabled', true);
+                    }
+                });
+
+                // Fungsi untuk menghapus baris pendanaan
+                $(document).on('click', '.btn-remove-dana', function() {
+                    $(this).closest('tr').remove();
+                    
+                    var selectedOptions = $('.spesifikasi-pendanaan select').map(function() {
+                        return $(this).val();
+                    }).get();
+
+                    var options = [
+                        'Hibah', 
+                        'Investasi', 
+                        'Pinjaman', 
+                        'Pre-seed Funding',
+                        'Seed Funding',
+                        'Series A Funding',
+                        'Series B Funding',
+                        'Series C Funding',
+                        'Series D Funding',
+                        'Series E Funding',
+                        'Debt Funding',
+                        'Equity Funding',
+                        'Convertible Debt',
+                        'Grants',
+                        'Revenue-Based Financing',
+                        'Private Equity',
+                        'IPO',
+                        'Lainnya'
+                    ];
+
+                    var availableOptions = options.filter(function(option) {
+                        return !selectedOptions.includes(option);
+                    });
+
+                    if (availableOptions.length > 0) {
+                        $(".btn-add-dana").prop('disabled', false);
                     }
                 });
 

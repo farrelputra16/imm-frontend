@@ -297,13 +297,13 @@ h2 {
                         </div>
                     </div>
                 </div>
-                <!-- Products -->
+                <!-- Projects -->
                 <div class="col-md-4 d-flex">
                     <div class="card card-hover shadow-sm border-0 rounded-lg flex-grow-1 d-flex flex-column">
                         <div class="card-body text-center flex-grow-1">
                             <i class="bi bi-box-seam text-primary fs-1 mb-3"></i>
-                            <h5 class="card-title">Products</h5>
-                            <p><a href="{{ route('companies.product', ['id' => $company->id]) }}" class="text-decoration-none text-info">View Products</a></p>
+                            <h5 class="card-title">Projects</h5>
+                            <p><a href="{{ route('companies.project', ['id' => $company->id]) }}" class="text-decoration-none text-info">View Projects</a></p>
                         </div>
                     </div>
                 </div>
@@ -344,71 +344,6 @@ h2 {
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </div>
-
-        {{-- Bagian untuk project list --}}
-
-        <!-- Display Ongoing Projects -->
-        <div class="container mt-5" style="margin-bottom:20px;">
-            <div class="section mt-5">
-                <h4 class="text-center mb-5">Ongoing Projects ({{ $ongoingProjects->count() }})</h4>
-                @if($ongoingProjects->isEmpty())
-                    <p class="text-center">No ongoing projects found.</p>
-                @else
-                    <div class="row">
-                        @foreach($ongoingProjects as $project)
-                            <div class="col-md-4 mb-4">
-                                <div class="card">
-                                    <img src="{{ $project->img ? asset('images/' . $project->img) : asset('images/default_project.png') }}" class="card-img-top" alt="Project Image">
-                                        <div class="card-body d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <h5 class="card-title">{{ $project->nama }}</h5>
-                                                <p class="card-text">{{ Str::limit($project->deskripsi, 100) }}</p>
-                                                <p><strong>Status:</strong> {{ $project->status }}</p>
-                                            </div>
-                                            <!-- Tombol View Detail -->
-                                            <div class="ml-3">
-                                                <a href="{{ route('companies-project.show', $project->id) }}" class="btn btn-primary">View Detail</a>
-                                            </div>
-                                        </div>                                        
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                @endif
-            </div>
-        </div>
-
-        <!-- Display Completed Projects -->
-        <div class="container mt-5" style="margin-bottom: 50px;">
-            <div class="section mt-5">
-                <h4 class="text-center mb-5">Completed Projects ({{ $completedProjects->count() }})</h4>
-                @if($completedProjects->isEmpty())
-                    <p class="text-center">No completed projects found.</p>
-                @else
-                    <div class="row">
-                        @foreach($completedProjects as $project)
-                            <div class="col-md-4 mb-4">
-                                <div class="card">
-                                    <img src="{{ $project->img ? asset('images/' . $project->img) : asset('images/default_project.png') }}" 
-                                        class="card-img-top" alt="Project Image">
-                                        <div class="card-body d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <h5 class="card-title">{{ $project->nama }}</h5>
-                                                <p class="card-text">{{ Str::limit($project->deskripsi, 100) }}</p>
-                                                <p><strong>Status:</strong> {{ $project->status }}</p>
-                                            </div>
-                                            <!-- Tombol View Detail -->
-                                            <div class="ml-3">
-                                                <a href="{{ route('companies-project.show', $project->id) }}" class="btn btn-primary">View Detail</a>
-                                            </div>
-                                        </div>     
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                @endif
             </div>
         </div>
     </div>

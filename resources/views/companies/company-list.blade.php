@@ -193,6 +193,16 @@
             const isChecked = this.checked;
             document.querySelectorAll('.select_company').forEach(checkbox => {
                 checkbox.checked = isChecked;
+                checkbox.addEventListener('change', function(){
+                    if (!this.checked) {
+                        document.getElementById('select_all').checked = false;
+                    }
+                })
+                if (isChecked) {
+                    document.querySelector('.wishlist-button').style.display = 'inline-block';
+                } else {
+                    document.querySelector('.wishlist-button').style.display = 'none';
+                }
             });
         });
     

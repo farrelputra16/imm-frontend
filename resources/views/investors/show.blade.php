@@ -287,13 +287,13 @@ h2 {
                         </div>
                     </div>
                 </div>
-                <!-- Products -->
+                <!-- Projects -->
                 <div class="col-md-4 d-flex">
                     <div class="card card-hover shadow-sm border-0 rounded-lg flex-grow-1 d-flex flex-column">
                         <div class="card-body text-center flex-grow-1">
                             <i class="bi bi-box-seam text-primary fs-1 mb-3"></i>
-                            <h5 class="card-title">Products</h5>
-                            <p><a href="{{ route('companies.product', ['id' => $company->id]) }}" class="text-decoration-none text-info">View Products</a></p>
+                            <h5 class="card-title">Projects</h5>
+                            <p><a href="{{ route('companies.project', ['id' => $company->id]) }}" class="text-decoration-none text-info">View Projects</a></p>
                         </div>
                     </div>
                 </div>
