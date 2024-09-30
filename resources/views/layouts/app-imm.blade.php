@@ -275,6 +275,10 @@
                             <a class="nav-link {{ Request::is('profile-company') ? 'active' : '' }}"
                                 href="{{ route('profile-company') }}">Perusahaan Saya</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::is('investors.index') ? 'active' : '' }}"
+                                href="{{ route('investors.index') }}">Cari Investor</a>
+                        </li>
                     @else
                         <!-- Navbar untuk user yang belum mendaftarkan perusahaan -->
                         <li class="nav-item">
@@ -298,6 +302,10 @@
                         <li class="nav-item">
                             <a class="nav-link {{ Request::is('hubs.create.submission') ? 'active' : '' }}"
                                 href="{{ route('hubs.create.hubsubmission') }}">Daftarkan Hubs</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::is('investors.index') ? 'active' : '' }}"
+                                href="{{ route('investors.index') }}">Cari Investor</a>
                         </li>
                     @endif
                 </ul>

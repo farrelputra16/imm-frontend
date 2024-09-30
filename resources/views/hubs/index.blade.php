@@ -109,10 +109,10 @@
     <thead class="table-light">
         <tr>
             <th>Hub Name</th>
-            <th>Location</th>
-            <th>Number of Organizations</th>
-            <th>Number of People</th>
-            <th>Number of Events</th>
+            <th>Province</th>
+            <th>City</th>
+            <th>Top Investor Types</th>
+            <th>Top Funding Types</th>
             <th>Rank</th>
             <th>Description</th>
         </tr>
@@ -121,10 +121,10 @@
         @foreach($hubs as $hub)
         <tr onclick="window.location.href='{{ route('hubs.show', $hub->id) }}'">
             <td>{{ $hub->name }}</td>
-            <td>{{ $hub->location }}</td>
-            <td>{{ $hub->number_of_organizations }}</td>
-            <td>{{ $hub->number_of_people }}</td>
-            <td>{{ $hub->number_of_events }}</td>
+            <td>{{ $hub->provinsi }}</td>
+            <td>{{ $hub->kota}}</td>
+            <td>{{ $hub->top_investor_types}}</td>
+            <td>{{ $hub->top_funding_types }}</td>
             <td>{{ $hub->rank }}</td>
             <td>{{ $hub->description }}</td>
         </tr>
