@@ -1,9 +1,10 @@
 <?php
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Otp;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class VerificationController extends Controller
 {
@@ -16,41 +17,47 @@ class VerificationController extends Controller
 
     public function sendVerificationEmail(Request $request)
     {
-        /* Generate OTP */
-        $otp = $this->otp->generate($request->email, 'numeric', 6, 10);
+        // Validasi input
+        $request->validate([
+            'email' => 'required|email',
+            'no_hp' => 'required|string',
+        ]);
 
-        $data = [$request->email, $request->no_hp];
-
-        $email = $request->email;
-        $newotp = $otp->token;
-        $message = $otp->message;
-
-        /* Prepare email content */
-        $emailData = [
-            'email' => $request->email,
-            'title' => 'Your Email Verification',
-            'otp' => $otp->token,
-        ];
+        // Log informasi untuk debugging
+        Log::info("Processing OTP for email: " . $request->email . " and phone: " . $request->no_hp);
 
         try {
-            // Send email using Mail::send with a Mailable class (recommended)
+            // Generate OTP
+            $otp = $this->otp->generate($request->email, 'numeric', 6, 10);
+            Log::info("OTP generated: " . $otp->token);
+
+            $email = $request->email;
+
+            // Prepare email content
+            $emailData = [
+                'email' => $email,
+                'title' => 'Your Email Verification',
+                'otp' => $otp->token,
+            ];
+
+            // Send email
             Mail::send('mailVerification', ['data' => $emailData], function ($message) use ($emailData) {
                 $message->to($emailData['email'])->subject($emailData['title']);
             });
 
-            // return view('imm.kodeotp', compact('email', 'newotp', 'message'));
-            // return redirect()->route('imm.kodeotp')->with('success', 'Project created successfully');
-            // return view('imm.kodeotp', compact('posts', 'tags', 'categories','backendUrl'));
-            return response([
+            Log::info("OTP sent to email: " . $email);
+
+            return response()->json([
                 'email' => $emailData['email'],
-                'success' => $otp->status,
-                'message' => $otp->message,
+                'success' => true,
+                'message' => 'OTP has been sent to your email.',
                 'token' => $otp->token,
                 'email_sent' => true,
-                'data' => $data,
             ]);
         } catch (\Exception $e) {
-            return response([
+            Log::error("Failed to send OTP: " . $e->getMessage());
+
+            return response()->json([
                 'email' => $request->email,
                 'success' => false,
                 'message' => 'Failed to send OTP via email: ' . $e->getMessage(),
