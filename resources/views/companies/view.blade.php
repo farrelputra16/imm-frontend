@@ -9,7 +9,7 @@
     text-align: start;
     margin-bottom: 20px;
     margin-left: 50px;
-    margin-top: 20px; 
+    margin-top: 20px;
 }
 
 .company-profile {
@@ -214,6 +214,22 @@ h2 {
                 </div>
             </div>
 
+            <!-- Tambahkan ini di bagian yang sesuai pada tampilan profil perusahaan -->
+            @if(Auth::check() && Auth::user()->role === 'INVESTOR')
+            <div class="mt-4 text-center">
+                <a href="{{ route('investments.create', $company->id) }}" class="btn btn-primary">
+                    Start Invest
+                </a>
+            </div>
+            @else
+            <div class="mt-4 text-center">
+                <a href="{{ route('login') }}" class="btn btn-primary">
+                    Invest
+                </a>
+            </div>
+            @endif
+
+
             <div class="col-sm-6">
                 <div class="card-body">
                     <h4 class="card-title" style="padding-bottom: 10px;">Highlights</h4>
@@ -307,15 +323,15 @@ h2 {
                         </div>
                     </div>
                 </div>
-            </div>         
-        </div>    
-        
+            </div>
+        </div>
+
         {{-- Bagian untuk investor list --}}
         <div class="container mt-5" style="margin-bottom:20px;">
             <div class="card shadow-sm">
                 <div class="card-body">
                     <h4 class="card-title mb-4">Investor List</h4>
-        
+
                     <!-- Tabel Investor dengan kelas datatable -->
                     <table id="investorTable" class="table table-striped table-hover">
                         <thead>

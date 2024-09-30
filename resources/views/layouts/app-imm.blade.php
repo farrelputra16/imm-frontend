@@ -279,6 +279,10 @@
                             <a class="nav-link {{ Request::is('investors.index') ? 'active' : '' }}"
                                 href="{{ route('investors.index') }}">Cari Investor</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::is('investments.approvals') ? 'active' : '' }}"
+                                href="{{ route('investments.approvals') }}">Investor Saya</a>
+                        </li>
                     @else
                         <!-- Navbar untuk user yang belum mendaftarkan perusahaan -->
                         <li class="nav-item">
@@ -306,6 +310,10 @@
                         <li class="nav-item">
                             <a class="nav-link {{ Request::is('investors.index') ? 'active' : '' }}"
                                 href="{{ route('investors.index') }}">Cari Investor</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::is('investments.approvals') ? 'active' : '' }}"
+                                href="{{ route('investments.approvals') }}">Investor Saya</a>
                         </li>
                     @endif
                 </ul>

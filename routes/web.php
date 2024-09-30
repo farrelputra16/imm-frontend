@@ -27,6 +27,8 @@ use App\Http\Controllers\MetricProjectController;
 use App\Http\Controllers\CompanyOutcomeController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\InvestmentController;
+
 // Rute untuk autentikasi
 Auth::routes();
 Auth::routes(['verify' => true]);
@@ -145,6 +147,26 @@ Route::middleware(['auth'])->group(function () {
             return view('peoplepage.home'); // Return the view for investor homepage
         })->name('people.home');
     });
+
+
+    Route::middleware(['auth'])->group(function () {
+        // Route untuk investor membuat investasi
+        Route::get('companies/{company}/investments/create', [InvestmentController::class, 'create'])->name('investments.create');
+        Route::post('companies/{company}/investments', [InvestmentController::class, 'store'])->name('investments.store');
+
+        // Route untuk investor melihat pending investments
+        Route::get('investments/pending', [InvestmentController::class, 'pending'])->name('investments.pending');
+
+        // Route untuk approve oleh pemilik perusahaan
+        Route::post('investments/{investment}/approve', [InvestmentController::class, 'approve'])->name('investments.approve');
+
+        // Route untuk halaman approval untuk user (pemilik company)
+        Route::get('investments/approval', [InvestmentController::class, 'approval'])->name('investments.approvals');
+
+        // Route untuk update status investasi (approve/reject)
+        Route::post('investments/{investment}/status', [InvestmentController::class, 'updateStatus'])->name('investments.updateStatus');
+    });
+
 
     Route::get('/hubungi-sekarang/{event_id}', [EventController::class, 'hubungiSekarang'])->name('hubungi.sekarang');
 
