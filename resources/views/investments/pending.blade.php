@@ -31,7 +31,7 @@
                     <td>{{ ucfirst($investment->status) }}</td>
                     <td>
                         @if($investment->status == 'approved')
-                            <a href="{{ route('projects.view', $investment->project->id) }}" class="btn btn-info">View Report</a>
+                            <a href="{{ route('companies-project.show', $investment->project->id) }}" class="btn btn-info">View Report</a>
                         @else
                             <span class="badge badge-secondary">Pending</span>
                         @endif
