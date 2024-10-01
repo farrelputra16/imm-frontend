@@ -261,6 +261,9 @@
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('investor-home') ? 'active' : '' }}" href="{{ route('investor.home') }}">Beranda</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ Request::is('people.profile') ? 'active' : '' }}" href="{{ route('people.profile') }}">About Me</a>
+                    </li>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('event') ? 'active' : '' }}" href="/event">Event</a>
@@ -272,7 +275,7 @@
                         <a class="nav-link {{ Request::is('company-list') ? 'active' : '' }}" href="{{ route('companies.list') }}">Cari Perusahaan</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ Request::is('hubs.create.hubsubmission') ? 'active' : '' }}" href="{{ route('hubs.create.hubsubmission') }}">Cari Perusahaan</a>
+                        <a class="nav-link {{ Request::is('hubs.create.hubsubmission') ? 'active' : '' }}" href="{{ route('hubs.create.hubsubmission') }}">Daftarkan Hubs</a>
                     </li>
                 </ul>
 

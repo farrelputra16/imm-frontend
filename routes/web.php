@@ -146,6 +146,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/people-home', function () {
             return view('peoplepage.home'); // Return the view for investor homepage
         })->name('people.home');
+        Route::get('/people-profile', [PeopleController::class, 'profile'])->name('people.profile');
+Route::put('/people-profile/update', [PeopleController::class, 'updateProfile'])->name('people.updateProfile');
     });
 
 

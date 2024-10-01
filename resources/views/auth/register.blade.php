@@ -231,14 +231,6 @@
                                 <label for="name">Nama Lengkap</label>
                                 <input type="text" id="name" name="name" placeholder="Masukkan nama lengkap" value="{{ old('name') }}" required />
                             </div>
-                            <div class="form-group">
-                                <label for="primary_job_title">Jabatan Utama</label>
-                                <input type="text" id="primary_job_title" name="primary_job_title" placeholder="Masukkan jabatan utama" value="{{ old('primary_job_title') }}" required />
-                            </div>
-                            <div class="form-group">
-                                <label for="primary_organization">Organisasi Utama</label>
-                                <input type="text" id="primary_organization" name="primary_organization" placeholder="Masukkan organisasi utama" value="{{ old('primary_organization') }}" required />
-                            </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
@@ -260,28 +252,12 @@
                             <input type="email" id="people_gmail" name="people_gmail" placeholder="Masukkan Gmail" value="{{ old('people_gmail') }}" required />
                         </div>
                         <div class="form-group">
-                            <label for="people_location">Lokasi</label>
-                            <input type="text" id="people_location" name="people_location" placeholder="Masukkan lokasi" value="{{ old('people_location') }}" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="people_regions">Region</label>
-                            <input type="text" id="people_regions" name="people_regions" placeholder="Masukkan region" value="{{ old('people_regions') }}" required />
-                        </div>
-                        <div class="form-group">
                             <label for="gender">Jenis Kelamin</label>
                             <select id="gender" name="gender" required>
                                 <option value="">-- Pilih Jenis Kelamin --</option>
                                 <option value="Laki-laki" {{ old('gender') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
                                 <option value="Perempuan" {{ old('gender') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
                             </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="linkedin_link">LinkedIn</label>
-                            <input type="url" id="linkedin_link" name="linkedin_link" placeholder="Masukkan link LinkedIn" value="{{ old('linkedin_link') }}" />
-                        </div>
-                        <div class="form-group">
-                            <label for="people_description">Deskripsi</label>
-                            <textarea id="people_description" name="people_description" placeholder="Masukkan deskripsi" rows="3">{{ old('people_description') }}</textarea>
                         </div>
                     </div>
 

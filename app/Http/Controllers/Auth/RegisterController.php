@@ -100,20 +100,16 @@ class RegisterController extends Controller
                 'departments' => 'required|string|max:255',
             ]);
         } elseif ($role === 'PEOPLE') {
+            // Hanya validasi kolom yang diperlukan, sisanya dibiarkan kosong
             $rules = array_merge($rules, [
                 'name' => 'required|string|max:255',
-                'primary_job_title' => 'required|string|max:255',
-                'primary_organization' => 'required|string|max:255',
                 'people_role' => 'required|in:Mentor,Pekerja,Konsultan',
                 'people_phone' => 'required|string|max:15',
                 'people_gmail' => 'required|email|max:255',
-                'people_location' => 'required|string|max:255',
-                'people_regions' => ['required', 'string', 'max:255'],
                 'gender' => 'required|in:Laki-laki,Perempuan',
-                'linkedin_link' => 'nullable|url',
-                'people_description' => 'nullable|string',
             ]);
         }
+
 
         return Validator::make($data, $rules);
     }
@@ -166,24 +162,20 @@ class RegisterController extends Controller
 
     // Membuat entri People setelah user dengan role PEOPLE dibuat
     protected function createPeople(User $user, array $data)
-    {
-        Log::info('Membuat people untuk user ID: ' . $user->id);
+{
+    Log::info('Membuat people untuk user ID: ' . $user->id);
 
-        People::create([
-            'user_id' => $user->id, // Associate user with people
-            'name' => $data['nama_depan'] . ' ' . $data['nama_belakang'],
-            'primary_job_title' => $data['primary_job_title'],
-            'primary_organization' => $data['primary_organization'],
-            'role' => $data['people_role'],
-            'phone_number' => $data['people_phone'],
-            'gmail' => $data['people_gmail'],
-            'location' => $data['people_location'],
-            'regions' => $data['people_regions'],
-            'gender' => $data['gender'],
-            'linkedin_link' => $data['linkedin_link'],
-            'description' => $data['people_description'],
-        ]);
+    People::create([
+        'user_id' => $user->id, // Associate user with people
+        'name' => $data['nama_depan'] . ' ' . $data['nama_belakang'], // Gabungan nama depan dan belakang
+        'role' => $data['people_role'], // Sub-role seperti Mentor, Pekerja, atau Konsultan
+        'phone_number' => $data['people_phone'], // Nomor telepon
+        'gmail' => $data['people_gmail'], // Gmail
+        'gender' => $data['gender'], // Jenis kelamin
+        // Kolom lain dibiarkan kosong (nullable)
+    ]);
 
-        Log::info('People berhasil dibuat untuk user ID: ' . $user->id);
-    }
+    Log::info('People berhasil dibuat untuk user ID: ' . $user->id);
+}
+
 }
