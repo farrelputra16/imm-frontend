@@ -214,9 +214,12 @@
         <div class="navbar">
             @if(isset($company))
                 <a href="{{ route('investments.create', $company->id) }}">Ajukan</a>
+            @else
+                <a href="{{ route('companies.list') }}">Pilih Perusahaan</a> <!-- Tautan ke halaman pemilihan perusahaan -->
             @endif
             <a href="{{ route('investments.pending') }}">Status</a>
         </div>
+
 
 
         <!-- Authenticated User Profile or Login -->

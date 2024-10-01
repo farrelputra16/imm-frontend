@@ -53,7 +53,7 @@ class InvestmentController extends Controller
     public function pending()
     {
         $investor = Investor::where('user_id', Auth::id())->first();
-        $investments = Investment::where('investor_id', $investor->id)->where('status', 'pending')->get();
+        $investments = Investment::where('investor_id', $investor->id)->get();
         return view('investments.pending', compact('investments'));
     }
 
