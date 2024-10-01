@@ -113,7 +113,7 @@
             <th>Primary Organization</th>
             <th>Role</th>
             <th>Location</th>
-            <th>Description</th>
+            <th>Linkedin</th>
             <th>Phone Number</th>
         </tr>
     </thead>
@@ -122,14 +122,21 @@
         <tr onclick="window.location.href='{{ route('people.show', $person->id) }}'">
             <td>{{ $person->name }}</td>
             <td>{{ $person->primary_job_title }}</td>
-            <td>{{ $person->primary_organization }}</td>
+            <td>{{ $person->company ? $person->company->nama : 'N/A' }}</td> <!-- Menampilkan nama perusahaan -->
             <td>{{ ucfirst($person->role) }}</td>
             <td>{{ $person->location }}</td>
-            <td>{{ $person->description }}</td>
+            <td>
+                @if($person->linkedin_link)
+                    <a href="{{ $person->linkedin_link }}" target="_blank">Link</a> <!-- Link ke LinkedIn -->
+                @else
+                    N/A
+                @endif
+            </td>
             <td>{{ $person->phone_number }}</td>
         </tr>
         @endforeach
     </tbody>
+
 </table>
 
 @endsection
