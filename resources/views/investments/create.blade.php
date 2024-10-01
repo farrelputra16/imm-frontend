@@ -1,4 +1,4 @@
-@extends('layouts.app-hubsubmission')
+@extends('layouts.app-investments')
 
 @section('content')
 <div class="container">
