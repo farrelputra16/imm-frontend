@@ -352,7 +352,7 @@
 
         <!-- Right Side: Chair Image -->
         <div class="col-md-6 text-center">
-            <img src="images/landingpage/chair.png" class="img-fluid chair-image" alt="Chair with icons">
+            <img src="images/landingpage/chairfix.png" class="img-fluid chair-image" alt="Chair with icons">
         </div>
     </div>
 </div>
