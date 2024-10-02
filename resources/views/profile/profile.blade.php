@@ -431,9 +431,7 @@
             wishlistButton.style.display = 'none';
         }
     }
-
-
-
+    
     let checkboxes = document.querySelectorAll('.select_company');
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function() {

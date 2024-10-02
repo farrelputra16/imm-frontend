@@ -14,9 +14,8 @@ class TeamController extends Controller
         // Mencari berdasarkan nama atau email
         $query = $request->query('query');
         
-        $people = People::where('nama_depan', 'like', '%' . $query . '%')
-            ->orWhere('nama_belakang', 'like', '%' . $query . '%')
-            ->orWhere('email', 'like', '%' . $query . '%')
+        $people = People::where('name', 'like', '%' . $query . '%')
+            ->orWhere('gmail', 'like', '%' . $query . '%')
             ->get();
     
         return response()->json($people);
