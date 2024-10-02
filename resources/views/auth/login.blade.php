@@ -56,7 +56,7 @@
     }
 
     .brand-logo {
-        width: 70px; /* Memperbesar ikon lonceng */
+        width: 100px; /* Memperbesar ikon lonceng */
         margin-right: 10px;
         transform: rotate(-15deg); /* Miringkan ke kiri */
     }
@@ -69,7 +69,8 @@
     }
 
     .login-form p {
-        color: #6c6c6c;
+        color: black;
+        font-weight: bold;
         font-size: 16px;
         margin-bottom: 25px;
     }
