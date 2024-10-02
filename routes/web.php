@@ -34,6 +34,9 @@ Auth::routes();
 Auth::routes(['verify' => true]);
 
 // Rute yang bisa diakses tanpa login (Login dan Register)
+Route::get('/choose-role', function () {
+    return view('auth.choose-role');
+})->name('auth.choose-role');
 Route::get('/', [LandingPageController::class, 'index'])->name('landingpage');
 Route::get('/investors', [InvestorController::class, 'index'])->name('investors.index');
 Route::get('/investors/{id}', [InvestorController::class, 'show'])

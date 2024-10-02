@@ -216,7 +216,7 @@
         </div>
     @else
         <!-- Log In Button -->
-        <a href="{{ route('login') }}" class="login-btn">Log In</a>
+        <a href="{{ route('auth.choose-role') }}" class="login-btn">Log In</a>
     @endauth
 </div>
 

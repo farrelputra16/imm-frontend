@@ -1,151 +1,169 @@
-{{-- resources/views/auth/register.blade.php --}}
 @extends('layouts.app-2fa')
-@section('title', 'Daftar')
+@section('title', 'Create your account')
 
 @section('css')
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-    <style>
-        body {
-            font-family: "Roboto", sans-serif;
-            background-color: #f5f5f5;
-        }
+<style>
+    body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f5f5;
+    }
 
+    .register-container {
+        background-color: #fff;
+        padding: 30px;
+        width: 727px;
+        margin: 0 auto;
+        margin-top: 50px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .register-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Header with bell icon and title */
+    .register-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .register-header img {
+        width: 100px; /* Ukuran bell icon */
+        margin-right: 10px; /* Spasi antara bell dan teks */
+        transform: rotate(-15deg); /* Miringkan bell icon */
+    }
+
+    .register-header h2 {
+        font-size: 28px;
+        color: #5940cb;
+        font-weight: bold;
+    }
+
+    .register-description {
+        font-size: 16px;
+        color: black;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-row {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        width: 48%;
+    }
+
+    .form-group label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #000000;
+    }
+
+    .form-group input,
+    .form-group select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f8f9fa;
+        font-size: 16px;
+    }
+
+    .btn-register {
+        padding: 10px 20px;
+        background-color: #5940cb;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 16px;
+        margin-top: 20px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn-register:hover {
+        background-color: #524eff;
+        transform: scale(1.05);
+    }
+
+    .login-link {
+        margin-top: 15px;
+        font-size: 14px;
+        color: #000000;
+        text-align: center;
+    }
+
+    .login-link a {
+        color: #6256CA;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .login-link a:hover {
+        text-decoration: underline;
+    }
+
+    /* Role-specific sections */
+    .role-section {
+        display: none;
+        width: 100%;
+    }
+
+    /* Media query for responsiveness */
+    @media (max-width: 768px) {
         .register-container {
-            background-color: #fff;
-            padding: 30px;
-            width: 727px;
-            margin: 0 auto;
-            margin-top: 50px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-
-        .register-form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .brand-logo {
-            width: 137px;
-            margin-bottom: 20px;
-        }
-
-        .register-form h2 {
-            margin-bottom: 20px;
-            font-size: 26px;
-            color: #000000;
-            font-weight: bold;
+            width: 90%;
+            padding: 20px;
         }
 
         .form-row {
-            display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             width: 100%;
-            margin-bottom: 15px;
         }
 
         .form-group {
-            display: flex;
-            flex-direction: column;
-            width: 48%;
-        }
-
-        .form-group label {
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #000000;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f8f9fa;
-            font-size: 16px;
-        }
-
-        .btn-register {
-            padding: 10px 20px;
-            background-color: #5940cb;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
-            margin-top: 20px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-
-        .btn-register:hover {
-            background-color: #524eff;
-            transform: scale(1.05);
-        }
-
-        .login-link {
-            margin-top: 15px;
-            font-size: 14px;
-            color: #000000;
-            text-align: center;
-        }
-
-        .login-link a {
-            color: #000000;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .login-link a:hover {
-            text-decoration: underline;
-        }
-
-        /* Role-specific sections */
-        .role-section {
-            display: none;
             width: 100%;
         }
-
-        /* Media query for responsiveness */
-        @media (max-width: 768px) {
-            .register-container {
-                width: 90%;
-                padding: 20px;
-            }
-
-            .form-row {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .form-group {
-                width: 100%;
-            }
-        }
-    </style>
+    }
+</style>
 @endsection
 
 @section('content')
-<!DOCTYPE html>
-<html lang="en">
+
 <body>
     <div class="container">
         <div class="register-container">
             <form method="POST" action="{{ route('register') }}" id="registerForm">
                 @csrf
                 <div class="register-form">
-                    <img src="{{ asset('images/imm.png') }}" alt="Brand Logo" class="brand-logo">
-                    <h2>Daftarkan Akun</h2>
+                    <!-- Header with bell icon and title -->
+                    <div class="register-header">
+                        <img src="{{ asset('images/register/bell.png') }}" alt="Bell Icon">
+                        <h2>Create your account</h2>
+                    </div>
+                    <p class="register-description">Fill in your details to get started with IMM Impact Mate and unlock access to all our features.</p>
 
                     {{-- Role Selection --}}
                     <div class="form-group" style="width: 100%;">
-                        <label for="role">Pilih Role</label>
+                        <label for="role">Select Role</label>
                         <select id="role" name="role" required>
-                            <option value="">-- Pilih Role --</option>
-                            <option value="USER" {{ old('role') == 'USER' ? 'selected' : '' }}>User</option>
+                            <option value="">Select your role</option>
+                            <option value="USER" {{ old('role') == 'USER' ? 'selected' : '' }}>Startup Founder</option>
                             <option value="INVESTOR" {{ old('role') == 'INVESTOR' ? 'selected' : '' }}>Investor</option>
                             <option value="PEOPLE" {{ old('role') == 'PEOPLE' ? 'selected' : '' }}>People</option>
                         </select>
@@ -280,7 +298,7 @@
                     </div>
 
                     <button class="btn-register" type="submit" id="simpanBtn">Simpan Data</button>
-                    <div class="login-link">Sudah punya akun? <a href="{{ route('login') }}">Masuk</a></div>
+                    <div class="login-link">Already have an account? <a href="{{ route('login') }}">Sign In</a></div>
                 </div>
             </form>
         </div>
@@ -296,7 +314,6 @@
             const investorFields = document.getElementById('investorFields');
             const peopleFields = document.getElementById('peopleFields');
 
-            // Function to remove 'required' attribute from fields within a section
             function removeRequiredAttributes(section) {
                 const inputs = section.querySelectorAll('input, select, textarea');
                 inputs.forEach(input => {
@@ -304,7 +321,6 @@
                 });
             }
 
-            // Function to add 'required' attribute to fields within a section
             function addRequiredAttributes(section) {
                 const inputs = section.querySelectorAll('input, select, textarea');
                 inputs.forEach(input => {
@@ -318,12 +334,10 @@
                 investorFields.style.display = 'none';
                 peopleFields.style.display = 'none';
 
-                // Remove 'required' from all fields initially
                 removeRequiredAttributes(userFields);
                 removeRequiredAttributes(investorFields);
                 removeRequiredAttributes(peopleFields);
 
-                // Show and apply 'required' only to the selected role
                 if (selectedRole === 'USER') {
                     userFields.style.display = 'block';
                     addRequiredAttributes(userFields);
@@ -336,22 +350,18 @@
                 }
             }
 
-            // Initialize fields based on old input
             toggleFields();
 
-            // Update fields on role change
             roleSelect.addEventListener('change', toggleFields);
         });
 
-        // Function to validate form and show SweetAlert2 popups
         function validateForm(event) {
-            event.preventDefault(); // Prevent form submission initially
+            event.preventDefault();
 
             const role = document.getElementById('role').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
 
-            // Basic Validation
             if (password.length < 8) {
                 Swal.fire({
                     icon: 'error',
@@ -370,7 +380,6 @@
                 return;
             }
 
-            // Role-specific Validation
             if (role === 'USER') {
                 const nik = document.getElementById('nik').value;
                 if (nik.length !== 16) {
@@ -399,7 +408,8 @@
             });
         }
 
-        // Input Restrictions
+        document.getElementById('registerForm').addEventListener('submit', validateForm);
+
         document.addEventListener('DOMContentLoaded', function () {
             const nikInput = document.getElementById('nik');
             const teleponInput = document.getElementById('telepon');
@@ -435,10 +445,6 @@
             }
         });
 
-        // Attach form validation
-        document.getElementById('registerForm').addEventListener('submit', validateForm);
-
-        // Handle server-side validation errors
         @if ($errors->any())
             let errorMessage = '';
             @foreach ($errors->all() as $error)
@@ -452,5 +458,4 @@
         @endif
     </script>
 </body>
-</html>
 @endsection
