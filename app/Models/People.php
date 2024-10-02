@@ -9,45 +9,45 @@ class People extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'name',
         'role',
         'primary_job_title',
-        'primary_organization',
+        'primary_organization', // ini merujuk ke id dari companies atau nullable
         'location',
         'regions',
-        'gender',
+        'gender', // enum('Laki-laki', 'Perempuan')
         'linkedin_link',
         'description',
         'phone_number',
-        'gmail',
+        'gmail', // harus unik
         'user_id'
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'phone_number' => 'string',
-    ];
+    // Relasi dengan User
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-    public function hubs()
-    {
-        return $this->belongsToMany(Hubs::class, 'hubs_people', 'people_id', 'hub_id');
-    }
+
     // Relasi many-to-many dengan Company melalui tabel team
     public function companies()
     {
         return $this->belongsToMany(Company::class, 'team')->withPivot('position')->withTimestamps();
+    }
+
+    // Relasi many-to-many dengan Hubs melalui tabel hubs_people
+    public function hubs()
+    {
+        return $this->belongsToMany(Hubs::class, 'hubs_people', 'people_id', 'hub_id');
+    }
+
+    // Set gender enum value
+    public function setGenderAttribute($value)
+    {
+        if (!in_array($value, ['Laki-laki', 'Perempuan'])) {
+            throw new \InvalidArgumentException('Invalid gender value');
+        }
+        $this->attributes['gender'] = $value;
     }
 }

@@ -1,4 +1,4 @@
-@extends('layouts.app-hubsubmission')
+@extends('layouts.app-investments')
 
 @section('content')
 <div class="container">
@@ -38,7 +38,7 @@
             <tbody>
                 @foreach($investments as $investment)
                     <tr>
-                        <td>{{ $investment->investor->user->nama_depan }} {{ $investment->investor->user->nama_belakang }}</td>
+                        <td>{{ $investment->investor->org_name }}</td>
                         <td>{{ $investment->project->nama }}</td>
                         <td>{{ $investment->amount }}</td>
                         <td>{{ $investment->investment_date }}</td>

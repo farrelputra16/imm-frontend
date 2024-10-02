@@ -200,6 +200,7 @@ h2 {
                 <div class="card-body">
                     <h4 class="card-title">About</h4>
                     <p class="card-text">{{ $investor->description }}</p>
+                    <p class="card-text">{{ $investor-> }}</p>
                 </div>
 
                 <!-- Location Section -->

@@ -1,4 +1,4 @@
-@extends('layouts.app-hubsubmission')
+@extends('layouts.app-investments')
 
 @section('content')
 <div class="container">
@@ -18,6 +18,7 @@
                 <th>Amount</th>
                 <th>Investment Date</th>
                 <th>Status</th>
+                <th>Report</th>
             </tr>
         </thead>
         <tbody>
@@ -27,7 +28,13 @@
                     <td>{{ $investment->project->nama }}</td>
                     <td>{{ $investment->amount }}</td>
                     <td>{{ $investment->investment_date }}</td>
-                    <td>{{ $investment->status }}</td>
+                    <td>{{ ucfirst($investment->status) }}</td>
+                    <td>
+                        @if($investment->status == 'approved')
+                            <a href="{{ route('companies-project.show', $investment->project->id) }}" class="btn btn-info">View Report</a>
+                        @else
+                            <span class="badge badge-secondary">Pending</span>
+                        @endif
                 </tr>
             @endforeach
         </tbody>
