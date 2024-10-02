@@ -107,11 +107,13 @@ Route::get('/companies-list', [CompanyController::class, 'companyList'])->name('
 Route::get('/companies/{id}', [CompanyController::class, 'show'])->name('companies.show');
 Route::get('/companies/{id}/team', [CompanyController::class, 'showTeam'])->name('companies.team');
 Route::get('/companies/{id}/project', [CompanyController::class, 'showProducts'])->name('companies.project');
+
 /**
  * Pembuatan Route untuk bagian melihat project pada company yang tidak memerlukan autentikasi
  * */
 Route::get('companies/projects/{id}', [ProjectController::class, 'show'])->name('companies-project.show');
 Route::get('companies/project/{projectId}/metric/{metricId}/metricProject/{metricProjectId}/impact', [MetricProjectController::class, 'showImpact'])->name('companies-metric-impact.show');
+
  /**
  *  Berikut ini merupakan rute untuk menangani wishlist dari investor
  */
