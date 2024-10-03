@@ -1,8 +1,8 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap'); /* Using Montserrat font */
 
-    /* General header styles */
-    .header {
+    /* Scoped styles for the landing page navbar */
+    .navbar-landingpage {
         background-color: #fff;
         padding: 10px 20px;
         display: flex;
@@ -15,21 +15,18 @@
         border-bottom: 1px solid #5940CB;
     }
 
-    /* Animating the logo */
-    .header .logo img {
+    .navbar-landingpage .logo img {
         height: 40px;
         margin-left: 20px;
-        transition: transform 0.5s ease-in-out, filter 0.5s ease-in-out; /* Smooth transition */
+        transition: transform 0.5s ease-in-out, filter 0.5s ease-in-out;
     }
 
-    /* Logo hover effect with a slight bounce and glow */
-    .header .logo img:hover {
-        transform: scale(1.1) rotate(360deg); /* Slight scaling and rotation */
-        filter: drop-shadow(0 0 10px #5940CB); /* Glow effect */
+    .navbar-landingpage .logo img:hover {
+        transform: scale(1.1) rotate(360deg);
+        filter: drop-shadow(0 0 10px #5940CB);
     }
 
-    /* Navbar Menu */
-    .navbar {
+    .navbar-landingpage .navbar {
         display: flex;
         gap: 30px;
         align-items: center;
@@ -39,7 +36,7 @@
         margin: 0 auto;
     }
 
-    .navbar a {
+    .navbar-landingpage .navbar a {
         color: #333;
         text-decoration: none;
         padding: 10px 15px;
@@ -47,8 +44,7 @@
         transition: color 0.3s ease;
     }
 
-    /* Hover effect with underline animation */
-    .navbar a::after {
+    .navbar-landingpage .navbar a::after {
         content: '';
         display: block;
         width: 0;
@@ -60,30 +56,27 @@
         bottom: -5px;
     }
 
-    .navbar a:hover::after {
+    .navbar-landingpage .navbar a:hover::after {
         width: 100%;
     }
 
-    .navbar a:hover {
+    .navbar-landingpage .navbar a:hover {
         color: #5940CB;
     }
 
-    /* Notification Icon */
-    .notification-icon {
+    .navbar-landingpage .notification-icon {
         font-size: 1.5rem;
-        color: orange; /* Set the notification icon color to orange */
-        margin-right: 20px; /* Slight spacing to the left of the login button */
-        cursor: pointer; /* Show pointer when hovering over the notification icon */
-        transition: transform 0.2s ease; /* Smooth transform */
+        color: orange;
+        margin-right: 20px;
+        cursor: pointer;
+        transition: transform 0.2s ease;
     }
 
-    /* Notification Icon Click (slightly larger) */
-    .notification-icon:active {
-        transform: scale(1.2); /* Grow slightly on click */
+    .navbar-landingpage .notification-icon:active {
+        transform: scale(1.2);
     }
 
-    /* Styles for the login and register buttons */
-    .login-btn, .register-btn {
+    .navbar-landingpage .login-btn, .navbar-landingpage .register-btn {
         background-color: transparent;
         color: #5940CB;
         border: 2px solid #5940CB;
@@ -92,38 +85,37 @@
         font-size: 1rem;
         font-family: 'Montserrat', sans-serif;
         cursor: pointer;
-        text-decoration: none; /* Remove underline */
-        transition: transform 0.3s ease, background-color 0.3s ease; /* Smooth transform on hover */
+        text-decoration: none;
+        transition: transform 0.3s ease, background-color 0.3s ease;
         display: flex;
         align-items: center;
     }
 
-    .login-btn:hover {
+    .navbar-landingpage .login-btn:hover {
         background-color: #f5f5f5;
         color: #5940CB;
         transform: scale(1.05);
     }
 
-    .register-btn {
+    .navbar-landingpage .register-btn {
         background-color: #5940CB;
         color: white;
         margin-left: 10px;
     }
 
-    .register-btn:hover {
+    .navbar-landingpage .register-btn:hover {
         background-color: #4829a0;
         transform: scale(1.05);
     }
 
-    /* Dropdown Menu for Notifications */
-    .dropdown-menu-notifications {
+    .navbar-landingpage .dropdown-menu-notifications {
         background-color: #fff;
         border-radius: 5px;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         width: 250px;
     }
 
-    .dropdown-menu-notifications a {
+    .navbar-landingpage .dropdown-menu-notifications a {
         display: flex;
         padding: 10px;
         font-size: 0.9rem;
@@ -132,52 +124,50 @@
         text-decoration: none;
     }
 
-    .dropdown-menu-notifications a:hover {
+    .navbar-landingpage .dropdown-menu-notifications a:hover {
         background-color: #f5f5f5;
     }
 
-    .dropdown-menu-notifications a:last-child {
+    .navbar-landingpage .dropdown-menu-notifications a:last-child {
         border-bottom: none;
     }
 
-    .notification-content {
+    .navbar-landingpage .notification-content {
         display: flex;
         flex-direction: column;
     }
 
-    .notification-time {
+    .navbar-landingpage .notification-time {
         font-size: 0.8rem;
         color: #999;
     }
 
-    /* Profile Image */
-    .profile-img {
+    .navbar-landingpage .profile-img {
         width: 40px;
         height: 40px;
         border-radius: 50%;
     }
 
-    .ml-2 {
+    .navbar-landingpage .ml-2 {
         color: black;
         margin-left: 10px;
     }
 
-    /* Profile Dropdown */
-    .navbar .dropdown-menu {
+    .navbar-landingpage .navbar .dropdown-menu {
         background-color: #5940CB;
         border: none;
     }
 
-    .navbar .dropdown-menu .dropdown-item {
+    .navbar-landingpage .navbar .dropdown-menu .dropdown-item {
         color: #fff;
     }
 
-    .navbar .dropdown-menu .dropdown-item:hover {
+    .navbar-landingpage .navbar .dropdown-menu .dropdown-item:hover {
         background-color: #4b0082;
     }
 </style>
 
-<div class="header">
+<div class="navbar-landingpage">
     <!-- Logo -->
     <div class="logo">
         <img src="images/imm.png" alt="IMM Logo">
@@ -201,7 +191,6 @@
         <div class="dropdown">
             <i class="fas fa-bell notification-icon" id="notificationDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
             <div class="dropdown-menu dropdown-menu-right dropdown-menu-notifications" aria-labelledby="notificationDropdown">
-                <!-- Dummy Notification Items -->
                 <a href="#">
                     <div class="notification-content">
                         <strong>New Message</strong>
@@ -224,7 +213,7 @@
         </div>
 
         <!-- Log In and Register Buttons -->
-        <a href="{{ route('auth.choose-role') }}" class="login-btn ml-3">
+        <a href="{{ route('auth.choose-role') }}" class="login-btn ml-2">
             Log In
         </a>
         <a href="{{ route('register') }}" class="register-btn">Register</a>
@@ -233,7 +222,6 @@
 
 <!-- Font Awesome for icons -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
-<!-- Full version of jQuery (not slim) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
