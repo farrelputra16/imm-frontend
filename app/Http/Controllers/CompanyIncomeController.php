@@ -21,4 +21,25 @@ class CompanyIncomeController extends Controller
         }
         return $companyIncomes;
     }
+
+    public function show(){
+        $user = Auth::user();
+        $company = $user->companies;
+        return view('homepageimm.tambahdana', compact('company'));
+    }
+
+    public function store(Request $request){
+        $validated = $request->validate([
+            'company_id' => 'required|integer',
+            'date' => 'required|date',
+            'pengirim' => 'required|string',
+            'bank_asal' => 'required|string',
+            'bank_tujuan' => 'required|string',
+            'jumlah' => 'required|numeric',
+            'funding_type' => 'required|string',
+            'tipe_investasi' => 'required|string',
+        ]);
+        CompanyIncome::create($validated);
+        return redirect()->route('kelolapengeluaran')->with('success', 'Data pendapatan perusahaan berhasil ditambahkan.');
+    }
 }

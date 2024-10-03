@@ -345,8 +345,7 @@
 
                         <div class="d-flex justify-content-between mt-3">
                             <button type="button" class="btn btn-secondary" id="back-to-sdg-section">Kembali</button>
-                            <button type="button" class="btn btn-primary" id="next-to-metric-section">Simpan dan
-                                Lanjutkan</button>
+                            <button type="button" class="btn btn-primary" id="next-to-metric-section">Simpan dan Lanjutkan</button>
                         </div>
                     </div>
 

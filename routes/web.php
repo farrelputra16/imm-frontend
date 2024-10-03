@@ -28,6 +28,7 @@ use App\Http\Controllers\CompanyOutcomeController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\InvestmentController;
+use App\Http\Controllers\ManagementKeuanganController;
 
 // Rute untuk autentikasi
 Auth::routes();
@@ -126,32 +127,39 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/imm', function () {
         return view('imm.imm');
     })->name('imm')->middleware('check.company');
-    Route::get('/kelolapengeluaran', function (\Illuminate\Http\Request $request) {
-        $companyIncomeController = app(CompanyIncomeController::class);
-        $companyOutcomeController = app(CompanyOutcomeController::class);
 
-        $companyIncomes = $companyIncomeController->index();
-        $projects = $companyOutcomeController->index($request);
-
-        return view('homepageimm.kelolapengeluaran', compact('companyIncomes', 'projects'));
-    })->name('kelola-pengeluaran');
     Route::get('/detail-biaya/{project_id}', [CompanyOutcomeController::class, 'detailOutcome'])->name('homepageimm.detailbiaya');
-    Route::get('/tambah-penggunaan-dana/{project_id}', [CompanyOutcomeController::class, 'create'])->name('tambah.penggunaan.dana');
-    Route::post('/store-company-outcome', [CompanyOutcomeController::class, 'store'])->name('store-company-outcome');
+
+    // Route untuk halaman kelola pengeluaran
+    Route::get('/kelolapengeluaran', [ManagementKeuanganController::class, 'show'])->name('kelolapengeluaran');
+
+    // Route untuk keehalaman menambahkan dana masuk
+    Route::get('/tambahdana', [CompanyIncomeController::class, 'show'])->name('createCompanyIncome');
+
+    // Route untuk kehalaman menambahkan pengeluaran proyek
+    Route::get('/tambahpenggunaandana/pengeluaran-proyek', function(){
+        return view('homepageimm.pengeluaran-proyek');
+    })->name('createCompanyOutcome');
+
+    // Route untuk menyimpan dana masuk
+    Route::post('/tambahpenggunaandana', [CompanyIncomeController::class, 'store'])->name('companyIncome.store');
+
+    // Route untuk menambahkan pengeluaran proyek
+    Route::post('/tambahpenggunaandana/outcome', [CompanyOutcomeController::class, 'store'])->name('companyOutcome.store');
 
     Route::group(['middleware' => ['auth', 'investor']], function () {
         Route::get('/investor-home', function () {
             return view('investorspage.home'); // Return the view for investor homepage
         })->name('investor.home');
     });
+
     Route::group(['middleware' => ['auth', 'people']], function () {
         Route::get('/people-home', function () {
             return view('peoplepage.home'); // Return the view for investor homepage
         })->name('people.home');
         Route::get('/people-profile', [PeopleController::class, 'profile'])->name('people.profile');
-Route::put('/people-profile/update', [PeopleController::class, 'updateProfile'])->name('people.updateProfile');
+        Route::put('/people-profile/update', [PeopleController::class, 'updateProfile'])->name('people.updateProfile');
     });
-
 
     Route::middleware(['auth'])->group(function () {
         // Route untuk investor membuat investasi

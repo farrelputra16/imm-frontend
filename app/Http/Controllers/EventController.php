@@ -80,7 +80,6 @@ class EventController extends Controller
         if (isset($validatedData['users'])) {
             $event->users()->attach($validatedData['users']);
         };
-        dd($event);
         return redirect()->route('events.index')->with('success', 'Event created successfully.');
     }
 

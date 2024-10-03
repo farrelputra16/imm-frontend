@@ -24,7 +24,7 @@ body {
 }
 
 .btn-kelola {
-    width: 240px;
+    width: 300px;
     height: 43px;
     background-color: #524eff;
     color: white;
@@ -379,7 +379,7 @@ h4 {
     </div>
     
     <div class="container d-flex justify-content-center mt-5">
-        <a href="kelolapengeluaran"><button class="btn-kelola">Kelola Pengeluaran</button></a> 
+        <a href="{{ route('kelolapengeluaran') }}"><button class="btn-kelola">Management Keuangan</button></a> 
     </div>
 
     <div class="container mt-5">
