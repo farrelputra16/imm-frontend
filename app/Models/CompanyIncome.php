@@ -28,6 +28,8 @@ class CompanyIncome extends Model
         'bank_tujuan',
         'jumlah',
         'company_id',
+        'funding_type',
+        'tipe_investasi',
     ];
 
     /**
