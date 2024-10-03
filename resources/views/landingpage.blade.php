@@ -75,7 +75,7 @@
     .card-inner {
         border-radius: 10px;
         background-color: #fff;
-        padding: 20px;
+        padding: 10px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         width: 80%;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -108,6 +108,7 @@
 
     /* Crunchbase header styling */
     .header-crunchbase {
+        margin-top:80px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -115,7 +116,7 @@
     }
 
     .header-crunchbase h1 {
-        font-size: 3.5rem;
+        font-size: 4.5rem;
         color: #6c757d;
         margin-bottom: 0;
     }
@@ -123,9 +124,9 @@
     .header-crunchbase h1 span {
         color: #6256CA;
     }
-    .header-crunchbase
     .image-crunchbase {
         max-width: 200px; /* Adjust image size */
+        margin-right: 120px;
     }
 
     .news-item {
@@ -293,7 +294,7 @@
             </h1>
         </div>
         <div>
-            <img src="images/landingpage/section3.png" class="image-crunchbase" alt="Crunchbase Insights & Analysis Logo">
+            <img src="images/landingpage/logocrunch.png" class="image-crunchbase" alt="Crunchbase Insights & Analysis Logo">
         </div>
     </div>
 
