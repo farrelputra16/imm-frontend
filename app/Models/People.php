@@ -50,4 +50,8 @@ class People extends Model
         }
         $this->attributes['gender'] = $value;
     }
+    public function company()
+{
+    return $this->belongsTo(Company::class, 'primary_organization');
+}
 }

@@ -12,7 +12,7 @@ class PeopleController extends Controller
     // Index method to display list of people with filters
     public function index(Request $request)
     {
-        $query = People::query();
+        $query = People::query()->with('company');
 
         // Filter by location if provided
         if ($request->filled('location')) {
@@ -88,5 +88,6 @@ class PeopleController extends Controller
         // Redirect kembali ke halaman profil dengan pesan sukses
         return redirect()->route('people.home')->with('success', 'Profile updated successfully.');
     }
+
 }
 

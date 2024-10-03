@@ -68,80 +68,86 @@
         color: #5940CB;
     }
 
-    /* Add a subtle border on the right */
-    .navbar a:not(:last-child) {
-        border-right: 1px solid #eaeaea;
+    /* Notification Icon */
+    .notification-icon {
+        font-size: 1.5rem;
+        color: orange; /* Set the notification icon color to orange */
+        margin-right: 20px; /* Slight spacing to the left of the login button */
+        cursor: pointer; /* Show pointer when hovering over the notification icon */
+        transition: transform 0.2s ease; /* Smooth transform */
     }
 
-    /* Search Icon */
-    .search-icon {
-        position: relative;
-        margin-right: 20px;
+    /* Notification Icon Click (slightly larger) */
+    .notification-icon:active {
+        transform: scale(1.2); /* Grow slightly on click */
     }
 
-    /* Search Input Field */
-    .search-icon input {
-        width: 0;
-        opacity: 0;
-        border: none;
-        border-radius: 20px;
-        padding: 5px 10px;
-        outline: none;
-        transition: width 0.5s ease, opacity 0.5s ease;
-    }
-
-    .search-icon:hover input {
-        width: 150px; /* Expand input field when hovered */
-        opacity: 1;
-        border: 1px solid #5940CB; /* Add border */
-    }
-
-    /* Search Icon Styles */
-    .search-icon i {
-        color: #333;
-        font-size: 1.2rem;
-        cursor: pointer;
-        transition: transform 0.3s ease, color 0.3s ease; /* Smooth transition */
-    }
-
-    /* Search Icon hover effect with animation */
-    .search-icon:hover i {
+    /* Styles for the login and register buttons */
+    .login-btn, .register-btn {
+        background-color: transparent;
         color: #5940CB;
-        transform: scale(1.2) rotate(15deg); /* Scale and rotate the icon */
-    }
-
-    /* Centering logo and navbar items */
-    .nav-wrapper {
-        display: flex;
-        justify-content: center;
-        flex-grow: 1;
-    }
-
-    /* Styles for the login button */
-    .login-btn {
-        background-color: #5940CB;
-        color: white;
-        padding: 10px 20px;
+        border: 2px solid #5940CB;
+        padding: 8px 20px;
         border-radius: 5px;
-        border: none;
         font-size: 1rem;
         font-family: 'Montserrat', sans-serif;
         cursor: pointer;
         text-decoration: none; /* Remove underline */
         transition: transform 0.3s ease, background-color 0.3s ease; /* Smooth transform on hover */
+        display: flex;
+        align-items: center;
     }
 
     .login-btn:hover {
-        transform: scale(1.1); /* Grow on hover */
-        background-color: #4829a0; /* Keep the same color */
-        color: white; /* Keep text color the same */
+        background-color: #f5f5f5;
+        color: #5940CB;
+        transform: scale(1.05);
     }
 
-    .login-btn:focus,
-    .login-btn:active {
-        outline: none; /* Remove outline on click */
-        background-color: #5940CB; /* Keep the same background color */
-        color: white; /* Keep text color the same */
+    .register-btn {
+        background-color: #5940CB;
+        color: white;
+        margin-left: 10px;
+    }
+
+    .register-btn:hover {
+        background-color: #4829a0;
+        transform: scale(1.05);
+    }
+
+    /* Dropdown Menu for Notifications */
+    .dropdown-menu-notifications {
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        width: 250px;
+    }
+
+    .dropdown-menu-notifications a {
+        display: flex;
+        padding: 10px;
+        font-size: 0.9rem;
+        border-bottom: 1px solid #f0f0f0;
+        color: #333;
+        text-decoration: none;
+    }
+
+    .dropdown-menu-notifications a:hover {
+        background-color: #f5f5f5;
+    }
+
+    .dropdown-menu-notifications a:last-child {
+        border-bottom: none;
+    }
+
+    .notification-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .notification-time {
+        font-size: 0.8rem;
+        color: #999;
     }
 
     /* Profile Image */
@@ -150,9 +156,10 @@
         height: 40px;
         border-radius: 50%;
     }
-    .ml-2{
-        color:black;
-        margin-left:10px;
+
+    .ml-2 {
+        color: black;
+        margin-left: 10px;
     }
 
     /* Profile Dropdown */
@@ -188,42 +195,45 @@
         </div>
     </div>
 
-    <!-- Search Icon with expanding input field -->
-    <div class="search-icon">
-        <i class="fas fa-search"></i>
-        <input type="text" placeholder="Search...">
-    </div>
-
-    <!-- Authenticated User Section -->
-    @auth
+    <!-- Notification and Auth Section -->
+    <div class="d-flex align-items-center">
+        <!-- Notification Dropdown -->
         <div class="dropdown">
-            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdownMenuLink"
-                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <!-- Display User Profile Image and Name -->
-                <img src="{{ Auth::user()->img ? asset('/images/' . Auth::user()->img) : asset('/images/default_user.webp') }}"
-                    alt="Profile Picture" class="profile-img">
-                <span class="ml-2">{{ Auth::user()->nama_depan }}</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="{{ route('profile') }}">Profil Saya</a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="dropdown-item">
-                        <i class="fas fa-sign-out-alt"></i> Log Out
-                    </button>
-                </form>
+            <i class="fas fa-bell notification-icon" id="notificationDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+            <div class="dropdown-menu dropdown-menu-right dropdown-menu-notifications" aria-labelledby="notificationDropdown">
+                <!-- Dummy Notification Items -->
+                <a href="#">
+                    <div class="notification-content">
+                        <strong>New Message</strong>
+                        <span class="notification-time">2 minutes ago</span>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="notification-content">
+                        <strong>New Event Added</strong>
+                        <span class="notification-time">1 hour ago</span>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="notification-content">
+                        <strong>Investment Opportunity</strong>
+                        <span class="notification-time">1 day ago</span>
+                    </div>
+                </a>
             </div>
         </div>
-    @else
-        <!-- Log In Button -->
-        <a href="{{ route('login') }}" class="login-btn">Log In</a>
-    @endauth
+
+        <!-- Log In and Register Buttons -->
+        <a href="{{ route('auth.choose-role') }}" class="login-btn ml-3">
+            Log In
+        </a>
+        <a href="{{ route('register') }}" class="register-btn">Register</a>
+    </div>
 </div>
 
 <!-- Font Awesome for icons -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
 <!-- Full version of jQuery (not slim) -->
-<!-- Popper.js for Bootstrap's dropdowns and tooltips -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -261,9 +261,6 @@
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('investor-home') ? 'active' : '' }}" href="{{ route('investor.home') }}">Beranda</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ Request::is('people.profile') ? 'active' : '' }}" href="{{ route('people.profile') }}">About Me</a>
-                    </li>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('event') ? 'active' : '' }}" href="/event">Event</a>
@@ -315,7 +312,7 @@
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right"
                                                     aria-labelledby="navbarDropdownMenuLink">
-                                                    <a class="dropdown-item" href="{{ route('profile') }}">Profil Saya</a>
+                                                    <a class="dropdown-item" href="{{ route('people.profile') }}">Profil Saya</a>
                                                     <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                                         @csrf
                                                         <button type="submit" class="dropdown-item">
