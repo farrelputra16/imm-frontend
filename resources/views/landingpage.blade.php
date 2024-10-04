@@ -131,12 +131,12 @@
 
     .news-item {
         display: flex;
-        margin-bottom: 20px;
+        margin-bottom: 40px;
     }
 
     .news-item img {
-        width: 80px;
-        height: 80px;
+        width: 200px;
+        height: 250px;
         margin-right: 20px;
         border-radius: 10px;
     }
@@ -146,12 +146,12 @@
     }
 
     .news-item .news-content h5 {
-        font-size: 1rem;
+        font-size: 2rem;
         font-weight: bold;
     }
 
     .news-item .news-content p {
-        font-size: 0.875rem;
+        font-size: 0.9rem;
         color: #6c757d;
     }
 
@@ -169,29 +169,74 @@
         font-size: 2rem;
         margin-bottom: 0;
     }
-
     .promo-card {
-        background-color: #6c63ff;
-        color: #fff;
-        text-align: center;
-        padding: 20px;
-        border-radius: 10px;
-    }
+    margin-top :40px;
+    background-color: #6256CA;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative; /* To position extra images later */
+    margin-bottom:70px;
+}
 
-    .promo-card p {
-        color: black;
-    }
+.promo-card p {
+    font-size: 0.8rem; /* Adjusted to be larger */
+    color: #FFFFFF;
+    text-align: left;
+}
 
-    .promo-card h4 {
-        font-size: 1.25rem;
-        margin-bottom: 10px;
-    }
+.promo-card h4 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+    color: #FFFFFF;
+    text-align: left;
+}
 
-    .promo-card .btn {
-        background-color: #fff;
-        color: #6c63ff;
-        font-weight: bold;
-    }
+.promo-card .btn {
+    font-size: 0.6rem;
+    background-color: #86D293;
+    color: #3F3F46;
+    font-weight: bold;
+    padding: 5px 15px; /* Adjusted for horizontal alignment */
+    white-space: nowrap; /* Ensure text stays on one line */
+    text-align: center;
+
+}
+
+.promo-images {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.promo-images img {
+    width: 150px;
+    height: 150px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+/* Extra images outside the promo card */
+/* Extra images outside the promo card */
+.extra-images {
+    position: absolute;
+    bottom: -40px; /* Move extra images below the promo card */
+    left: 90%;
+    transform: translateX(-40%);
+    display: flex;
+    justify-content: center;
+}
+
+.extra-images img {
+    width: 100px;
+    height: 100px;
+    border-radius: 2px;
+    object-fit: cover;
+    margin-left: -40px; /* Reduce the space between the images */
+}
+
+
 
     .table th, .table td {
         vertical-align: middle;
@@ -363,13 +408,33 @@
             </div>
             @endforeach
 
-            <div class="card promo-card">
-                <div class="card-body">
-                    <h4>You're missing out</h4>
-                    <p>Upgrade to Crunchbase Pro to find and engage with key decision makers</p>
-                    <button class="btn">START FREE TRIAL</button>
+            <div class="promo-card">
+                <div class="row align-items-center">
+                    <!-- Left Side: Text and Button -->
+                    <div class="col-md-8">
+                        <div class="card-body-promo">
+                            <h4>You're missing out</h4>
+                            <p>Upgrade to Crunchbase Pro to find and engage with key decision makers</p>
+                            <button class="btn">START FREE TRIAL</button>
+                        </div>
+                    </div>
+
+                    <!-- Right Side: Image -->
+                    <div class="col-md-4 d-flex justify-content-center">
+                        <div class="promo-images">
+                            <img src="images/landingpage/icon-promo.png" alt="Promo Image 1">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Extra images below the promo card -->
+                <div class="extra-images d-flex justify-content-between">
+                    <img src="images/landingpage/bitcoin-promo.png" alt="Extra Image 1">
+                    <img src="images/landingpage/bitcoin-promo.png" alt="Extra Image 2">
                 </div>
             </div>
+
+
 
             <div class="card">
                 <div class="card-header">Featured Searches and Lists</div>
