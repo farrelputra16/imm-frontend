@@ -27,8 +27,9 @@
     }
 
     .filter-section {
-        border-right: 1px solid #dee2e6;
-        padding-right: 20px;
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 5px;
     }
 
     .filter-section h5 {

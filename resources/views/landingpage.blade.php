@@ -9,6 +9,13 @@
         padding-top: 80px;
         margin-bottom: 100px;
     }
+    /* Adding smooth transition for the changing word */
+#changing-word {
+    color: #333;
+    font-weight: bold;
+    display: inline-block;
+    transition: opacity 0.5s ease;
+}
 
     /* General container styling with margin for spacing */
     .container {
@@ -135,7 +142,7 @@
     }
 
     .news-item img {
-        width: 200px;
+        width: 180px;
         height: 250px;
         margin-right: 20px;
         border-radius: 10px;
@@ -278,8 +285,10 @@
     <div class="row section-hero">
         <!-- Left Side: Text Content -->
         <div class="col-md-6">
-            <h1>Make Better <br> Decisions, faster.</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Exceptetur sint occaecat cupidatat.</p>
+            <h1>Make Your Decision <br>
+                <span id="changing-word">Faster.</span>
+              </h1>
+            <p>Make better decisions, faster, and more effectively, ensuring success in every aspect of your personal and professional life by focusing on clear goals, strategic planning, and continuous improvement.</p>
             <a href="#" class="btn btn-success">
                 <i class="fas fa-bolt"></i> SEE PLANS
             </a>
@@ -434,8 +443,6 @@
                 </div>
             </div>
 
-
-
             <div class="card">
                 <div class="card-header">Featured Searches and Lists</div>
                 <div class="card-body">
@@ -484,4 +491,25 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Array of words to rotate
+    const words = ['Faster.', 'Better.', 'Effective.','Efficient.'];
+    let wordIndex = 0;
+
+    function changeWord() {
+      const wordElement = document.getElementById('changing-word');
+      wordElement.style.opacity = '0'; // Start fade out
+
+      setTimeout(() => {
+        wordElement.textContent = words[wordIndex]; // Change the word
+        wordElement.style.opacity = '1'; // Fade in
+        wordIndex = (wordIndex + 1) % words.length; // Loop through words
+      }, 500); // Wait for fade out transition
+    }
+
+    // Change word every 2 seconds
+    setInterval(changeWord, 2000);
+  </script>
+
 @endsection
