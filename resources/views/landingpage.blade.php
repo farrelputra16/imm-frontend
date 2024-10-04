@@ -135,6 +135,10 @@
         max-width: 200px; /* Adjust image size */
         margin-right: 120px;
     }
+    .card {
+    margin-bottom: 30px; /* Memberikan jarak antar card */
+}
+
 
     .news-item {
         display: flex;
@@ -142,8 +146,8 @@
     }
 
     .news-item img {
-        width: 180px;
-        height: 250px;
+        width: 100px;
+        height: 100px;
         margin-right: 20px;
         border-radius: 10px;
     }
