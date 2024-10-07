@@ -146,20 +146,50 @@ input[type="number"] {
             <table id="project-table" class="table tabel mt-3 text-center border">
                 <thead>
                     <tr>
-                        <th>Nama Proyek</ th>
-                        <th>Rancangan Biaya</th>
+                        <th>Nama Proyek</th>
+                        <th>Rancangan Biaya Eksternal</th>
+                        <th>Rancangan Biaya Internal</th>
+                        <th>Total Dana Tersedia</th> <!-- Kolom baru -->
                         <th>Detail penggunaan biaya</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($projects as $project)
-                    <tr>
-                        <td>{{ $project->nama }}</td>
-                        <td>Rp{{ number_format($project->dana->first()->nominal, 0, ',', '.') }}</td>
-                        <td>
-                            <a href="{{ route('homepageimm.detailbiaya', ['project_id' => $project->id]) }}" style="text-decoration: underline">cek disini</a>
-                        </td>
-                    </tr>
+                    @foreach ($projectsWithFunding as $project)
+                        <tr>
+                            <td>{{ $project->nama }}</td>
+                            <td>
+                                @if($project->externalFunding->count() > 0)
+                                    Rp{{ number_format($project->externalFunding->sum('nominal'), 0, ',', '.') }}
+                                    <br>
+                                    <small>
+                                        @foreach ($project->externalFunding as $dana)
+                                            {{ $dana->jenis_dana }}
+                                        @endforeach
+                                    </small>
+                                @else
+                                    Tidak ada pendanaan eksternal
+                                @endif
+                            </td>
+                            <td>
+                                @if($project->internalFunding->count() > 0)
+                                    Rp{{ number_format($project->internalFunding->sum('nominal'), 0, ',', '.') }}
+                                    <br>
+                                    <small>
+                                        @foreach ($project->internalFunding as $dana)
+                                            <span class="badge badge-secondary">{{ $dana->jenis_dana }}</span>
+                                        @endforeach
+                                    </small>
+                                @else
+                                    Tidak ada pendanaan internal
+                                @endif
+                            </td>
+                            <td>
+                                Rp{{ number_format($project->totalDanaTersedia, 0, ',', '.') }} <!-- Menampilkan total dana tersedia -->
+                            </td>
+                            <td>
+                                <a href="{{ route('homepageimm.detailbiaya', ['project_id' => $project->id]) }}" style="text-decoration: underline">cek disini</a>
+                            </td>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>

@@ -1,11 +1,16 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\CompanyOutcome;
 use App\Models\Company;
 use App\Models\Project;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Investment;
 use Illuminate\Http\Request;
+use App\Models\CompanyOutcome;
+use Illuminate\Routing\Controller;
+use App\Mail\ProjectOutcomeUpdated;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class CompanyOutcomeController extends Controller
 {
@@ -48,8 +53,7 @@ class CompanyOutcomeController extends Controller
     public function create($project_id)
     {
         $project = Project::findOrFail($project_id);
-        return view('homepageimm.tambahpenggunaandana', compact('project_id'));
-        
+        return $project;
     }
 
     public function store(Request $request)
@@ -57,29 +61,53 @@ class CompanyOutcomeController extends Controller
         $validatedData = $request->validate([
             'date' => 'required|date',
             'jumlah_biaya' => 'required|numeric',
-            'category' => 'required|string|max:255',
             'keterangan' => 'required|string|max:1000',
             'bukti' => 'nullable|file|mimes:pdf,jpeg,jpg,png|max:5000',
             'project_id' => 'required|exists:projects,id',
+            'pelaporan_dana' => 'required|string|in:internal,external',
         ]);
-
+    
         $buktiFileName = null;
-
+    
         if ($request->hasFile('bukti')) {
             $buktiFile = $request->file('bukti');
             $buktiFileName = time() . '.' . $buktiFile->getClientOriginalExtension();
-            $buktiFile->move(public_path('images'), $buktiFileName);
+    
+            // Tentukan direktori berdasarkan pelaporan_dana
+            $directory = $validatedData['pelaporan_dana'] === 'external' 
+                ? 'public/laporan_pengeluaran_eksternal' 
+                : 'public/laporan_pengeluaran_internal';
+    
+            // Simpan file ke direktori yang sesuai
+            $buktiFile->storeAs($directory, $buktiFileName);
         }
-
-        CompanyOutcome::create([
+    
+        $outcome = CompanyOutcome::create([
             'date' => $validatedData['date'],
-            'category' => $validatedData['category'],
             'jumlah_biaya' => $validatedData['jumlah_biaya'],
             'keterangan' => $validatedData['keterangan'],
             'bukti' => $buktiFileName,
             'project_id' => $validatedData['project_id'],
+            'pelaporan_dana' => $validatedData['pelaporan_dana'],
         ]);
 
+        // AMbils emua investor yang berinvestasi di proyek ini
+        $investments = Investment::where('project_id', $validatedData['project_id'])->get();
+
+        foreach ($investments as $investment) {
+            $investor = $investment->investor;
+            $user = $investor->user;
+            $email = $user->email;
+
+            try {
+                // Kirim email ke investor
+                Mail::to($email)->send(new ProjectOutcomeUpdated($outcome));
+            } catch (\Exception $e) {
+                // Log error jika email gagal dikirim
+                Log::error("Email gagal dikirim ke {$email}: " . $e->getMessage());
+            }
+        }
+    
         return redirect()->route('homepageimm.detailbiaya', ['project_id' => $validatedData['project_id']])
                         ->with('success', 'Penggunaan dana berhasil ditambahkan.');
     }

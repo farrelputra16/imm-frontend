@@ -147,8 +147,7 @@ Route::middleware(['auth'])->group(function () {
     // Routes untuk Pengeluaran Proyek (Company Outcome)
     Route::prefix('pengeluaran-proyek')->group(function () {
         Route::get('/tambah', [ManagementKeuanganController::class, 'createOutcome'])->name('selectProjectOutcome');
-        Route::post('/', [CompanyOutcomeController::class, 'store'])->name('companyOutcome.store');
-
+        Route::post('/company-outcome', [CompanyOutcomeController::class, 'store'])->name('companyOutcome.store');
     });
 
     Route::group(['middleware' => ['auth', 'investor']], function () {
