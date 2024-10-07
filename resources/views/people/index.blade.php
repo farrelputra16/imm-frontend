@@ -7,7 +7,7 @@
 <!-- Updated Styles -->
 <style>
     body {
-        font-family: 'Arial', sans-serif;
+        font-family: 'Poppins', sans-serif;
     }
 
     .breadcrumb-item a {
@@ -29,6 +29,7 @@
     .display-4 {
         color:#6f42c1;
         text-align : center;
+        font-size:2.5rem;
     }
     .sidebar h5 {
         font-weight: bold;

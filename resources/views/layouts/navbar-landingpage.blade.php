@@ -170,8 +170,11 @@
 <div class="navbar-landingpage">
     <!-- Logo -->
     <div class="logo">
-        <img src="images/imm.png" alt="IMM Logo">
+        <a href="{{ url('/') }}"> <!-- Assuming the homepage is the root URL -->
+            <img src="images/imm.png" alt="IMM Logo">
+        </a>
     </div>
+    
 
     <!-- Navbar Menu -->
     <div class="nav-wrapper">
