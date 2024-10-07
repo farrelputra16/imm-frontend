@@ -1,6 +1,24 @@
 @extends('layouts.app-landingpage')
 
 @section('content')
+<style>
+    .profile-header {
+        color: #6256CA;
+        font-weight: bold;
+        font-size: 2.5rem;
+    }
+    .custom-table-header {
+        background-color: #6256CA;
+        color: white;
+    }
+    .profile-header,h1 {
+        color: #6256CA;
+        font-weight: bold;
+        font-size: 2.5rem;
+        margin-bottom:30px;
+    }
+</style>
+
 <div class="container mt-4">
    <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
@@ -14,7 +32,7 @@
       </ol>
    </nav>
 
-   <div class="profile-header">Investor Profile</div>
+   <div class="profile-header"><h1>Investor Profile</h1></div>
 
    <div class="profile-info d-flex align-items-center">
       <img src="https://storage.googleapis.com/a1aa/image/SiUTxb2vjMqcJFeesuJx30fvexVSxi9zWCPvrVgxpYKceYicC.jpg" alt="Profile picture of the investor" width="100" height="100" class="rounded-circle me-3">
@@ -35,16 +53,17 @@
    <div class="table-container mt-5">
     <div class="profile-header">Previous Investment</div>
     <table class="table mt-3">
-       <thead class="bg-primary text-white">
-          <tr>
-             <th>No</th>
-             <th>Company</th>
-             <th>Industry</th>
-             <th>Investment Stage</th>
-             <th>Investment Amount</th>
-             <th>Year</th>
-          </tr>
-       </thead>
+        <thead class="custom-table-header">
+            <tr>
+                <th>No</th>
+                <th>Company</th>
+                <th>Industry</th>
+                <th>Investment Stage</th>
+                <th>Investment Amount</th>
+                <th>Year</th>
+            </tr>
+        </thead>
+        
        <tbody>
           @foreach ($investor->investments as $investment)
           <tr>
