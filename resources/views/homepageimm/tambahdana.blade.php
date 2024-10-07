@@ -68,6 +68,15 @@ h4 {
         @csrf
         <input type="hidden" name="company_id" value="{{ $company->id }}">
         <div class="form-group">
+            <label for="project_id">Proyek</label>
+            <select name="project_id" id="project_id" class="form-control" required>
+                <option value="">Pilih Proyek</option>
+                @foreach($company->projects as $project)
+                    <option value="{{ $project->id }}">{{ $project->nama }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group">
             <label for="date">Tanggal</label>
             <input type="date" class="form-control" id="date" name="date" required>
         </div>

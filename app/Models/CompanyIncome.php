@@ -30,6 +30,7 @@ class CompanyIncome extends Model
         'company_id',
         'funding_type',
         'tipe_investasi',
+        'project_id',
     ];
 
     /**
@@ -38,5 +39,10 @@ class CompanyIncome extends Model
     public function company()
     {
         return $this->belongsTo(Company::class);
+    }
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
     }
 }

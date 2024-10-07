@@ -17,6 +17,11 @@
                 <th>Project</th>
                 <th>Amount</th>
                 <th>Investment Date</th>
+                <th>Funding Type</th>
+                <th>Investment Type</th>
+                <th>Sender</th>
+                <th>Origin Bank</th>
+                <th>Destination Bank</th>
                 <th>Status</th>
                 <th>Report</th>
             </tr>
@@ -28,6 +33,11 @@
                     <td>{{ $investment->project->nama }}</td>
                     <td>{{ $investment->amount }}</td>
                     <td>{{ $investment->investment_date }}</td>
+                    <td>{{ $investment->funding_type }}</td>
+                    <td>{{ ucfirst(str_replace('_', ' ', $investment->tipe_investasi)) }}</td> <!-- Mengubah format tipe investasi -->
+                    <td>{{ $investment->pengirim }}</td>
+                    <td>{{ $investment->bank_asal }}</td>
+                    <td>{{ $investment->bank_tujuan }}</td>
                     <td>{{ ucfirst($investment->status) }}</td>
                     <td>
                         @if($investment->status == 'approved')
@@ -35,6 +45,7 @@
                         @else
                             <span class="badge badge-secondary">Pending</span>
                         @endif
+                    </td>
                 </tr>
             @endforeach
         </tbody>

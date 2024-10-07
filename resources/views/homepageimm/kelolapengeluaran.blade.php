@@ -112,18 +112,20 @@ input[type="number"] {
                         <th>Jumlah (Rp)</th>
                         <th>Funding Type</th>
                         <th>Tipe Investasi</th>
+                        <th>Nama Proyek</th> <!-- Kolom baru untuk nama proyek -->
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($companyIncomes as $income)
                     <tr>
-                        <td>{{ $income->date }}</td>
+                        <td>{{ $income->date ? \Carbon\Carbon::parse($income->date)->format('j M, Y') : 'N/A' }}</td>
                         <td>{{ $income->pengirim }}</td>
                         <td>{{ $income->bank_asal }}</td>
                         <td>{{ $income->bank_tujuan }}</td>
                         <td>Rp{{ number_format($income->jumlah, 0, ',', '.') }}</td>
                         <td>{{ $income->funding_type }}</td>
                         <td>{{ $income->tipe_investasi ?? 'Tidak ada tipe investasi' }}</td>
+                        <td>{{ $income->project->nama ?? 'Tidak ada proyek' }}</td> <!-- Tampilkan nama proyek -->
                     </tr>
                     @endforeach
                 </tbody>

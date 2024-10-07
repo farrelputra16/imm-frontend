@@ -25,12 +25,14 @@ class CompanyIncomeController extends Controller
     public function show(){
         $user = Auth::user();
         $company = $user->companies;
+        $company->load('projects'); // Memuat proyek terkait
         return view('homepageimm.tambahdana', compact('company'));
     }
 
     public function store(Request $request){
         $validated = $request->validate([
             'company_id' => 'required|integer',
+            'project_id' => 'required|integer', // Validasi project_id
             'date' => 'required|date',
             'pengirim' => 'required|string',
             'bank_asal' => 'required|string',

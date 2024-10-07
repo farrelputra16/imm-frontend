@@ -15,7 +15,12 @@ class Investment extends Model
         'project_id',
         'amount',
         'investment_date',
-        'status'
+        'status',
+        'pengirim',
+        'bank_asal',
+        'bank_tujuan',
+        'funding_type',
+        'tipe_investasi'
     ];
 
     protected $casts = [
