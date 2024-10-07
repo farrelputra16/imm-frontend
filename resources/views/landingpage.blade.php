@@ -78,6 +78,66 @@
         }
     }
 
+    .this-week-section {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.highlight-title {
+    font-size: 1.5rem; /* Perbesar ukuran judul */
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #000;
+}
+
+.custom-card {
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Make sure it stretches to fill its container */
+}
+
+.custom-card h3 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 0;
+    color: #333;
+}
+
+.custom-card p {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Ensure the elements wrap if screen size is small */
+}
+
+.stats-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    flex: 1 1 80%; /* Perbesar ukuran setiap card ke 30% */
+    max-width: 100%; /* Ukuran maksimum setiap card */
+    box-sizing: border-box; /* Ensure padding and border are included in width calculation */
+    margin-bottom: 20px; /* Space between rows */
+}
+
+@media (max-width: 768px) {
+    .stats-card {
+        flex: 0 0 100%; /* On small screens, each card will take the full width */
+        max-width: 100%;
+    }
+}
+
+
+
     /* Card Hover and Pointer Effects */
     .card-inner {
         border-radius: 10px;
@@ -411,14 +471,53 @@
         <!-- Sidebar Section -->
         <div class="col-md-4">
             @foreach ($investments as $investment)
-            <div class="card stats-card">
-                <div class="card-body">
-                    <h3>{{ $totalInvestments}}</h3>
-                    <p>FUNDING ROUNDS</p>
-                    <h3>{{ $investment->amount }}</h3>
-                    <p>TOTAL FUNDING</p>
+            <div class="this-week-section">
+                <h2 class="highlight-title">This Week on IMM</h2>
+                <div class="row">
+                    <!-- Funding Rounds -->
+                    <div class="col-md-6">
+                        <div class="card stats-card custom-card">
+                            <div class="card-body">
+                                <h3>{{ $totalInvestments }}</h3>
+                                <p>FUNDING ROUNDS</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total Funding -->
+                    <div class="col-md-6">
+                        <div class="card stats-card custom-card">
+                            <div class="card-body">
+                                <h3>{{ $investment->amount }}</h3>
+                                <p>TOTAL FUNDING</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Acquisitions Recorded -->
+                    <div class="col-md-6">
+                        <div class="card stats-card custom-card">
+                            <div class="card-body">
+                                <h3>{{ $investment->status }}</h3>
+                                <p>ACQUISITIONS RECORDED</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Acquisitions Amount -->
+                    <div class="col-md-6">
+                        <div class="card stats-card custom-card">
+                            <div class="card-body">
+                                <h3>{{ $investment->id }}</h3>
+                                <p>ACQUISITIONS AMOUNT</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
             @endforeach
 
             <div class="promo-card">
