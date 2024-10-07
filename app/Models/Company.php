@@ -33,28 +33,41 @@ class Company extends Model
         return $this->hasMany(Project::class);
     }
 
+    /**
+     * Get the hubs associated with the company.
+     */
     public function hubs()
     {
         return $this->belongsToMany(Hubs::class, 'company_hubs', 'company_id', 'hub_id');
     }
+
     /**
      * Get the user that owns the company.
      */
-        public function user()
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    /**
+     * Relasi ke Incomes
+     */
     public function incomes()
     {
         return $this->hasMany(CompanyIncome::class);
     }
 
-    // Relasi many-to-many dengan People melalui tabel team
+    /**
+     * Relasi many-to-many dengan People melalui tabel team
+     */
     public function teamMembers()
     {
         return $this->belongsToMany(People::class, 'team')->withPivot('position')->withTimestamps();
     }
 
+    /**
+     * Method untuk mendapatkan perusahaan berdasarkan filter lokasi, industri, atau funding type.
+     */
     public static function getFilteredCompanies($request = null)
     {
         // Query utama dengan relasi
@@ -69,22 +82,24 @@ class Company extends Model
                         ->groupBy('company_id');
             });
         }]);
+
         // Kondisi pencarian berdasarkan lokasi
-        if($request){
-            if($request->has('location') && !empty($request->location)) {
-                $query->where('kabupaten', 'like', '%'.$request->location.'%');
+        if ($request) {
+            if ($request->has('location') && !empty($request->location)) {
+                $query->where('kabupaten', 'like', '%' . $request->location . '%');
             }
 
             // Kondisi pencarian berdasarkan industri
-            if($request->has('industry') && !empty($request->industry)) {
-                $query->where('tipe', 'like', '%'.$request->industry.'%');
+            if ($request->has('industry') && !empty($request->industry)) {
+                $query->where('tipe', 'like', '%' . $request->industry . '%');
             }
 
             // Kondisi pencarian berdasarkan model bisnis (departemen)
-            if($request->has('departments') && !empty($request->departments)) {
-                $query->where('posisi_pic', 'like', '%'.$request->departments.'%');
+            if ($request->has('departments') && !empty($request->departments)) {
+                $query->where('posisi_pic', 'like', '%' . $request->departments . '%');
             }
-            if(isset($request->funding_type)){
+
+            if (isset($request->funding_type)) {
                 $query->whereHas('incomes', function($query) use ($request) {
                     $query->where('funding_type', $request->funding_type);
                 });

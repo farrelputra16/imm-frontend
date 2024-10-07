@@ -29,6 +29,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\InvestmentController;
 use App\Http\Controllers\ManagementKeuanganController;
+use App\Http\Controllers\Auth\RegisterController;
 
 // Rute untuk autentikasi
 Auth::routes();
@@ -77,9 +78,9 @@ Route::get('/survey-tangapan-diagram', function () {
 
 Route::get('event', [EventController::class, 'index'])->name('events.index');
 
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+
+
 Route::get('event/{id}', [EventController::class, 'view'])->name('events.view');
 
 

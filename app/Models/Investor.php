@@ -17,10 +17,10 @@ class Investor extends Model
     protected $fillable = [
         'org_name',
         'number_of_contacts',
-        'number_of_investments',
         'location',
         'description',
         'departments',
+        'investment_stage',
         'user_id'
     ];
 
@@ -31,11 +31,37 @@ class Investor extends Model
      */
     protected $casts = [
         'number_of_contacts' => 'integer',
-        'number_of_investments' => 'integer',
     ];
 
+    /**
+     * Relasi ke User
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Relasi ke Company untuk mendapatkan nama perusahaan.
+     */
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'org_name', 'id');
+    }
+
+    /**
+     * Accessor untuk menghitung number_of_investments dari tabel investments
+     */
+    public function getNumberOfInvestmentsAttribute()
+    {
+        return $this->investments()->count();
+    }
+
+    /**
+     * Relasi ke Investments
+     */
+    public function investments()
+    {
+        return $this->hasMany(Investment::class);
     }
 }
