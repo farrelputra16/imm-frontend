@@ -7,16 +7,32 @@
         font-weight: bold;
         font-size: 2.5rem;
     }
+
     .custom-table-header {
         background-color: #6256CA;
         color: white;
     }
-    .profile-header,h1 {
+
+    .profile-header, h1 {
         color: #6256CA;
         font-weight: bold;
         font-size: 2.5rem;
-        margin-bottom:30px;
+        margin-bottom: 30px;
     }
+
+    /* Thin line between Company and Previous Investment */
+    .profile-details {
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+
+    /* Thin line in the table container */
+    .table-container {
+        border-top: 1px solid #e0e0e0;
+        padding-top: 20px;
+        margin-top: 20px;
+    }
+
 </style>
 
 <div class="container mt-4">
@@ -39,6 +55,7 @@
       <h2>{{ $investor->user->nama_depan }} {{ $investor->user->nama_belakang }}</h2>
    </div>
 
+   <!-- Profile details with thin line separator -->
    <div class="profile-details mt-4 row">
       <div class="col-md-6">
          <div class="fw-bold">Company</div>
@@ -50,6 +67,7 @@
       </div>
    </div>
 
+   <!-- Table container with thin line at the top -->
    <div class="table-container mt-5">
     <div class="profile-header">Previous Investment</div>
     <table class="table mt-3">
