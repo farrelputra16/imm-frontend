@@ -133,22 +133,23 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/detail-biaya/{project_id}', [CompanyOutcomeController::class, 'detailOutcome'])->name('homepageimm.detailbiaya');
 
-    // Route untuk halaman kelola pengeluaran
-    Route::get('/kelolapengeluaran', [ManagementKeuanganController::class, 'show'])->name('kelolapengeluaran');
+    // Routes untuk Manajemen Keuangan
+    Route::prefix('kelolapengeluaran')->group(function () {
+        Route::get('/', [ManagementKeuanganController::class, 'show'])->name('kelolapengeluaran');
+    });
 
-    // Route untuk keehalaman menambahkan dana masuk
-    Route::get('/tambahdana', [CompanyIncomeController::class, 'show'])->name('createCompanyIncome');
+    // Routes untuk Dana Masuk (Company Income)
+    Route::prefix('dana-masuk')->group(function () {
+        Route::get('/tambah', [CompanyIncomeController::class, 'show'])->name('createCompanyIncome');
+        Route::post('/', [CompanyIncomeController::class, 'store'])->name('companyIncome.store');
+    });
 
-    // Route untuk kehalaman menambahkan pengeluaran proyek
-    Route::get('/tambahpenggunaandana/pengeluaran-proyek', function(){
-        return view('homepageimm.pengeluaran-proyek');
-    })->name('createCompanyOutcome');
+    // Routes untuk Pengeluaran Proyek (Company Outcome)
+    Route::prefix('pengeluaran-proyek')->group(function () {
+        Route::get('/tambah', [ManagementKeuanganController::class, 'createOutcome'])->name('selectProjectOutcome');
+        Route::post('/', [CompanyOutcomeController::class, 'store'])->name('companyOutcome.store');
 
-    // Route untuk menyimpan dana masuk
-    Route::post('/tambahpenggunaandana', [CompanyIncomeController::class, 'store'])->name('companyIncome.store');
-
-    // Route untuk menambahkan pengeluaran proyek
-    Route::post('/tambahpenggunaandana/outcome', [CompanyOutcomeController::class, 'store'])->name('companyOutcome.store');
+    });
 
     Route::group(['middleware' => ['auth', 'investor']], function () {
         Route::get('/investor-home', function () {

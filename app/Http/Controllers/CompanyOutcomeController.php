@@ -13,7 +13,7 @@ class CompanyOutcomeController extends Controller
     {
         $user = Auth::user();
         $company = $user->companies; // Mengambil company terkait dengan user
-        
+                
         if (!$company) {
             // Handle jika user tidak terhubung dengan company
             return redirect()->back()->with('error', 'User tidak terhubung dengan company.');
@@ -21,13 +21,8 @@ class CompanyOutcomeController extends Controller
         
         $companyId = $company->id;
         
-        $projects = Project::where('company_id', $companyId)
-            ->whereHas('dana', function ($query) {
-                $query->where('jenis_dana', 'Hibah');
-            })
-            ->with(['dana' => function ($query) {
-                $query->where('jenis_dana', 'Hibah');
-            }]);
+        $projects = Project::where('company_id', $companyId);
+
         if ($request->has('search')) {
             $search = $request->input('search');
             $projects->where('nama', 'like', '%' . $search . '%');

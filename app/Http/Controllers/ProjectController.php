@@ -105,20 +105,26 @@ class ProjectController extends Controller
             'target_pelanggans.*.rentang_usia' => 'nullable|string',
             'target_pelanggans.*.deskripsi_pelanggan' => 'nullable|string',
         ]);
+
         $validatedData['status'] = 'Belum selesai';
+
+        // Handle image upload
         if ($request->hasFile('img')) {
             $imageName = time() . '.' . $request->img->extension();
             $request->img->move(public_path('images'), $imageName);
             $validatedData['img'] = $imageName;
         }
 
+        // Create project
         $project = Project::create($validatedData);
 
+        // Attach related models
         $project->tags()->attach($request->input('tag_ids'));
         $project->sdgs()->attach($request->input('sdg_ids'));
         $project->indicators()->attach($request->input('indicator_ids'));
         $project->metrics()->attach($request->input('metric_ids'));
 
+        // Save dana (funding) data
         if ($request->has('dana')) {
             foreach ($request->dana as $dana) {
                 $project->dana()->create([
@@ -128,6 +134,7 @@ class ProjectController extends Controller
             }
         }
 
+        // Save target customers
         if ($request->has('target_pelanggans')) {
             foreach ($request->target_pelanggans as $target) {
                 $project->targetPelanggan()->create([
@@ -140,6 +147,7 @@ class ProjectController extends Controller
 
         return redirect()->route('myproject.myproject')->with('success', 'Project created successfully');
     }
+
 
     public function edit($id)
     {
@@ -179,9 +187,7 @@ class ProjectController extends Controller
 
     public function update(Request $request, $id)
     {
-        Log::debug('Starting update method', ['id' => $id]);
         $project = Project::findOrFail($id);
-        Log::debug('Project found', ['project' => $project]);
 
         $validatedData = $request->validate([
             'nama' => 'required|string|max:255',
@@ -189,11 +195,9 @@ class ProjectController extends Controller
             'documents.*' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:10000',
             'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10000',
         ]);
-        Log::debug('Request validated', ['validatedData' => $validatedData]);
 
         $project->nama = $request->nama;
         $project->deskripsi = $request->deskripsi;
-        Log::debug('Project details updated', ['nama' => $project->nama, 'deskripsi' => $project->deskripsi]);
 
         if ($request->hasFile('img')) {
             // Delete old image if it exists
@@ -203,11 +207,9 @@ class ProjectController extends Controller
             $imageName = time() . '.' . $request->img->extension();
             $request->img->move(public_path('images'), $imageName);
             $project->img = $imageName;
-            Log::debug('Image uploaded', ['imageName' => $imageName]);
         }
 
         $project->save();
-        Log::debug('Project saved');
 
         if ($request->hasFile('documents')) {
             Log::debug('Handling document uploads');
@@ -242,6 +244,7 @@ class ProjectController extends Controller
         Log::debug('Update method completed successfully');
         return redirect()->back()->with('success', 'Project updated successfully');
     }
+
     public function complete(Request $request, $id)
     {
         $project = Project::findOrFail($id);
@@ -290,6 +293,13 @@ class ProjectController extends Controller
 
         // Kirim data ke view
         return view('companies.project-detail', compact('project', 'documents', 'initialMetricProjects'));
+    }
+
+    public function showProjectWithDanas($id)
+    {
+        $company = Company::findOrFail($id);
+        $projects = $company->projects()->with('dana')->get();
+        return $projects;
     }
 
 }
