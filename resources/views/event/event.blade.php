@@ -1,4 +1,4 @@
-@extends('layouts.app-table')
+@extends('layouts.app-landingpage')
 @section('title', 'Event')
     <style>
         * {
