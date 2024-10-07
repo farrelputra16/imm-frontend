@@ -1,308 +1,178 @@
-@extends('layouts.app-table')
+@extends('layouts.app-landingpage')
 
+<!-- Styles -->
 <style>
-.company-profile-container {
-    display: flex;
-}
+    /* Desain sesuai dengan yang Anda minta */
+    body {
+        font-family: Arial, sans-serif;
+    }
 
-.company-profile-wrapper {
-    text-align: start;
-    margin-bottom: 20px;
-    margin-left: 50px;
-    margin-top: 20px;
-}
+    .breadcrumb {
+        background-color: white;
+    }
 
-.company-profile {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 3px solid #7b68ee; /* Adjusted softer purple */
-}
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: ">";
+    }
 
-.company-name h3 {
-    margin: 0;
-    margin-left: 50px;
-    font-size: 1.5rem; /* Adjust size of company name */
-}
+    .mentor-profile-title {
+        color: #6c63ff;
+        font-size: 2rem;
+        font-weight: bold;
+    }
 
-.custom-link {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    height: 50px;
-    background-color: #7b68ee; /* Softer purple */
-    color: #fff;
-    border: solid 1px #7b68ee;
-    font-size: 1rem;
-    padding: 10px;
-    border-radius: 8px;
-    text-align: center;
-    text-decoration: none;
-    line-height: 30px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-bottom: 10px;
-}
+    .profile-card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
 
-.custom-link:hover {
-    background-color: #6a5acd; /* Lighter hover effect */
-}
+    .profile-card img {
+        border-radius: 10px;
+    }
 
+    .profile-card .name {
+        font-size: 2rem;
+        font-weight: bold;
+    }
 
-.company-label .icon {
-    margin-right: 8px;
-    margin-left: 15px;
-    font-size: 1.5rem;
-    color: #6a5acd; /* Adjusted to softer hue */
-}
+    .profile-card .designation {
+        color: #8bc34a;
+        font-size: 1.2rem;
+    }
 
-.company-label .icon {
-    margin-right: 8px;
-    margin-left: 15px;
-    font-size: 1.5rem;
-    color: #4735A3;
-}
+    .profile-card .rating {
+        color: #ff9800;
+    }
 
-/* Container for About and Highlights */
-.row-content {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-}
+    .profile-card .tags span {
+        background-color: #e0e0e0;
+        border-radius: 5px;
+        padding: 5px 10px;
+        margin-right: 5px;
+        font-size: 0.9rem;
+    }
 
-/* Line separator between About and Highlights */
-.separator {
-    height: 100%;
-    width: 1px;
-    background-color: #ccc;
-    margin: 0 20px;
-}
+    .document-card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+    }
 
-/* Adjust column for About and Highlights */
-.col-section {
-    flex: 1;
-    padding: 20px;
-}
+    .document-card i {
+        font-size: 3rem;
+        margin-bottom: 10px;
+    }
 
-/* Specific styling for highlights */
-.highlights-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
+    .document-card .title {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
 
-.highlight-box {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 15px;
-    background: #ffffff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-}
-
-.highlight-box:hover {
-    transform: translateY(-5px);
-}
-
-.highlight-content {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-}
-
-.highlight-content h5 {
-    color: #6a5acd; /* Matching primary color */
-}
-/* Mengatur lebar kolom tabel */
-table.dataTable th,
-table.dataTable td {
-    white-space: nowrap;
-}
-
-/* Mengatur hover */
-table.dataTable tbody tr:hover {
-    background-color: #f2f2f2;
-    cursor: pointer;
-}
-
-.container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 0 15px;
-}
-
-h2 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #4b6584; /* Muted darker blue */
-}
-
-.card {
-    background-color: #f9fafb; /* Slightly lighter background */
-    border-radius: 20px;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-}
-
-.card-title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 10px;
-    color: #4b6584; /* Muted greyish-blue */
-}
-
-.card-text {
-    font-size: 1rem;
-    color: #747d8c; /* Muted text color */
-}
-
-.card-hover:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); /* Softer hover effect */
-}
-
-.text-primary {
-    color: #4b6584 !important; /* Muted darker blue */
-}
-
-.text-info {
-    color: #17a2b8;
-}
-
-.text-info:hover {
-    text-decoration: underline;
-    color: #29527b; /* Softer transition */
-}
-
-.fs-1 {
-    font-size: 2rem;
-}
 </style>
 
 @section('content')
-<div class="container mt-5">
-    <div class="card shadow">
-        <div class="company-profile-container d-flex align-items-center">
-            <div class="company-profile-wrapper">
-                <img class="company-profile" src="{{ asset('images/imm.png') }}" alt="Company Profile Image">
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">
+                    Home
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ route('people.index') }}">
+                    Find Mentor
+                </a>
+            </li>
+            <li aria-current="page" class="breadcrumb-item active">
+                Mentor Profile
+            </li>
+        </ol>
+    </nav>
+
+    <h1 class="mentor-profile-title">
+        Mentor Profile
+    </h1>
+
+    <div class="profile-card p-4 bg-white">
+        <div class="row">
+            <div class="col-md-2">
+                <img alt="Lion Bird Logo" class="img-profile" height="100" src="https://storage.googleapis.com/a1aa/image/fyw9SmXxl0xeDEL8arxfQGnTTeSkf2JUwLRrYRLWQ7lVXPicC.jpg" width="100"/>
             </div>
-            <div class="company-name ms-3">
-                <h3>{{ $people->name }}</h3>
+            <div class="col-md-10">
+                <div class="name">
+                    {{ $people->name }}
+                </div>
+                <div class="designation">
+                    {{ $people->role }}
+                </div>
+                <div class="rating">
+                    4.5
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    (120 Reviews)
+                </div>
+                <div class="tags mt-2">
+                    <span>Utilities</span>
+                    <span>Health Care</span>
+                    <span>IT</span>
+                    <span>Manufacturing</span>
+                    <span>Education</span>
+                    <span>Finance</span>
+                </div>
+                <p class="mt-3">
+                    {{ $people->description }}
+                </p>
+                <div class="contact-info mt-3">
+                    <p>
+                        <i class="fas fa-phone-alt"></i>
+                        {{ $people->phone_number }}
+                    </p>
+                    <p>
+                        <i class="fas fa-map-marker-alt"></i>
+                        {{ $people->location }}
+                    </p>
+                    <p>
+                        @if($people->linkedin_link)
+                            <a href="{{ $people->linkedin_link }}" target="_blank">
+                                <i class="fab fa-linkedin"></i>  LinkedIn <!-- Ikon LinkedIn di sebelah kiri teks -->
+                            </a>
+                        @else
+                            N/A
+                        @endif
+                    </p>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="document-card bg-white">
+                <i class="fas fa-file-alt text-primary"></i>
+                <div class="title">
+                    Curiculum Vitae
+                </div>
+                <p>Cv Jane Cooper.pdf</p>
             </div>
         </div>
 
-        <div class="row" style="padding-left: 50px;">
-            <div class="col-sm-6">
-                <div class="card-body">
-                    <h4 class="card-title">About</h4>
-                    <p class="card-text">{{ $people->description }}</p>
+        <div class="col-md-6">
+            <div class="document-card bg-white">
+                <i class="fas fa-file-alt text-danger"></i>
+                <div class="title">
+                    Portfolio
                 </div>
-
-                <!-- Location Section -->
-                <div class="company-label">
-                    <i class="bi bi-geo-alt icon"></i>
-                    <a href="/search/organizations/location/new-york-new-york" class="location-link">{{ $people->location }}</a>
-                </div>
-
-                <div class="company-label">
-                    <i class="bi bi-globe icon"></i>
-                    <a href="/search/organizations/location/united-states" class="location-link">{{ $people->phone_number  }}</a>
-                </div>
-            </div>
-
-            <div class="col-sm-6">
-                <div class="card-body">
-                    <h4 class="card-title" style="padding-bottom: 10px;">Highlights</h4>
-
-                    <div class="highlights-container">
-                        <!-- Highlight: Funds -->
-                        <div class="highlight-box" onclick="window.location.href='#'">
-                            <div class="highlight-content">
-                                <h6>Funds</h6>
-                                <h5>{{ $people->primary_organization}}</h5>
-                            </div>
-                            <div class="arrow">
-                                <h2>&gt;</h2>
-                            </div>
-                        </div>
-
-                        <!-- Highlight: Employees -->
-                        <div class="highlight-box" onclick="window.location.href='#'">
-                            <div class="highlight-content">
-                                <h6>Karyawan</h6>
-                                <h5>{{ $people->primary_job_title }}</h5>
-                            </div>
-                            <div class="arrow">
-                                <h2>&gt;</h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <p>Portfolio Jane Cooper.pdf</p>
             </div>
         </div>
-        {{-- <div class="container mt-5">
-            <h2 class="text-center mb-5 text-primary">Company Overview</h2>
-            <div class="row g-4 align-items-stretch">
-                <!-- Founded Date -->
-                <div class="col-md-4 d-flex">
-                    <div class="card card-hover shadow-sm border-0 rounded-lg flex-grow-1 d-flex flex-column">
-                        <div class="card-body text-center flex-grow-1">
-                            <i class="bi bi-calendar2-date text-primary fs-1 mb-3"></i>
-                            <h5 class="card-title">Founded Date</h5>
-                            <p class="card-text">{{ $company->founded_date }}</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Team -->
-                <div class="col-md-4 d-flex" onclick="window.location.href='{{ route('companies.team', $company->id) }}'">
-                    <div class="card card-hover shadow-sm border-0 rounded-lg flex-grow-1 d-flex flex-column">
-                        <div class="card-body text-center flex-grow-1">
-                            <i class="bi bi-people text-primary fs-1 mb-3"></i>
-                            <h5 class="card-title">Team</h5>
-                            <p class="card-text">{{ $company->team }}</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Phone -->
-                <div class="col-md-4 d-flex">
-                    <div class="card card-hover shadow-sm border-0 rounded-lg flex-grow-1 d-flex flex-column">
-                        <div class="card-body text-center flex-grow-1">
-                            <i class="bi bi-telephone text-primary fs-1 mb-3"></i>
-                            <h5 class="card-title">Phone</h5>
-                            <p class="card-text">{{ $company->telepon }}</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- City -->
-                <div class="col-md-4 d-flex">
-                    <div class="card card-hover shadow-sm border-0 rounded-lg flex-grow-1 d-flex flex-column">
-                        <div class="card-body text-center flex-grow-1">
-                            <i class="bi bi-geo-alt text-primary fs-1 mb-3"></i>
-                            <h5 class="card-title">City</h5>
-                            <p class="card-text">{{ $company->kabupaten }}</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Projects -->
-                <div class="col-md-4 d-flex">
-                    <div class="card card-hover shadow-sm border-0 rounded-lg flex-grow-1 d-flex flex-column">
-                        <div class="card-body text-center flex-grow-1">
-                            <i class="bi bi-box-seam text-primary fs-1 mb-3"></i>
-                            <h5 class="card-title">Projects</h5>
-                            <p><a href="{{ route('companies.project', ['id' => $company->id]) }}" class="text-decoration-none text-info">View Projects</a></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
-
-<!-- Tambahkan ini di bagian bawah body sebelum penutup tag body -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
-
+    </div>
+</div>
 @endsection

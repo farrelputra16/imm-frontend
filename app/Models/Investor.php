@@ -38,7 +38,7 @@ class Investor extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,);
     }
 
     /**
@@ -62,6 +62,6 @@ class Investor extends Model
      */
     public function investments()
     {
-        return $this->hasMany(Investment::class);
+        return $this->hasMany(Investment::class,'investor_id');
     }
 }
