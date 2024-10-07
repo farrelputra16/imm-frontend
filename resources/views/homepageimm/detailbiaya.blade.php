@@ -212,7 +212,7 @@ margin-top: 20px;
             <tr>
                 <th>Tanggal</th>
                 <th>Jumlah Biaya</th>
-                <th>Kategori</th>
+                <th>Pelaporan_dana</th>
                 <th>Keterangan</th>
                 <th>Bukti</th>
             </tr>
@@ -222,7 +222,7 @@ margin-top: 20px;
             <tr>
                 <td>{{ $outcome->date }}</td>
                 <td>Rp{{ number_format($outcome->jumlah_biaya, 0, ',', '.') }}</td>
-                <td>{{ $outcome->category }}</td>
+                <td>{{ $outcome->pelaporan_dana }}</td>
                 <td>{{ $outcome->keterangan }}</td>
                 <td>
                     <span data-toggle="modal" style="cursor: pointer" data-target="#notificationModal{{ $outcome->id }}">
@@ -252,7 +252,11 @@ margin-top: 20px;
                 </button>
             </div>
             <div class="modal-body">
-                <img src="{{ asset('images/'. $outcome->bukti) }}" alt="Bukti Pengeluaran" class="img-fluid my-4">
+                @if($outcome->pelaporan_dana === 'external')
+                    <img src="{{ Storage::url('laporan_pengeluaran_eksternal/' . $outcome->bukti) }}" alt="Bukti Pengeluaran" class="img-fluid my-4">
+                @else
+                    <img src="{{ Storage::url('laporan_pengeluaran_internal/' . $outcome->bukti) }}" alt="Bukti Pengeluaran" class="img-fluid my-4">
+                @endif
             </div>
         </div>
     </div>

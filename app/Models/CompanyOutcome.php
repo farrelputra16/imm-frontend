@@ -24,12 +24,11 @@ class CompanyOutcome extends Model
     protected $fillable = [
         'date',
         'jumlah_biaya',
-        'category',
         'keterangan',
         'bukti',
         'project_id',
+        'pelaporan_dana',
     ];
-
     /**
      * Get the project that owns the outcome.
      */

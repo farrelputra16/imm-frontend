@@ -113,9 +113,7 @@
         width: 100%;
     }
 
-
     /* Custom styles for the modal */
-
     .list-group {
         display: flex;
         justify-content: center;
@@ -126,14 +124,13 @@
         display: flex;
         justify-content: center;
         font-size: 14px;
-        /* Adjust the font size as needed */
     }
 </style>
 @endsection
 
 @section('content')
     <div class="container" style="padding-top: 120px">
-        <a href="{{ route('homepageimm.detailbiaya', ['project_id' => $project_id]) }}">
+        <a href="{{ route('homepageimm.detailbiaya', ['project_id' => $project->id]) }}">
             <h4 class="d-flex align-items-center">
                 <strong style="font-size: 40px;">&lt;</strong> Tambah penggunaan dana
             </h4>
@@ -141,9 +138,9 @@
     </div>
 
     <div class="container mt-5">
-        <form id="addOutcomeForm" action="{{ route('store-company-outcome') }}" method="POST" enctype="multipart/form-data">
+        <form id="addOutcomeForm" action="{{ route('companyOutcome.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <input type="hidden" name="project_id" value="{{ $project_id }}">
+            <input type="hidden" name="project_id" value="{{ $project->id }}">
 
             <div class="row mt-4">
                 <div class="col-3">
@@ -163,10 +160,14 @@
             </div>
             <div class="row mt-4">
                 <div class="col-3">
-                    <h5>Kategori</h5>
+                    <h5>Pelaporan Dana</h5>
                 </div>
                 <div class="col-8">
-                    <input name="category" class="form-control" placeholder="cth. Perlengkapan" required></textarea>
+                    <select name="pelaporan_dana" class="form-control" required>
+                        <option value="" disabled selected>Pilih Tipe Pelaporan Dana</option>
+                        <option value="internal">Internal</option>
+                        <option value="external">Eksternal</option>
+                    </select>
                 </div>
             </div>
             <div class="row mt-4">
@@ -212,8 +213,6 @@
             </div>
         </div>
     </div>
-    
-    
 
     <script>
         function updateFileName() {
@@ -223,14 +222,13 @@
         }
 
         document.getElementById('confirmUpdate').addEventListener('click', function() {
-            // Lakukan pengecekan jika ada file yang dipilih
+            // Pastikan modal tidak mengganggu pengiriman form
             var fileName = document.getElementById('file-input').files.length > 0;
             if (!fileName) {
                 alert('Silakan pilih file yang akan diunggah!');
                 return;
             }
             document.getElementById('addOutcomeForm').submit();
-            // Atau tambahkan fungsi untuk menutup modal di sini
         });
     </script>
 @endsection
