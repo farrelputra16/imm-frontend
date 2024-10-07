@@ -73,12 +73,12 @@
         {{-- Akhir dari notifikasi --}}        
         <div class="container mt-5">
             <form action="{{ route('projects.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
                 <h1 class="mb-5" id="buatproject">Buat Projek Baru</h1>
                 <div id="form-section">
                     <div class="row">
                         <div class="col-md-6">
-                            <h2 class="project-title">Tentang Proyek Anda</h2>
-                            @csrf
+                            <h2 class="project-title">Tentang Proyek Anda</h2>  
                             <div class="form-group">
                                 <input type="file" class="form-control-file" id="img" name="img" hidden>
                             </div>
@@ -128,8 +128,10 @@
                             <h2 class="project-title">Spesisifikasi Pendanaan</h2>
                             <div class="form-group">
                                 <div class="form-group mt-3">
-                                    <label for="jumlah_pendanaan">Jumlah Dana Keseluruhan</label>
-                                    <input type="number" class="form-control" name="jumlah_pendanaan" id="jumlah_pendanaan" required>
+                                    <label for="jumlah_pendanaan_display">Jumlah Dana Keseluruhan</label>
+                                    <input type="text" class="form-control" id="jumlah_pendanaan_display" readonly> <!-- Hanya untuk ditampilkan -->
+                                    <!-- Hidden input untuk menyimpan nilai asli tanpa format -->
+                                    <input type="hidden" class="form-control" name="jumlah_pendanaan" id="jumlah_pendanaan">
                                 </div>
                             
                                 <!-- Opsi Apakah Ada Pendanaan Eksternal -->
@@ -141,50 +143,89 @@
                                         <option value="no">Tidak</option>
                                     </select>
                                 </div>
-                            
+
                                 <!-- Bagian untuk pendanaan eksternal (disembunyikan jika "Tidak") -->
                                 <div id="external-funding-section" style="display: none;">
-                                    <label for="otherFunds">Pendanaan Lainnya</label>
-                                    <button type="button" class="btn btn-primary btn-add-dana ml-2 mb-2"><i class="fa-solid fa-plus" style="color: #ffffff;"></i></button>
-                                    <div class="spesifikasi-pendanaan">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Jenis Dana</th>
-                                                    <th>Nominal</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="funding-rows">
-                                                <tr>
-                                                    <td>
-                                                        <select class="form-control" name="dana[0][jenis_dana]" required>
-                                                            <option value="Hibah">Hibah</option>
-                                                            <option value="Investasi">Investasi</option>
-                                                            <option value="Pinjaman">Pinjaman</option>
-                                                            <option value="Pre-seed Funding">Pre-seed Funding</option>
-                                                            <option value="Seed Funding">Seed Funding</option>
-                                                            <option value="Series A Funding">Series A Funding</option>
-                                                            <option value="Series B Funding">Series B Funding</option>
-                                                            <option value="Series C Funding">Series C Funding</option>
-                                                            <option value="Series D Funding">Series D Funding</option>
-                                                            <option value="Series E Funding">Series E Funding</option>
-                                                            <option value="Debt Funding">Debt Funding</option>
-                                                            <option value="Equity Funding">Equity Funding</option>
-                                                            <option value="Convertible Debt">Convertible Debt</option>
-                                                            <option value="Grants">Grants</option>
-                                                            <option value="Revenue-Based Financing">Revenue-Based Financing</option>
-                                                            <option value="Private Equity">Private Equity</option>
-                                                            <option value="IPO">IPO</option>
-                                                            <option value="Lainnya">Lainnya</option>
-                                                        </select>
-                                                    </td>
-                                                    <td>
-                                                        <input type="number" class="form-control" name="dana[0][nominal]" required>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    <label for="jenis_dana_eksternal">Jenis Dana Eksternal</label>
+                                    <select class="form-control" name="dana[0][jenis_dana]" required>
+                                        <option value="Hibah">Hibah</option>
+                                        <option value="Investasi">Investasi</option>
+                                        <option value="Pinjaman">Pinjaman</option>
+                                        <option value="Pre-seed Funding">Pre-seed Funding</option>
+                                        <option value="Seed Funding">Seed Funding</option>
+                                        <option value="Series A Funding">Series A Funding</option>
+                                        <option value="Series B Funding">Series B Funding</option>
+                                        <option value="Series C Funding">Series C Funding</option>
+                                        <option value="Series D Funding">Series D Funding</option>
+                                        <option value="Series E Funding">Series E Funding</option>
+                                        <option value="Debt Funding">Debt Funding</option>
+                                        <option value="Equity Funding">Equity Funding</option>
+                                        <option value="Convertible Debt">Convertible Debt</option>
+                                        <option value="Grants">Grants</option>
+                                        <option value="Revenue-Based Financing">Revenue-Based Financing</option>
+                                        <option value="Private Equity">Private Equity</option>
+                                        <option value="IPO">IPO</option>
+                                        <option value="Lainnya">Lainnya</option>
+                                    </select>
+                                    <!-- Ubah dari input type="number" ke input type="text" -->
+                                    <input type="text" class="form-control mt-2" id="nominal_eksternal_display" placeholder="Nominal Pendanaan Eksternal" required>
+                                    <!-- Input tersembunyi untuk menyimpan nilai asli tanpa format -->
+                                    <input type="hidden" id="nominal_eksternal" name="dana[0][nominal]">
+                                </div>
+
+                                <!-- Opsi Apakah Ada Pendanaan Internal -->
+                                <div class="form-group mt-3">
+                                    <label for="internal_funding">Apakah Proyek Ini Memiliki Pendanaan Internal?</label>
+                                    <select class="form-control" id="internal_funding" name="internal_funding">
+                                        <option value="" disabled selected>Pilih Jawaban</option>
+                                        <option value="yes">Ya</option>
+                                        <option value="no">Tidak</option>
+                                    </select>
+                                </div>
+
+                                <!-- Bagian untuk pendanaan internal (disembunyikan jika "Tidak") -->
+                                <div id="internal-funding-section" style="display: none;">
+                                    <label for="jenis_dana_internal">Pendanaan Internal</label>
+                                    <table class="table spesifikasi-pendanaan">
+                                        <thead>
+                                            <tr>
+                                                <th>Jenis Dana Internal</th>
+                                                <th>Nominal</th>
+                                                <th>Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <select class="form-control" name="dana[1][jenis_dana]" required>
+                                                        <option value="Pinjaman Internal">Pinjaman Internal</option>
+                                                        <option value="Investasi Internal">Investasi Internal</option>
+                                                        <option value="Pinjaman Bank">Pinjaman Bank</option>
+                                                        <option value="Kredit Usaha Rakyat">Kredit Usaha Rakyat</option>
+                                                        <option value="Kredit Modal Kerja">Kredit Modal Kerja</option>
+                                                        <option value="Kredit Investasi">Kredit Investasi</option>
+                                                        <option value="Kredit Komersial">Kredit Komersial</option>
+                                                        <option value="Dana dari Pemegang Saham">Dana dari Pemegang Saham</option>
+                                                        <option value="Reinvestasi Laba">Reinvestasi Laba</option>
+                                                        <option value="Dana dari Mitra Bisnis">Dana dari Mitra Bisnis</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" id="nominal_internal_display" placeholder="Nominal Pendanaan Internal" required>
+                                                    <input type="hidden" id="nominal_internal" name="dana[1][nominal]">
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger btn-remove-dana">
+                                                        <i class="fa-solid fa-minus" style="color: #ffffff;"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!-- Tambahkan tombol untuk menambah dana -->
+                                    <button type="button" class="btn btn-success btn-add-dana">
+                                        <i class="fa-solid fa-plus" style="color: #ffffff;"></i> Tambah Dana
+                                    </button>
                                 </div>
                             </div>                            
                             <div class="form-group">
@@ -620,45 +661,104 @@
                     $(this).closest('tr').remove();
                 });
 
-                var indexDana = 1;
+                var indexDana = 2; // Start index for internal funding
 
                 // Tampilkan/ Sembunyikan bagian pendanaan eksternal berdasarkan pilihan
-                $("#external_funding").change(function() {
+                $("#external_funding").change(function () {
                     var selectedValue = $(this).val();
                     if (selectedValue === "yes") {
-                        $("#external-funding-section").show(); // Tampilkan bagian pendanaan
+                        $("#external-funding-section").show();
                     } else {
-                        $("#external-funding-section").hide(); // Sembunyikan bagian pendanaan
-                        $(".spesifikasi-pendanaan tbody").empty(); // Reset semua baris jika memilih "Tidak"
-                        indexDana = 1;
+                        $("#external-funding-section").hide();
+                        $("#nominal_eksternal_display").val('');
+                        $("#nominal_eksternal").val(0);
                     }
+                    updateTotalFunding();
                 });
 
-                // Fungsi untuk menambahkan baris pendanaan baru
+                // Tampilkan/ Sembunyikan bagian pendanaan internal berdasarkan pilihan
+                $("#internal_funding").change(function () {
+                    var selectedValue = $(this).val();
+                    if (selectedValue === "yes") {
+                        $("#internal-funding-section").show();
+                    } else {
+                        $("#internal-funding-section").hide();
+                        $("#nominal_internal_display").val('');
+                        $("#nominal_internal").val(0);
+                    }
+                    updateTotalFunding();
+                });
+
+                // Fungsi untuk menghapus format Rupiah
+                function removeFormatRupiah(angka) {
+                    return angka.replace(/[^,\d]/g, '');
+                }
+
+                // Fungsi untuk memformat input menjadi Rupiah
+                function formatRupiah(angka) {
+                    if (angka == '') {
+                        return '';
+                    }
+
+                    var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                        split = number_string.split(','),
+                        sisa = split[0].length % 3,
+                        rupiah = split[0].substr(0, sisa),
+                        ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+                    if (ribuan) {
+                        separator = sisa ? '.' : '';
+                        rupiah += separator + ribuan.join('.');
+                    }
+
+                    rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+                    return 'Rp. ' + rupiah;
+                }
+
+                // Format input menjadi Rupiah saat diinput
+                function formatAndUpdate() {
+                    var nominal = $(this).val();
+                    var originalValue = removeFormatRupiah(nominal);
+                    $(this).val(formatRupiah(originalValue));
+
+                    // Simpan nilai asli ke input tersembunyi
+                    $(this).siblings('input[type="hidden"]').val(originalValue);
+                    updateTotalFunding();
+                }
+
+                $("#nominal_eksternal_display, #nominal_internal_display").on('input', formatAndUpdate);
+
+                // Update jumlah dana keseluruhan saat nominal eksternal atau internal berubah
+                function updateTotalFunding() {
+                    var totalFunding = 0;
+
+                    // Loop through all nominal inputs and sum their values
+                    $('input[name^="dana"]').each(function() {
+                        var nominal = parseFloat($(this).val()) || 0;
+                        totalFunding += nominal;
+                    });
+
+                    $("#jumlah_pendanaan_display").val(formatRupiah(totalFunding.toString()));
+                    $("#jumlah_pendanaan").val(totalFunding);
+                }
+
+                // Fungsi untuk menambahkan baris pendanaan internal baru
                 $(".btn-add-dana").click(function() {
                     var selectedOptions = $('.spesifikasi-pendanaan select').map(function() {
                         return $(this).val();
                     }).get();
 
                     var options = [
-                        'Hibah', 
-                        'Investasi', 
-                        'Pinjaman', 
-                        'Pre-seed Funding',
-                        'Seed Funding',
-                        'Series A Funding',
-                        'Series B Funding',
-                        'Series C Funding',
-                        'Series D Funding',
-                        'Series E Funding',
-                        'Debt Funding',
-                        'Equity Funding',
-                        'Convertible Debt',
-                        'Grants',
-                        'Revenue-Based Financing',
-                        'Private Equity',
-                        'IPO',
-                        'Lainnya'
+                        'Pinjaman Internal',
+                        'Investasi Internal',
+                        'Pinjaman Bank',
+                        'Kredit Usaha Rakyat',
+                        'Kredit Modal Kerja',
+                        'Kredit Investasi',
+                        'Kredit Komersial',
+                        'Dana dari Pemegang Saham',
+                        'Reinvestasi Laba',
+                        'Dana dari Mitra Bisnis'
                     ];
 
                     var availableOptions = options.filter(function(option) {
@@ -681,10 +781,11 @@
                                 </select>
                             </td>
                             <td>
-                                <input type="number" class="form-control" name="dana[${indexDana}][nominal]" required>
+                                <input type="text" class="form-control nominal-internal-display" placeholder="Nominal Pendanaan Internal" required>
+                                <input type="hidden" name="dana[${indexDana}][nominal]">
                             </td>
                             <td>
-                                <button type="button" class="btn btn-danger btn-remove-dana">
+                                <button type=" button" class="btn btn-danger btn-remove-dana">
                                     <i class="fa-solid fa-minus" style="color: #ffffff;"></i>
                                 </button>
                             </td>
@@ -697,35 +798,23 @@
                     if (availableOptions.length === 1) {
                         $(".btn-add-dana").prop('disabled', true);
                     }
+
+                    // Add event listener to new input
+                    $('.nominal-internal-display').last().on('input', formatAndUpdate);
                 });
 
-                // Fungsi untuk menghapus baris pendanaan
+                // Fungsi untuk menghapus baris pendanaan internal
                 $(document).on('click', '.btn-remove-dana', function() {
                     $(this).closest('tr').remove();
-                    
+                    indexDana--;
+
                     var selectedOptions = $('.spesifikasi-pendanaan select').map(function() {
                         return $(this).val();
                     }).get();
 
                     var options = [
-                        'Hibah', 
-                        'Investasi', 
-                        'Pinjaman', 
-                        'Pre-seed Funding',
-                        'Seed Funding',
-                        'Series A Funding',
-                        'Series B Funding',
-                        'Series C Funding',
-                        'Series D Funding',
-                        'Series E Funding',
-                        'Debt Funding',
-                        'Equity Funding',
-                        'Convertible Debt',
-                        'Grants',
-                        'Revenue-Based Financing',
-                        'Private Equity',
-                        'IPO',
-                        'Lainnya'
+                        'Pinjaman Internal',
+                        'Investasi Internal'
                     ];
 
                     var availableOptions = options.filter(function(option) {
@@ -737,10 +826,7 @@
                     }
                 });
 
-                $(document).on('click', '.btn-remove-dana', function() {
-                    $(this).closest('tr').remove();
-                    $(".btn-add-dana").prop('disabled', false);
-                });
+
 
                 // Tombol Next ke SDG section ditambahkan check input required
                 $('#next-to-sdg-section').on('click', function() {
@@ -1219,10 +1305,10 @@
                 });
 
                 // Submit form action
-                $('#submit-project').on('click', function() {
-                    // Perform form submission or AJAX request here
-                    $('form').submit(); // Assuming your form has an action attribute defined
-                });
+                // $('#submit-project').on('click', function() {
+                //     // Perform form submission or AJAX request here
+                //     $('form').submit(); // Assuming your form has an action attribute defined
+                // });
             });
             $(document).ready(function() {
                 // Function to update review section with selected project details
@@ -1352,53 +1438,53 @@
                     $('#metric-section').show();
                 });
 
-                $('#submit-project').on('click', function() {
-                    // Collect form data
-                    var formData = new FormData();
-                    formData.append('nama', $('#nama').val());
-                    formData.append('deskripsi', $('#deskripsi').val());
-                    formData.append('company_id', $('#company_id')
-                        .val()); // Assuming $('#company_id').val() gives you the company_id integer
+                // $('#submit-project').on('click', function() {
+                //     // Collect form data
+                //     var formData = new FormData();
+                //     formData.append('nama', $('#nama').val());
+                //     formData.append('deskripsi', $('#deskripsi').val());
+                //     formData.append('company_id', $('#company_id')
+                //         .val()); // Assuming $('#company_id').val() gives you the company_id integer
 
-                    // Append sdg_ids
-                    var sdgIds = $('.sdg-checkbox:checked').map(function() {
-                        return $(this).val();
-                    }).get();
-                    formData.append('sdg_ids', JSON.stringify(sdgIds));
+                //     // Append sdg_ids
+                //     var sdgIds = $('.sdg-checkbox:checked').map(function() {
+                //         return $(this).val();
+                //     }).get();
+                //     formData.append('sdg_ids', JSON.stringify(sdgIds));
 
-                    // Append indicator_ids
-                    var indicatorIds = $('.indicator-checkbox:checked').map(function() {
-                        return $(this).val();
-                    }).get();
-                    formData.append('indicator_ids', JSON.stringify(indicatorIds));
+                //     // Append indicator_ids
+                //     var indicatorIds = $('.indicator-checkbox:checked').map(function() {
+                //         return $(this).val();
+                //     }).get();
+                //     formData.append('indicator_ids', JSON.stringify(indicatorIds));
 
-                    // Append metric_ids
-                    var metricIds = $('.metric-checkbox:checked').map(function() {
-                        return $(this).val();
-                    }).get();
-                    formData.append('metric_ids', JSON.stringify(metricIds));
+                //     // Append metric_ids
+                //     var metricIds = $('.metric-checkbox:checked').map(function() {
+                //         return $(this).val();
+                //     }).get();
+                //     formData.append('metric_ids', JSON.stringify(metricIds));
 
-                    // Handle img file
-                    var imgFile = $('#img').prop('files')[0];
-                    formData.append('img', imgFile);
+                //     // Handle img file
+                //     var imgFile = $('#img').prop('files')[0];
+                //     formData.append('img', imgFile);
 
-                    // Perform AJAX request
-                    $.ajax({
-                        url: "{{ route('projects.store') }}",
-                        method: 'POST',
-                        data: formData,
-                        contentType: false,
-                        processData: false,
-                        success: function(response) {
-                            // Handle success response (redirect or show success message)
-                            console.log(response);
-                        },
-                        error: function(xhr) {
-                            // Handle error response (show error message if needed)
-                            console.log(xhr.responseText);
-                        }
-                    });
-                });
+                //     // Perform AJAX request
+                //     $.ajax({
+                //         url: "{{ route('projects.store') }}",
+                //         method: 'POST',
+                //         data: formData,
+                //         contentType: false,
+                //         processData: false,
+                //         success: function(response) {
+                //             // Handle success response (redirect or show success message)
+                //             console.log(response);
+                //         },
+                //         error: function(xhr) {
+                //             // Handle error response (show error message if needed)
+                //             console.log(xhr.responseText);
+                //         }
+                //     });
+                // });
 
             });
         </script>

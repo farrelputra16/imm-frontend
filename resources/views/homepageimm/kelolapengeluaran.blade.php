@@ -137,9 +137,6 @@ input[type="number"] {
         <div class="col-md-6">
             <span class="biaya">Rancangan pengeluaran Proyek</span>
         </div>
-        <div class="col-md-6 text-right">
-            <a href="{{ route('createCompanyOutcome') }}" class="btn btn-tambah-proyek">Tambah Pengeluaran Proyek</a>
-        </div>
     </div>
 </div>
 
@@ -150,7 +147,7 @@ input[type="number"] {
                 <thead>
                     <tr>
                         <th>Nama Proyek</ th>
-                        <th>Rancangan Biaya Grant</th>
+                        <th>Rancangan Biaya</th>
                         <th>Detail penggunaan biaya</th>
                     </tr>
                 </thead>

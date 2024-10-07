@@ -194,10 +194,10 @@ margin-top: 20px;
 @section('content')
 <div class="container" style="padding-top: 120px">
     <div class="row d-flex justify-content-between">
-        <a href="{{ route('kelola-pengeluaran') }}">
+        <a href="{{ route('kelolapengeluaran') }}">
             <h4 class=" d-flex align-items-center"><strong style="font-size: 40px;">&lt;</strong> Detail penggunaan biaya proyek {{ $project->nama }}</h4>
         </a>
-        <a href="{{ route('tambah.penggunaan.dana', ['project_id' => $project_id]) }}">
+        <a href="{{ route('selectProjectOutcome', ['project_id' => $project_id]) }}">
             <button class="btn-tambahdana">Tambah Penggunaan Dana</button>
         </a>
     </div>
