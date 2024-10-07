@@ -21,14 +21,15 @@
         border: 1px solid #ddd;
         padding: 15px;
         border-radius: 5px;
+        background-color: #f8f9fa;
     }
 
     .filter-section h5 {
         font-weight: bold;
     }
 
-    .filter-section .form-check-label {
-        margin-left: 10px;
+    .filter-section .form-control {
+        border-radius: 20px;
     }
 
     .table-section {
@@ -46,10 +47,12 @@
     .table-section .table th {
         background-color: #6f42c1;
         color: white;
+        text-align: center;
     }
 
     .table-section .table td {
         vertical-align: middle;
+        text-align: center;
     }
 
     .pagination {
@@ -64,6 +67,32 @@
     .breadcrumb-item a:hover {
         text-decoration: underline;
     }
+    .breadcrumb-item + .breadcrumb-item::before {
+    content: '>'; /* Use '>' as the separator */
+    color: #6c757d;
+}
+
+
+    .filter-section .btn-primary {
+        background-color:#0d6efd;
+        border-color: #6f42c1;
+    }
+
+    .filter-section .btn-primary:hover {
+        background-color: #5935b1;
+        border-color: #5935b1;
+    }
+
+    .table-section .btn-primary {
+        background-color: #0d6efd;
+        border-color: #6f42c1;
+    }
+
+    .table-section .btn-primary:hover {
+        background-color: #5935b1;
+        border-color: #5935b1;
+    }
+
 </style>
 
 <div class="container mt-4">

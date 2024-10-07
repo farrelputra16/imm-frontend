@@ -170,8 +170,11 @@
 <div class="navbar-landingpage">
     <!-- Logo -->
     <div class="logo">
-        <img src="images/imm.png" alt="IMM Logo">
+        <a href="{{ url('/') }}"> <!-- Assuming the homepage is the root URL -->
+            <img src="images/imm.png" alt="IMM Logo">
+        </a>
     </div>
+    
 
     <!-- Navbar Menu -->
     <div class="nav-wrapper">
@@ -212,11 +215,40 @@
             </div>
         </div>
 
+        <!-- Auth Section -->
+        @guest
         <!-- Log In and Register Buttons -->
         <a href="{{ route('auth.choose-role') }}" class="login-btn ml-2">
             Log In
         </a>
         <a href="{{ route('register') }}" class="register-btn">Register</a>
+        @endguest
+
+        @auth
+        <!-- User Profile Dropdown -->
+        <div class="buton d-flex justify-content-center align-items-center">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <!-- Profile Image -->
+                        <img src="{{ Auth::user()->img ? asset('/images/' . Auth::user()->img) : asset('/images/default_user.webp') }}" alt="Profile Picture" class="profile-img">
+                        <!-- User Name -->
+                        <span class="ml-2">{{ Auth::user()->nama_depan }}</span>
+                    </a>
+                    <!-- Dropdown Menu -->
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{{ route('profile') }}">Profil Saya</a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="dropdown-item">
+                                <i class="fas fa-sign-out-alt"></i> Log Out
+                            </button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        @endauth
     </div>
 </div>
 
@@ -225,3 +257,4 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+

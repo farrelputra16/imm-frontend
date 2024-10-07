@@ -7,7 +7,12 @@
 <!-- Updated Styles -->
 <style>
     body {
-        font-family: 'Arial', sans-serif;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: '>'; /* Use '>' as the separator */
+        color: #6c757d; /* Separator color */
     }
 
     .breadcrumb-item a {
@@ -29,7 +34,9 @@
     .display-4 {
         color:#6f42c1;
         text-align : center;
+        font-size:2.5rem;
     }
+
     .sidebar h5 {
         font-weight: bold;
     }
@@ -59,7 +66,7 @@
 
     .table thead th {
         background-color: #6f42c1;
-        color:#f8f9fa
+        color:#f8f9fa;
     }
 
     .table tbody tr {
@@ -80,7 +87,7 @@
         <div class="col-12">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page">People</li>
                 </ol>
             </nav>

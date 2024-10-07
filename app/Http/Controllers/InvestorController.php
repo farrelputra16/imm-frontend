@@ -43,7 +43,7 @@ class InvestorController extends Controller
     public function show($id)
     {
         // Fetch the specific investor using the ID
-        $investor = Investor::findOrFail($id);
+        $investor = Investor::with('investments.company')->findOrFail($id);
 
         // Return the investor detail view
         return view('investors.show', compact('investor'));

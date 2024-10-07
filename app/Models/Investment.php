@@ -18,14 +18,17 @@ class Investment extends Model
         'status'
     ];
 
+    protected $casts = [
+        'investment_date' => 'date',
+    ];
     public function investor()
     {
-        return $this->belongsTo(Investor::class);
+        return $this->belongsTo(Investor::class,'investor_id');
     }
 
     public function company()
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(Company::class,'company_id');
     }
 
     public function project()

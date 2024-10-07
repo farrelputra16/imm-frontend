@@ -210,37 +210,70 @@
                         </div>
                     </div>
 
-                    {{-- INVESTOR Role Fields --}}
-                    <div id="investorFields" class="role-section">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="org_name">Nama Organisasi</label>
-                                <input type="text" id="org_name" name="org_name" placeholder="Masukkan nama organisasi" value="{{ old('org_name') }}" required />
-                            </div>
-                            <div class="form-group">
-                                <label for="number_of_contacts">Nomor Kontak</label>
-                                <input type="number" id="number_of_contacts" name="number_of_contacts" placeholder="Masukkan nomor kontak" value="{{ old('number_of_contacts') }}" required />
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="number_of_investments">Jumlah Investasi</label>
-                                <input type="number" id="number_of_investments" name="number_of_investments" placeholder="Jumlah investasi" value="{{ old('number_of_investments') }}" min="0" required />
-                            </div>
-                            <div class="form-group">
-                                <label for="location">Lokasi</label>
-                                <input type="text" id="location" name="location" placeholder="Masukkan lokasi" value="{{ old('location') }}" required />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="description">Deskripsi</label>
-                            <textarea id="description" name="description" placeholder="Masukkan deskripsi" rows="3" required>{{ old('description') }}</textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="departments">Departemen</label>
-                            <input type="text" id="departments" name="departments" placeholder="Departemen" value="{{ old('departments') }}" required />
-                        </div>
-                    </div>
+                   {{-- INVESTOR Role Fields --}}
+<div id="investorFields" class="role-section">
+    <div class="form-row">
+        <div class="form-group">
+            <label for="org_name">Nama Organisasi</label>
+            <select id="org_name" name="org_name" class="form-control" required>
+                <option value="">Pilih Organisasi</option>
+                @foreach($companies as $company)
+                    <option value="{{ $company->id }}" {{ old('org_name') == $company->id ? 'selected' : '' }}>
+                        {{ $company->nama }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="number_of_contacts">Nomor Kontak</label>
+            <input type="number" id="number_of_contacts" name="number_of_contacts" placeholder="Masukkan nomor kontak" value="{{ old('number_of_contacts') }}" />
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label for="location">Lokasi</label>
+            <input type="text" id="location" name="location" placeholder="Masukkan lokasi" value="{{ old('location') }}" required />
+        </div>
+
+        <div class="form-group">
+            <label for="investment_stage">Tahap Investasi</label>
+            <select id="investment_stage" name="investment_stage" class="form-control" required>
+                <option value="">Pilih Tahap Investasi</option>
+                <option value="Pre-Seed" {{ old('investment_stage') == 'Pre-Seed' ? 'selected' : '' }}>Pre-Seed</option>
+                <option value="Seed" {{ old('investment_stage') == 'Seed' ? 'selected' : '' }}>Seed</option>
+                <option value="Series A" {{ old('investment_stage') == 'Series A' ? 'selected' : '' }}>Series A</option>
+                <option value="Series B" {{ old('investment_stage') == 'Series B' ? 'selected' : '' }}>Series B</option>
+                <option value="Series C" {{ old('investment_stage') == 'Series C' ? 'selected' : '' }}>Series C</option>
+                <option value="Series D" {{ old('investment_stage') == 'Series D' ? 'selected' : '' }}>Series D</option>
+                <option value="IPO" {{ old('investment_stage') == 'IPO' ? 'selected' : '' }}>IPO</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="description">Deskripsi</label>
+        <textarea id="description" name="description" placeholder="Masukkan deskripsi" rows="3" required>{{ old('description') }}</textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="departments">Departemen</label>
+        <select id="departments" name="departments" class="form-control" required>
+            <option value="">Pilih Departemen</option>
+            <option value="Marketing" {{ old('departments') == 'Marketing' ? 'selected' : '' }}>Marketing</option>
+            <option value="Finance" {{ old('departments') == 'Finance' ? 'selected' : '' }}>Finance</option>
+            <option value="Human Resources" {{ old('departments') == 'Human Resources' ? 'selected' : '' }}>Human Resources</option>
+            <option value="Engineering" {{ old('departments') == 'Engineering' ? 'selected' : '' }}>Engineering</option>
+            <option value="Sales" {{ old('departments') == 'Sales' ? 'selected' : '' }}>Sales</option>
+            <option value="Operations" {{ old('departments') == 'Operations' ? 'selected' : '' }}>Operations</option>
+            <option value="Product Development" {{ old('departments') == 'Product Development' ? 'selected' : '' }}>Product Development</option>
+            <option value="Customer Support" {{ old('departments') == 'Customer Support' ? 'selected' : '' }}>Customer Support</option>
+            <option value="IT" {{ old('departments') == 'IT' ? 'selected' : '' }}>IT</option>
+            <option value="Legal" {{ old('departments') == 'Legal' ? 'selected' : '' }}>Legal</option>
+        </select>
+    </div>
+</div>
+
 
                     {{-- PEOPLE Role Fields --}}
                     <div id="peopleFields" class="role-section">

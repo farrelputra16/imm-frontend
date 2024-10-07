@@ -105,7 +105,7 @@
         </div>
     </div>
 
-    <h1 class="header">Find Investor</h1>
+    <h1 class="header">Investors</h1>
 
     <div class="row">
         <!-- Filter Section -->
