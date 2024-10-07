@@ -83,7 +83,7 @@
             top: 50px;
         }
         .icon-right {
-            right: -40px;
+            right: 190px;
             top: 50px;
         }
         .role-title {
