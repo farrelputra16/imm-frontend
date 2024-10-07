@@ -1,142 +1,179 @@
-@extends('layouts.app-table')
+@extends('layouts.app-landingpage')
 
 @section('content')
 <!-- Custom Font from Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-<!-- Custom Styles -->
+<!-- Updated Styles -->
 <style>
     body {
-        font-family: 'Poppins', sans-serif;
+        font-family: 'Arial', sans-serif;
     }
 
-    h2 {
-        font-size: 2rem;
-        color: #5940CB;
-        text-align: center;
-        margin-bottom: 30px;
+    .breadcrumb-item a {
+        color: #6c757d;
+        text-decoration: none;
     }
 
-    /* Search Form Styles */
-    form {
+    .breadcrumb-item a:hover {
+        text-decoration: underline;
+    }
+
+    .sidebar {
+        width: 250px;
         padding: 20px;
-        background-color: #f7f7f7;
-        border-radius: 8px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ddd;
+        border-radius: 5px;
     }
 
-    input[type="text"] {
-        font-size: 1rem;
-        padding: 10px;
-        border-radius: 8px;
-        border: 1px solid #ccc;
+    .display-4 {
+        color:#6f42c1;
+        text-align : center;
+    }
+    .sidebar h5 {
+        font-weight: bold;
     }
 
-    .btn-primary {
-        background-color: #5940CB;
-        border: none;
-        font-size: 1rem;
-        padding: 20px 20px;
-        border-radius: 8px;
-        transition: background-color 0.3s ease;
+    .sidebar .form-check-label {
+        margin-left: 10px;
     }
 
-    .btn-primary:hover {
-        background-color: #4838b1;
+    .sidebar .btn {
+        margin: 5px 0;
     }
 
-    /* Table Styles */
-    table {
-        width: 100%;
-        margin-top: 20px;
-        border-collapse: collapse;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    .content {
+        padding: 20px;
     }
 
-    thead {
-        background-color: #5940CB;
-        color: white;
+    .search-bar {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
     }
 
-    th, td {
-        padding: 15px;
-        text-align: left;
-        font-size: 1rem;
+    .search-bar input {
+        flex: 1;
+        margin-right: 10px;
     }
 
-    tbody tr:nth-child(even) {
-        background-color: #f9f9f9;
+    .table thead th {
+        background-color: #6f42c1;
+        color:#f8f9fa
     }
 
-    tbody tr:hover {
-        background-color: #f1f1f1;
-        cursor: pointer; /* Add cursor pointer to show clickable row */
+    .table tbody tr {
+        background-color: #fff;
     }
 
-    td {
-        color: #333;
-        font-weight: 400;
+    .table tbody tr:nth-child(even) {
+        background-color: #f8f9fa;
     }
 
-    th {
-        font-weight: 600;
+    .pagination {
+        justify-content: flex-end;
     }
 </style>
 
-<h2><b>PEOPLE</b></h2>
-
-<form method="GET" action="{{ route('people.index') }}" class="mb-4">
-    <div class="row g-3">
-        <div class="col-md-3">
-            <input type="text" name="location" class="form-control" placeholder="Location" value="{{ request()->location }}">
-        </div>
-        <div class="col-md-3">
-            <input type="text" name="role" class="form-control" placeholder="Role" value="{{ request()->role }}">
-        </div>
-        <div class="col-md-3">
-            <input type="text" name="organization" class="form-control" placeholder="Organization" value="{{ request()->organization }}">
-        </div>
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-primary">Search</button>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">People</li>
+                </ol>
+            </nav>
+            <h1 class="display-4">People</h1>
         </div>
     </div>
-</form>
 
-<!-- People Table -->
-<table class="table table-hover mt-4">
-    <thead class="table-light">
-        <tr>
-            <th>Name</th>
-            <th>Primary Job Title</th>
-            <th>Primary Organization</th>
-            <th>Role</th>
-            <th>Location</th>
-            <th>Linkedin</th>
-            <th>Phone Number</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($people as $person)
-        <tr onclick="window.location.href='{{ route('people.show', $person->id) }}'">
-            <td>{{ $person->name }}</td>
-            <td>{{ $person->primary_job_title }}</td>
-            <td>{{ $person->company ? $person->company->nama : 'N/A' }}</td> <!-- Menampilkan nama perusahaan -->
-            <td>{{ ucfirst($person->role) }}</td>
-            <td>{{ $person->location }}</td>
-            <td>
-                @if($person->linkedin_link)
-                    <a href="{{ $person->linkedin_link }}" target="_blank">Link</a> <!-- Link ke LinkedIn -->
-                @else
-                    N/A
-                @endif
-            </td>
-            <td>{{ $person->phone_number }}</td>
-        </tr>
-        @endforeach
-    </tbody>
+    <div class="row">
+        <!-- Sidebar Filter Section -->
+        <div class="col-md-3 sidebar">
+            <h5>FILTER</h5>
+            <form method="GET" action="{{ route('people.index') }}">
+                <div class="mb-3">
+                    <h6>Location</h6>
+                    <input type="text" name="location" class="form-control" placeholder="Location" value="{{ request()->location }}">
+                </div>
+                <div class="mb-3">
+                    <h6>Role</h6>
+                    <input type="text" name="role" class="form-control" placeholder="Role" value="{{ request()->role }}">
+                </div>
+                <div class="mb-3">
+                    <h6>Organization</h6>
+                    <input type="text" name="organization" class="form-control" placeholder="Organization" value="{{ request()->organization }}">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Search</button>
+            </form>
+        </div>
 
-</table>
+        <!-- Main Content Section -->
+        <div class="col-md-9 content">
+            <div class="search-bar">
+                <input type="text" class="form-control" placeholder="Search People">
+                <button class="btn btn-primary">Search</button>
+            </div>
+
+            <!-- People Table -->
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Primary Job Title</th>
+                        <th scope="col">Primary Organization</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">Location</th>
+                        <th scope="col">Linkedin</th>
+                        <th scope="col">Phone Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($people as $person)
+                    <tr onclick="window.location.href='{{ route('people.show', $person->id) }}'">
+                        <td>{{ $person->name }}</td>
+                        <td>{{ $person->primary_job_title }}</td>
+                        <td>{{ $person->company ? $person->company->nama : 'N/A' }}</td> <!-- Menampilkan nama perusahaan -->
+                        <td>{{ ucfirst($person->role) }}</td>
+                        <td>{{ $person->location }}</td>
+                        <td>
+                            @if($person->linkedin_link)
+                                <a href="{{ $person->linkedin_link }}" target="_blank">Link</a> <!-- Link ke LinkedIn -->
+                            @else
+                                N/A
+                            @endif
+                        </td>
+                        <td>{{ $person->phone_number }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+            <!-- Pagination -->
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <select class="form-select form-select-sm" style="width: auto;">
+                        <option selected>10</option>
+                        <option value="1">20</option>
+                        <option value="2">30</option>
+                    </select>
+                    <span>Row per page</span>
+                </div>
+                <div>
+                    <span>Total 1 - 10 of 200</span>
+                </div>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination pagination-sm">
+                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection
