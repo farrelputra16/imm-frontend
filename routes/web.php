@@ -1,8 +1,5 @@
 <?php
 
-use App\Models\User;
-use App\Models\Company;
-use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
