@@ -41,12 +41,16 @@ class CompanyOutcomeController extends Controller
         $outcomes = CompanyOutcome::where('project_id', $project_id)->get();
         
         $project = Project::findOrFail($project_id);
+
+        $user = auth()->user();
+
+        $isCompany = $user->role === 'USER';
     
         if ($outcomes->isEmpty()) {
             return view('homepageimm.detailbiaya', ['project_id' => $project_id, 'outcomes' => collect(), 'project' => $project]);
         }
-    
-        return view('homepageimm.detailbiaya', compact('outcomes', 'project_id', 'project'));
+       // Kirim flag ke view untuk menentukan akses
+        return view('homepageimm.detailbiaya', compact('outcomes', 'project_id', 'project', 'isCompany'));
     }
     
 
