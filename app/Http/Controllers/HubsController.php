@@ -35,89 +35,104 @@ class HubsController extends Controller
 
     // Show method to display specific hub details
     public function show($id)
-    {
-        // Fetch the specific hub using the ID
-        $hub = Hubs::findOrFail($id);
+{
+    // Fetch the specific hub using the ID
+    $hub = Hubs::findOrFail($id);
 
-        // Pastikan hub sudah disetujui sebelum ditampilkan
-        if ($hub->status != 'approved') {
-            abort(404);
-        }
-
-        // Return the hub detail view
-        return view('hubs.show', compact('hub'));
+    // Pastikan hub sudah disetujui sebelum ditampilkan
+    if ($hub->status != 'approved') {
+        abort(404);
     }
+
+    // Memisahkan string facilities dan programs menjadi array
+    $facilities = $hub->facilities ? explode(',', $hub->facilities) : [];
+    $programs = $hub->programs ? explode(',', $hub->programs) : [];
+
+    // Return the hub detail view with facilities and programs
+    return view('hubs.show', compact('hub', 'facilities', 'programs'));
+}
+
 
     // Method untuk menampilkan form pengajuan hub
     public function create()
-{
-    // Import model yang diperlukan
-    $companies = Company::all();
-    $people = People::all();
-    $events = Event::all();
+    {
+        // Import model yang diperlukan
+        $companies = Company::all();
+        $people = People::all();
+        $events = Event::all();
 
-    return view('hubs.createhubs.create', compact('companies', 'people', 'events'));
-}
-
+        return view('hubs.createhubs.create', compact('companies', 'people', 'events'));
+    }
 
     // Method untuk menyimpan data hub baru
-
     public function store(Request $request)
-{
-    // Pastikan pengguna telah login
-    if (!auth()->check()) {
-        return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
+    {
+        // Pastikan pengguna telah login
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
+        }
+        Log::info('User ID saat ini: ' . auth()->id());
+
+        // Validasi input
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'provinsi' => 'required|string|max:255',
+            'kota' => 'required|string|max:255',
+            'rank' => 'nullable|integer',
+            'top_investor_types' => 'nullable|string',
+            'top_funding_types' => 'nullable|string',
+            'description' => 'nullable|string',
+            'facilities' => 'nullable|string', // Validasi untuk fasilitas
+            'programs' => 'nullable|string',   // Validasi untuk program
+            'alumni' => 'nullable|array',  // Alumni harus berupa array karena kita menggunakan multiple select
+        'alumni.*' => 'exists:companies,id',  // Setiap alumni harus ada di tabel companies
+            // Validasi untuk relasi jika ada
+            'company_ids' => 'nullable|array',
+            'company_ids.*' => 'exists:companies,id',
+            'people_ids' => 'nullable|array',
+            'people_ids.*' => 'exists:people,id',
+            'event_ids' => 'nullable|array',
+            'event_ids.*' => 'exists:events,id',
+        ]);
+
+        $alumniString = $request->has('alumni') ? implode(',', $request->alumni) : null;
+
+
+        // Membuat hub baru dengan status 'pending' dan user_id
+        $hub = Hubs::create([
+            'name' => $request->name,
+            'provinsi' => $request->provinsi,
+            'kota' => $request->kota,
+            'rank' => $request->rank,
+            'top_investor_types' => $request->top_investor_types,
+            'top_funding_types' => $request->top_funding_types,
+            'description' => $request->description,
+            'facilities' => $request->facilities,   // Menyimpan fasilitas
+            'programs' => $request->programs,       // Menyimpan program
+            'alumni' => $request->alumni,           // Menyimpan alumni
+            'status' => 'pending',
+            'user_id' => auth()->id(), // Menyimpan ID pengguna yang sedang login
+        ]);
+
+        // Menyimpan relasi many-to-many jika ada
+        if($request->has('alumni')){
+            $hub->companies()->attach($request->alumni); // Pastikan alumni adalah array dan gunakan attach untuk menyimpan relasi many-to-many
+        }
+        $hub->companies()->attach($request->input('company_ids', []));
+        $hub->people()->attach($request->input('people_ids', []));
+        $hub->events()->attach($request->input('event_ids', []));
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('hubs.create.hubsubmission')->with('success', 'Pengajuan hub Anda telah diterima dan menunggu persetujuan.');
     }
-    Log::info('User ID saat ini: ' . auth()->id());
-
-    // Validasi input
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'provinsi' => 'required|string|max:255',
-        'kota' => 'required|string|max:255',
-        'rank' => 'nullable|integer',
-        'top_investor_types' => 'nullable|string',
-        'top_funding_types' => 'nullable|string',
-        'description' => 'nullable|string',
-        // Validasi untuk relasi jika ada
-        'company_ids' => 'nullable|array',
-        'company_ids.*' => 'exists:companies,id',
-        'people_ids' => 'nullable|array',
-        'people_ids.*' => 'exists:people,id',
-        'event_ids' => 'nullable|array',
-        'event_ids.*' => 'exists:events,id',
-    ]);
-
-    // Membuat hub baru dengan status 'pending' dan user_id
-    $hub = Hubs::create([
-        'name' => $request->name,
-        'provinsi' => $request->provinsi,
-        'kota' => $request->kota,
-        'rank' => $request->rank,
-        'top_investor_types' => $request->top_investor_types,
-        'top_funding_types' => $request->top_funding_types,
-        'description' => $request->description,
-        'status' => 'pending',
-        'user_id' => auth()->id(), // Menyimpan ID pengguna yang sedang login
-    ]);
-
-    // Menyimpan relasi many-to-many jika ada
-    $hub->companies()->attach($request->input('company_ids', []));
-    $hub->people()->attach($request->input('people_ids', []));
-    $hub->events()->attach($request->input('event_ids', []));
-
-    // Redirect dengan pesan sukses
-    return redirect()->route('hubs.create.hubsubmission')->with('success', 'Pengajuan hub Anda telah diterima dan menunggu persetujuan.');
-}
-
 
     public function mySubmissions()
-{
-    // Mengambil pengajuan hubs milik pengguna yang sedang login
-    $hubs = Hubs::where('user_id', auth()->id())->get();
+    {
+        // Mengambil pengajuan hubs milik pengguna yang sedang login
+        $hubs = Hubs::where('user_id', auth()->id())->get();
 
-    return view('hubs.createhubs.hubsubmission', compact('hubs'));
-}
+        return view('hubs.createhubs.hubsubmission', compact('hubs'));
+    }
 
     // Method untuk admin melihat pengajuan pending
     public function pending()

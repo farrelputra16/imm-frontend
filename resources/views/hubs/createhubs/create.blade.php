@@ -107,6 +107,25 @@
             <!-- Description -->
             <label for="description">Deskripsi:</label>
             <textarea class="form-control" id="description" name="description" rows="4">{{ old('description') }}</textarea>
+
+            <!-- Facilities -->
+            <label for="facilities">Fasilitas (Pisahkan dengan koma):</label>
+            <input type="text" class="form-control" id="facilities" name="facilities" value="{{ old('facilities') }}" placeholder="Contoh: Wi-Fi, Lab, Kantin">
+
+            <!-- Programs -->
+            <label for="programs">Program (Pisahkan dengan koma):</label>
+            <input type="text" class="form-control" id="programs" name="programs" value="{{ old('programs') }}" placeholder="Contoh: Startup Accelerator, Community Development">
+
+           <!-- Alumni (Multiple Dropdown) -->
+<label for="alumni">Alumni (Pilih dari perusahaan):</label>
+<select class="form-control" id="alumni" name="alumni[]" multiple>
+    @foreach($companies as $company)
+        <option value="{{ $company->id }}">{{ $company->nama }}</option>
+    @endforeach
+</select>
+<small class="text-muted">Tekan Ctrl (Windows) atau Cmd (Mac) untuk memilih lebih dari satu perusahaan.</small>
+
+
         </div>
         <button type="submit" class="btn btn-primary">Kirim Pengajuan</button>
     </form>
