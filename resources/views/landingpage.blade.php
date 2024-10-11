@@ -488,7 +488,7 @@
                     <div class="col-md-6">
                         <div class="card stats-card custom-card">
                             <div class="card-body">
-                                <h3>{{ $investment->amount }}</h3>
+                                <h3>{{ $investment->id }}</h3>
                                 <p>TOTAL FUNDING</p>
                             </div>
                         </div>
@@ -500,7 +500,7 @@
                     <div class="col-md-6">
                         <div class="card stats-card custom-card">
                             <div class="card-body">
-                                <h3>{{ $investment->status }}</h3>
+                                <h3>{{ $investment->id }}</h3>
                                 <p>ACQUISITIONS RECORDED</p>
                             </div>
                         </div>
