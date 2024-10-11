@@ -169,15 +169,16 @@
             <div class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Performance</a>
                 <div class="dropdown-menu">
-                    <a href="{{ route('hubs.index') }}" class="dropdown-item">Hub Networks</a>
+                    <a href="{{ route('home') }}" class="dropdown-item">IMM</a>
+                    <a href="#" class="dropdown-item">Benchmarking</a>
                 </div>
             </div>
             <div class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Networks</a>
                 <div class="dropdown-menu">
-                    <a href="{{ route('home') }}" class="dropdown-item">IMM</a>
                     <a href="{{ route('people.index') }}" class="dropdown-item">Find Mentor</a>
                     <a href="{{ route('hubs.index') }}" class="dropdown-item">Innovation Hub</a>
+                    <a href="{{ route('events.index') }}" class="dropdown-item">Events</a>
                 </div>
             </div>
         </div>
