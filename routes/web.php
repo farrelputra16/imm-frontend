@@ -192,9 +192,8 @@ Route::middleware(['auth'])->group(function () {
         return view('imm.kodeotp');
     });
 
-    Route::get('/pendaftaranperusahaan', function () {
-        return view('imm.pendaftaranperusahaan');
-    });
+    Route::get('/pendaftaranperusahaan', [CompanyController::class, 'create_company'])->name('companies.create');
+
 
     Route::get('/myproject', function () {
         return view('myproject.myproject');
@@ -348,9 +347,9 @@ Route::get('/kodeotp', function () {
     return view('imm.kodeotp');
 });
 
-Route::get('/pendaftaranperusahaan', function () {
-    return view('imm.pendaftaranperusahaan');
-});
+// Route::get('/pendaftaranperusahaan', function () {
+//     return view('imm.pendaftaranperusahaan');
+// });
 
 Route::get('/detail-kelas', function () {
     return view('kelas.detail-kelas');

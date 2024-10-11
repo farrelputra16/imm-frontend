@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -53,7 +54,7 @@ class CompanyController extends Controller
             'nama' => 'required|string|max:255',
             'profile' => 'required|string|max:255',
             'founded_date' => 'required|date',
-            'tipe' => 'required|string|max:255',
+            'business_model' => 'required|string|max:255', // Pastikan ini ada dan benar
             'nama_pic' => 'required|string|max:255',
             'posisi_pic' => 'required|string|max:255',
             'telepon' => 'required|string|max:20',
@@ -61,16 +62,19 @@ class CompanyController extends Controller
             'provinsi' => 'required|string|max:255',
             'kabupaten' => 'required|string|max:255',
             'jumlah_karyawan' => 'required|integer',
-            'startup_summary' => 'required|string', // Update this rule
+            'startup_summary' => 'required|string',
+            'tag_ids' => 'array',
+            'funding_stage' => 'required|string|max:255',
         ]);
 
+
         // Simpan data ke dalam database
-        Company::create([
+        $company = Company::create([
             'user_id' => Auth::id(),
             'nama' => $validated['nama'],
             'profile' => $validated['profile'],
             'founded_date' => $validated['founded_date'],
-            'tipe' => $validated['tipe'],
+            'business_model' => $validated['business_model'], // Pastikan ini ada dan benar
             'nama_pic' => $validated['nama_pic'],
             'posisi_pic' => $validated['posisi_pic'],
             'telepon' => $validated['telepon'],
@@ -79,7 +83,13 @@ class CompanyController extends Controller
             'kabupaten' => $validated['kabupaten'],
             'jumlah_karyawan' => $validated['jumlah_karyawan'],
             'startup_summary' => $validated['startup_summary'],
+            'funding_stage' => $validated['funding_stage'],
         ]);
+
+        // Attach departments to the company
+        if(isset($validated['tag_ids'])) {
+            $company->departments()->attach($validated['tag_ids']);
+        }
 
         // Redirect ke homepage
         return redirect()->route('homepage')->with('success', 'Company created successfully.');
@@ -167,5 +177,14 @@ class CompanyController extends Controller
         $completedProjects = $company->projects->where('status', 'Selesai');
         return view('companies.project', compact('company', 'ongoingProjects', 'completedProjects'));
     }
+
+    public function create_company()
+    {
+        // Mengambil data departments untuk digunakan pada view
+        $departments = Department::all(); 
+
+        // Mengirim data departments ke view 'imm.pendaftaranperusahaan'
+        return view('imm.pendaftaranperusahaan', compact('departments'));
+    }    
 
 }

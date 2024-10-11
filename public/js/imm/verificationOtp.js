@@ -6,7 +6,8 @@ document.addEventListener("DOMContentLoaded", function () {
         countdownInterval = setInterval(() => {
             if (secondsRemaining > 0) {
                 secondsRemaining--;
-                document.getElementById("seconds-remaining").innerText = secondsRemaining;
+                document.getElementById("seconds-remaining").innerText =
+                    secondsRemaining;
             } else {
                 clearInterval(countdownInterval);
             }
@@ -19,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
     otpInputs.forEach((input, index) => {
         input.addEventListener("input", (e) => {
             if (isNaN(input.value)) {
-                input.value = '';
+                input.value = "";
                 return;
             }
             if (input.nextElementSibling) {
@@ -30,72 +31,99 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Ambil parameter email dari URL
     const urlParams = new URLSearchParams(window.location.search);
-    const email = urlParams.get('email');
-    const telepon = urlParams.get('telepon');
+    const email = urlParams.get("email");
+    const telepon = urlParams.get("telepon");
 
-    document.getElementById("otp-form").addEventListener("submit", function (e) {
-        e.preventDefault();
-        const otpCode = Array.from(otpInputs).map(input => input.value).join('');
+    document
+        .getElementById("otp-form")
+        .addEventListener("submit", function (e) {
+            e.preventDefault();
+            const otpCode = Array.from(otpInputs)
+                .map((input) => input.value)
+                .join("");
 
-        fetch("/verify-code", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
-            },
-            body: JSON.stringify({
-                email: email,
-                otp_code: otpCode,
-            }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.success) {
-                    // Cek role dari response dan arahkan ke halaman sesuai role
-                    const role = data.role;
+            fetch("/verify-code", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document
+                        .querySelector('meta[name="csrf-token"]')
+                        .getAttribute("content"),
+                },
+                body: JSON.stringify({
+                    email: email,
+                    otp_code: otpCode,
+                }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        // Cek role dari response dan arahkan ke halaman sesuai role
+                        const role = data.role;
 
-                    if (role === 'USER') {
-                        window.location.href = '/home';
-                    } else if (role === 'INVESTOR') {
-                        window.location.href = '/investor-home';
-                    } else if (role === 'PEOPLE') {
-                        window.location.href = '/people-home';
+                        if (role === "USER") {
+                            window.location.href = "/home";
+                        } else if (role === "INVESTOR") {
+                            window.location.href = "/investor-home";
+                        } else if (role === "PEOPLE") {
+                            window.location.href = "/people-home";
+                        } else {
+                            window.location.href = "/login"; // Redirect default jika role tidak dikenal
+                        }
                     } else {
-                        window.location.href = '/login'; // Redirect default jika role tidak dikenal
+                        document.getElementById("error-message").innerText =
+                            data.message || "Verification failed";
                     }
-                } else {
-                    document.getElementById("error-message").innerText = data.message || "Verification failed";
-                }
-            })
-            .catch((error) => {
-                document.getElementById("error-message").innerText = error.message;
-            });
-    });
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    // Jika verifikasi berhasil, arahkan ke route pendaftaranperusahaan
+                    if (data.success) {
+                        window.location.href = `/pendaftaranperusahaan?email=${email}&telepon=${telepon}`;
+                    } else {
+                        // Jika gagal, tampilkan pesan kesalahan
+                        document.getElementById("error-message").innerText =
+                            data.message || "Verification failed";
+                    }
+                })
+                .catch((error) => {
+                    // Tangani error fetch
+                    document.getElementById("error-message").innerText =
+                        error.message;
+                });
+        });
 
-    document.getElementById("resend-otp").addEventListener("click", function () {
-        fetch("/send-otp", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
-            },
-            body: JSON.stringify({
-                email: email,
-            }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.success) {
-                    document.getElementById("error-message").innerText = "Kode OTP berhasil dikirim ulang";
-                    secondsRemaining = 60;
-                    clearInterval(countdownInterval);
-                    startCountdown();
-                } else {
-                    document.getElementById("error-message").innerText = data.message || "Failed to resend OTP";
-                }
+    document
+        .getElementById("resend-otp")
+        .addEventListener("click", function () {
+            fetch("/send-otp", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document
+                        .querySelector('meta[name="csrf-token"]')
+                        .getAttribute("content"),
+                },
+                body: JSON.stringify({
+                    email: email,
+                }),
             })
-            .catch((error) => {
-                document.getElementById("error-message").innerText = error.message;
-            });
-    });
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        document.getElementById("error-message").innerText =
+                            "Kode OTP berhasil dikirim ulang";
+                        secondsRemaining = 60;
+                        clearInterval(countdownInterval);
+                        startCountdown();
+                    } else {
+                        document.getElementById("error-message").innerText =
+                            data.message || "Failed to resend OTP";
+                    }
+                })
+                .catch((error) => {
+                    document.getElementById("error-message").innerText =
+                        error.message;
+                });
+        });
 });

@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Company extends Model
 {
     use HasFactory;
-
+    
     protected $fillable = [
+        'user_id',
         'nama',
         'profile',
         'founded_date',
-        'tipe',
+        'business_model', // Pastikan ini ada di sini
         'nama_pic',
         'posisi_pic',
         'telepon',
@@ -22,9 +23,8 @@ class Company extends Model
         'kabupaten',
         'jumlah_karyawan',
         'startup_summary',
-        'user_id',
+        'funding_stage',
     ];
-
     /**
      * Get the projects associated with the company.
      */
@@ -63,6 +63,14 @@ class Company extends Model
     public function teamMembers()
     {
         return $this->belongsToMany(People::class, 'team')->withPivot('position')->withTimestamps();
+    }
+
+    /**
+     * Relasi many-to-many dengan Department melalui tabel company_departments
+     */
+    public function departments()
+    {
+        return $this->belongsToMany(Department::class, 'company_departments');
     }
 
     /**
