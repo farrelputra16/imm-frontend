@@ -1,8 +1,17 @@
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap'); /* Using Montserrat font */
+<!DOCTYPE html>
+<html lang="en">
 
-    /* Scoped styles for the landing page navbar */
-    .navbar-landingpage {
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMM | Navbar</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+    <style>
+        .navbar-landingpage {
             background-color: #fff;
             padding: 10px 20px;
             display: flex;
@@ -15,7 +24,7 @@
 
         .navbar-landingpage .logo img {
             height: 40px;
-            margin-left: 20px;
+            margin-right: 20px;
             transition: transform 0.5s ease-in-out, filter 0.5s ease-in-out;
         }
 
@@ -77,7 +86,8 @@
             background-color: #f0f0f0;
         }
 
-        .navbar-landingpage .login-btn, .navbar-landingpage .register-btn {
+        .navbar-landingpage .login-btn,
+        .navbar-landingpage .register-btn {
             background-color: transparent;
             color: #5940CB;
             border: 2px solid #5940CB;
@@ -89,13 +99,18 @@
             text-decoration: none;
         }
 
-        .navbar-landingpage .login-btn:hover {
-            background-color: #f5f5f5;
+        .navbar-landingpage .login-btn {
+            margin-left: 15px;
         }
 
         .navbar-landingpage .register-btn {
+            margin-left: 15px;
             background-color: #5940CB;
             color: white;
+        }
+
+        .navbar-landingpage .login-btn:hover {
+            background-color: #f5f5f5;
         }
 
         .navbar-landingpage .register-btn:hover {
@@ -143,9 +158,13 @@
             margin-left: .1rem;
             margin-right: .1rem;
         }
+
+        .nav-wrapper {
+            display: flex;
+            align-items: center;
+        }
     </style>
 </head>
-
 <body>
     <div class="navbar-landingpage">
         <!-- Logo -->
@@ -155,30 +174,33 @@
             </a>
         </div>
 
-        <!-- Navbar Menu -->
-        <div class="navbar">
-            <a href="/">Homepage</a>
-            <div class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Opportunities</a>
-                <div class="dropdown-menu">
-                    <a href="{{ route('investors.index') }}" class="dropdown-item">Find Investor</a>
-                    <a href="{{ route('companies.list') }}" class="dropdown-item">Find Company</a>
+         <!-- Navbar Menu -->
+         <div class="nav-wrapper">
+            <div class="navbar">
+                <a href="/">Homepage</a>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Opportunities</a>
+                    <div class="dropdown-menu">
+                        <a href="{{ route('investors.index') }}" class="dropdown-item">Find Investor</a>
+                        <a href="{{ route('companies.list') }}" class="dropdown-item">Find Company</a>
+                    </div>
                 </div>
-            </div>
-            <!-- Networks Dropdown -->
-            <div class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Performance</a>
-                <div class="dropdown-menu">
-                    <a href="{{ route('home') }}" class="dropdown-item">IMM</a>
-                    <a href="#" class="dropdown-item">Benchmarking</a>
+
+                <!-- Networks Dropdown -->
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Performance</a>
+                    <div class="dropdown-menu">
+                        <a href="{{ route('home') }}" class="dropdown-item">IMM</a>
+                        <a href="#" class="dropdown-item">Benchmarking</a>
+                    </div>
                 </div>
-            </div>
-            <div class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Networks</a>
-                <div class="dropdown-menu">
-                    <a href="{{ route('people.index') }}" class="dropdown-item">Find Mentor</a>
-                    <a href="{{ route('hubs.index') }}" class="dropdown-item">Innovation Hub</a>
-                    <a href="{{ route('events.index') }}" class="dropdown-item">Events</a>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Networks</a>
+                    <div class="dropdown-menu">
+                        <a href="{{ route('people.index') }}" class="dropdown-item">Find Mentor</a>
+                        <a href="{{ route('hubs.index') }}" class="dropdown-item">Innovation Hub</a>
+                        <a href="{{ route('events.index') }}" class="dropdown-item">Events</a>
+                    </div>
                 </div>
             </div>
         </div>
