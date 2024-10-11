@@ -36,8 +36,8 @@
                         <td><button class="btn-login" id="loginBtn" type="submit">Verifikasi</button><p id="sending" style="display: none; margin-top:15px;">Mengirim...</p></td> </table>
 
                     </tr>
-               
-               
+
+
             </form>
         </div>
     </div>

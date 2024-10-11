@@ -35,9 +35,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     console.log(email);
 
-    // Setel nilai email pada input tersembunyi
-    // document.getElementById('email').value = email;
-
     document.getElementById("otp-form").addEventListener("submit", function (e) {
         e.preventDefault();
         const otpCode = Array.from(otpInputs).map(input => input.value).join('');
@@ -56,7 +53,18 @@ document.addEventListener("DOMContentLoaded", function () {
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
-                    window.location.href = `/pendaftaranperusahaan?email=${email}&telepon=${telepon}`;
+                    // Cek role dari response dan arahkan ke halaman sesuai role
+                    const role = data.role;
+
+                    if (role === 'USER') {
+                        window.location.href = `/home`;
+                    } else if (role === 'INVESTOR') {
+                        window.location.href = '/investor-home';
+                    } else if (role === 'PEOPLE') {
+                        window.location.href = '/people-home';
+                    } else {
+                        window.location.href = '/home';
+                    }
                 } else {
                     document.getElementById("error-message").innerText = data.message || "Verification failed";
                 }
@@ -75,7 +83,6 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             body: JSON.stringify({
                 email: email,
-
             }),
         })
             .then((response) => response.json())

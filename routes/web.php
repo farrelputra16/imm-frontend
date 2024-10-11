@@ -62,7 +62,8 @@ Route::get('/hubs/{id}', [HubsController::class, 'show'])->name('hubs.show');
 
 Route::get('/home', function () {
     return view('home');
-})->name('home');
+})->name('home')->middleware('auth', 'user');
+
 Route::get('/survey-tangapan', function () {
     return view('survey.edit-survey.survey-tangapan');
 })->name('survey-tangapan');
