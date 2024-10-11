@@ -6,113 +6,109 @@
 
 <style>
     @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Quicksand:wght@300..700&display=swap");
-    html,
-body {
-    margin: 0;
-    font-family: "Poppins", sans-serif;
-}
+    body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+    }
 
-* {
-    text-decoration: none;
-    list-style-type: none;
-}
+    * {
+        text-decoration: none;
+        list-style-type: none;
+    }
 
-.btn-keluar {
-    width: 183px;
-    height: 35px;
-    background-color: white;
-    border: 2px solid #5940cb;
-    border-radius: 7px;
-}
+    .btn-keluar {
+        width: 183px;
+        height: 35px;
+        background-color: white;
+        border: 2px solid #5940cb;
+        border-radius: 7px;
+    }
 
-.btn-masuk {
-    width: 183px;
-    height: 35px;
-    background-color: #5940cb;
-    color: white;
-    border: none;
-    border-radius: 7px;
-}
+    .btn-masuk, .btn-masukkk {
+        height: 35px;
+        color: white;
+        border: none;
+        border-radius: 7px;
+    }
 
-.btn-masukkk {
-    width: 383px;
-    height: 35px;
-    background-color: #5940cb;
-    color: white;
-    border: none;
-    border-radius: 7px;
-}
+    .btn-masuk {
+        width: 183px;
+        background-color: #5940cb;
+    }
 
-.btn-masukkk:hover {
-    background-color: #5e41de;
-}
+    .btn-masukkk {
+        width: 383px;
+        background-color: #5940cb;
+    }
 
-.modal-content {
-    width: 699px;
-    height: 253px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    .btn-masukkk:hover {
+        background-color: #5e41de;
+    }
 
-.modal-body {
-    gap: 20px;
-    margin: 0 51px;
-    height: 100%;
-    display: flex;
-    align-items: start;
-    justify-content: center;
-    flex-direction: column;
-}
+    .modal-content {
+        width: 699px;
+        height: 253px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-.btnn {
-    display: flex;
-    align-content: center;
-    justify-content: space-around;
-    width: 100%;
-}
+    .modal-body {
+        gap: 20px;
+        margin: 0 51px;
+        height: 100%;
+        display: flex;
+        align-items: start;
+        justify-content: center;
+        flex-direction: column;
+    }
 
+    .btnn {
+        display: flex;
+        align-content: center;
+        justify-content: space-around;
+        width: 100%;
+    }
 
-/* Navbar */
+    .propil {
+        margin-top: 120px;
+    }
 
-.propil {
-    margin-top: 120px;
-}
+    .bahasa {
+        background-color: #5940cb;
+    }
 
+    #preview {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 1px solid #ccc;
+    }
 
-/* Footer */
+    #changeText {
+        cursor: pointer;
+        color: #5940cb;
+    }
 
-.bahasa {
-    background-color: #5940cb;
-}
-
-#preview {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 1px solid #ccc;
-}
-
-#changeText {
-    cursor: pointer;
-    color: #5940cb;
-}
     .team-section {
         text-align: center;
         margin-top: 50px;
     }
+
     .team-title {
         font-size: 36px;
         font-weight: bold;
         margin-bottom: 40px;
     }
+
     .team-container {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         gap: 20px;
     }
+
     .team-card {
         width: 250px;
         border: 1px solid #ccc;
@@ -121,6 +117,7 @@ body {
         text-align: center;
         box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
     }
+
     .team-photo {
         width: 100px;
         height: 100px;
@@ -128,21 +125,25 @@ body {
         object-fit: cover;
         margin-bottom: 10px;
     }
+
     .team-name {
         font-size: 18px;
         font-weight: bold;
         margin-bottom: 5px;
     }
+
     .team-role {
         font-size: 14px;
         color: #888;
         margin-bottom: 10px;
     }
+
     .action-buttons {
         display: flex;
         justify-content: center;
         gap: 10px;
     }
+
     .btn-edit, .btn-delete {
         background-color: #5940cb;
         color: white;
@@ -150,9 +151,11 @@ body {
         padding: 5px 10px;
         border-radius: 5px;
     }
+
     .btn-edit:hover, .btn-delete:hover {
         background-color: #5e41de;
     }
+
     .btn-add {
         background-color: #5940cb;
         color: white;
@@ -161,19 +164,21 @@ body {
         border-radius: 5px;
         margin-top: 30px;
     }
+
     .btn-add:hover {
         background-color: #5e41de;
     }
+
     .people-results {
-        position: absolute; /* Pastikan hasil pencarian terletak di atas elemen lainnya */
-        width: 100%;
+        position: absolute;
+        width : 100%;
         background-color: white;
         border: 1px solid #ddd;
         border-radius: 5px;
         max-height: 300px;
         overflow-y: auto;
-        z-index: 1000; /* Menempatkan hasil di atas elemen lainnya */
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Bayangan lebih kuat untuk efek kedalaman */
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
 
     .person {
@@ -181,11 +186,11 @@ body {
         align-items: center;
         padding: 10px;
         cursor: pointer;
-        transition: background-color 0.3s;
+        transition: background-color  0.3s;
     }
 
     .person:hover {
-        background-color: #f0f0f0; /* Efek hover */
+        background-color: #f0f0f0;
     }
 
     .profile-pic {
@@ -193,7 +198,7 @@ body {
         height: 50px;
         border-radius: 50%;
         margin-right: 10px;
-        object-fit: cover; /* Memastikan gambar tidak terdistorsi */
+        object-fit: cover;
     }
 
     .person-info h5 {
@@ -204,12 +209,9 @@ body {
     .person-info p {
         margin: 0;
         color: #666;
-        font-size: 0.9em; /* Ukuran font lebih kecil untuk email */
+        font-size: 0.9em;
     }
 
-    /* 
-        Styling untuk bagian company project
-    */
     .project-section {
         text-align: center;
         margin-top: 50px;
@@ -235,12 +237,13 @@ body {
     }
 
     .project-card img {
-        width: 100%; /* Mengisi lebar kotak */
-        height: 300px; /* Tinggi tetap */
-        object-fit: cover; /* Menjaga rasio aspek */
-        border-radius: 0; /* Menghilangkan sudut bulat */
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 0;
         margin-bottom: 1rem;
     }
+
     .btn-add-project{
         background-color: #5940cb;
         color: white;
@@ -249,6 +252,7 @@ body {
         border-radius: 5px;
         margin-top: 30px;
     }
+
     .project-price{
         margin: 20px;
         border: none;
@@ -259,6 +263,7 @@ body {
         color: white;
         border-radius: 30px;
     }
+
     .btn-edit-project, .btn-delete-project {
         background-color: #5940cb;
         color: white;
@@ -266,6 +271,7 @@ body {
         padding: 5px 10px;
         border-radius: 5px;
     }
+
     .btn-edit-project:hover, .btn-delete-project:hover {
         background-color: #5e41de;
     }
@@ -295,7 +301,6 @@ body {
                             <label for="formGroupExampleInput2" class="form-label">Profil Perusahaan</label>
                             <input type="text" name="profile" class="form-control" id="formGroupExampleInput2" placeholder="Profil Perusahaan" value="{{ $company->profile }}" readonly>
                         </div>
-                        <!-- Tambahan untuk Founded Date -->
                         <div class="mb-3">
                             <label for="formGroupExampleInput11" class="form-label">Tanggal Berdiri</label>
                             <input type="date" name="founded_date" class="form-control" id="formGroupExampleInput11" placeholder="Tanggal Berdiri" value="{{ $company->founded_date }}" readonly>
@@ -329,11 +334,9 @@ body {
                             <input type="number" name="jumlah_karyawan" class="form-control" id="formGroupExampleInput6" placeholder="Jumlah Pekerja" value="{{ $company->jumlah_karyawan }}" readonly>
                         </div>
                         <div class="mb-3">
-                            <label for="formGroupExampleInput7" class="form-label">Tipe Perusahaan</label>
-                            <input type="text" name="tipe" class="form-control" id="formGroupExampleInput7" placeholder="Tipe Perusahaan" value="{{ $company->tipe }}" readonly>
+                            <label for="formGroupExampleInput7" class="form-label">Business Model</label>
+                            <input type="text" name="tipe" class="form-control" id="formGroupExampleInput7" placeholder="Tipe Perusahaan" value="{{ $company->business_model }}" readonly>
                         </div>
-                         
-                        <!-- Tambahan untuk Startup Summary -->
                         <div class="mb-3">
                             <label for="formGroupExampleInput12" class="form-label">Ringkasan Startup</label>
                             <textarea name="startup_summary" class="form-control" id="formGroupExampleInput12" placeholder="Ringkasan Singkat Startup" rows="5" readonly>{{ $company->startup_summary }}</textarea>
@@ -369,7 +372,7 @@ body {
                                         <button class="btn-delete" data-id="{{ $person->id }}" data-company-id="{{ $company->id }}" id="team-member-{{ $person->id }}">
                                             Delete
                                         </button>                                                 
-                                    </div>
+                                    </ div>
                                 </div>
                             @endforeach
                         @else
@@ -510,7 +513,6 @@ body {
             document.getElementById('companyForm').submit();
         });
     </script>
-    <!-- JavaScript for handling AJAX requests -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 
@@ -575,7 +577,7 @@ body {
 
         // Menyimpan anggota tim ketika tombol "Save" diklik
         $('#saveTeamMember').on('click', function() {
-            $('#confirmModal').modal('show');
+            $('#confirmModal'). modal('show');
 
             $('#confirmSaveButton').off('click').on('click', function(){
                 var personId = $('#selectedPersonId').val();
@@ -711,7 +713,7 @@ body {
                     }
                 });
             });
-        });
+       });
     });
     </script>  
 </div>
