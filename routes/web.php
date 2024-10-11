@@ -338,7 +338,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/verifikasidiri', function () {
     return view('imm.verifikasidiri');
-});
+})->name('verifikasi-diri');
 
 Route::get('/blog', function () {
     return view('blog.blog');

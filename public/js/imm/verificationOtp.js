@@ -33,8 +33,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const email = urlParams.get('email');
     const telepon = urlParams.get('telepon');
 
-    console.log(email);
-
     document.getElementById("otp-form").addEventListener("submit", function (e) {
         e.preventDefault();
         const otpCode = Array.from(otpInputs).map(input => input.value).join('');
@@ -57,13 +55,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     const role = data.role;
 
                     if (role === 'USER') {
-                        window.location.href = `/home`;
+                        window.location.href = '/home';
                     } else if (role === 'INVESTOR') {
                         window.location.href = '/investor-home';
                     } else if (role === 'PEOPLE') {
                         window.location.href = '/people-home';
                     } else {
-                        window.location.href = '/home';
+                        window.location.href = '/login'; // Redirect default jika role tidak dikenal
                     }
                 } else {
                     document.getElementById("error-message").innerText = data.message || "Verification failed";

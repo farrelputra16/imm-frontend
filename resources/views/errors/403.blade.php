@@ -118,7 +118,7 @@
         <h1>403</h1>
         <h2>Akses Ditolak</h2>
         <p>Maaf, Anda tidak memiliki izin untuk mengakses halaman ini.</p>
-        <a href="{{ route('investors.index') }}" class="btn">Kembali ke Beranda</a>
+        <a href="/" class="btn">Kembali ke Beranda</a>
     </div>
 </body>
 </html>

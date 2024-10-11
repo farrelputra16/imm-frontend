@@ -78,7 +78,15 @@ document.addEventListener("DOMContentLoaded", function() {
                     "Verifikasi berhasil!";
                 // Implement here the redirection to the new page
                 setTimeout(() => {
-                    window.location.href = "pendaftaranperusahaan";
+                    if (userRole === 'USER') {
+                        window.location.href = "/investor-home";
+                    } else if (userRole === 'INVESTOR') {
+                        window.location.href = "/investor-home";
+                    } else if (userRole === 'PEOPLE') {
+                        window.location.href = "/people-home";
+                    } else {
+                        window.location.href = "/login"; // Redirect default jika role tidak dikenal
+                    }
                 }, 2000);
             }
         });
