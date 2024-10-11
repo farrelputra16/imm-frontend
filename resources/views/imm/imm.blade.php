@@ -63,11 +63,11 @@ a:hover{
             <div class="content-text " style="max-width: 70%;" >
                 <h1 class=" font-weight-bold">Mulai ukur dampak anda dengan percaya Diri</h1>
                 <!-- <p>IMM (Impact Mate) adalah platform yang...</p> -->
-                <a href="verifikasidiri" class=" btn-mulai">Mulai Sekarang</a>
+                <a href="pendaftaranperusahaan" class=" btn-mulai">Mulai Sekarang</a>
             </div>
         </div>
     </div>
- 
+
 
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

@@ -41,7 +41,7 @@
 
     // Mulai countdown dari 5 detik dan redirect ke halaman berikutnya
     document.addEventListener("DOMContentLoaded", function() {
-        startCountdown(5, "pendaftaranperusahaan"); // Ganti "next-page-url" dengan URL halaman berikutnya
+        startCountdown(5, "investor.home"); // Ganti "next-page-url" dengan URL halaman berikutnya
     });
 </script>
 </body>@endsection

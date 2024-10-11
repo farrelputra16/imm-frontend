@@ -60,13 +60,13 @@ class RegisterController extends Controller
 
         // Redirect berdasarkan role
         if ($user->role === 'INVESTOR') {
-            return redirect()->route('investor.home')->with('success', 'Registrasi berhasil!');
+            return redirect()->route('verifikasi-diri')->with('success', 'Registrasi berhasil!');
         } elseif ($user->role === 'PEOPLE') {
-            return redirect()->route('people.home')->with('success', 'Registrasi berhasil!');
+            return redirect()->route('verifikasi-diri')->with('success', 'Registrasi berhasil!');
         }
 
         // Redirect default untuk role lain
-        return redirect()->route('home')->with('success', 'Registrasi berhasil!');
+        return redirect()->route('verifikasi-diri')->with('success', 'Registrasi berhasil!');
     }
 
     // Validasi input form registrasi berdasarkan role

@@ -215,8 +215,8 @@
     <div class="form-row">
         <div class="form-group">
             <label for="org_name">Nama Organisasi</label>
-            <select id="org_name" name="org_name" class="form-control" required>
-                <option value="">Pilih Organisasi</option>
+            <select id="org_name" name="org_name" class="form-control">
+                <option value="">Tidak Ada Organisasi</option> <!-- Nilai kosong untuk tidak memilih -->
                 @foreach($companies as $company)
                     <option value="{{ $company->id }}" {{ old('org_name') == $company->id ? 'selected' : '' }}>
                         {{ $company->nama }}

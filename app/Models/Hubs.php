@@ -17,6 +17,9 @@ class Hubs extends Model
         'top_investor_types',
         'top_funding_types',
         'description',
+        'facilities',   // Tambahkan fasilitas
+        'programs',     // Tambahkan program
+        'alumni',       // Tambahkan alumni
         'status',
         'user_id'
     ];
@@ -29,6 +32,7 @@ class Hubs extends Model
     protected $attributes = [
         'status' => 'pending',
     ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -48,6 +52,7 @@ class Hubs extends Model
     {
         return $this->belongsToMany(Event::class, 'event_hubs', 'hub_id', 'event_id');
     }
+
     // Scope untuk mengambil hubs dengan status 'approved'
     public function scopeApproved($query)
     {

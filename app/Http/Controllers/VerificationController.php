@@ -5,6 +5,7 @@ use Otp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use App\Models\User; // Pastikan Anda mengimpor model User
 
 class VerificationController extends Controller
 {
@@ -15,6 +16,7 @@ class VerificationController extends Controller
         $this->otp = new Otp;
     }
 
+    // Mengirimkan OTP ke email
     public function sendVerificationEmail(Request $request)
     {
         // Validasi input
@@ -51,7 +53,6 @@ class VerificationController extends Controller
                 'email' => $emailData['email'],
                 'success' => true,
                 'message' => 'OTP has been sent to your email.',
-                'token' => $otp->token,
                 'email_sent' => true,
             ]);
         } catch (\Exception $e) {
@@ -61,46 +62,45 @@ class VerificationController extends Controller
                 'email' => $request->email,
                 'success' => false,
                 'message' => 'Failed to send OTP via email: ' . $e->getMessage(),
-                'token' => null,
                 'email_sent' => false,
             ]);
         }
     }
 
-    public function showVerificationForm(Request $request)
-    {
-        $email = session('email');
-        return view('imm3', compact('email'));
-    }
-
+    // Verifikasi kode OTP yang dimasukkan user
     public function verifyCode(Request $request)
     {
         $email = $request->email;
         $otpCode = $request->otp_code;
 
-        // Validate email and OTP code (optional)
-        // You can add validation rules here to ensure email is valid format and OTP code has a certain length, etc.
-
+        // Validasi OTP menggunakan library OTP
         $verified = $this->otp->validate($email, $otpCode);
 
-
         if (!$verified->status) {
-            // OTP is invalid, handle failed verification
-            return response([
+            return response()->json([
                 'success' => false,
                 'message' => 'Kode OTP salah. Silakan coba lagi.',
             ]);
-        } else {
-            // OTP is valid, process successful verification logic
-            return response([
-                'success' => true,
-                'message' => 'OTP verification successful!',
-                'email'=> $email,
-                'otp'=> $otpCode,
+        }
+
+        // OTP valid, cari user berdasarkan email
+        $user = User::where('email', $email)->first();
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User tidak ditemukan.',
             ]);
         }
+
+        // Return role dari user untuk redirect ke halaman yang sesuai
+        return response()->json([
+            'success' => true,
+            'message' => 'OTP verification successful!',
+            'role' => $user->role, // Kirim role ke frontend untuk melakukan redirect
+        ]);
     }
 
+    // Menampilkan halaman form OTP
     public function showOtpVerification(Request $request)
     {
         $email = $request->query('email');
