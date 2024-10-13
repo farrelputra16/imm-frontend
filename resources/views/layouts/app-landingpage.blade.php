@@ -21,17 +21,18 @@
         body {
             display: flex;
             flex-direction: column;
+            min-height: 100vh;
         }
 
         /* Add margin-top to content to create space between navbar and content */
-        .content-wrapper {
+        .container {
             flex: 1;
         }
 
-        /* Ensure footer sticks to the bottom if content is short */
         footer {
             background-color: #f8f9fa;
             padding: 20px;
+            padding-bottom: 0px;
             text-align: center;
         }
     </style>
@@ -41,7 +42,7 @@
     @include('layouts.navbar-landingpage')
 
     <!-- Main content wrapper with Bootstrap grid system and margin-top -->
-    <div class="container mt-4 content-wrapper">
+    <div class="container mt-4 flex-grow-1">
         <div class="row">
             <div class="col-12">
                 @yield('content')
@@ -50,7 +51,11 @@
     </div>
 
     <!-- Footer -->
-    @include('layouts.footer-landingpage')
+    <footer class="mt-4">
+        <div class="container">
+            @include('layouts.footer-landingpage')
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

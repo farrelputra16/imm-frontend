@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Company extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'user_id',
         'nama',
@@ -79,51 +79,83 @@ class Company extends Model
     public static function getFilteredCompanies($request = null)
     {
         // Query utama dengan relasi
-        $query = self::with(['incomes' => function($query) {
+        $query = self::with(['incomes' => function ($query) {
             // Ambil income terbaru berdasarkan tanggal
             $query->orderBy('date', 'desc');
-        }, 'projects' => function($query) {
+        }, 'projects' => function ($query) {
             // Ambil proyek terbaru (MAX id berarti proyek terbaru per company_id)
-            $query->whereIn('id', function($subQuery) {
+            $query->whereIn('id', function ($subQuery) {
                 $subQuery->selectRaw('MAX(id)')
-                        ->from('projects')
-                        ->groupBy('company_id');
+                    ->from('projects')
+                    ->groupBy('company_id');
             });
         }]);
-
-        // Kondisi pencarian berdasarkan lokasi
-        if ($request) {
-            if ($request->has('location') && !empty($request->location)) {
-                $query->where('kabupaten', 'like', '%' . $request->location . '%');
-            }
-
-            // Kondisi pencarian berdasarkan industri
-            if ($request->has('industry') && !empty($request->industry)) {
-                $query->where('tipe', 'like', '%' . $request->industry . '%');
-            }
-
-            // Kondisi pencarian berdasarkan model bisnis (departemen)
-            if ($request->has('departments') && !empty($request->departments)) {
-                $query->where('posisi_pic', 'like', '%' . $request->departments . '%');
-            }
-
-            if (isset($request->funding_type)) {
-                $query->whereHas('incomes', function($query) use ($request) {
-                    $query->where('funding_type', $request->funding_type);
-                });
-            }
-        }
 
         // Eksekusi query setelah semua filter ditambahkan
         $companies = $query->get();
 
         // Iterate setiap perusahaan dan atur income terbaru dan dana terbaru untuk proyek
-        $companies->each(function($company) {
+        $companies->each(function ($company) {
             // Ambil income terbaru untuk perusahaan
             $company->latest_income_date = $company->incomes->first() ? $company->incomes->first()->date : null;
             $company->latest_funding_type = $company->incomes->first() ? $company->incomes->first()->funding_type : null;
+            $company->departments = $company->departments->take(2)->pluck('name');
         });
 
+        return $companies;
+    }
+
+    public static function getFilteredCompaniesPaginated($request = null, $rowsPerPage = 10)
+    {
+        // Query utama dengan relasi
+        $query = self::with(['incomes' => function ($query) {
+            // Ambil income terbaru berdasarkan tanggal
+            $query->orderBy('date', 'desc');
+        }, 'projects' => function ($query) {
+            // Ambil proyek terbaru (MAX id berarti proyek terbaru per company_id)
+            $query->whereIn('id', function ($subQuery) {
+                $subQuery->selectRaw('MAX(id)')
+                    ->from('projects')
+                    ->groupBy('company_id');
+            });
+        }]);
+
+        // Kondisi pencarian berdasarkan lokasi
+        if ($request) {
+            if ($request->input('location') && !empty($request->input('location'))) {
+                $query->where('kabupaten', 'like', '%' . $request->input('location') . '%');
+            }
+
+            // Kondisi pencarian berdasarkan industri
+            if ($request->input('industry') && !empty($request->input('industry'))) {
+                $query->where('tipe', 'like', '%' . $request->input('industry') . '%');
+            }
+
+            // Kondisi pencarian berdasarkan model bisnis (departemen)
+            if ($request->input('departments') && !empty($request->input('departments'))) {
+                // Tambahkan kondisi pencarian berdasarkan nama departemen
+                $query->whereHas('departments', function ($query) use ($request) {
+                    $query->where('name', 'like', '%' . $request->input('departments') . '%');
+                });
+            }
+
+            if ($request->input('funding_type')) {
+                $query->whereHas('incomes', function ($query) use ($request) {
+                    $query->where('funding_type', $request->input('funding_type'));
+                });
+            }
+        }
+
+        // Eksekusi query setelah semua filter ditambahkan
+        $companies = $query->paginate($rowsPerPage);
+
+        foreach ($companies as $company) {
+            // Ambil income terbaru untuk perusahaan
+            $company->latest_income_date = $company->incomes->first() ? $company->incomes->first()->date : null;
+            $company->latest_funding_type = $company->incomes->first() ? $company->incomes->first()->funding_type : null;
+            $company->all_departments = $company->departments->pluck('name');
+            $company->departments = $company->departments->take(2)->pluck('name');
+        }
         return $companies;
     }
 }

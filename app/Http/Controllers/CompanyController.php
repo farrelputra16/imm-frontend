@@ -46,7 +46,7 @@ class CompanyController extends Controller
         // Redirect ke halaman profil perusahaan dengan pesan sukses
         return redirect()->route('profile-company.show', $company->id)->with('success', 'Data perusahaan berhasil diperbarui.');
     }
-    
+
     public function store(Request $request)
     {
         // Validasi data yang dikirimkan melalui formulir
@@ -87,7 +87,7 @@ class CompanyController extends Controller
         ]);
 
         // Attach departments to the company
-        if(isset($validated['tag_ids'])) {
+        if (isset($validated['tag_ids'])) {
             $company->departments()->attach($validated['tag_ids']);
         }
 
@@ -105,10 +105,10 @@ class CompanyController extends Controller
     {
         // Find the company by ID, or fail if not found
         $company = Company::findOrFail($id);
-        
+
         // Load related and incomes for the company
         $company->load('incomes');
-        
+
         // Return view to display the company details and projects
         return view('companies.view', compact('company'));
     }
@@ -149,10 +149,12 @@ class CompanyController extends Controller
     // Pada bagian di bawah ini merupkan kode untuk menampilkan data company list yang sudah pernah dibuat oleh seluruh user ditambah dengan beberapa data dari luar yaitu danas
     public function companyList(Request $request)
     {
-        // Ambil data company dari model Company
-        $companies = Company::getFilteredCompanies($request);
-        // Return view dengan data companies
-        return view('companies.company-list', compact('companies'));
+        $rowsPerPage = $request->input('rows', 1);
+        $companies = Company::getFilteredCompaniesPaginated($request, $rowsPerPage);
+        $companies->appends($request->only(['location', 'industry', 'departments', 'funding_type']));
+
+        // Pass the $request to the view
+        return view('companies.company-list', compact('companies', 'request'));
     }
 
     /**
@@ -181,10 +183,9 @@ class CompanyController extends Controller
     public function create_company()
     {
         // Mengambil data departments untuk digunakan pada view
-        $departments = Department::all(); 
+        $departments = Department::all();
 
         // Mengirim data departments ke view 'imm.pendaftaranperusahaan'
         return view('imm.pendaftaranperusahaan', compact('departments'));
-    }    
-
+    }
 }

@@ -46,21 +46,64 @@
     }
 
     .modal-content {
-        width: 699px;
-        height: 253px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        width: 100%;
+        max-width: 700px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     }
 
-    .modal-body {
-        gap: 20px;
-        margin: 0 51px;
-        height: 100%;
-        display: flex;
-        align-items: start;
-        justify-content: center;
-        flex-direction: column;
+    .modal-header {
+        background-color: #6f42c1;
+        color: white;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    .modal-title {
+        margin: 0 auto;
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    .form-control {
+        border: 1px solid #6f42c1;
+        border-radius: 5px;
+    }
+
+    .file-upload {
+        border: 1px dashed #6f42c1;
+        border-radius: 5px;
+        padding: 20px;
+        text-align: center;
+        color: #6c757d;
+    }
+
+    .file-upload i {
+        font-size: 24px;
+        color: #6f42c1;
+    }
+
+    .file-upload button {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+
+    .btn-secondary {
+        background-color: transparent;
+        color: #6f42c1;
+        border: 1px solid #6f42c1;
+    }
+
+    .btn-primary {
+        background-color: #6f42c1;
+        color: white;
+        border: none;
     }
 
     .btnn {
@@ -171,7 +214,7 @@
 
     .people-results {
         position: absolute;
-        width : 100%;
+        width: 100%;
         background-color: white;
         border: 1px solid #ddd;
         border-radius: 5px;
@@ -181,12 +224,26 @@
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
 
+    .person-result {
+        padding: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .person-result:hover {
+        background-color: #f0f0f0;
+    }
+
+    .modal-footer {
+        justify-content: space-between;
+    }
+
     .person {
         display: flex;
         align-items: center;
         padding: 10px;
         cursor: pointer;
-        transition: background-color  0.3s;
+        transition: background-color 0.3s;
     }
 
     .person:hover {
@@ -244,7 +301,7 @@
         margin-bottom: 1rem;
     }
 
-    .btn-add-project{
+    .btn-add-project {
         background-color: #5940cb;
         color: white;
         border: none;
@@ -253,7 +310,7 @@
         margin-top: 30px;
     }
 
-    .project-price{
+    .project-price {
         margin: 20px;
         border: none;
         background-color: #5940cb;
@@ -274,6 +331,87 @@
 
     .btn-edit-project:hover, .btn-delete-project:hover {
         background-color: #5e41de;
+    }
+
+    /* Tag Button Section */
+    .search-container {
+        padding: 10px 20px;
+        border-bottom: 1px solid transparent;
+        z-index: 1;
+    }
+
+    .search-bar {
+        background-color: #6256ca;
+        border: none;
+        color: #ffffff;
+        padding: 15px;
+        border-radius: 10px;
+        width: 100%;
+        padding-right: 50px;
+        position: relative;
+    }
+
+    .search-bar::placeholder {
+        color: #ffffff;
+    }
+
+    .search-icon {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #ffffff;
+        pointer-events: none;
+    }
+
+    .modal-body-scrollable {
+        max-height: 350px;
+        overflow-y: auto;
+        padding: 20px;
+    }
+
+    .tag-cloud {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .tag-button {
+        display: inline-block;
+        padding: 8px 15px;
+        margin: 5px;
+        font-size: 14px;
+        border: 1px solid #6256ca;
+        border-radius: 20px;
+        background-color: #f8f9fa;
+        color: #6256ca;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .tag-button:hover {
+        background-color: #6256ca;
+        color: #ffffff;
+    }
+
+    .tag-button.selected {
+        background-color: #6256ca;
+        color: #ffffff;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* Styles for selected tags */
+    .selected-tag {
+        display: inline-block;
+        background-color: #6256ca; /* Use the theme color */
+        color: #ffffff;
+        padding: 5px 10px;
+        border-radius: 15px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        font-size: 14px;
     }
 </style>
 @endsection
@@ -330,12 +468,92 @@
                             <input type="text" name="kabupaten" class="form-control" id="formGroupExampleInput10" placeholder="Kabupaten" value="{{ $company->kabupaten }}" readonly>
                         </div>
                         <div class="mb-3">
-                            <label for="formGroupExampleInput6" class="form-label">Jumlah Pekerja</label>
+                            <label for="formGroupExampleInput6 " class="form-label">Jumlah Pekerja</label>
                             <input type="number" name="jumlah_karyawan" class="form-control" id="formGroupExampleInput6" placeholder="Jumlah Pekerja" value="{{ $company->jumlah_karyawan }}" readonly>
                         </div>
-                        <div class="mb-3">
-                            <label for="formGroupExampleInput7" class="form-label">Business Model</label>
-                            <input type="text" name="tipe" class="form-control" id="formGroupExampleInput7" placeholder="Tipe Perusahaan" value="{{ $company->business_model }}" readonly>
+                        {{-- Part for the funding - stage --}}
+                        <div class="form-group">
+                            <label for="funding_stage">Funding Stage Perusahaan</label>
+                            <select name="funding_stage" id="funding_stage" class="form-control" required readonly>
+                                <option value="" disabled>Pilih Funding Stage Perusahaan</option>
+                                <option value="Pre-Seed" @if($company->funding_stage == 'Pre-Seed') selected @endif>Pre-Seed</option>
+                                <option value="Seed" @if($company->funding_stage == 'Seed') selected @endif>Seed</option>
+                                <option value="Series A" @if($company->funding_stage == 'Series A') selected @endif>Series A</option>
+                                <option value="Series B" @if($company->funding_stage == 'Series B') selected @endif>Series B</option>
+                                <option value="Series C" @if($company->funding_stage == 'Series C') selected @endif>Series C</option>
+                                <option value="Series D" @if($company->funding_stage == 'Series D') selected @endif>Series D</option>
+                                <option value="Series E" @if($company->funding_stage == 'Series E') selected @endif>Series E</option>
+                                <option value="Debt" @if($company->funding_stage == 'Debt') selected @endif>Debt</option>
+                                <option value="Equity" @if($company->funding_stage == 'Equity') selected @endif>Equity</option>
+                                <option value="Convertible Debt" @if($company->funding_stage == 'Convertible Debt') selected @endif>Convertible Debt</option>
+                                <option value="Grants" @if($company->funding_stage == 'Grants') selected @endif>Grants</option>
+                                <option value="Revenue-Based Financing" @if($company->funding_stage == 'Revenue-Based Financing') selected @endif>Revenue-Based Financing</option>
+                                <option value="Private Equity" @if($company->funding_stage == 'Private Equity') selected @endif>Private Equity</option>
+                                <option value="Initial Public Offering (IPO)" @if($company->funding_stage == 'Initial Public Offering (IPO)') selected @endif>Initial Public Offering (IPO)</option>
+                            </select>
+                        </div>
+                        <!-- Dropdown for Business Model -->
+                        <div class="form-group">
+                            <label for="business_model">Business Model Perusahaan</label>
+                            <select class="form-control" id="business_model" name="business_model" required readonly>
+                                <option value="" disabled selected>Pilih business_model Perusahaan</option>
+                                <option value="B2B" @if($company->business_model == 'B2B') selected @endif>B2B</option>
+                                <option value="B2C" @if($company->business_model == 'B2C') selected @endif>B2C</option>
+                                <option value="B2B2C" @if($company->business_model == 'B2B2C') selected @endif>B2B2C</option>
+                                <option value="C2C" @if($company->business_model == 'C2C') selected @endif>C2C</option>
+                                <option value="D2C" @if($company->business_model == 'D2C') selected @endif>D2C</option>
+                                <option value="P2P" @if($company->business_model == 'P2P') selected @endif>P2P</option>
+                            </select>
+                        </div>
+                        <!-- Tag Cloud for Departments -->
+                        <div class="form-group">
+                            <label for="impactTags">Tag untuk department apa saja yang ada di perusahaan anda</label>
+                            <button type="button" class="tag-button" id="editTagsButton" data-toggle="modal" data-target="#tagModal" style="display: none;">
+                                Pilih Department Perusahaan Anda
+                            </button>
+                            <!-- Container for displaying selected tags -->
+                            <div id="selectedTags" class="mt-2">
+                                @foreach ($selectedDepartments as $department)
+                                    <span class="selected-tag">{{ $department->name }}</span>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- Modal for Tag Selection -->
+                        <div class="modal fade" id="tagModal" tabindex="-1" aria-labelledby="tagModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="tagModalLabel">Pilih Departemen Perusahaan Anda</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="search-container sticky-top bg-white">
+                                            <div class="form-group position-relative mb-0">
+                                                <input type="text" class="form-control search-bar" id="searchInput" placeholder="Cari departemen" aria-label="Cari departemen">
+                                                <i class="fas fa-search search-icon"></i>
+                                            </div>
+                                        </div>
+                                        <div class="tag-cloud-container modal-body-scrollable">
+                                            <div class="tag-cloud" id="tagCloud">
+                                                @foreach ($departments as $tag)
+                                                    <button class="tag-button
+                                                        @if(in_array($tag->id, $selectedDepartments->pluck('id')->toArray())) selected @endif"
+                                                        data-tag-id="{{ $tag->id }}" type="button">
+                                                        {{ $tag->name }}
+                                                    </button>
+                                                    <input type="checkbox" value="{{ $tag->id }}"
+                                                        id="tag{{ $tag->id }}" name="department_ids[]"
+                                                        @if(in_array($tag->id, $selectedDepartments->pluck('id')->toArray())) checked @endif
+                                                        style="display: none;">
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="formGroupExampleInput12" class="form-label">Ringkasan Startup</label>
@@ -344,7 +562,7 @@
                     </div>
                 </div>
             </section>
-            
+
             <section>
                 <div class="row my-3 d-flex justify-content-center align-items-center">
                     <button type="button" id="saveButton" class="btn-masukkk" style="display: none;" data-toggle="modal" data-target="#confirmModal">
@@ -371,7 +589,7 @@
                                         <button class="btn-edit" data-id="{{ $person->id }}" data-name="{{ $person->name }}" data-role="{{ $person->pivot->position }}" data-photo="{{ isset($person->image) ? asset('images/' . $person->image) : asset('images/1720765715.web') }}" data-toggle="modal" data-target="#editTeamModal">Edit</button>
                                         <button class="btn-delete" data-id="{{ $person->id }}" data-company-id="{{ $company->id }}" id="team-member-{{ $person->id }}">
                                             Delete
-                                        </button>                                                 
+                                        </button>
                                     </ div>
                                 </div>
                             @endforeach
@@ -385,7 +603,7 @@
                 <!-- Add Team Member Modal -->
                 <div class="modal fade" id="addTeamModal" tabindex="-1" aria-labelledby="addTeamModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content" style="height: 500px;">
+                        <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="addTeamModalLabel">Add Team Member</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -397,9 +615,7 @@
                                     <div class="form-group">
                                         <label for="searchPeople">Search People</label>
                                         <input type="text" class="form-control" id="searchPeople" placeholder="Name or email">
-                                        <!-- Menampilkan hasil pencarian -->
                                         <div id="peopleResults" class="people-results"></div>
-                                        <!-- Hidden input untuk menyimpan ID orang -->
                                         <input type="hidden" id="selectedPersonId">
                                     </div>
                                     <div class="form-group">
@@ -414,7 +630,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" id="saveTeamMember">Save</button>
+                                <button type="button" class="btn btn-primary" id="addTeamButton">Add Team Member</button>
                             </div>
                         </div>
                     </div>
@@ -423,31 +639,81 @@
                 <!-- Edit Team Member Modal -->
                 <div class="modal fade" id="editTeamModal" tabindex="-1" aria-labelledby="editTeamModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
+                        <div class="modal-content" style="height: 500px;">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="editTeamModalLabel">Edit Team Member Position</h5>
+                                <h5 class="modal-title" id="editTeamModalLabel">Edit Team Member</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
                                 <form id="editTeamForm">
-                                    <input type="hidden" id="editTeamId"> <!-- Hidden input untuk ID anggota tim -->
+                                    <div class="form-group">
+                                        <label for="editName">Name</label>
+                                        <input type="text" class="form-control" id="editName" placeholder="Name">
+                                    </div>
                                     <div class="form-group">
                                         <label for="editPosition">Position</label>
                                         <input type="text" class="form-control" id="editPosition" placeholder="Position">
                                     </div>
+                                    <div class="form-group">
+                                        <label for="editPhoto">Photo</label>
+                                        <input type="file" class="form-control" id="editPhoto">
+                                    </div>
+                                    <!-- Hidden input untuk menyimpan ID orang -->
+                                    <input type="hidden" id="editPersonId">
                                 </form>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" id="updateTeamMember">Update</button>
+                                <button type="button" class="btn btn-primary" id="editTeamButton">Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Confirm Delete Modal -->
+                <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Delete</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete this team member?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-danger" id="deleteTeamButton">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Confirm Save Modal -->
+                <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmModalLabel">Confirm Save</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to save changes to your company profile?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" id="saveChangesButton">Save Changes</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-
         </form>
     </div>
 
@@ -501,18 +767,27 @@
             </div>
         </div>
     </div>
-    
+
     <script>
         document.getElementById('editButton').addEventListener('click', function() {
             document.querySelectorAll('input').forEach(input => input.removeAttribute('readonly'));
+            document.querySelectorAll('select').forEach(select => select.removeAttribute('readonly'));
+            document.querySelectorAll('textarea').forEach(textarea => textarea.removeAttribute('readonly'));
             document.getElementById('saveButton').style.display = 'block';
+            document.getElementById('editTagsButton').style.display = 'inline-block'; // Show the tag button
             document.getElementById('editButton').style.display = 'none';
         });
 
+        // Menangani tombol simpan perubahan
+        document.getElementById('saveChangesButton').addEventListener('click', function() {
+            document.getElementById('companyForm').submit();
+        });
+        // Menangani tombol konfirmasi simpan perubahan
         document.getElementById('confirmSaveButton').addEventListener('click', function() {
             document.getElementById('companyForm').submit();
         });
     </script>
+
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 
@@ -521,200 +796,144 @@
       $(document).ready(function() {
         // Menangani input pencarian orang
         $('#searchPeople').on('input', function() {
-                var query = $(this).val();
-                if (query.length > 2) {
-                    $.ajax({
-                        url: '/search-people',
-                        method: 'GET',
-                        data: { query: query },
-                        success: function(response) {
-                            var peopleList = '';
-                            console.log(response); // Lihat respons dari backend
-                            response.forEach(function(person) {
-                                peopleList += `
-                                    <div class="person" data-id="${person.id}">
-                                        <img src="${person.photo_url || 'images/1720765715.webp'}" alt="${person.name}" class="profile-pic">
-                                        <div class="person-info">
-                                            <h5>${person.name}</h5>
-                                            <p>${person.gmail}</p>
-                                        </div>
-                                    </div>
-                                `;
-                            });
-                            $('#peopleResults').html(peopleList).show();
-                            console.log($('#peopleResults').html()); // Lihat apakah konten sudah terisi
-
-                        },
-                        error: function(xhr) {
-                            console.error('AJAX error: ', xhr);
-                        }
-                    });
-                } else {
-                    $('#peopleResults').html('').hide();
-                }
-         });
-
-        // Menambahkan event click pada setiap item orang
-        $('#peopleResults').on('click', '.person', function() {
-            var personId = $(this).data('id');
-            $('#selectedPersonId').val(personId);
+            var query = $(this).val();
+            if (query.length > 2) {
+                $.ajax({
+                    url: '/search-people',
+                    method: 'GET',
+                    data: { query: query },
+                    success: function(data) {
+                        $('#peopleResults').html('');
+                        $.each(data, function(index, person) {
+                            $('#peopleResults').append('<div class="person-result" data-id="' + person.id + '">' + person.name + ' (' + person.gmail + ')</div>');
+                        });
+                    }
+                });
+            } else {
+                $('#peopleResults').html('');
+            }
         });
 
-        //Menyimpan ID orang yang dipilih 
-        $('#peopleResults').on('click', '.person', function() {
-            var personId = $(this).data('id');
-            $('#selectedPersonId').val(personId);
-        });
+             // Handle click on search results
+            $(document).on('click', '.person-result', function() {
+                var personId = $(this).data('id');
+                $('#selectedPersonId').val(personId);
+                $('#searchPeople').val($(this).text());
+                $('#peopleResults').html('');
+            });
 
-        // Menyimpan ID orang yang dipilih
-        $('#peopleResults').on('click', '.person', function() {
-            var selectedId = $(this).data('id');
-            console.log(selectedId);
-            $('#selectedPersonId').val(selectedId); // Menyimpan ID orang terpilih
-            $('#searchPeople').val($(this).find('h5').text()); // Mengganti input dengan nama orang yang dipilih (hanya nama)
-            $('#peopleResults').html(''); // Menghapus hasil pencarian
-        });
-
-        // Menyimpan anggota tim ketika tombol "Save" diklik
-        $('#saveTeamMember').on('click', function() {
-            $('#confirmModal'). modal('show');
-
-            $('#confirmSaveButton').off('click').on('click', function(){
+            // Handle add team member button click
+            $('#addTeamButton').on('click', function() {
                 var personId = $('#selectedPersonId').val();
                 var companyId = $('#companyId').val();
                 var position = $('#position').val();
-    
-                if (personId && position) {
-                    // Kirim data ke backend
-                    $.ajax({
-                        url: '/team/store', // Endpoint backend untuk menambah anggota tim
-                        method: 'POST',
-                        data: {
-                            person_id: personId,
-                            company_id: companyId,
-                            position: position,
-                            _token: "{{ csrf_token() }}" // tambahkan CSRF token untuk keamanan
-                        },
-                        success: function(response) {
-                            alert('Team member added successfully!');
-                            // Tutup modal setelah berhasil disimpan
-                            $('#addTeamModal').modal('hide');
-                            location.reload(); // Reload halaman untuk memperbarui daftar tim
-                        },
-                        error: function(xhr) {
-                            // Menangani kesalahan server (500) dan kesalahan validasi (422)
-                            if (xhr.status === 422) {
-                                // Kesalahan validasi
-                                var errors = xhr.responseJSON.errors;
-                                var errorMessages = [];
-                                for (var key in errors) {
-                                    if (errors.hasOwnProperty(key)) {
-                                        errorMessages.push(errors[key].join(', ')); // Menggabungkan pesan kesalahan
-                                    }
-                                }
-                                alert('Validation Error: \n' + errorMessages.join('\n'));
-                            } else if (xhr.status === 500) {
-                                // Kesalahan server
-                                alert('Server Error: Please try again later.');
-                            } else {
-                                // Kesalahan lain
-                                alert('Error adding team member: ' + xhr.responseText);
-                            }
-                        }
-                    });
-                } else {
-                    alert('Please select a person and enter a position.');
-                }
-            })
-        });
-
-        // Menangani klik pada tombol edit
-        $('.btn-edit').on('click', function(event) {
-            event.preventDefault(); // Mencegah refresh
-
-            var teamId = $(this).data('id'); // Ambil ID anggota tim dari data attribute
-            $('#editTeamId').val(teamId); // Set ID ke input hidden
-
-            // Ambil data anggota tim
-            $.ajax({
-                url: '/team/' + teamId + '/edit',
-                method: 'GET',
-                success: function(data) {
-                    $('#editPosition').val(data.position); // Set nilai posisi ke input
-                    $('#editTeamModal').modal('show'); // Tampilkan modal
-                },
-                error: function(xhr) {
-                    alert('Error fetching team member data.');
-                }
-            });
-        });
-
-        // Update team member position
-        $('#updateTeamMember').on('click', function(event) {
-            event.preventDefault(); // Mencegah default behavior form
-            $('#confirmModal').modal('show'); // Tampilkan modal konfirmasi
-
-            $('#confirmSaveButton').off('click').on('click', function() {
-                var teamId = $('#editTeamId').val();
-                var position = $('#editPosition').val();
-
                 $.ajax({
-                    url: '/team/' + teamId,
-                    method: 'PUT',
-                    data: {
-                        position: position,
-                        _token: "{{ csrf_token() }}"
-                    },
-                    success: function(response) {
-                        alert('Team member position updated successfully!');
-                        $('#editTeamModal').modal('hide');
-                        location.reload();
-                    },
-                    error: function(xhr) {
-                        if (xhr.status === 422) {
-                            var errors = xhr.responseJSON.errors;
-                            var errorMessages = [];
-                            for (var key in errors) {
-                                if (errors.hasOwnProperty(key)) {
-                                    errorMessages.push(errors[key].join(', '));
-                                }
-                            }
-                            alert('Validation Error: \n' + errorMessages.join('\n'));
-                        } else {
-                            alert('Error updating team member.');
-                        }
-                    }
-                });
-            });
-        });
-
-
-        // Menangani klik pada tombol delete
-        $('.btn-delete').on('click', function(event) {
-            event.preventDefault(); // Mencegah refresh
-            var teamId = $(this).data('id');
-            var companyId = $(this).data('company-id');
-
-            $('#confirmModal').modal('show'); // Tampilkan modal konfirmasi
-
-            $('#confirmSaveButton').off('click').on('click', function() {
-                $.ajax({
-                    url: '/team/' + teamId + '/' + companyId + '/delete',
-                    method: 'DELETE',
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
+                    url: '/add-team-member',
+                    method: 'POST',
+                    data: { person_id: personId, company_id: companyId, position: position },
                     success: function(data) {
-                        alert(data.message);
-                        $('#team-member-' + teamId).remove();
-                    },
-                    error: function(xhr) {
-                        alert('Error deleting team member: ' + xhr.responseJSON.error || 'Unknown error');
+                        location.reload();
                     }
                 });
             });
-       });
-    });
-    </script>  
+
+            // Menangani tombol edit team member
+            $(document).on('click', '.btn-edit', function() {
+                var personId = $(this).data('id');
+                var name = $(this).data('name');
+                var role = $(this).data('role');
+                var photo = $(this).data('photo');
+                $('#editName').val(name);
+                $('#editPosition').val(role);
+                $('#editPhoto').val(photo);
+                $('#editPersonId').val(personId);
+            });
+
+            // Menangani tombol simpan perubahan team member
+            $('#editTeamButton').on('click', function() {
+                var personId = $('#editPersonId').val();
+                var name = $('#editName').val();
+                var role = $('#editPosition').val();
+                var photo = $('#editPhoto').val();
+                $.ajax({
+                    url: '/edit-team-member',
+                    method: 'POST',
+                    data: { person_id: personId, name: name, position: role, photo: photo },
+                    success: function(data) {
+                        location.reload();
+                    }
+                });
+            });
+
+            // Menangani tombol hapus team member
+            $(document).on('click', '.btn-delete', function() {
+                var personId = $(this).data('id');
+                var companyId = $(this).data('company-id');
+                $.ajax({
+                    url: '/delete-team-member',
+                    method: 'POST',
+                    data: { person_id: personId, company_id: companyId },
+                    success: function(data) {
+                        location.reload();
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Filter tags based on search input
+            $('#searchInput').on('input', function() {
+                var searchTerm = $(this).val().toLowerCase();
+                $('#tagCloud .tag-button').each(function() {
+                    var tagName = $(this).text().toLowerCase();
+                    if (tagName.includes(searchTerm)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+
+            // Toggle tag selection
+            $('.tag-button').click(function() {
+                var $button = $(this);
+                var tagId = $button.data('tag-id');
+                var $checkbox = $('#tag' + tagId);
+
+                // Toggle the selected state
+                $button.toggleClass('selected');
+
+                // Sync the checkbox with the button state
+                $checkbox.prop('checked', $button.hasClass('selected'));
+
+                // Update the selected tags display
+                updateSelectedTags();
+            });
+
+            // Initialize button states based on checkboxes
+            $('input[type="checkbox"]').each(function() {
+                var $checkbox = $(this);
+                var tagId = $checkbox.val();
+                var $button = $('button[data-tag-id="' + tagId + '"]');
+
+                if ($checkbox.prop('checked')) {
+                    $button.addClass('selected');
+                }
+            });
+
+            // Function to update the display of selected tags
+            function updateSelectedTags() {
+                var selectedTags = [];
+                $('#tagCloud .tag-button.selected').each(function() {
+                    selectedTags.push($(this).text());
+                });
+                $('#selectedTags').html(selectedTags.map(tag => `<span class="selected-tag">${tag}</span>`).join(''));
+            }
+
+            // Initial update of selected tags
+            updateSelectedTags();
+        });
+    </script>
 </div>
 @endsection

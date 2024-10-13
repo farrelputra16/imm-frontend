@@ -26,8 +26,8 @@ class WishlistController extends Controller
         foreach ($companyIds as $companyId) {
             // Cek apakah wishlist sudah ada untuk company dan user ini
             $existingWishlist = Wishlist::where('user_id', $user->id)
-                                        ->where('company_id', $companyId)
-                                        ->first();
+                ->where('company_id', $companyId)
+                ->first();
 
             // Jika belum ada, tambahkan ke wishlist
             if (!$existingWishlist) {
@@ -41,7 +41,8 @@ class WishlistController extends Controller
         return redirect()->back()->with('success', 'Companies added to wishlist.');
     }
 
-    public function remove(Request $request){
+    public function remove(Request $request)
+    {
         // Cek apakah pengguna sudah login
         if (!Auth::check()) {
             return Redirect::route('login')->with('error', 'You need to login to save to wishlist.');
@@ -57,8 +58,8 @@ class WishlistController extends Controller
         foreach ($companyIds as $companyId) {
             // Cek apakah wishlist sudah ada untuk company dan user ini
             $existingWishlist = Wishlist::where('user_id', $user->id)
-                                        ->where('company_id', $companyId)
-                                        ->first();
+                ->where('company_id', $companyId)
+                ->first();
 
             // Jika ada, hapus dari wishlist
             if ($existingWishlist) {

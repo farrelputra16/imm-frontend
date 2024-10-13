@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <style>
     body {
-        font-family: "Roboto", sans-serif;
+        font-family: 'Poppins', sans-serif;
         background-color: #f8f9fa;
     }
 
@@ -145,7 +145,7 @@
         font-size: 20px;
         font-weight: 500;
         border-radius: 9px;
-       
+
     }
 
     .pagination {
@@ -293,7 +293,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($companiesWithWishlist as $company)          
+                        @foreach ($companiesWithWishlist as $company)
                         <tr data-href="{{ route('companies.show' , $company->id) }}">
                             <th scope="row">
                                 <input type="checkbox" class="select_company" data-id="{{ $company->id }}">
@@ -326,9 +326,9 @@
                             <td>{{ $company->posisi_pic }}</td>
                         </tr>
                         @endforeach
-                    </tbody>                        
-                </table>       
-                
+                    </tbody>
+                </table>
+
                 <!-- Footer sebagai bagian dari tabel -->
                 <div class="d-flex justify-content-between align-items-center mb-3 align-self-center" style="padding: 20px; background-color: #ffffff;  border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; margin-top:0px; height:100px;">
                     <form method="GET" action="{{ route('profile') }}" class="mb-0">
@@ -354,7 +354,7 @@
                         @method('DELETE') <!-- This line is crucial to simulate the DELETE method -->
                         <input type="hidden" name="company_ids" id="company_ids" value="">
                         <button type="submit" class="btn btn-primary-red wishlist-button" style="display: none;">Remove from Wishlist</button>
-                    </form>                    
+                    </form>
                 </div>
             </div>
         </div>
@@ -394,7 +394,7 @@
     document.getElementById('select_all').addEventListener('change', function() {
         let checkboxes = document.querySelectorAll('.select_company');
         let selectAll = this;
-        
+
         // Loop through all checkboxes and set them to the same state as "select all"
         checkboxes.forEach(checkbox => {
             checkbox.checked = selectAll.checked;
@@ -431,7 +431,7 @@
             wishlistButton.style.display = 'none';
         }
     }
-    
+
     let checkboxes = document.querySelectorAll('.select_company');
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function() {
@@ -450,4 +450,3 @@
 
 </script>
 @endsection
-

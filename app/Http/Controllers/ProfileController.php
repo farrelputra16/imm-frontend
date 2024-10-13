@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Company;
+use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -59,13 +60,14 @@ class ProfileController extends Controller
         $user = Auth::user();
         $company = $user->companies;
         $team = $company->teamMembers;
-        $departments = $company->departments;
+        $departments = Department::all(); // Pastikan ini mengambil semua departemen
+        $selectedDepartments = $company->departments; // Ambil departemen yang sudah dipilih oleh perusahaan
 
         if (!$company) {
             return redirect('/imm');
         }
-    
-        return view('imm.profile-company', compact('company', 'user', 'team', 'departments'));
+
+        return view('imm.profile-company', compact('company', 'user', 'team', 'departments', 'selectedDepartments'));
     }
 
     public function edit()
@@ -80,8 +82,8 @@ class ProfileController extends Controller
             'nama_depan' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . Auth::user()->id,
             'img' => 'image|mimes:jpeg,png,jpg,webp|max:10000' // Validasi untuk gambar
-        ]);        
-    
+        ]);
+
         $user = User::findOrFail(Auth::user()->id);
         $user->nama_depan = $request->input('nama_depan');
         $user->email = $request->input('email');
@@ -90,7 +92,7 @@ class ProfileController extends Controller
         $user->provinsi = $request->input('provinsi');
         $user->alamat = $request->input('alamat');
         $user->telepon = $request->input('telepon');
-    
+
         // Proses gambar baru jika diunggah
         if ($request->hasFile('img')) {
             $imageName = time() . '.' . $request->img->extension();
@@ -98,12 +100,12 @@ class ProfileController extends Controller
             $user->img = $imageName;
         }
 
-    
+
         $user->save();
-    
+
         return redirect()->route('profile')->with('success', 'Profil berhasil diperbarui.');
     }
-    
+
 
     public function updateCompanyProfile(Request $request, $id)
     {
@@ -111,7 +113,6 @@ class ProfileController extends Controller
             'nama' => 'required|string|max:255',
             'profile' => 'required|string|max:255',
             'founded_date' => 'required|date',
-            'tipe' => 'required|string|max:255',
             'nama_pic' => 'required|string|max:255',
             'posisi_pic' => 'required|string|max:255',
             'telepon' => 'required|string|max:20',
@@ -119,15 +120,18 @@ class ProfileController extends Controller
             'provinsi' => 'required|string|max:255',
             'kabupaten' => 'required|string|max:255',
             'jumlah_karyawan' => 'required|integer',
+            'funding_stage' => 'required|string|max:255',
+            'business_model' => 'required|string|max:255',
+            'department_ids' => 'array',
             'startup_summary' => 'required|string',
         ]);
 
         $company = Company::findOrFail($id);
+
         $company->update([
             'nama' => $request->input('nama'),
             'profile' => $request->input('profile'),
             'founded_date' => $request->input('founded_date'),
-            'tipe' => $request->input('tipe'),
             'nama_pic' => $request->input('nama_pic'),
             'posisi_pic' => $request->input('posisi_pic'),
             'telepon' => $request->input('telepon'),
@@ -135,10 +139,15 @@ class ProfileController extends Controller
             'provinsi' => $request->input('provinsi'),
             'kabupaten' => $request->input('kabupaten'),
             'jumlah_karyawan' => $request->input('jumlah_karyawan'),
+            'funding_stage' => $request->input('funding_stage'),
+            'business_model' => $request->input('business_model'),
             'startup_summary' => $request->input('startup_summary'),
         ]);
 
+        if ($request->has('department_ids')) {
+            $company->departments()->sync($request->input('department_ids'));
+        }
+
         return redirect()->route('profile-company')->with('success', 'Profil perusahaan berhasil diperbarui.');
     }
-
 }

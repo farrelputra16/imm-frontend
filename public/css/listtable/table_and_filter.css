@@ -1,0 +1,305 @@
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #6f42c1;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    margin: 50px auto;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.search-container input {
+    border: none;
+    outline: none;
+    padding: 10px 15px;
+    flex-grow: 1;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.search-container button {
+    background-color: #6257CB;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.search-container button:hover {
+    background-color: #5146a6;
+}
+.search-container i {
+    margin-left: 10px;
+    color: #aaa;
+}
+.search-container input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.header{
+    margin-top: 20px;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    text-align: start;
+    font-weight: 400px;
+}
+
+.header a {
+    color: #6c757d;
+    text-decoration: none;
+    margin-left: 0px;
+}
+
+.header a:hover {
+    text-decoration: underline;
+}
+
+.filter-section {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.filter-section h5 {
+    font-weight: bold;
+}
+
+.filter-section .form-check-label {
+    margin-left: 10px;
+}
+
+.filter-section .btn-link {
+    color: #6c757d;
+    text-decoration: none;
+}
+
+.filter-section .btn-link:hover {
+    text-decoration: underline;
+}
+
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    margin-top: 10px !important;
+    margin-left: 10px;
+}
+
+th, td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Add background color to the table header */
+.table-responsive thead th {
+    background-color: #6f42c1 !important; /* Forcing the background color */
+    color: white !important; /* Forcing the text color */
+}
+
+.table-responsive th{
+    border:none;
+}
+
+td {
+    vertical-align: middle; /* Ensures cell content is vertically centered */
+}
+
+td div {
+    display: flex;
+    align-items: center; /* Vertically center for image and text */
+}
+
+td img {
+    margin-right: 10px; /* Space between image and company name */
+}
+
+td span {
+    white-space: nowrap; /* Prevents company name from wrapping */
+    overflow: hidden; /* Ensures no overflow */
+    text-overflow: ellipsis; /* Adds '...' for truncated text */
+}
+
+/* Custom width for columns */
+th:nth-child(1),
+td:nth-child(1) {
+    width: 5%; /* Checkbox column */
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+    width: 20%; /* Organization Name */
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+    width: 15%; /* Founded Date */
+}
+
+th:nth-child(4),
+td:nth-child(4) {
+    width: 15%; /* Last Funding Date */
+}
+
+th:nth-child(5),
+td:nth-child(5) {
+    width: 15%; /* Last Funding Type */
+}
+
+th:nth-child(6),
+td:nth-child(6) {
+    width: 15%; /* Employee */
+}
+
+th:nth-child(7),
+td:nth-child(7) {
+    width: 10%; /* Industries */
+}
+
+th:nth-child(8),
+td:nth-child(8) {
+    width: 15%; /* Description */
+}
+
+th:nth-child(9),
+td:nth-child(9) {
+    text-align: start;
+    width: 10%; /* Job Departments */
+}
+
+/* Align text to the start (left-aligned) for specific columns */
+td:nth-child(7), /* Industries */
+td:nth-child(8), /* Description */
+td:nth-child(9)  /* Job Departments */ {
+    text-align: start;
+    vertical-align: middle;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.pagination .page-item {
+    position: relative;
+}
+
+.pagination .page-link {
+    color: #000000; /* Warna teks pagination */
+    padding: 10px 15px; /* Padding biasa (tinggi sedikit ditambah) */
+    border-top: 1px solid black; /* Border atas hitam */
+    border-bottom: 1px solid black; /* Border bawah hitam */
+    border-left: none; /* Hilangkan border kiri */
+    border-right: none; /* Hilangkan border kanan */
+    height: auto; /* Mengatur tinggi secara otomatis */
+    line-height: 1; /* Menjaga elemen tidak terlalu tinggi */
+    border-radius: 0; /* Border tanpa radius (kotak) */
+    background-color: transparent; /* Latar belakang default */
+}
+
+.pagination .page-item:not(:last-child)::after {
+    content: '|'; /* Tambahkan simbol garis pemisah */
+    position: absolute; /* Posisi absolut */
+    right: 2px; /* Tempatkan di sisi kanan elemen (sesuaikan nilai ini) */
+    top: 52%; /* Jarak dari atas (posisi vertikal disesuaikan) */
+    transform: translateY(-50%); /* Pusatkan secara vertikal */
+    color: #000000; /* Warna garis pemisah */
+    height: 60%; /* Sesuaikan tinggi agar tidak menyentuh border atas dan bawah */
+    width: 0px; /* Lebar garis vertikal */
+    background-color: #000000; /* Warna garis pemisah */
+    z-index: 2; /* Pastikan garis berada di atas border elemen */
+}
+
+.pagination .page-item.active .page-link {
+    color: #ffffff; /* Warna teks untuk elemen aktif */
+    background-color: transparent; /* Hilangkan background biru */
+    border-top: 1px solid black; /* Border atas hitam */
+    border-bottom: 1px solid black; /* Border bawah hitam */
+}
+
+.pagination .page-item.active .page-link::before {
+    content: ''; /* Pseudo-element kosong untuk background */
+    position: absolute; /* Posisi absolut */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Pusatkan di tengah */
+    width: 70%; /* Ukuran penuh */
+    height: 70%;
+    background-color: #6256CA; /* Warna background aktif */
+    border-radius: 100%; /* Membuat background berbentuk lingkaran */
+    z-index: -1; /* Pseudo-element di belakang teks */
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #aaa; /* Warna untuk item disabled */
+    pointer-events: none; /* Nonaktifkan klik pada item disabled */
+}
+
+.pagination .page-item:first-child .page-link {
+    padding: 10px 20px; /* Sesuaikan padding untuk Previous */
+    border-top-left-radius: 5px; /* Radius sudut kiri atas */
+    border-bottom-left-radius: 5px; /* Radius sudut kiri bawah */
+    border-right: none; /* Hilangkan border kanan */
+    border-left: solid 1px #2b2b2c; /* Tambahkan border kiri */
+    background-color: transparent; /* Hilangkan background putih */
+    border-top: 1px solid black; /* Border atas hitam */
+    border-bottom: 1px solid black; /* Border bawah hitam */
+}
+
+.pagination .page-item:last-child .page-link {
+    padding: 10px 20px; /* Sesuaikan padding untuk Next */
+    border-top-right-radius: 5px; /* Radius sudut kanan atas */
+    border-bottom-right-radius: 5px; /* Radius sudut kanan bawah */
+    border-left: none; /* Hilangkan border kiri */
+    border-right: solid 1px #2b2b2c; /* Tambahkan border kanan */
+    background-color: transparent; /* Hilangkan background putih */
+    border-top: 1px solid black; /* Border atas hitam */
+    border-bottom: 1px solid black; /* Border bawah hitam */
+}
+
+.btn-primary {
+    background-color: #6257CB;
+    border-color: #6257CB;
+}
+
+.table-strip tbody tr:nth-of-type(odd) {
+    background-color: #ffffff !important;
+}
+
+.table-strip tbody tr:nth-of-type(even) {
+    background-color: #f6f6f6 !important;
+}
+
+.wishlist-button {
+    border: 2px solid #9edba9;
+    border-radius: 5px;
+    padding: 10px 20px;
+    display: inline-flex;
+    align-items: center;
+    color: #4A4A4A;
+    font-size: 18px;
+    font-family: Arial, sans-serif;
+    background-color: white;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.wishlist-button img {
+    margin-right: 10px;
+}
