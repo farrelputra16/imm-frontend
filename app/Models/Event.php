@@ -9,24 +9,31 @@ class Event extends Model
 {
     use HasFactory;
 
-    protected $keyType = 'string';
-    public $incrementing = false;
+    protected $keyType = 'int'; // Assuming 'id' is an integer now
+    public $incrementing = true; // Since 'id' is AUTO_INCREMENT
 
     protected $fillable = [
         'title',
         'description',
+        'allowed_participants',
+        'expected_participants',
+        'fee_type',
+        'organizer_name',
+        'email',
+        'nomor_tlpn',
         'topic',
         'location',
         'start',
-        'end',
-        'deadline',
-        'img',
+        'event_duration',
+        'cover_img',
+        'hero_img',
     ];
 
     public function hubs()
     {
         return $this->belongsToMany(Hubs::class, 'event_hubs', 'event_id', 'hub_id');
     }
+
     public function users()
     {
         return $this->belongsToMany(User::class);

@@ -16,9 +16,9 @@ class EventController extends Controller
 
         $currentDateTime = Carbon::now();
 
-        // Filter events where the deadline is in the future
+        // Filter events where the start date is in the future
         $events = Event::withCount('users')
-            ->where('deadline', '>', $currentDateTime)
+            ->where('start', '<', $currentDateTime)
             ->get();
 
         foreach ($events as $event) {
@@ -71,8 +71,15 @@ class EventController extends Controller
             'topic' => 'nullable|string|max:255',
             'location' => 'required|string|max:255',
             'start' => 'required|date',
-            'end' => 'required|date',
-            'deadline' => 'required|date',
+            'event_duration' => 'required|string|max:255',
+            'allowed_participants' => 'nullable|string|max:255',
+            'expected_participants' => 'nullable|integer',
+            'fee_type' => 'required|in:Free,Paid',
+            'organizer_name' => 'required|string|max:255',
+            'email' => 'required|string|max:255',
+            'nomor_tlpn' => 'required|string|max:255',
+            'cover_img' => 'nullable|string|max:255',
+            'hero_img' => 'nullable|string|max:255',
             'users' => 'array|exists:users,id',
         ]);
 

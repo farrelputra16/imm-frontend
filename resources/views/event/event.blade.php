@@ -81,9 +81,9 @@
         }
 
         .event-card {
-            color: #010101;
+            background-color: #fff;
             padding: 20px;
-            border-radius: 5px;
+            border-radius: 10px;
             margin-bottom: 20px;
             min-height: 400px;
             text-align: left;
@@ -93,6 +93,7 @@
             justify-content: space-between;
             transition: transform 0.3s, box-shadow 0.3s;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Menambahkan bayangan untuk efek elevasi */
+            border: 1px solid #ddd; /* Menambahkan border untuk membuat tampilan lebih modern */
         }
 
         .event-card a {
@@ -101,24 +102,32 @@
         }
 
         .event-card .event-image {
-            height: 150px;
+            height: 200px;
             background-size: cover;
             background-position: center;
             margin-bottom: 20px;
-            border-radius: 5px;
+            border-radius: 10px;
+            object-fit: cover; /* Menambahkan object-fit untuk membuat gambar lebih rapih */
         }
 
         .event-card h3 {
-            font-size: 1.2rem;
+            font-size: 1.5rem;
+            font-weight: bold;
             margin-bottom: 10px;
             min-height: 3em;
         }
 
         .event-card p {
-            font-size: 1rem;
+            font-size: 1.1rem;
             line-height: 1.5;
             flex-grow: 1;
             margin-bottom: 15px; /* Jarak bawah antara paragraf dan judul */
+            color: #666; /* Menambahkan warna untuk membuat teks lebih jelas */
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Menambahkan efek hover untuk membuat tampilan lebih modern */
         }
 
         .pagination-container {
@@ -183,8 +192,38 @@
                     eventCard.innerHTML = `
                         <a href="/event/${event.id}" class="text-left">
                             <div class="event-image" style="background-image: url(${event.cover_img});"></div>
-                            <h3>${event.title}</h3>
-                            <p>${event.description}</p>
+                            <div class="event-info">
+                                <h3>${event.title}</h3>
+                                <p>${event.description}</p>
+                                <div class="event-details">
+                                    <div class="detail">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>Location: ${event.location}</span>
+                                    </div>
+                                    <div class="detail">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        <span>Start Date: ${event.start}</span>
+                                    </div>
+                                    <div class="detail">
+                                        <i class="fas fa-clock"></i>
+                                        <span>Event Duration: ${event.event_duration}</span>
+                                    </div>
+                                    <div class="detail">
+                                        <i class="fas fa-users"></i>
+                                        <span>Allowed Participants: ${event.allowed_participants}</span>
+                                    </div>
+                                    <div class="detail">
+                                        <i class="fas fa-money-bill-alt"></i>
+                                        <span>Fee Type: ${event.fee_type}</span>
+                                    </div>
+                                </div>
+                                <div class="event-organizer">
+                                    <h4>Organizer</h4>
+                                    <p>${event.organizer_name}</p>
+                                    <p>${event.email}</p>
+                                    <p>${event.nomor_tlpn}</p>
+                                </div>
+                            </div>
                         </a>
                     `;
                     eventContainer.appendChild(eventCard);
@@ -241,7 +280,7 @@
             const noEventsMessage = document.getElementById("noEventsMessage");
             let found = false;
 
-            eventCards.forEach((card) => {
+            eventCards.forEach ((card) => {
                 const title = card.querySelector("h3").textContent.toLowerCase();
                 const content = card.querySelector("p").textContent.toLowerCase();
                 if (title.includes(input) || content.includes(input)) {

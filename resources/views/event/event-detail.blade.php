@@ -176,7 +176,7 @@ footer {
 
 
 /* Animasi umum untuk elemen lainnya */
-    
+
 </style>
 @endsection
 @section('content')
@@ -184,13 +184,24 @@ footer {
 
 <body>
     <section class="banner" style=""> <img class="banner-img" src="{{ env('APP_BACKEND_URL') . '/images/' . $event->hero_img }}"
-            class="w-100 h-auto" alt=""></section>
+            class="w-100 h-auto" alt="">
+    </section>
     <div class="container content">
         <div class="container">
             <div class="row d-flex flex-column align-items-center justify-content-center text-center">
                 <p class="" style="max-width: 701px; font-size:32px">{{ $event->description }}</p>
+                <p>Topic: {{ $event->topic }}</p>
+                <p>Location: {{ $event->location }}</p>
+                <p>Start Date: {{ $event->start }}</p>
+                <p>Event Duration: {{ $event->event_duration }}</p>
+                <p>Allowed Participants: {{ $event->allowed_participants }}</p>
+                <p>Expected Participants: {{ $event->expected_participants }}</p>
+                <p>Fee Type: {{ $event->fee_type }}</p>
+                <p>Organizer Name: {{ $event->organizer_name }}</p>
+                <p>Email: {{ $event->email }}</p>
+                <p>Nomor Tlpn: {{ $event->nomor_tlpn }}</p>
                 @if (in_array(Auth::id(), $eventUsers))
-                    <a href="/event-register/{{ $event->id }}"><button class="btn-daftar mt-4" disabled>Anda Telah
+                    <a href="/event-register/{{ $event->id }}"><button class="btn-daftar mt-4" disabled >Anda Telah
                             Terdaftar</button></a>
                 @else
                     <a href="/event-register/{{ $event->id }}"><button class="btn-daftar mt-4">Daftar
@@ -198,8 +209,8 @@ footer {
                 @endif
             </div>
         </div>
-
     </div>
+
     <div class="container content d-flex flex-column justify-content-center">
         <p class="text-center" style="font-size:32px; font-weight:bold">Kegiatan Bootcamp</p>
         <div class="row d-flex justify-content-center align-items-center">

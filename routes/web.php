@@ -117,7 +117,7 @@ Route::get('/companies/{id}/project', [CompanyController::class, 'showProducts']
 Route::get('companies/projects/{id}', [ProjectController::class, 'show'])->name('companies-project.show');
 Route::get('companies/project/{projectId}/metric/{metricId}/metricProject/{metricProjectId}/impact', [MetricProjectController::class, 'showImpact'])->name('companies-metric-impact.show');
 
- /**
+/**
  *  Berikut ini merupakan rute untuk menangani wishlist dari investor
  */
 Route::post('/wishlist/add', [WishlistController::class, 'add'])->name('wishlist.add');
@@ -332,7 +332,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/companies/{companyId}/projects/{id}', [ProductController::class, 'update']);
     // Menghapus produk untuk perusahaan tertentu
     Route::delete('/companies/projects/delete/{id}', [ProductController::class, 'destroy']);
-
 });
 
 Route::get('/verifikasidiri', function () {
@@ -442,11 +441,7 @@ Route::get('/responden-penutup-survey', function () {
     return view('survey.responden.responden-penutup-survey');
 });
 
-
-
-Route::get('/event-detail', function () {
-    return view('event.event-detail');
-});
+Route::get('/event-detail/{id}', [EventController::class, 'view'])->name('events.view');
 
 Route::get('/detail-kelas', function () {
     return view('kelas.detail-kelas');
@@ -456,9 +451,7 @@ Route::get('/bootcamp', function () {
     return view('bootcamp.bootcamp');
 });
 
-Route::get('/event-register', function () {
-    return view('event.event-register');
-});
+Route::get('/event-register', [EventController::class, 'create'])->name('events.create');
 
 Route::get('/succes', function () {
     return view('event.succes');
@@ -521,5 +514,3 @@ Route::delete('survey/{survey}', [SurveyController::class, 'destroy'])->name('su
 Route::get('survey-result/{survey}', [SurveyController::class, 'results'])->name('surveys.results');
 
 Route::get('/about', [HomeController::class, 'about']);
-
-

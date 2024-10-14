@@ -206,11 +206,10 @@ footer {
 
 
 <body>
-
-
-
-    <section class="banner" style=""> <img class="banner-img" src="{{ env('APP_BACKEND_URL') . '/images/' . $event->hero_img }}"
-            class="w-100 h-auto" alt=""></section>
+    <section class="banner" style="">
+        <img class="banner-img" src="{{ env('APP_BACKEND_URL') . '/images/' . $event->hero_img }}"
+             class="w-100 h-auto" alt="">
+    </section>
     <div class="content d-flex flex-column justify-content-start">
         <div class="container">
             <form action="{{ route('events.update', $event) }}" method="POST" enctype="multipart/form-data">
@@ -223,8 +222,8 @@ footer {
                         required>
                 </div>
                 <div class="mb-4 mt-4">
-                    <label for="nama_depan" class="form-label">Email</label>
-                    <input type="text" name="" id="nama_depan" class="form-control" placeholder="Isi disini"
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" name="email" id="email" class="form-control" placeholder="Isi disini"
                         required>
                 </div>
 
@@ -242,11 +241,11 @@ footer {
                     {{-- <input type="text" id="customPekerjaan" class="form-control hidden-input mt-2" placeholder="Isi disini" required> --}}
                 </div>
 
-
                 <div class="mb-4 mt-4">
-                    <label for="nama_depan" class="form-label">Nama Instansi/Perusahaan ( Opsional )</label>
-                    <input type="text" name="instansi" id="nama_depan" class="form-control" placeholder="Isi disini">
+                    <label for="instansi" class="form-label">Nama Instansi/Perusahaan (Opsional)</label>
+                    <input type="text" name="instansi" id="instansi" class="form-control" placeholder="Isi disini">
                 </div>
+
                 <input type="hidden" name="event_id" value="{{ $event->id }}">
                 <button type="submit" class="btn-simpan mt-5"
                         style="font-size: 20px; font-weight:bold">Simpan Data</button>

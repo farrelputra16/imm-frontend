@@ -115,7 +115,12 @@
                                         <div style="margin-right: 5px;">
                                             <img src="{{ !empty($company->image) ? asset($company->image) : asset('images/logo-maxy.png') }}" alt="" width="50" height="50" style="border-radius: 8px; object-fit:cover;">
                                         </div>
-                                        <div style="flex-grow: 1; white-space: nowrap; margin-left: 0px; margin-right: 0px;">
+                                        <div style="flex-grow: 1; margin-left: 0px; margin-right: 0px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
+                                            @if (strlen($company->nama) > 20)
+                                                title="{{ $company->nama }}"
+                                                style="cursor: pointer;"
+                                            @endif
+                                        >
                                             <span>{{ $company->nama }}</span>
                                         </div>
                                         <div style="margin-left: 10px;, margin-right: 0px;">
