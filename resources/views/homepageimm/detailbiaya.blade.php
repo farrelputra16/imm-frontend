@@ -14,7 +14,7 @@
 }
 tr{
     background-color: #5940cb;
-  
+
 }
 
 th{
@@ -170,7 +170,7 @@ margin-top: 20px;
     display: flex;
     align-items: center;
     padding: 10px;
-    
+
 }
 
 .paginate_button.current{
@@ -196,10 +196,10 @@ margin-top: 20px;
     <div class="row d-flex justify-content-between">
         <a href="{{ url()->previous() }}">
             <h4 class="d-flex align-items-center">
-                <strong style="font-size: 40px;">&lt;</strong> 
+                <strong style="font-size: 40px;">&lt;</strong>
                 Detail penggunaan biaya proyek {{ $project->nama }}
             </h4>
-        </a>        
+        </a>
         <!-- Tampilkan tombol "Tambah Penggunaan Dana" hanya jika role-nya company -->
         @if($isCompany)
         <a href="{{ route('selectProjectOutcome', ['project_id' => $project_id]) }}">
@@ -213,7 +213,7 @@ margin-top: 20px;
 <div class="container mt-2">
 
     <h5>Detail Biaya</h5>
-    <table id="details-table" class="table text-center border"> 
+    <table id="details-table" class="table text-center border">
         <thead>
             <tr>
                 <th>Tanggal</th>
