@@ -70,26 +70,14 @@
             <label for="provinsi">Provinsi:</label>
             <select class="form-control" id="provinsi" name="provinsi" required>
                 <option value="" disabled selected>Pilih Provinsi</option>
-                <option value="Jawa Barat">Jawa Barat</option>
-                <option value="Jawa Tengah">Jawa Tengah</option>
-                <option value="Jawa Timur">Jawa Timur</option>
-                <option value="DKI Jakarta">DKI Jakarta</option>
-                <option value="Banten">Banten</option>
-                <option value="Bali">Bali</option>
-                <!-- Tambahkan provinsi lainnya sesuai kebutuhan -->
+                <!-- Provinsi akan dimuat secara dinamis dari API -->
             </select>
 
             <!-- Kota/Kabupaten -->
             <label for="kota">Kota/Kabupaten:</label>
             <select class="form-control" id="kota" name="kota" required>
                 <option value="" disabled selected>Pilih Kota/Kabupaten</option>
-                <option value="Bandung">Bandung</option>
-                <option value="Semarang">Semarang</option>
-                <option value="Surabaya">Surabaya</option>
-                <option value="Jakarta">Jakarta</option>
-                <option value="Tangerang">Tangerang</option>
-                <option value="Denpasar">Denpasar</option>
-                <!-- Tambahkan kota/kabupaten lainnya sesuai kebutuhan -->
+                <!-- Kota/Kabupaten akan dimuat secara dinamis dari API -->
             </select>
 
             <!-- Rank -->
@@ -116,18 +104,73 @@
             <label for="programs">Program (Pisahkan dengan koma):</label>
             <input type="text" class="form-control" id="programs" name="programs" value="{{ old('programs') }}" placeholder="Contoh: Startup Accelerator, Community Development">
 
-           <!-- Alumni (Multiple Dropdown) -->
-<label for="alumni">Alumni (Pilih dari perusahaan):</label>
-<select class="form-control" id="alumni" name="alumni[]" multiple>
-    @foreach($companies as $company)
-        <option value="{{ $company->id }}">{{ $company->nama }}</option>
-    @endforeach
-</select>
-<small class="text-muted">Tekan Ctrl (Windows) atau Cmd (Mac) untuk memilih lebih dari satu perusahaan.</small>
-
-
+            <!-- Alumni (Multiple Dropdown) -->
+            <label for="alumni">Alumni (Pilih dari perusahaan):</label>
+            <select class="form-control" id="alumni" name="alumni[]" multiple>
+                @foreach($companies as $company)
+                    <option value="{{ $company->id }}">{{ $company->nama }}</option>
+                @endforeach
+            </select>
+            <small class="text-muted">Tekan Ctrl (Windows) atau Cmd (Mac) untuk memilih lebih dari satu perusahaan.</small>
         </div>
         <button type="submit" class="btn btn-primary">Kirim Pengajuan</button>
     </form>
 </div>
+
+<script>
+    // Ambil elemen select untuk provinsi dan kota/kabupaten
+    const provinsiSelect = document.getElementById('provinsi');
+    const kotaSelect = document.getElementById('kota');
+    let provincesData = []; // Simpan data provinsi yang di-fetch
+
+    // Fetch data provinsi saat halaman dimuat
+    fetch('https://kanglerian.github.io/api-wilayah-indonesia/api/provinces.json')
+        .then(response => response.json())
+        .then(provinces => {
+            provincesData = provinces; // Simpan data provinsi
+            // Iterasi setiap provinsi dan tambahkan sebagai option ke select provinsi
+            provinces.forEach(provinsi => {
+                const option = document.createElement('option');
+                option.value = provinsi.name; // Menggunakan nama sebagai nilai
+                option.textContent = provinsi.name;
+                option.dataset.id = provinsi.id; // Simpan ID provinsi di dataset
+                provinsiSelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error fetching provinces:', error));
+
+    // Fungsi untuk memanggil API kota/kabupaten berdasarkan ID provinsi
+    function populateCities() {
+        const selectedProvinsiName = provinsiSelect.value;
+        const selectedProvinsiId = getProvinsiIdByName(selectedProvinsiName);
+        const regenciesUrl = `https://kanglerian.github.io/api-wilayah-indonesia/api/regencies/${selectedProvinsiId}.json`;
+
+        // Kosongkan dropdown kota/kabupaten saat memilih provinsi baru
+        kotaSelect.innerHTML = '<option value="" disabled selected>Pilih Kota/Kabupaten</option>';
+
+        // Fetch data kota/kabupaten berdasarkan ID provinsi yang dipilih
+        fetch(regenciesUrl)
+            .then(response => response.json())
+            .then(regencies => {
+                // Iterasi setiap kota/kabupaten dan tambahkan sebagai option ke select kota/kabupaten
+                regencies.forEach(regency => {
+                    const option = document.createElement('option');
+                    option.value = regency.name; // Menggunakan nama sebagai nilai
+                    option.textContent = regency.name;
+                    kotaSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error(`Error fetching regencies for provinsi ${selectedProvinsiId}:`, error));
+    }
+
+    // Fungsi untuk mendapatkan ID provinsi berdasarkan nama
+    function getProvinsiIdByName(name) {
+        const provinsi = provincesData.find(provinsi => provinsi.name === name);
+        return provinsi ? provinsi.id : null;
+    }
+
+    // Tambahkan event listener untuk dropdown provinsi
+    provinsiSelect.addEventListener('change', populateCities);
+</script>
+
 @endsection

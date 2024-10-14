@@ -76,10 +76,10 @@
      <img alt="Logo of Lion Bird with text 'Lion Bird Strong Hold'" class="me-3" height="100" src="https://storage.googleapis.com/a1aa/image/svmMvNNpWA7kKFOeJrqN0f1qCFXmF6yZGA92DQARFr6eRoInA.jpg" width="100"/>
      <div>
       <h5 class="card-title">
-       Innovation Hub
+       {{ $hub->name }}
       </h5>
       <p class="card-text">
-       is a leading innovation center and startup incubator designed to create an ecosystem that supports the growth of technology entrepreneurs and innovators. We provide an ideal environment for entrepreneurs, tech enthusiasts, and innovators to collaborate, develop creative ideas, and build scalable solutions for global impact.
+       {{ $hub->description }}
       </p>
      </div>
     </div>

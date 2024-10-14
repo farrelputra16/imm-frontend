@@ -370,28 +370,36 @@
     <div class="row">
         <!-- First Card -->
         <div class="col-md-4 mb-4">
-            <div class="card-inner">
-                <img src="images/landingpage/cardfix1.png" class="card-img-top" alt="Filters Image">
-            </div>
-            <p class="card-info">Discover companies with search and AI-powered recommendations</p>
+            <a href="{{ route('companies.list') }}">
+                <div class="card-inner">
+                    <img src="images/landingpage/cardfix1.png" class="card-img-top" alt="Filters Image">
+                </div>
+                <p class="card-info">Discover companies with search and AI-powered recommendations</p>
+            </a>
         </div>
 
         <!-- Second Card -->
         <div class="col-md-4 mb-4">
-            <div class="card-inner">
-                <img src="images/landingpage/cardfix2.png" class="card-img-top" alt="Growth Outlook Image">
-            </div>
-            <p class="card-info">Stay informed with intelligent insights and real-time alerts</p>
+            <a href="{{ route('investors.index') }}">
+                <div class="card-inner">
+                    <img src="images/landingpage/cardfix2.png" class="card-img-top" alt="Growth Outlook Image">
+                </div>
+                <p class="card-info">Stay informed with intelligent insights and real-time alerts</p>
+            </a>
         </div>
 
         <!-- Third Card -->
         <div class="col-md-4 mb-4">
-            <div class="card-inner">
-                <img src="images/landingpage/cardfix3.png" class="card-img-top" alt="Galax Image">
-            </div>
-            <p class="card-info">Take action at the right time with personalized workflow tools</p>
+            <a href="{{ route('events.index') }}">
+                <div class="card-inner">
+                    <img src="images/landingpage/cardfix3.png" class="card-img-top" alt="Galax Image">
+                </div>
+                <p class="card-info">Take action at the right time with personalized workflow tools</p>
+            </a>
         </div>
     </div>
+</div>
+
 
     <div class="row">
         <div class="col-md-12 text-center">
@@ -470,7 +478,6 @@
 
         <!-- Sidebar Section -->
         <div class="col-md-4">
-            @foreach ($investments as $investment)
             <div class="this-week-section">
                 <h2 class="highlight-title">This Week on IMM</h2>
                 <div class="row">
@@ -488,7 +495,7 @@
                     <div class="col-md-6">
                         <div class="card stats-card custom-card">
                             <div class="card-body">
-                                <h3>{{ $investment->id }}</h3>
+                                <h3>{{ $totalInvestments }}</h3>
                                 <p>TOTAL FUNDING</p>
                             </div>
                         </div>
@@ -500,7 +507,7 @@
                     <div class="col-md-6">
                         <div class="card stats-card custom-card">
                             <div class="card-body">
-                                <h3>{{ $investment->id }}</h3>
+                                <h3>{{ $totalInvestments }}</h3>
                                 <p>ACQUISITIONS RECORDED</p>
                             </div>
                         </div>
@@ -510,15 +517,12 @@
                     <div class="col-md-6">
                         <div class="card stats-card custom-card">
                             <div class="card-body">
-                                <h3>{{ $investment->id }}</h3>
+                                <h3>{{ $totalInvestments }}</h3>
                                 <p>ACQUISITIONS AMOUNT</p>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            @endforeach
 
             <div class="promo-card">
                 <div class="row align-items-center">
