@@ -186,14 +186,35 @@
                     </div>
                 </div>
 
-                <!-- Networks Dropdown -->
                 <div class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Performance</a>
                     <div class="dropdown-menu">
-                        <a href="{{ route('home') }}" class="dropdown-item">IMM</a>
+                        <!-- IMM link berdasarkan role -->
+                        @if(Auth::check())
+                            @php
+                                $role = Auth::user()->role; // Mengambil role dari pengguna yang login
+                            @endphp
+
+                            @if($role == 'USER')
+                                <a href="{{ route('home') }}" class="dropdown-item">IMM</a>
+                            @elseif($role == 'PEOPLE')
+                                <a href="{{ route('people.home') }}" class="dropdown-item">IMM</a>
+                            @elseif($role == 'INVESTOR')
+                                <a href="{{ route('investor.home') }}" class="dropdown-item">IMM</a>
+                            @else
+                                <!-- Default ke halaman home jika role tidak cocok -->
+                                <a href="{{ route('home') }}" class="dropdown-item">IMM</a>
+                            @endif
+                        @else
+                            <!-- Jika pengguna tidak login, arahkan ke halaman home -->
+                            <a href="{{ route('home') }}" class="dropdown-item">IMM</a>
+                        @endif
+
                         <a href="#" class="dropdown-item">Benchmarking</a>
                     </div>
                 </div>
+
+
                 <div class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Networks</a>
                     <div class="dropdown-menu">

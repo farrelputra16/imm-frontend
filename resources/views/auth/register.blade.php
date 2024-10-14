@@ -165,7 +165,7 @@
                             <option value="">Select your role</option>
                             <option value="USER" {{ old('role') == 'USER' ? 'selected' : '' }}>Startup Founder</option>
                             <option value="INVESTOR" {{ old('role') == 'INVESTOR' ? 'selected' : '' }}>Investor</option>
-                            <option value="PEOPLE" {{ old('role') == 'PEOPLE' ? 'selected' : '' }}>People</option>
+                            <option value="PEOPLE" {{ old('role') == 'PEOPLE' ? 'selected' : '' }}>Mentor/Konsultan</option>
                         </select>
                     </div>
 
