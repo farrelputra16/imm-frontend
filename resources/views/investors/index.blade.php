@@ -75,7 +75,7 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table table-hover table-strip" style="margin-bottom: 0px;">
+                <table class="table table-hover table-strip" style="margin-bottom: 0px; border-top-left-radius: 20px; border-top-right-radius: 20px; overflow: hidden;">
                     <thead>
                         <tr>
                             <th><input type="checkbox" /></th>

@@ -158,7 +158,9 @@
             margin-left: .1rem;
             margin-right: .1rem;
         }
-
+        .ml-2 {
+            color:black;
+        }
         .nav-wrapper {
             display: flex;
             align-items: center;

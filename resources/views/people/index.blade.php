@@ -58,7 +58,7 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table table-hover table-strip">
+                <table class="table table-hover table-strip" style="border-top-left-radius: 20px; border-top-right-radius: 20px; overflow: hidden;">
                     <thead>
                         <tr>
                             <th>Name</th>
