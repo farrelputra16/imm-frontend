@@ -3,218 +3,150 @@
 @section('content')
 <!-- Custom Font from Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
-<!-- Updated Styles -->
-<style>
-    body {
-        font-family: 'Poppins', sans-serif;
-    }
-
-    h1 {
-        font-size: 2.5rem;
-        color: #6f42c1;
-        margin-bottom: 30px;
-        text-align: center;
-    }
-
-    .header a {
-        color: #6c757d;
-        text-decoration: none;
-    }
-
-    .header a:hover {
-        text-decoration: underline;
-    }
-
-    .filter-section {
-        border: 1px solid #ddd;
-        padding: 20px;
-        border-radius: 5px;
-    }
-
-    .filter-section h5 {
-        font-weight: bold;
-    }
-
-    .filter-section .form-check-label {
-        margin-left: 10px;
-    }
-
-    .filter-section .btn-link {
-        color: #6c757d;
-        text-decoration: none;
-    }
-
-    .filter-section .btn-link:hover {
-        text-decoration: underline;
-    }
-
-    .table-section {
-        padding-left: 20px;
-    }
-
-    .table-section .form-control {
-        border-radius: 20px;
-    }
-
-    .table-section .btn {
-        border-radius: 20px;
-    }
-
-    .table-section .table th {
-        background-color: #6f42c1;
-        color: white;
-    }
-
-    .table-section .table td {
-        vertical-align: middle;
-        cursor: pointer; /* Add cursor pointer to show that rows are clickable */
-    }
-
-    .table-section .table tbody tr:hover {
-        background-color: #f1f1f1;
-    }
-
-    .pagination {
-        justify-content: flex-end;
-    }
-
-    .tag {
-        display: inline-block;
-        padding: 0.25em 0.4em;
-        margin: 0.2em;
-        font-size: 75%;
-        font-weight: 700;
-        line-height: 1;
-        color: #fff;
-        background-color: #6c757d;
-        border-radius: 0.2rem;
-        cursor: pointer; /* Indicate that tags are clickable */
-    }
-
-    .tag:hover {
-        background-color: #5a6268; /* Darken the tag on hover */
-    }
-
-</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<!-- Tambahkan CSS Select2 -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
 
 <div class="container-fluid">
     <div class="header d-flex justify-content-between align-items-center">
         <div>
-            <a href="#">Home</a> &gt; <a href="#">Find Investor</a>
+            <a href="{{ route('landingpage') }}">Home</a> &gt; <a href="#">Find Investor</a>
         </div>
     </div>
 
-    <h1 class="header">Investors</h1>
+    <h1 class="header"><b>Investors</b></h1>
 
     <div class="row">
         <!-- Filter Section -->
-        <div class="col-md-3 filter-section">
-            <h5>FILTER</h5>
-            <div class="mb-3">
-                <h6>LOCATION</h6>
-                <div class="form-check">
-                    <input class="form-check-input" id="location1" type="checkbox" />
-                    <label class="form-check-label" for="location1">Jabodetabek</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" id="location2" type="checkbox" />
-                    <label class="form-check-label" for="location2">Bali</label>
-                </div>
-                <a class="btn btn-link" href="#">Others</a>
+        <div class="col-md-3">
+            <div class="filter-header" style="vertical-align: center;">
+                <h4><b>FILTER</b></h4>
+                <img src="{{ asset('images/filter.svg') }}" alt="Search Icon" style="width: 20px; height: 20px; margin-left: 10px;">
             </div>
-
-            <div class="mb-3">
-                <h6>INVESTMENT STAGE</h6>
-                <div class="form-check">
-                    <input class="form-check-input" id="stage1" type="checkbox" />
-                    <label class="form-check-label" for="stage1">Seed Stage</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" id="stage2" type="checkbox" />
-                    <label class="form-check-label" for="stage2">Early Stage Venture</label>
-                </div>
-            </div>
-
-            <!-- Other filter options like Location, Investment Stage -->
-
-            <!-- Industries Filter -->
-            <div class="mb-3">
-                <h6>INDUSTRIES</h6>
+            <div class="filter-section">
                 <form method="GET" action="{{ route('investors.index') }}">
-                    <div>
-                        <button type="submit" name="industry" value="Software" class="tag">Software</button>
-                        <button type="submit" name="industry" value="Health Care" class="tag">Health Care</button>
-                        <button type="submit" name="industry" value="IT" class="tag">IT</button>
-                        <button type="submit" name="industry" value="Education" class="tag">Education</button>
-                        <button type="submit" name="industry" value="Manufacture" class="tag">Manufacture</button>
-                        <button type="submit" name="industry" value="Energy" class="tag">Energy</button>
+                    <!-- Location Search -->
+                    <div class="mb-3">
+                        <h6>LOCATION</h6>
+                        <input type="text" name="location" class="form-control" placeholder="Enter location" value="{{ request()->location }}">
                     </div>
+
+                    <!-- Investment Stage Dropdown -->
+                    <div class="mb-3">
+                        <h6>INVESTMENT STAGE</h6>
+                        <select class="form-control select2" name="investment_stage">
+                            <option value="">Select Investment Stage</option>
+                            <option value="Pre-Seed" {{ old('investment_stage') == 'Pre-Seed' ? 'selected' : '' }}>Pre-Seed</option>
+                            <option value="Seed" {{ old('investment_stage') == 'Seed' ? 'selected' : '' }}>Seed</option>
+                            <option value="Series A" {{ old('investment_stage') == 'Series A' ? 'selected' : '' }}>Series A</option>
+                            <option value="Series B" {{ old('investment_stage') == 'Series B' ? 'selected' : '' }}>Series B</option>
+                            <option value="Series C" {{ old('investment_stage') == 'Series C' ? 'selected' : '' }}>Series C</option>
+                            <option value="Series D" {{ old('investment_stage') == 'Series D' ? 'selected' : '' }}>Series D</option>
+                            <option value="IPO" {{ old('investment_stage') == 'IPO' ? 'selected' : '' }}>IPO</option>
+                        </select>
+                    </div>
+
+                    <!-- Industries Filter -->
+                    <div class="mb-3">
+                        <h6>DEPARTMENTS</h6>
+                        <div>
+                            <button type="submit" name="departments" value="Software" class="tag">Software</button>
+                            <button type="submit" name="departments" value="Health Care" class="tag">Health Care</button>
+                            <button type="submit" name="departments" value="IT" class="tag">IT</button>
+                            <button type="submit" name="departments" value="Education" class="tag">Education</button>
+                            <button type="submit" name="departments" value="Manufacture" class="tag">Manufacture</button>
+                            <button type="submit" name="departments" value="Energy" class="tag">Energy</button>
+                            <button type="submit" name="departments" value="Engineering" class="tag">Engineering</button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Search</button>
                 </form>
             </div>
         </div>
 
         <!-- Table Section -->
         <div class="col-md-9 table-section">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <input class="form-control w-75" placeholder="Search Investors" type="text" />
-                <button class="btn btn-primary">Search</button>
+            <div class="search-container">
+                <i class="fas fa-search" style="margin-left: 10px;"></i>
+                <input class="form-control" placeholder="Search Investors" type="text" />
+                <button class="btn">Search</button>
             </div>
 
-            <!-- Investors Table -->
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th scope="col">
-                            <input type="checkbox" />
-                        </th>
-                        <th scope="col">Organization Name</th>
-                        <th scope="col">Number of Contacts</th>
-                        <th scope="col">Number of Investments</th>
-                        <th scope="col">Location</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Departments</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($investors as $investor)
-                    <tr onclick="window.location.href='{{ route('investors.show', $investor->id) }}'">
-                        <td><input type="checkbox" /></td>
-                        <td>
-                            <img alt="Organization logo" height="20" src="https://placehold.co/20x20" width="20" />
-                            {{ $investor->org_name }}
-                        </td>
-                        <td>{{ $investor->number_of_contacts }}</td>
-                        <td>{{ $investor->number_of_investments }}</td>
-                        <td>{{ $investor->location }}</td>
-                        <td>{{ $investor->description }}</td>
-                        <td>{{ $investor->departments }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-hover table-strip" style="margin-bottom: 0px;">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" /></th>
+                            <th>Organization Name</th>
+                            <th>Number of Contacts</th>
+                            <th>Number of Investments</th>
+                            <th>Location</th>
+                            <th>Investment Stage</th>
+                            <th>Departments</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($investors as $investor)
+                        <tr data-href="{{ route('investors.show', $investor->id) }}">
+                            <td><input type="checkbox" /></td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <div style="margin-right: 5px;">
+                                        <img alt="Organization logo" height="20" src="https://placehold.co/20x20" width="20" />
+                                    </div>
+                                    <div>{{ $investor->org_name }}</div>
+                                </div>
+                            </td>
+                            <td>{{ $investor->number_of_contacts }}</td>
+                            <td>{{ $investor->number_of_investments }}</td>
+                            <td>{{ $investor->location }}</td>
+                            <td>{{ $investor->investment_stage }}</td>
+                            <td>{{ $investor->departments }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
 
-            <!-- Pagination -->
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-between align-items-center mb-3" style="padding: 20px;">
+                <form method="GET" action="{{ route('investors.index') }}" class="mb-0">
+                    <div class="d-flex align-items-center">
+                        <label for="rowsPerPage" class="me-2">Rows per page:</label>
+                        <select name="rows" id="rowsPerPage" class="form-select me-2" onchange="this.form.submit()">
+                            <option value="10" {{ request('rows') == 10 ? 'selected' : '' }}>10</option>
+                            <option value="50" {{ request('rows') == 50 ? 'selected' : '' }}>50</option>
+                            <option value="100" {{ request('rows') == 100 ? 'selected' : '' }}>100</option>
+                        </select>
+                        <div>Total</div>
+                    </div>
+                </form>
                 <div>
-                    Row per page
-                    <select class="form-select d-inline w-auto">
-                        <option>10</option>
-                        <option>20</option>
-                        <option>30</option>
-                    </select>
-                    Total 1 - 10 of 200
+
                 </div>
-                <nav>
-                    <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                    </ul>
-                </nav>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Tambahkan script untuk Select2 -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    // Inisialisasi Select2 untuk dropdown Investment Stage
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: 'Select Investment Stage',
+            allowClear: true
+        });
+    });
+
+    document.querySelectorAll('tr[data-href]').forEach(tr => {
+        tr.addEventListener('click', function(e) {
+            if (e.target.type !== 'checkbox') {
+                window.location.href = this.dataset.href;
+            }
+        });
+    });
+</script>
 @endsection

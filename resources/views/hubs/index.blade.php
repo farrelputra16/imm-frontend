@@ -3,188 +3,118 @@
 @section('content')
 <!-- Custom Font from Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
 
-<!-- Updated Styles -->
-<style>
-    body {
-        font-family: 'Poppins', sans-serif;
-    }
+<div class="container-fluid">
+    <div class="header d-flex justify-content-between align-items-center">
+        <div>
+            <a href="{{ route('landingpage') }}">Home</a> &gt; <a href="#">Innovation Hub</a>
+        </div>
+    </div>
 
-    h1 {
-        font-size: 2.5rem;
-        color: #6f42c1;
-        margin-bottom: 30px;
-        text-align: center;
-    }
-
-    .filter-section {
-        border: 1px solid #ddd;
-        padding: 15px;
-        border-radius: 5px;
-        background-color: #f8f9fa;
-    }
-
-    .filter-section h5 {
-        font-weight: bold;
-    }
-
-    .filter-section .form-control {
-        border-radius: 20px;
-    }
-
-    .table-section {
-        padding-left: 20px;
-    }
-
-    .table-section .form-control {
-        border-radius: 20px;
-    }
-
-    .table-section .btn {
-        border-radius: 20px;
-    }
-
-    .table-section .table th {
-        background-color: #6f42c1;
-        color: white;
-        text-align: center;
-    }
-
-    .table-section .table td {
-        vertical-align: middle;
-        text-align: center;
-    }
-
-    .pagination {
-        justify-content: flex-end;
-    }
-
-    .breadcrumb-item a {
-        color: #6c757d;
-        text-decoration: none;
-    }
-
-    .breadcrumb-item a:hover {
-        text-decoration: underline;
-    }
-    .breadcrumb-item + .breadcrumb-item::before {
-    content: '>'; /* Use '>' as the separator */
-    color: #6c757d;
-}
-
-
-    .filter-section .btn-primary {
-        background-color:#0d6efd;
-        border-color: #6f42c1;
-    }
-
-    .filter-section .btn-primary:hover {
-        background-color: #5935b1;
-        border-color: #5935b1;
-    }
-
-    .table-section .btn-primary {
-        background-color: #0d6efd;
-        border-color: #6f42c1;
-    }
-
-    .table-section .btn-primary:hover {
-        background-color: #5935b1;
-        border-color: #5935b1;
-    }
-
-</style>
-
-<div class="container mt-4">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Innovation Hub</li>
-        </ol>
-    </nav>
-
-    <h1 class="header">Hubs</h1>
+    <h1 class="header"><b>Hubs</b></h1>
 
     <div class="row">
         <!-- Filter Section -->
         <div class="col-md-3">
+            <div class="filter-header" style="vertical-align: center;">
+                <h4><b>FILTER</b></h4>
+                <img src="{{ asset('images/filter.svg') }}" alt="Search Icon" style="width: 20px; height: 20px; margin-left: 10px;">
+            </div>
             <div class="filter-section">
-                <h5>FILTER</h5>
-
-                <form method="GET" action="{{ route('hubs.index') }}">
+                <form method="GET" action="{{ route('hubs.index') }}" class="mb-4">
+                    @csrf
+                    <!-- Province Search -->
                     <div class="mb-3">
-                        <h6>Location</h6>
-                        <input type="text" name="location" class="form-control" placeholder="Location" value="{{ request()->location }}">
+                        <h6>Province</h6>
+                        <input type="text" name="provinsi" class="form-control" placeholder="Province" value="{{ request()->provinsi }}">
                     </div>
+                    <!-- City Search -->
+                    <div class="mb-3">
+                        <h6>City</h6>
+                        <input type="text" name="kota" class="form-control" placeholder="City" value="{{ request()->kota }}">
+                    </div>
+                    <!-- Rank Search -->
                     <div class="mb-3">
                         <h6>Rank</h6>
                         <input type="text" name="rank" class="form-control" placeholder="Rank" value="{{ request()->rank }}">
                     </div>
+                    <!-- Hub Name Search -->
                     <div class="mb-3">
-                        <h6>Number of Organizations</h6>
-                        <input type="text" name="organization" class="form-control" placeholder="Number of Organizations" value="{{ request()->organization }}">
+                        <h6>Hub Name</h6>
+                        <input type="text" name="name" class="form-control" placeholder="Hub Name" value="{{ request()->name }}">
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Search</button>
+                    <!-- Search Button -->
+                    <button type="submit" class="btn btn-primary">Search</button>
                 </form>
             </div>
         </div>
 
         <!-- Table Section -->
         <div class="col-md-9 table-section">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Search Data" aria-label="Search Data">
-                <button class="btn btn-primary" type="button">Search</button>
+            <div class="search-container">
+                <i class="fas fa-search" style="margin-left: 10px;"></i>
+                <input class="form-control" placeholder="Search Data" type="text" style="border: none;">
+                <button class="btn">Search</button>
             </div>
 
-            <!-- Hubs Table -->
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Hub Name</th>
-                        <th>Province</th>
-                        <th>City</th>
-                        <th>Top Investor Types</th>
-                        <th>Top Funding Types</th>
-                        <th>Rank</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($hubs as $hub)
-                    <tr onclick="window.location.href='{{ route('hubs.show', $hub->id) }}'">
-                        <td>{{ $hub->name }}</td>
-                        <td>{{ $hub->provinsi }}</td>
-                        <td>{{ $hub->kota}}</td>
-                        <td>{{ $hub->top_investor_types}}</td>
-                        <td>{{ $hub->top_funding_types }}</td>
-                        <td>{{ $hub->rank }}</td>
-                        <td>{{ $hub->description }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-hover table-strip" style="margin-bottom: 0px;">
+                    <thead>
+                        <tr>
+                            <th>Hub Name</th>
+                            <th>Province</th>
+                            <th>City</th>
+                            <th>Top Investor Types</th>
+                            <th>Top Funding Types</th>
+                            <th>Rank</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($hubs as $hub)
+                        <tr data-href="{{ route('hubs.show', $hub->id) }}">
+                            <td>{{ $hub->name }}</td>
+                            <td>{{ $hub->provinsi }}</td>
+                            <td>{{ $hub->kota }}</td>
+                            <td>{{ $hub->top_investor_types }}</td>
+                            <td>{{ $hub->top_funding_types }}</td>
+                            <td>{{ $hub->rank }}</td>
+                            <td>{{ $hub->description }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
 
-            <!-- Pagination -->
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <label for="rowsPerPage">Row per page</label>
-                    <select id="rowsPerPage" class="form-select d-inline-block w-auto">
-                        <option>10</option>
-                        <option>20</option>
-                        <option>30</option>
-                    </select>
-                    <span>Total 1-10 of 200</span>
-                </div>
-                <nav aria-label="Page navigation">
-                    <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                    </ul>
-                </nav>
+            <div class="d-flex justify-content-between align-items-center mb-3" style="padding: 20px;">
+                <form method="GET" action="{{ route('hubs.index') }}" class="mb-0">
+                    <div class="d-flex align-items-center">
+                        <label for="rowsPerPage" class="me-2">Rows per page:</label>
+                        <select name="rows" id="rowsPerPage" class="form-select me-2" onchange="this.form.submit()">
+                            <option value="10" {{ request('rows') == 10 ? 'selected' : '' }}>10</option>
+                            <option value="50" {{ request('rows') == 50 ? 'selected' : '' }}>50</option>
+                            <option value="100" {{ request('rows') == 100 ? 'selected' : '' }}>100</option>
+                        </select>
+                        <div>
+                            <span>Total</span>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.querySelectorAll('tr[data-href]').forEach(tr => {
+        tr.addEventListener('click', function(e) {
+            if (e.target.type !== 'checkbox') {
+                window.location.href = this.dataset.href;
+            }
+        });
+    });
+</script>
 @endsection
