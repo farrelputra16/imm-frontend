@@ -27,8 +27,7 @@
                     @csrf
                     <div class="form-group d-flex justify-content-between">
                         @for ($i = 0; $i < 6; $i++)
-                            <input type="text" class="form-control text-center" name="otp_code[]" maxlength="1"
-                                style="width: 50px;">
+                            <input type="text" class="form-control text-center otp-input" name="otp_code[]" maxlength="1" style="width: 50px;">
                         @endfor
                     </div>
                     <div id="error-message" class="text-danger text-center"></div>
@@ -45,6 +44,41 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Handle pasting into the first input
+            $('.otp-input').on('input', function() {
+                let inputs = $('.otp-input');
+                let currentIndex = inputs.index(this);
+
+                // If the input is filled, move to the next one
+                if ($(this).val().length === 1) {
+                    if (currentIndex < inputs.length - 1) {
+                        inputs.eq(currentIndex + 1).focus();
+                    }
+                }
+
+                // If the input is empty and the user deletes, move to the previous one
+                if ($(this).val() === '' && currentIndex > 0) {
+                    inputs.eq(currentIndex - 1).focus();
+                }
+            });
+
+            // Handle pasting into the first input
+            $('.otp-input').on('paste', function(e) {
+                let clipboardData = e.originalEvent.clipboardData.getData('text');
+                let inputs = $('.otp-input');
+
+                for (let i = 0; i < clipboardData.length && i < inputs.length; i++) {
+                    inputs.eq(i).val(clipboardData.charAt(i));
+                    if (i < inputs.length - 1) {
+                        inputs.eq(i + 1).focus();
+                    }
+                }
+                e.preventDefault(); // Prevent the default paste behavior
+            });
+        });
+    </script>
     <script src="{{ asset('js/imm/verificationOtp.js') }}"></script>
 
 </body>

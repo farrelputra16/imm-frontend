@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ asset('css/myproject/creatproject/creatproject.css') }}">
     <link rel="stylesheet" href="{{ asset('css/myproject/creatproject/pemilihansdgs.css') }}">
     <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.12/plyr.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
@@ -348,11 +349,13 @@
                             <div class="mt-4">
                                 <div class="mb-2 sub-heading-1">Video Presentation</div>
                                 <div class="upload-box-custom" onclick="document.getElementById('video-upload').click();">
-                                    <img src="{{ asset('images/upload.svg') }}" alt="Upload icon">
-                                    <p>Upload a short video presenting your project and its key highlights.</p>
-                                    <input type="file" id="video-upload" accept="video/*">
+                                  <img src="{{ asset('images/upload.svg') }}" alt="Upload icon">
+                                  <p>Upload a short video presenting your project and its key highlights.</p>
+                                  <input type="file" id="video-upload" accept="video/*">
                                 </div>
-                                <div id="video-preview"></div>
+                                <div id="video-preview" class="video-js vjs-default-skin" style="margin-bottom: 100px; display: none; width: 50%;">
+                                  <video id="video" width="100%" height="auto" controls></video>
+                                </div>
                             </div>
 
                         </div>
@@ -360,6 +363,13 @@
                         {{-- Bagian input sebelah kanan --}}
                         <div class="col-md-6">
                             <h3 class=" project-title" style="margin-bottom: 15px;">Investment Details</h3>
+                            <div class="form-group mt-3">
+                                <label for="jumlah_pendanaan_display" class="sub-heading-1">Jumlah Dana Keseluruhan</label>
+                                <input type="text" class="form-control" id="jumlah_pendanaan_display"> <!-- Hanya untuk ditampilkan -->
+                                <!-- Hidden input untuk menyimpan nilai asli tanpa format -->
+                                <input type="hidden" class="form-control" name="jumlah_pendanaan" id="jumlah_pendanaan">
+                            </div>
+
                             <div class="form-group">
                                 <label for="provinsi" class="sub-heading-1">Provinsi</label>
                                 <select class="form-control" name="provinsi" id="provinsi" required>
@@ -381,14 +391,7 @@
                                 <input type="text" class="form-control" id="gmaps" name="gmaps" required>
                             </div>
 
-                            <div class="form-group mt-3">
-                                <label for="jumlah_pendanaan_display">Jumlah Dana Keseluruhan</label>
-                                <input type="text" class="form-control" id="jumlah_pendanaan_display" readonly> <!-- Hanya untuk ditampilkan -->
-                                <!-- Hidden input untuk menyimpan nilai asli tanpa format -->
-                                <input type="hidden" class="form-control" name="jumlah_pendanaan" id="jumlah_pendanaan">
-                            </div>
-
-                            <!-- Opsi Apakah Ada Pendanaan Eksternal -->
+                            {{-- <!-- Opsi Apakah Ada Pendanaan Eksternal -->
                             <div class="form-group">
                                 <label for="external_funding">Apakah Proyek Ini Memiliki Pendanaan Eksternal?</label>
                                 <select class="form-control" id="external_funding" name="external_funding">
@@ -480,7 +483,7 @@
                                 <button type="button" class="btn btn-success btn-add-dana">
                                     <i class="fa-solid fa-plus" style="color: #ffffff;"></i> Tambah Dana
                                 </button>
-                            </div>
+                            </div> --}}
 
 
                             <div class="form-group">
@@ -704,6 +707,7 @@
                 yearOption.text = i.toString();
                 document.getElementById(selectId).appendChild(yearOption);
               }
+              document.getElementById(selectId).value = currentYear;
             }
 
             // Function to update date input
@@ -775,51 +779,73 @@
         {{-- Bagian preview untuk Video dan Pitch deck --}}
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-            var pitchDeckInput = document.getElementById('pitch-deck-upload');
-            var videoInput = document.getElementById('video-upload');
-            var pitchDeckPreviewContainer = document.getElementById('pitch-deck-preview');
-            var videoPreviewContainer = document.getElementById('video-preview');
+                var pitchDeckInput = document.getElementById('pitch-deck-upload');
+                var videoInput = document.getElementById('video-upload');
+                var pitchDeckPreviewContainer = document.getElementById('pitch-deck-preview');
+                var videoPreviewContainer = document.getElementById('video-preview');
 
-            pitchDeckInput.addEventListener('change', function() {
-                var file = this.files[0];
-                if (file) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    var pdfPreview = document.createElement('embed');
-                    pdfPreview.src = e.target.result;
-                    pdfPreview.width = '100%';
-                    pdfPreview.height = '500px';
+                pitchDeckInput.addEventListener('change', function() {
+                    var file = this.files[0];
+                    if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        var pdfPreview = document.createElement('embed');
+                        pdfPreview.src = e.target.result;
+                        pdfPreview.width = '100%';
+                        pdfPreview.height = '500px';
+                        pitchDeckPreviewContainer.innerHTML = '';
+                        pitchDeckPreviewContainer.appendChild(pdfPreview);
+                        pitchDeckPreviewContainer.innerHTML += `<p>File name: ${file.name}</p>`;
+                    };
+                    reader.readAsDataURL(file);
+                    } else {
                     pitchDeckPreviewContainer.innerHTML = '';
-                    pitchDeckPreviewContainer.appendChild(pdfPreview);
-                    pitchDeckPreviewContainer.innerHTML += `<p>File name: ${file.name}</p>`;
-                };
-                reader.readAsDataURL(file);
-                } else {
-                pitchDeckPreviewContainer.innerHTML = '';
-                }
-            });
+                    }
+                });
 
-            videoInput.addEventListener('change', function() {
-                var file = this.files[0];
-                if (file) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    var videoPreview = document.createElement('video');
-                    videoPreview.src = e.target.result;
-                    videoPreview.width = '100%';
-                    videoPreview.height = '500px';
-                    videoPreview.controls = true;
-                    videoPreviewContainer.innerHTML = '';
-                    videoPreviewContainer.appendChild(videoPreview);
-                    videoPreviewContainer.innerHTML += `<p>File name: ${file.name}</p>`;
-                };
-                reader.readAsDataURL(file);
-                } else {
-                videoPreviewContainer.innerHTML = '';
-                }
-            });
+                videoInput.addEventListener('change', function() {
+                    var file = this.files[0];
+                    if (file) {
+                        if (file.type.startsWith('video/')) {
+                        var videoPreviewContainer = document.getElementById('video-preview');
+                        var videoPreview = document.getElementById('video');
+                        if (!videoPreview) {
+                            console.error("Could not find video element with id 'video'");
+                            return;
+                        }
+
+                        videoPreviewContainer.innerHTML = ''; // Kosongkan preview video sebelumnya
+                        videoPreviewContainer.style.display = 'none'; // Sembunyikan preview video sebelumnya
+
+                        var videoURL = URL.createObjectURL(file);
+                        videoPreview.src = videoURL;
+                        videoPreview.type = file.type;
+
+                        // Tambahkan event listener untuk menampilkan preview video setelah video tersebut sepenuhnya dimuat
+                        videoPreview.addEventListener('canplay', function() {
+                            videoPreviewContainer.style.display = 'block'; // Tampilkan preview video setelah video dimuat
+                        });
+
+                        videoPreviewContainer.appendChild(videoPreview);
+                        videoPreviewContainer.innerHTML += `<p>File name: ${file.name}</p>`;
+
+                        // Tambahkan event listener untuk menghapus objek URL saat video tidak lagi dibutuhkan
+                        videoPreview.addEventListener('loadedmetadata', function() {
+                            URL.revokeObjectURL(videoURL);
+                        });
+                        } else {
+                        alert('Please upload a valid video file.');
+                        videoPreviewContainer.innerHTML = '';
+                        videoPreviewContainer.style.display = 'none'; // Sembunyikan preview video
+                        }
+                    } else {
+                        videoPreviewContainer.innerHTML = '';
+                        videoPreviewContainer.style.display = 'none'; // Sembunyikan preview video
+                    }
+                });
             });
         </script>
+        <script src="https://vjs.zencdn.net/7.10.1/video.js"></script>
 
         <script>
             // Ambil elemen select untuk provinsi dan kota/kabupaten
@@ -897,6 +923,7 @@
                 });
             });
         </script>
+
         <script>
             $(document).ready(function() {
                 $('.sdg-item').on('click', function(e) {
@@ -941,6 +968,7 @@
                 });
             });
         </script>
+
         <script>
             $(document).ready(function() {
                 $('.tag-button').click(function() {
@@ -1005,33 +1033,33 @@
                     $(this).closest('tr').remove();
                 });
 
-                var indexDana = 2; // Start index for internal funding
+                // var indexDana = 2; // Start index for internal funding
 
                 // Tampilkan/ Sembunyikan bagian pendanaan eksternal berdasarkan pilihan
-                $("#external_funding").change(function () {
-                    var selectedValue = $(this).val();
-                    if (selectedValue === "yes") {
-                        $("#external-funding-section").show();
-                    } else {
-                        $("#external-funding-section").hide();
-                        $("#nominal_eksternal_display").val('');
-                        $("#nominal_eksternal").val(0);
-                    }
-                    updateTotalFunding();
-                });
+                // $("#external_funding").change(function () {
+                //     var selectedValue = $(this).val();
+                //     if (selectedValue === "yes") {
+                //         $("#external-funding-section").show();
+                //     } else {
+                //         $("#external-funding-section").hide();
+                //         $("#nominal_eksternal_display").val('');
+                //         $("#nominal_eksternal").val(0);
+                //     }
+                //     updateTotalFunding();
+                // });
 
                 // Tampilkan/ Sembunyikan bagian pendanaan internal berdasarkan pilihan
-                $("#internal_funding").change(function () {
-                    var selectedValue = $(this).val();
-                    if (selectedValue === "yes") {
-                        $("#internal-funding-section").show();
-                    } else {
-                        $("#internal-funding-section").hide();
-                        $("#nominal_internal_display").val('');
-                        $("#nominal_internal").val(0);
-                    }
-                    updateTotalFunding();
-                });
+                // $("#internal_funding").change(function () {
+                //     var selectedValue = $(this).val();
+                //     if (selectedValue === "yes") {
+                //         $("#internal-funding-section").show();
+                //     } else {
+                //         $("#internal-funding-section").hide();
+                //         $("#nominal_internal_display").val('');
+                //         $("#nominal_internal").val(0);
+                //     }
+                //     updateTotalFunding();
+                // });
 
                 // Fungsi untuk menghapus format Rupiah
                 function removeFormatRupiah(angka) {
@@ -1059,116 +1087,124 @@
                     return 'Rp. ' + rupiah;
                 }
 
-                // Format input menjadi Rupiah saat diinput
-                function formatAndUpdate() {
+                // Update jumlah pendanaan saat input berubah
+                $("#jumlah_pendanaan_display").on('input', function() {
                     var nominal = $(this).val();
                     var originalValue = removeFormatRupiah(nominal);
                     $(this).val(formatRupiah(originalValue));
+                    $("#jumlah_pendanaan").val(originalValue);
+                });
 
-                    // Simpan nilai asli ke input tersembunyi
-                    $(this).siblings('input[type="hidden"]').val(originalValue);
-                    updateTotalFunding();
-                }
+                // Format input menjadi Rupiah saat diinput
+                // function formatAndUpdate() {
+                //     var nominal = $(this).val();
+                //     var originalValue = removeFormatRupiah(nominal);
+                //     $(this).val(formatRupiah(originalValue));
 
-                $("#nominal_eksternal_display, #nominal_internal_display").on('input', formatAndUpdate);
+                //     // Simpan nilai asli ke input tersembunyi
+                //     $(this).siblings('input[type="hidden"]').val(originalValue);
+                //     updateTotalFunding();
+                // }
+
+                // $("#nominal_eksternal_display, #nominal_internal_display").on('input', formatAndUpdate);
 
                 // Update jumlah dana keseluruhan saat nominal eksternal atau internal berubah
-                function updateTotalFunding() {
-                    var totalFunding = 0;
+                // function updateTotalFunding() {
+                //     var totalFunding = 0;
 
-                    // Loop through all nominal inputs and sum their values
-                    $('input[name^="dana"]').each(function() {
-                        var nominal = parseFloat($(this).val()) || 0;
-                        totalFunding += nominal;
-                    });
+                //     // Loop through all nominal inputs and sum their values
+                //     $('input[name^="dana"]').each(function() {
+                //         var nominal = parseFloat($(this).val()) || 0;
+                //         totalFunding += nominal;
+                //     });
 
-                    $("#jumlah_pendanaan_display").val(formatRupiah(totalFunding.toString()));
-                    $("#jumlah_pendanaan").val(totalFunding);
-                }
+                //     $("#jumlah_pendanaan_display").val(formatRupiah(totalFunding.toString()));
+                //     $("#jumlah_pendanaan").val(totalFunding);
+                // }
 
                 // Fungsi untuk menambahkan baris pendanaan internal baru
-                $(".btn-add-dana").click(function() {
-                    var selectedOptions = $('.spesifikasi-pendanaan select').map(function() {
-                        return $(this).val();
-                    }).get();
+                // $(".btn-add-dana").click(function() {
+                //     var selectedOptions = $('.spesifikasi-pendanaan select').map(function() {
+                //         return $(this).val();
+                //     }).get();
 
-                    var options = [
-                        'Pinjaman Internal',
-                        'Investasi Internal',
-                        'Pinjaman Bank',
-                        'Kredit Usaha Rakyat',
-                        'Kredit Modal Kerja',
-                        'Kredit Investasi',
-                        'Kredit Komersial',
-                        'Dana dari Pemegang Saham',
-                        'Reinvestasi Laba',
-                        'Dana dari Mitra Bisnis'
-                    ];
+                //     var options = [
+                //         'Pinjaman Internal',
+                //         'Investasi Internal',
+                //         'Pinjaman Bank',
+                //         'Kredit Usaha Rakyat',
+                //         'Kredit Modal Kerja',
+                //         'Kredit Investasi',
+                //         'Kredit Komersial',
+                //         'Dana dari Pemegang Saham',
+                //         'Reinvestasi Laba',
+                //         'Dana dari Mitra Bisnis'
+                //     ];
 
-                    var availableOptions = options.filter(function(option) {
-                        return !selectedOptions.includes(option);
-                    });
+                //     var availableOptions = options.filter(function(option) {
+                //         return !selectedOptions.includes(option);
+                //     });
 
-                    if (availableOptions.length === 0) {
-                        return;
-                    }
+                //     if (availableOptions.length === 0) {
+                //         return;
+                //     }
 
-                    var optionsHtml = availableOptions.map(function(option) {
-                        return '<option value="' + option + '">' + option + '</option>';
-                    }).join('');
+                //     var optionsHtml = availableOptions.map(function(option) {
+                //         return '<option value="' + option + '">' + option + '</option>';
+                //     }).join('');
 
-                    var newRow = `
-                        <tr>
-                            <td>
-                                <select class="form-control" name="dana[${indexDana}][jenis_dana]" required>
-                                    ${optionsHtml}
-                                </select>
-                            </td>
-                            <td>
-                                <input type="text" class="form-control nominal-internal-display" placeholder="Nominal Pendanaan Internal" required>
-                                <input type="hidden" name="dana[${indexDana}][nominal]">
-                            </td>
-                            <td>
-                                <button type=" button" class="btn btn-danger btn-remove-dana">
-                                    <i class="fa-solid fa-minus" style="color: #ffffff;"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `;
+                //     var newRow = `
+                //         <tr>
+                //             <td>
+                //                 <select class="form-control" name="dana[${indexDana}][jenis_dana]" required>
+                //                     ${optionsHtml}
+                //                 </select>
+                //             </td>
+                //             <td>
+                //                 <input type="text" class="form-control nominal-internal-display" placeholder="Nominal Pendanaan Internal" required>
+                //                 <input type="hidden" name="dana[${indexDana}][nominal]">
+                //             </td>
+                //             <td>
+                //                 <button type=" button" class="btn btn-danger btn-remove-dana">
+                //                     <i class="fa-solid fa-minus" style="color: #ffffff;"></i>
+                //                 </button>
+                //             </td>
+                //         </tr>
+                //     `;
 
-                    $('.spesifikasi-pendanaan tbody').append(newRow);
-                    indexDana++;
+                //     $('.spesifikasi-pendanaan tbody').append(newRow);
+                //     indexDana++;
 
-                    if (availableOptions.length === 1) {
-                        $(".btn-add-dana").prop('disabled', true);
-                    }
+                //     if (availableOptions.length === 1) {
+                //         $(".btn-add-dana").prop('disabled', true);
+                //     }
 
-                    // Add event listener to new input
-                    $('.nominal-internal-display').last().on('input', formatAndUpdate);
-                });
+                //     // Add event listener to new input
+                //     $('.nominal-internal-display').last().on('input', formatAndUpdate);
+                // });
 
-                // Fungsi untuk menghapus baris pendanaan internal
-                $(document).on('click', '.btn-remove-dana', function() {
-                    $(this).closest('tr').remove();
-                    indexDana--;
+                // // Fungsi untuk menghapus baris pendanaan internal
+                // $(document).on('click', '.btn-remove-dana', function() {
+                //     $(this).closest('tr').remove();
+                //     indexDana--;
 
-                    var selectedOptions = $('.spesifikasi-pendanaan select').map(function() {
-                        return $(this).val();
-                    }).get();
+                //     var selectedOptions = $('.spesifikasi-pendanaan select').map(function() {
+                //         return $(this).val();
+                //     }).get();
 
-                    var options = [
-                        'Pinjaman Internal',
-                        'Investasi Internal'
-                    ];
+                //     var options = [
+                //         'Pinjaman Internal',
+                //         'Investasi Internal'
+                //     ];
 
-                    var availableOptions = options.filter(function(option) {
-                        return !selectedOptions.includes(option);
-                    });
+                //     var availableOptions = options.filter(function(option) {
+                //         return !selectedOptions.includes(option);
+                //     });
 
-                    if (availableOptions.length > 0) {
-                        $(".btn-add-dana").prop('disabled', false);
-                    }
-                });
+                //     if (availableOptions.length > 0) {
+                //         $(".btn-add-dana").prop('disabled', false);
+                //     }
+                // });
 
 
 
