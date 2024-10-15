@@ -10,7 +10,7 @@
             <option value="">All</option>
             <option value="pending">Pending</option>
             <option value="approved">Approved</option>
-            <option value="rejected">Rejected</option>  
+            <option value="rejected">Rejected</option>
         </select>
     </div>
 
@@ -43,7 +43,6 @@
                 @foreach($investments as $investment)
                     <tr data-status="{{ $investment->status }}"> <!-- Tambahkan data-status untuk filter -->
                         <td>{{ $investment->investor->org_name }}</td>
-                        <td>{{ $investment->project->nama }}</td>
                         <td>{{ number_format($investment->amount, 0, ',', '.') }} IDR</td>
                         <td>{{ \Carbon\Carbon::parse($investment->investment_date)->format('j M, Y') }}</td>
                         <td>{{ $investment->funding_type }}</td> <!-- Menampilkan Funding Type -->

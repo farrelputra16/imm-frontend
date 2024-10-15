@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h1>Invest in {{ $fundingRound->name }}</h1>
+    <h1>Invest in Funding Round: {{ $fundingRound->name }}</h1>
 
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -14,9 +14,8 @@
         </div>
     @endif
 
-    <form action="{{ route('investments.store') }}" method="POST">
+    <form action="{{ route('investments.storeFromFundingRound', $fundingRound->id) }}" method="POST">
         @csrf
-        <input type="hidden" name="funding_round_id" value="{{ $fundingRound->id }}">
 
         <!-- Investment amount -->
         <div class="form-group">
@@ -36,21 +35,35 @@
             <input type="text" name="funding_type" id="funding_type" class="form-control" required>
         </div>
 
+        <!-- Investment Type -->
+        <div class="form-group">
+            <label for="tipe_investasi">Investment Type</label>
+            <select name="tipe_investasi" id="tipe_investasi" class="form-control">
+                <option value="venture_capital">Venture Capital</option>
+                <option value="angel_investment">Angel Investment</option>
+                <option value="crowdfunding">Crowdfunding</option>
+                <option value="government_grant">Government Grant</option>
+                <option value="foundation_grant">Foundation Grant</option>
+                <option value="buyout">Buyout</option>
+                <option value="growth_capital">Growth Capital</option>
+            </select>
+        </div>
+
         <!-- Pengirim (Sender) -->
         <div class="form-group">
             <label for="pengirim">Sender (Pengirim)</label>
-            <input type="text" name="pengirim" id="pengirim" class="form-control" value="{{ $investor->user->nama_depan }}" required>
+            <input type="text" name="pengirim" id="pengirim" class="form-control" value="{{ $firstName }}" required>
         </div>
 
-        <!-- Bank Asal -->
+        <!-- Bank Asal (Originating Bank) -->
         <div class="form-group">
-            <label for="bank_asal">Originating Bank</label>
+            <label for="bank_asal">Originating Bank (Bank Asal)</label>
             <input type="text" name="bank_asal" id="bank_asal" class="form-control" required>
         </div>
 
-        <!-- Bank Tujuan -->
+        <!-- Bank Tujuan (Destination Bank) -->
         <div class="form-group">
-            <label for="bank_tujuan">Destination Bank</label>
+            <label for="bank_tujuan">Destination Bank (Bank Tujuan)</label>
             <input type="text" name="bank_tujuan" id="bank_tujuan" class="form-control" required>
         </div>
 

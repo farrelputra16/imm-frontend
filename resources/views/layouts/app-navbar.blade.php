@@ -7,7 +7,7 @@
     <title>IMM | @yield('title')</title>
     <!-- CSS Umum -->
     <!-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> -->
-    <link rel="stylesheet" href="{{ asset('css/event/event.css') }}"> 
+    <link rel="stylesheet" href="{{ asset('css/event/event.css') }}">
     <link rel="icon" href="{{ asset('images/imm.png') }}" type="image/png">
     <!-- CSS Khusus Halaman -->
     @yield('css')

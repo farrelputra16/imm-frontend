@@ -31,7 +31,6 @@
             @foreach($investments as $investment)
                 <tr>
                     <td>{{ $investment->company->nama }}</td>
-                    <td>{{ $investment->project->nama }}</td>
                     <td>Rp{{ number_format($investment->amount, 0, ',', '.') }}</td>
                     <td>{{ $investment->investment_date ? \Carbon\Carbon::parse($investment->investment_date)->format('j M, Y') : 'N/A' }}</td>
                     <td>{{ $investment->funding_type }}</td>
