@@ -348,12 +348,16 @@ h2 {
             </div>
         </div>
         <!-- Bagian Funding Rounds -->
-        <div class="container mt-5">
-            <h2 class="text-center mb-5 text-primary">Funding Rounds</h2>
-            <table class="table table-bordered table-hover">
+        <div class="container mt-5" style="margin-bottom:20px;">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Funding Rounds</h4>
+
+                    <!-- Tabel Investor dengan kelas datatable -->
+                    <table id="investorTable" class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>Funding Round Name</th>
+                        <th>Name</th>
                         <th>Amount Raised</th>
                         <th>Target</th>
                         <th>Actions</th>
@@ -369,7 +373,7 @@ h2 {
                                 @if(Auth::check() && Auth::user()->role === 'INVESTOR')
                                     <a href="{{ route('investments.createFromFundingRound', $round->id) }}" class="btn btn-primary">Invest Now</a>
                                 @else
-                                    <a href="{{ route('login') }}" class="btn btn-primary">Login to Invest</a>
+                                    <a href="{{ route('login') }}" class="btn btn-primary]]">Login to Invest</a>
                                 @endif
                             </td>
                         </tr>
