@@ -7,14 +7,16 @@ use App\Models\Investor;
 use App\Models\Investment;
 use Illuminate\Http\Request;
 use App\Models\CompanyIncome;
+use App\Models\FundingRound;
 use Illuminate\Support\Facades\Auth;
 
 class InvestmentController extends Controller
 {
     // Menampilkan form investasi untuk investor
-    public function create(Company $company)
+    public function create(Company $company, $funding_round_id)
     {
         // Muat project beserta dana
+        $fundingRound = FundingRound::findOrFail($funding_round_id);
         $company->load(['projects.dana']);
         $projects = $company->projects; // Ambil project yang terkait dengan company
 
@@ -30,9 +32,9 @@ class InvestmentController extends Controller
             // Pisahkan funding berdasarkan jenisnya
             foreach ($project->dana as $dana) {
                 if (in_array($dana->jenis_dana, [
-                    'Hibah', 'Investasi', 'Pinjaman', 'Pre-seed Funding', 'Seed Funding', 
-                    'Series A Funding', 'Series B Funding', 'Series C Funding', 'Series D Funding', 
-                    'Series E Funding', 'Debt Funding', 'Equity Funding', 'Convertible Debt', 
+                    'Hibah', 'Investasi', 'Pinjaman', 'Pre-seed Funding', 'Seed Funding',
+                    'Series A Funding', 'Series B Funding', 'Series C Funding', 'Series D Funding',
+                    'Series E Funding', 'Debt Funding', 'Equity Funding', 'Convertible Debt',
                     'Grants', 'Revenue-Based Financing', 'Private Equity', 'IPO'])) {
                     $externalFunding->push($dana);
                 } else {
@@ -51,7 +53,7 @@ class InvestmentController extends Controller
         $investmentTypes = ['venture_capital', 'angel_investment', 'crowdfunding', 'government_grant', 'foundation_grant', 'buyout', 'growth_capital'];
 
         // Kirim data ke view
-        return view('investments.create', compact('company', 'projectsWithFunding', 'investmentTypes', 'firstName'));
+        return view('investments.create', compact('company', 'fundingRound','projectsWithFunding', 'investmentTypes', 'firstName'));
     }
 
     // Menyimpan data investasi
@@ -59,7 +61,7 @@ class InvestmentController extends Controller
     {
         $request->validate([
             'amount' => 'required|numeric|min:1',
-            'project_id' => 'required|exists:projects,id',
+            'funding_round_id' => 'required|exists:funding_rounds,id',
             'investment_date' => 'required|date',
             'pengirim' => 'required|string',
             'bank_asal' => 'required|string',
@@ -80,7 +82,7 @@ class InvestmentController extends Controller
         Investment ::create([
             'investor_id' => $investor->id,
             'company_id' => $company->id,
-            'project_id' => $request->project_id,
+            'funding_round_id' => $request->funding_round_id,
             'amount' => $request->amount,
             'investment_date' => $request->investment_date,
             'status' => 'pending',
@@ -98,16 +100,65 @@ class InvestmentController extends Controller
     public function pending()
     {
         $investor = Investor::where('user_id', Auth::id())->first();
-    
+
         if (!$investor) {
             // Redirect back with an error message if the investor is not found
             return redirect()->back()->withErrors(['error' => 'Investor not found. Please ensure you have registered as an investor.']);
         }
-    
+
         $investments = Investment::where('investor_id', $investor->id)->get();
         return view('investments.pending', compact('investments'));
     }
 
+    public function createFromFundingRound(FundingRound $fundingRound)
+    {
+        $user = Auth::user();
+        $firstName = $user->nama_depan . ' ' . $user->nama_belakang;
+
+        // Kirim data ke view
+        return view('investments.create_from_funding_round', compact('fundingRound', 'firstName'));
+    }
+
+    /**
+     * Menyimpan data investasi yang baru dari funding round.
+     */
+    public function storeFromFundingRound(Request $request, FundingRound $fundingRound)
+    {
+        $request->validate([
+            'amount' => 'required|numeric|min:1',
+            'investment_date' => 'required|date',
+            'pengirim' => 'required|string',
+            'bank_asal' => 'required|string',
+            'bank_tujuan' => 'required|string',
+            'funding_type' => 'required|string',
+            'tipe_investasi' => 'required|string',
+        ]);
+
+        // Ambil investor yang sedang login
+        $user = Auth::user();
+        $investor = Investor::where('user_id', $user->id)->first();
+
+        if (!$investor) {
+            return redirect()->back()->withErrors(['error' => 'You must be an investor to invest.']);
+        }
+
+        // Buat investasi baru terkait dengan funding round
+        Investment::create([
+            'investor_id' => $investor->id,
+            'company_id' => $fundingRound->company_id,
+            'amount' => $request->amount,
+            'investment_date' => $request->investment_date,
+            'status' => 'pending',
+            'pengirim' => $request->pengirim,
+            'bank_asal' => $request->bank_asal,
+            'bank_tujuan' => $request->bank_tujuan,
+            'funding_type' => $request->funding_type,
+            'tipe_investasi' => $request->tipe_investasi,
+            'funding_round_id' => $fundingRound->id,  // Tambahkan funding_round_id
+        ]);
+
+        return redirect()->route('investments.pending')->with('success', 'Investment submitted successfully!');
+    }
     // Menampilkan halaman approval untuk pemilik perusahaan
     public function approval()
     {
@@ -160,4 +211,5 @@ class InvestmentController extends Controller
         $investment->update(['status' => 'approved']);
         return redirect()->back()->with('success', 'Investment approved successfully.');
     }
+
 }

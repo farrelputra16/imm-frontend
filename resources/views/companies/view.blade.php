@@ -215,21 +215,6 @@ h2 {
             </div>
 
             <!-- Tambahkan ini di bagian yang sesuai pada tampilan profil perusahaan -->
-            @if(Auth::check() && Auth::user()->role === 'INVESTOR')
-            <div class="mt-4 text-center">
-                <a href="{{ route('investments.create', $company->id) }}" class="btn btn-primary">
-                    Start Invest
-                </a>
-            </div>
-            @else
-            <div class="mt-4 text-center">
-                <a href="{{ route('login') }}" class="btn btn-primary">
-                    Invest
-                </a>
-            </div>
-            @endif
-
-
             <div class="col-sm-6">
                 <div class="card-body">
                     <h4 class="card-title" style="padding-bottom: 10px;">Highlights</h4>
@@ -361,6 +346,40 @@ h2 {
                     </table>
                 </div>
             </div>
+        </div>
+        <!-- Bagian Funding Rounds -->
+        <div class="container mt-5" style="margin-bottom:20px;">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Funding Rounds</h4>
+
+                    <!-- Tabel Investor dengan kelas datatable -->
+                    <table id="investorTable" class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Amount Raised</th>
+                        <th>Target</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($company->fundingRounds as $round)
+                        <tr>
+                            <td>{{ $round->name }}</td>
+                            <td>${{ number_format($round->money_raised, 0, ',', '.') }}</td>
+                            <td>${{ number_format($round->target, 0, ',', '.') }}</td>
+                            <td>
+                                @if(Auth::check() && Auth::user()->role === 'INVESTOR')
+                                    <a href="{{ route('investments.createFromFundingRound', $round->id) }}" class="btn btn-primary">Invest Now</a>
+                                @else
+                                    <a href="{{ route('login') }}" class="btn btn-primary]]">Login to Invest</a>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

@@ -25,7 +25,9 @@ class AppServiceProvider extends ServiceProvider
      * @return void
      */
     public function boot()
+
     {
+        
         Mail::getSwiftMailer()->getTransport()->setStreamOptions([
             'ssl' => [
                 'verify_peer' => false,

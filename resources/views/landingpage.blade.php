@@ -66,6 +66,42 @@
         animation: float 3s ease-in-out infinite;
     }
 
+    /* Animasi untuk muncul dari sisi kiri */
+.animate-left {
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: all 1.0s ease;
+}
+
+.animate-left.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Animasi untuk muncul dari sisi kanan */
+.animate-right {
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 1.0s ease;
+}
+
+.animate-right.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Animasi untuk muncul dari atas */
+.animate-top {
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: all 1.0s ease;
+}
+
+.animate-top.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
     @keyframes float {
         0% {
             transform: translateY(0px);
@@ -348,7 +384,7 @@
 <div class="container">
     <div class="row section-hero">
         <!-- Left Side: Text Content -->
-        <div class="col-md-6">
+        <div class="col-md-6 animate-left">
             <h1>Make Your Decision <br>
                 <span id="changing-word">Faster.</span>
               </h1>
@@ -359,14 +395,14 @@
         </div>
 
         <!-- Right Side: Chair Image -->
-        <div class="col-md-6 text-center">
+        <div class="col-md-6 text-center animate-right">
             <img src="images/landingpage/chairfix.png" class="img-fluid chair-image" alt="Chair with icons">
         </div>
     </div>
 </div>
 
 <!-- Section with Cards -->
-<div class="container section-cards">
+<div class="container section-cards animate-left">
     <div class="row">
         <!-- First Card -->
         <div class="col-md-4 mb-4">
@@ -412,7 +448,7 @@
 
 <!-- Insights Section -->
 <div class="container">
-    <div class="header-crunchbase">
+    <div class="header-crunchbase animate-right">
         <div>
             <h1>
                 CRUNCHBASE<br>
@@ -524,7 +560,7 @@
                     </div>
                 </div>
 
-            <div class="promo-card">
+            <div class="promo-card animate-right">
                 <div class="row align-items-center">
                     <!-- Left Side: Text and Button -->
                     <div class="col-md-8">
@@ -600,6 +636,26 @@
 </div>
 
 <script>
+    // Function to observe elements
+function observeElements() {
+    const elements = document.querySelectorAll('.animate-left, .animate-right, .animate-top');
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+                observer.unobserve(entry.target); // Stop observing once element is visible
+            }
+        });
+    }, { threshold: 0.1 }); // Trigger when 10% of the element is visible
+
+    elements.forEach(element => {
+        observer.observe(element);
+    });
+}
+
+// Call the function to observe elements when page loads
+document.addEventListener('DOMContentLoaded', observeElements);
+
     // Array of words to rotate
     const words = ['Faster.', 'Better.', 'Effective.','Efficient.'];
     let wordIndex = 0;

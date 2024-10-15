@@ -83,7 +83,6 @@
                             <th>Number of Contacts</th>
                             <th>Number of Investments</th>
                             <th>Location</th>
-                            <th>Investment Stage</th>
                             <th>Departments</th>
                         </tr>
                     </thead>
@@ -102,7 +101,6 @@
                             <td>{{ $investor->number_of_contacts }}</td>
                             <td>{{ $investor->number_of_investments }}</td>
                             <td>{{ $investor->location }}</td>
-                            <td>{{ $investor->investment_stage }}</td>
                             <td>{{ $investor->departments }}</td>
                         </tr>
                         @endforeach

@@ -27,7 +27,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\InvestmentController;
 use App\Http\Controllers\ManagementKeuanganController;
 use App\Http\Controllers\Auth\RegisterController;
-
+use App\Http\Controllers\FundingRoundController;
 // Rute untuk autentikasi
 Auth::routes();
 Auth::routes(['verify' => true]);
@@ -58,6 +58,9 @@ Route::middleware(['auth'])->group(function () {
 // Route umum yang tidak memerlukan autentikasi
 Route::get('/hubs', [HubsController::class, 'index'])->name('hubs.index');
 Route::get('/hubs/{id}', [HubsController::class, 'show'])->name('hubs.show');
+
+
+// Rute index untuk menampilkan funding rounds tanpa middleware auth
 
 
 Route::get('/home', function () {
@@ -162,11 +165,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/people-profile', [PeopleController::class, 'profile'])->name('people.profile');
         Route::put('/people-profile/update', [PeopleController::class, 'updateProfile'])->name('people.updateProfile');
     });
-
+    // Routing untuk Funding Rounds dan Investments
+Route::get('/funding-rounds', [FundingRoundController::class, 'index'])->name('funding_rounds.index');
+Route::get('/funding-rounds/{fundingRound}', [FundingRoundController::class, 'show'])->name('funding_rounds.show');
     Route::middleware(['auth'])->group(function () {
-        // Route untuk investor membuat investasi
-        Route::get('companies/{company}/investments/create', [InvestmentController::class, 'create'])->name('investments.create');
-        Route::post('companies/{company}/investments', [InvestmentController::class, 'store'])->name('investments.store');
+        // Routing untuk Investments berdasarkan Funding Round
+        Route::get('funding-rounds/{fundingRound}/invest', [InvestmentController::class, 'createFromFundingRound'])->name('investments.createFromFundingRound');
+        Route::post('funding-rounds/{fundingRound}/invest', [InvestmentController::class, 'storeFromFundingRound'])->name('investments.storeFromFundingRound');
 
         // Route untuk investor melihat pending investments
         Route::get('investments/pending', [InvestmentController::class, 'pending'])->name('investments.pending');

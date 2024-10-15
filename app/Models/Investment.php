@@ -12,7 +12,6 @@ class Investment extends Model
     protected $fillable = [
         'investor_id',
         'company_id',
-        'project_id',
         'amount',
         'investment_date',
         'status',
@@ -20,7 +19,8 @@ class Investment extends Model
         'bank_asal',
         'bank_tujuan',
         'funding_type',
-        'tipe_investasi'
+        'tipe_investasi',
+        'funding_round_id' // Tambahkan funding_round_id di sini
     ];
 
     protected $casts = [
@@ -36,8 +36,8 @@ class Investment extends Model
         return $this->belongsTo(Company::class,'company_id');
     }
 
-    public function project()
+    public function fundingRound()
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(FundingRound::class);
     }
 }

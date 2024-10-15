@@ -185,6 +185,7 @@
                     <div class="dropdown-menu">
                         <a href="{{ route('investors.index') }}" class="dropdown-item">Find Investor</a>
                         <a href="{{ route('companies.list') }}" class="dropdown-item">Find Company</a>
+                        <a href="{{ route('funding_rounds.index') }}" class="dropdown-item">Funding Rounds</a>
                     </div>
                 </div>
 
