@@ -158,4 +158,8 @@ class Company extends Model
         }
         return $companies;
     }
+    public function fundingRounds()
+    {
+        return $this->hasMany(FundingRound::class);
+    }
 }

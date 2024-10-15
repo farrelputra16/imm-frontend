@@ -104,7 +104,7 @@ class CompanyController extends Controller
     public function show($id)
     {
         // Find the company by ID, or fail if not found
-        $company = Company::findOrFail($id);
+        $company = Company::with('fundingRounds')->findOrFail($id);
 
         // Load related and incomes for the company
         $company->load('incomes');

@@ -20,7 +20,7 @@
         <!-- Investment amount -->
         <div class="form-group">
             <label for="amount">Investment Amount</label>
-            <input type="number" name="amount" id="amount" class="form-control" required min="1">
+            <input type="text" name="amount" id="amount" class="form-control" required min="1">
         </div>
 
         <!-- Investment date -->
@@ -71,4 +71,12 @@
         <button type="submit" class="btn btn-primary">Submit Investment</button>
     </form>
 </div>
+
+<!-- Tambahkan script untuk auto-formatting angka -->
+<script>
+    document.getElementById('amount').addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, ''); // Hanya angka
+        e.target.value = new Intl.NumberFormat('id-ID').format(value); // Format ribuan dengan titik
+    });
+</script>
 @endsection
