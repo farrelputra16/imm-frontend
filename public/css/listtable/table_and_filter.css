@@ -105,6 +105,16 @@ th, td {
     vertical-align: middle;
 }
 
+/* Add a max-width to the table */
+.table-responsive {
+    max-width: 100%;
+}
+
+.table-responsive table {
+    width: 100%;
+    margin-bottom: 0px;
+}
+
 /* Add background color to the table header */
 .table-responsive thead th {
     background-color: #6f42c1 !important; /* Forcing the background color */
@@ -302,4 +312,53 @@ td:nth-child(9)  /* Job Departments */ {
 }
 .wishlist-button img {
     margin-right: 10px;
+}
+
+@media (max-width: 767.98px) {
+    /* Adjust the width of the columns for smaller screens */
+    th:nth-child(1),
+    td:nth-child(1) {
+        width: 5%; /* Checkbox column */
+    }
+
+    th:nth-child(2),
+    td:nth-child(2) {
+        width: 30%; /* Organization Name */
+    }
+
+    th:nth-child(3),
+    td:nth-child(3) {
+        width: 20%; /* Founded Date */
+    }
+
+    th:nth-child(4),
+    td:nth-child(4) {
+        width: 20%; /* Last Funding Date */
+    }
+
+    th:nth-child(5),
+    td:nth-child(5) {
+        width: 15%; /* Last Funding Type */
+    }
+
+    th:nth-child(6),
+    td:nth-child(6) {
+        width: 10%; /* Employee */
+    }
+
+    th:nth-child(7),
+    td:nth-child(7) {
+        width: 15%; /* Industries */
+    }
+
+    th:nth-child(8),
+    td:nth-child(8) {
+        width: 30%; /* Description */
+    }
+
+    th:nth-child(9),
+    td:nth-child(9) {
+        text-align: start;
+        width: 10%; /* Job Departments */
+    }
 }

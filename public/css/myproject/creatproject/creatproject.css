@@ -128,7 +128,7 @@ body {
 /* Tags Section */
 
 .tags-container {
-    border: 1px solid #ccc;
+    border: 5px solid #ccc;
     padding: 10px;
     border-radius: 5px;
     display: flex;

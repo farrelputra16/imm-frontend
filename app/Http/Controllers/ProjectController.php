@@ -22,23 +22,23 @@ class ProjectController extends Controller
     {
         $user = Auth::user();
         $search = $request->input('search');
-    
+
         $allProjectsQuery = Project::with('tags', 'sdgs', 'indicators', 'metrics', 'targetPelanggan', 'dana')
             ->whereHas('company', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             });
-    
+
         if ($search) {
             $allProjectsQuery->where('nama', 'like', '%' . $search . '%');
         }
-    
+
         $allProjects = $allProjectsQuery->get();
         $ongoingProjects = $allProjects->where('status', 'Belum selesai');
         $completedProjects = $allProjects->where('status', 'Selesai');
-    
+
         return view('myproject.myproject', compact('allProjects', 'ongoingProjects', 'completedProjects', 'search'));
     }
-    
+
 
 
     public function create()
@@ -49,9 +49,8 @@ class ProjectController extends Controller
         $indicators = Indicator::all();
         $metrics = Metric::all();
         $targetPelanggan = TargetPelanggan::all();
-        $dana = Dana::all();
 
-        return view('myproject.creatproject.creatproject', compact('companies', 'tags', 'sdgs', 'indicators', 'metrics', 'targetPelanggan', 'dana'));
+        return view('myproject.creatproject.creatproject', compact('companies', 'tags', 'sdgs', 'indicators', 'metrics', 'targetPelanggan'));
     }
 
     public function filterMetrics(Request $request)
@@ -88,9 +87,9 @@ class ProjectController extends Controller
             'kota' => 'required|string',
             'gmaps' => 'required|string',
             'jumlah_pendanaan' => 'required|numeric',
-            'dana' => 'required|array',
-            'dana.*.jenis_dana' => 'required|string',
-            'dana.*.nominal' => 'required|numeric',
+            // 'dana' => 'required|array',
+            // 'dana.*.jenis_dana' => 'required|string',
+            // 'dana.*.nominal' => 'required|numeric',
             'company_id' => 'required|exists:companies,id',
             'tag_ids' => 'array',
             'tag_ids.*' => 'exists:tags,id',
@@ -125,14 +124,14 @@ class ProjectController extends Controller
         $project->metrics()->attach($request->input('metric_ids'));
 
         // Save dana (funding) data
-        if ($request->has('dana')) {
-            foreach ($request->dana as $dana) {
-                $project->dana()->create([
-                    'jenis_dana' => $dana['jenis_dana'],
-                    'nominal' => $dana['nominal'],
-                ]);
-            }
-        }
+        // if ($request->has('dana')) {
+        //     foreach ($request->dana as $dana) {
+        //         $project->dana()->create([
+        //             'jenis_dana' => $dana['jenis_dana'],
+        //             'nominal' => $dana['nominal'],
+        //         ]);
+        //     }
+        // }
 
         // Save target customers
         if ($request->has('target_pelanggans')) {
@@ -275,7 +274,7 @@ class ProjectController extends Controller
     {
         // Ambil proyek beserta relasinya
         $project = Project::with('tags', 'sdgs', 'indicators', 'metrics', 'targetPelanggan', 'dana', 'surveys')->findOrFail($id);
-        
+
         // Ambil dokumen proyek dari tabel project_dokumen
         $documents = DB::table('project_dokumen')->where('project_id', $id)->get();
 
@@ -284,7 +283,7 @@ class ProjectController extends Controller
 
         // Ubah relasi proyek ke dalam array untuk keperluan logging
         $projectData = $this->relationshipsToArray($project);
-        
+
         // Tambahkan dokumen ke dalam data proyek
         $projectData['documents'] = $documents->toArray();
 
@@ -301,5 +300,4 @@ class ProjectController extends Controller
         $projects = $company->projects()->with('dana')->get();
         return $projects;
     }
-
 }

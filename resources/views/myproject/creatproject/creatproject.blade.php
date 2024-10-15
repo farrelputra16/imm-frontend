@@ -6,12 +6,22 @@
     <link rel="stylesheet" href="{{ asset('css/myproject/creatproject/indicator.css') }}">
     <link rel="stylesheet" href="{{ asset('css/myproject/creatproject/creatproject.css') }}">
     <link rel="stylesheet" href="{{ asset('css/myproject/creatproject/pemilihansdgs.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        .breadcrumb {
+            background-color: white;
+            padding: 0;
+        }
+        .breadcrumb-item + .breadcrumb-item::before {
+            content: ">";
+            margin-right: 14px;
+            color: #9CA3AF;
+        }
         .popup-notification {
             position: fixed; /* Relative untuk posisi tombol "X" */
             background-color: white;
@@ -56,6 +66,110 @@
             background: rgba(0, 0, 0, 0.7);
             z-index: 999;
         }
+        .target-pelanggan table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .target-pelanggan th, .target-pelanggan td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .target-pelanggan th {
+            font-weight: bold;
+            color: #333;
+            border-bottom: none;
+        }
+
+        .target-pelanggan td:last-child {
+            border-bottom: none;
+        }
+
+        .target-pelanggan input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            height: 40px; /* tambahkan ini untuk membuat ukuran input sama */
+        }
+
+        .target-pelanggan textarea {
+            height: 40px; /* ubah ukuran textarea menjadi lebih tinggi */
+            resize: none; /* tambahkan ini untuk membuat textarea tidak dapat di-resize */
+        }
+        .custom-select-wrapper {
+        position: relative;
+        display: inline-block;
+        }
+
+        .custom-select {
+        background-color: #f0f0ff;
+        border: 1px solid #7a5cff;
+        border-radius: 8px;
+        padding: 5px 10px;
+        margin-right: 10px;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: none;
+        }
+
+        .custom-select-wrapper .custom-select {
+        padding-right: 30px;
+        }
+
+        .custom-select-arrow {
+        position: absolute;
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
+        pointer-events: none;
+        }
+
+        .custom-select-arrow::after {
+        content: "\25BC";
+        font-size: 12px;
+        }
+
+        .custom-select::-webkit-scrollbar {
+        display: none;
+        }
+
+        .label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        .upload-box-custom {
+            border: 2px solid #9b59b6;
+            border-radius: 5px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            cursor: pointer;
+            background-color: none;
+        }
+        .upload-box-custom img {
+            width: 40px;
+            height: 40px;
+            color: #9b59b6;
+            background-color: none;
+        }
+        .upload-box-custom p {
+            margin-top: 10px;
+            color: #666;
+        }
+        .upload-box-custom input[type="file"] {
+            display: none;
+            background-color: none;
+        }
+
     </style>
 @endsection
 @section('content')
@@ -70,174 +184,43 @@
                 <b>Harap Isi Semua Data Yang Diperlukan</b>
             </div>
         </div>
-        {{-- Akhir dari notifikasi --}}        
+        {{-- Akhir dari notifikasi --}}
         <div class="container mt-5">
             <form action="{{ route('projects.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <h1 class="mb-5" id="buatproject">Buat Projek Baru</h1>
+                <nav aria-label="breadcrumb" class="mb-5">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                            <a href="#" style="text-decoration: none; color: #212B36;">Home</a>
+                        </li>
+                        <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                            <a href="#" style="text-decoration: none; color: #212B36;">Project Registration</a>
+                        </li>
+                        <li aria-current="page" class="breadcrumb-item active sub-heading-1">
+                            <span style="color: black;">Register New Project</span>
+                        </li>
+                    </ol>
+                </nav>
+                <h2 class="mb-5" id="buatproject" style="color: #6256CA">Register New Project</h2>
                 <div id="form-section">
                     <div class="row">
+                        {{-- Input bagian kiri --}}
                         <div class="col-md-6">
-                            <h2 class="project-title">Tentang Proyek Anda</h2>  
+                            <h3 class="project-title">Basic Project Information</h3>
                             <div class="form-group">
                                 <input type="file" class="form-control-file" id="img" name="img" hidden>
                             </div>
-                            <div class="form-group">
-                                <label for="nama">Nama Proyek</label>
-                                <input type="text" class="form-control" name="nama" id="nama" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="deskripsi">Deskripsi Proyek</label>
-                                <textarea class="form-control" name="deskripsi" id="deskripsi" rows="5" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="tujuan">Tujuan Proyek</label>
-                                <textarea class="form-control" name="tujuan" id="tujuan" rows="5" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="start_date">Tanggal Mulai Proyek</label>
-                                <input type="date" class="form-control" id="start_date" name="start_date" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="end_date">Tanggal Berakhir Proyek</label>
-                                <input type="date" class="form-control" id="end_date" name="end_date" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="provinsi">Provinsi</label>
-                                <select class="form-control" name="provinsi" id="provinsi" required>
-                                    <!-- Placeholder option -->
-                                    <option value="" disabled selected>Pilih Provinsi</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="kota">Kota/Kabupaten</label>
-                                <select class="form-control" name="kota" id="kota" required>
-                                    <!-- Placeholder option -->
-                                    <option value="" disabled selected>Pilih Kota/Kabupaten</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="gmaps">Google Maps URL:</label>
-                                <input type="text" class="form-control" id="gmaps" name="gmaps" required>
-                            </div>
 
-                        </div>
-                        <div class="col-md-6">
-                            <h2 class="project-title">Spesisifikasi Pendanaan</h2>
+                            {{-- Bagian Tag Tema untuk Pendaftaran Project --}}
                             <div class="form-group">
-                                <div class="form-group mt-3">
-                                    <label for="jumlah_pendanaan_display">Jumlah Dana Keseluruhan</label>
-                                    <input type="text" class="form-control" id="jumlah_pendanaan_display" readonly> <!-- Hanya untuk ditampilkan -->
-                                    <!-- Hidden input untuk menyimpan nilai asli tanpa format -->
-                                    <input type="hidden" class="form-control" name="jumlah_pendanaan" id="jumlah_pendanaan">
-                                </div>
-                            
-                                <!-- Opsi Apakah Ada Pendanaan Eksternal -->
-                                <div class="form-group">
-                                    <label for="external_funding">Apakah Proyek Ini Memiliki Pendanaan Eksternal?</label>
-                                    <select class="form-control" id="external_funding" name="external_funding">
-                                        <option value="" disabled selected>Pilih Jawaban</option>
-                                        <option value="yes">Ya</option>
-                                        <option value="no">Tidak</option>
-                                    </select>
-                                </div>
-
-                                <!-- Bagian untuk pendanaan eksternal (disembunyikan jika "Tidak") -->
-                                <div id="external-funding-section" style="display: none;">
-                                    <label for="jenis_dana_eksternal">Jenis Dana Eksternal</label>
-                                    <select class="form-control" name="dana[0][jenis_dana]" required>
-                                        <option value="Hibah">Hibah</option>
-                                        <option value="Investasi">Investasi</option>
-                                        <option value="Pinjaman">Pinjaman</option>
-                                        <option value="Pre-seed Funding">Pre-seed Funding</option>
-                                        <option value="Seed Funding">Seed Funding</option>
-                                        <option value="Series A Funding">Series A Funding</option>
-                                        <option value="Series B Funding">Series B Funding</option>
-                                        <option value="Series C Funding">Series C Funding</option>
-                                        <option value="Series D Funding">Series D Funding</option>
-                                        <option value="Series E Funding">Series E Funding</option>
-                                        <option value="Debt Funding">Debt Funding</option>
-                                        <option value="Equity Funding">Equity Funding</option>
-                                        <option value="Convertible Debt">Convertible Debt</option>
-                                        <option value="Grants">Grants</option>
-                                        <option value="Revenue-Based Financing">Revenue-Based Financing</option>
-                                        <option value="Private Equity">Private Equity</option>
-                                        <option value="IPO">IPO</option>
-                                        <option value="Lainnya">Lainnya</option>
-                                    </select>
-                                    <!-- Ubah dari input type="number" ke input type="text" -->
-                                    <input type="text" class="form-control mt-2" id="nominal_eksternal_display" placeholder="Nominal Pendanaan Eksternal" required>
-                                    <!-- Input tersembunyi untuk menyimpan nilai asli tanpa format -->
-                                    <input type="hidden" id="nominal_eksternal" name="dana[0][nominal]">
-                                </div>
-
-                                <!-- Opsi Apakah Ada Pendanaan Internal -->
-                                <div class="form-group mt-3">
-                                    <label for="internal_funding">Apakah Proyek Ini Memiliki Pendanaan Internal?</label>
-                                    <select class="form-control" id="internal_funding" name="internal_funding">
-                                        <option value="" disabled selected>Pilih Jawaban</option>
-                                        <option value="yes">Ya</option>
-                                        <option value="no">Tidak</option>
-                                    </select>
-                                </div>
-
-                                <!-- Bagian untuk pendanaan internal (disembunyikan jika "Tidak") -->
-                                <div id="internal-funding-section" style="display: none;">
-                                    <label for="jenis_dana_internal">Pendanaan Internal</label>
-                                    <table class="table spesifikasi-pendanaan">
-                                        <thead>
-                                            <tr>
-                                                <th>Jenis Dana Internal</th>
-                                                <th>Nominal</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <select class="form-control" name="dana[1][jenis_dana]" required>
-                                                        <option value="Pinjaman Internal">Pinjaman Internal</option>
-                                                        <option value="Investasi Internal">Investasi Internal</option>
-                                                        <option value="Pinjaman Bank">Pinjaman Bank</option>
-                                                        <option value="Kredit Usaha Rakyat">Kredit Usaha Rakyat</option>
-                                                        <option value="Kredit Modal Kerja">Kredit Modal Kerja</option>
-                                                        <option value="Kredit Investasi">Kredit Investasi</option>
-                                                        <option value="Kredit Komersial">Kredit Komersial</option>
-                                                        <option value="Dana dari Pemegang Saham">Dana dari Pemegang Saham</option>
-                                                        <option value="Reinvestasi Laba">Reinvestasi Laba</option>
-                                                        <option value="Dana dari Mitra Bisnis">Dana dari Mitra Bisnis</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control" id="nominal_internal_display" placeholder="Nominal Pendanaan Internal" required>
-                                                    <input type="hidden" id="nominal_internal" name="dana[1][nominal]">
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="btn btn-danger btn-remove-dana">
-                                                        <i class="fa-solid fa-minus" style="color: #ffffff;"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <!-- Tambahkan tombol untuk menambah dana -->
-                                    <button type="button" class="btn btn-success btn-add-dana">
-                                        <i class="fa-solid fa-plus" style="color: #ffffff;"></i> Tambah Dana
-                                    </button>
-                                </div>
-                            </div>                            
-                            <div class="form-group">
-
                                 @if (auth()->check() && auth()->user()->companies)
                                     <input type="hidden" name="company_id" value="{{ auth()->user()->companies->id }}"
                                         id="company_id">
                                 @endif
                             </div>
-                            <div class="form-group">
-                                <label for="impactTags">Tag Tema Dampak Yang Selaras dengan Prioritas Dampak Anda</label>
-                                <div class="tags-container" style="height: 200px; overflow-y: auto;">
+                            <div class="form-group" style="margin-bottom: 24px;">
+                                <label for="impactTags" class="sub-heading-1">Tag</label>
+                                <div class="tags-container scrollbar" style="height: 200px; overflow-y: auto; border-radius: 6px;">
                                     @foreach ($tags as $tag)
                                         <div class="form-check ">
                                             <button class="tag-button" data-tag-id="{{ $tag->id }}" type="button">
@@ -249,17 +232,32 @@
                                     @endforeach
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="targetCustomers">Target Pelanggan</label>
-                                <button type="button" class="btn btn-primary btn-add-pelanggan ml-2 mb-2"><i
-                                        class="fa-solid fa-plus" style="color: #ffffff;"></i></button>
+
+                            <div class="form-group" style="margin-bottom: 24px;">
+                                <label for="nama" class="sub-heading-1">Project Name</label>
+                                <input type="text" class="form-control" name="nama" id="nama" placeholder="Input your project name" required>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 24px;">
+                                <label for="deskripsi" class="sub-heading-1">Project Description</label>
+                                <textarea class="form-control" name="deskripsi" id="deskripsi" rows="5" placeholder="Input your project description" required></textarea>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 24px;">
+                                <label for="tujuan" class="sub-heading-1">Project Goals</label>
+                                <textarea class="form-control" name="tujuan" id="tujuan" rows="5" placeholder="Input your project goals" required></textarea>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 20px;">
+                                <label for="targetCustomers" class="sub-heading-1">Target Market</label>
+                                {{-- <button type="button" class="btn btn-primary btn-add-pelanggan ml-2 mb-2"><i class="fa-solid fa-plus" style="color: #ffffff;"></i></button> --}}
                                 <div class="target-pelanggan">
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>Status Pekerjaan</th>
-                                                <th>Rentang Usia</th>
-                                                <th>Deskripsi Pelanggan</th>
+                                                <th style="text-align: center;">Status Pekerjaan</th>
+                                                <th style="text-align: center;">Rentang Usia</th>
+                                                <th style="text-align: center;">Deskripsi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -279,14 +277,220 @@
                                         </tbody>
                                     </table>
                                 </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="label sub-heading-1">Tanggal Mulai Proyek</div>
+                                    <div class="d-flex">
+                                        <div class="custom-select-wrapper">
+                                            <select class="custom-select scrollbar" style="width: 79px;" id="start_day" name="start_day" required>
+                                                <option value="">Date</option>
+                                            </select>
+                                        <div class="custom-select-arrow"></div>
+                                        </div>
+                                            <div class="custom-select-wrapper" style="margin-left: 10px;">
+                                                <select class="custom-select scrollbar" style="width: 135px;" id="start_month" name="start_month" required>
+                                                    <option value="">Month</option>
+                                                </select>
+                                            <div class="custom-select-arrow"></div>
+                                        </div>
+                                            <div class="custom-select-wrapper" style="margin-left: 10px;">
+                                                <select class="custom-select scrollbar" style="width: 80px;" id="start_year" name="start_year" required>
+                                                    <option value="">Year</option>
+                                                </select>
+                                            <div class="custom-select-arrow"></div>
+                                        </div>
+                                        <input type="hidden" id="start_date" name="start_date">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="label sub-heading-1">Tanggal Berakhir Proyek</div>
+                                    <div class="d-flex">
+                                        <div class="custom-select-wrapper">
+                                            <select class="custom-select scrollbar" style="width: 79px;" id="end_day" name="end_day" required>
+                                            <option value="">Date</option>
+                                            </select>
+                                            <div class="custom-select-arrow"></div>
+                                        </div>
+                                        <div class="custom-select-wrapper" style="margin-left: 10px;">
+                                            <select class="custom-select scrollbar" style="width: 135px;" id="end_month" name="end_month" required>
+                                            <option value="">Month</option>
+                                            </select>
+                                            <div class="custom-select-arrow"></div>
+                                        </div>
+                                        <div class="custom-select-wrapper" style="margin-left: 10px;">
+                                            <select class="custom-select scrollbar" style="width: 80px;" id="end_year" name="end_year" required>
+                                            <option value="">Year</option>
+                                            </select>
+                                            <div class="custom-select-arrow"></div>
+                                        </div>
+                                        <input type="hidden" id="end_date" name="end_date">
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Penambahan baru Supporting Material --}}
+                            <div class="section-title">Supporting Materials</div>
+                            <div class="mt-4">
+                                <div class="mb-2 sub-heading-1">Pitch Deck</div>
+                                <div class="upload-box-custom" onclick="document.getElementById('pitch-deck-upload').click();">
+                                    <img src="{{ asset('images/upload.svg') }}" alt="Upload icon">
+                                    <p>Upload your PDF pitch deck outlining your project and investment needs.</p>
+                                    <input type="file" id="pitch-deck-upload" accept=".pdf">
+                                </div>
+                                <div id="pitch-deck-preview"></div>
+                            </div>
+
+                            <div class="mt-4">
+                                <div class="mb-2 sub-heading-1">Video Presentation</div>
+                                <div class="upload-box-custom" onclick="document.getElementById('video-upload').click();">
+                                    <img src="{{ asset('images/upload.svg') }}" alt="Upload icon">
+                                    <p>Upload a short video presenting your project and its key highlights.</p>
+                                    <input type="file" id="video-upload" accept="video/*">
+                                </div>
+                                <div id="video-preview"></div>
+                            </div>
+
+                        </div>
+
+                        {{-- Bagian input sebelah kanan --}}
+                        <div class="col-md-6">
+                            <h3 class=" project-title" style="margin-bottom: 15px;">Investment Details</h3>
+                            <div class="form-group">
+                                <label for="provinsi" class="sub-heading-1">Provinsi</label>
+                                <select class="form-control" name="provinsi" id="provinsi" required>
+                                    <!-- Placeholder option -->
+                                    <option value="" disabled selected>Pilih Provinsi</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="kota" class="sub-heading-1">Kota/Kabupaten</label>
+                                <select class="form-control" name="kota" id="kota" required>
+                                    <!-- Placeholder option -->
+                                    <option value="" disabled selected>Pilih Kota/Kabupaten</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="gmaps" class="sub-heading-1">Google Maps URL:</label>
+                                <input type="text" class="form-control" id="gmaps" name="gmaps" required>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label for="jumlah_pendanaan_display">Jumlah Dana Keseluruhan</label>
+                                <input type="text" class="form-control" id="jumlah_pendanaan_display" readonly> <!-- Hanya untuk ditampilkan -->
+                                <!-- Hidden input untuk menyimpan nilai asli tanpa format -->
+                                <input type="hidden" class="form-control" name="jumlah_pendanaan" id="jumlah_pendanaan">
+                            </div>
+
+                            <!-- Opsi Apakah Ada Pendanaan Eksternal -->
+                            <div class="form-group">
+                                <label for="external_funding">Apakah Proyek Ini Memiliki Pendanaan Eksternal?</label>
+                                <select class="form-control" id="external_funding" name="external_funding">
+                                    <option value="" disabled selected>Pilih Jawaban</option>
+                                    <option value="yes">Ya</option>
+                                    <option value="no">Tidak</option>
+                                </select>
+                            </div>
+
+                            <!-- Bagian untuk pendanaan eksternal (disembunyikan jika "Tidak") -->
+                            <div id="external-funding-section" style="display: none;">
+                                <label for="jenis_dana_eksternal">Jenis Dana Eksternal</label>
+                                <select class="form-control" name="dana[0][jenis_dana]" required>
+                                    <option value="Hibah">Hibah</option>
+                                    <option value="Investasi">Investasi</option>
+                                    <option value="Pinjaman">Pinjaman</option>
+                                    <option value="Pre-seed Funding">Pre-seed Funding</option>
+                                    <option value="Seed Funding">Seed Funding</option>
+                                    <option value="Series A Funding">Series A Funding</option>
+                                    <option value="Series B Funding">Series B Funding</option>
+                                    <option value="Series C Funding">Series C Funding</option>
+                                    <option value="Series D Funding">Series D Funding</option>
+                                    <option value="Series E Funding">Series E Funding</option>
+                                    <option value="Debt Funding">Debt Funding</option>
+                                    <option value="Equity Funding">Equity Funding</option>
+                                    <option value="Convertible Debt">Convertible Debt</option>
+                                    <option value="Grants">Grants</option>
+                                    <option value="Revenue-Based Financing">Revenue-Based Financing</option>
+                                    <option value="Private Equity">Private Equity</option>
+                                    <option value="IPO">IPO</option>
+                                    <option value="Lainnya">Lainnya</option>
+                                </select>
+                                <!-- Ubah dari input type="number" ke input type="text" -->
+                                <input type="text" class="form-control mt-2" id="nominal_eksternal_display" placeholder="Nominal Pendanaan Eksternal" required>
+                                <!-- Input tersembunyi untuk menyimpan nilai asli tanpa format -->
+                                <input type="hidden" id="nominal_eksternal" name="dana[0][nominal]">
+                            </div>
+
+                            <!-- Opsi Apakah Ada Pendanaan Internal -->
+                            <div class="form-group mt-3">
+                                <label for="internal_funding">Apakah Proyek Ini Memiliki Pendanaan Internal?</label>
+                                <select class="form-control" id="internal_funding" name="internal_funding">
+                                    <option value="" disabled selected>Pilih Jawaban</option>
+                                    <option value="yes">Ya</option>
+                                    <option value="no">Tidak</option>
+                                </select>
+                            </div>
+
+                            <!-- Bagian untuk pendanaan internal (disembunyikan jika "Tidak") -->
+                            <div id="internal-funding-section" style="display: none;">
+                                <label for="jenis_dana_internal">Pendanaan Internal</label>
+                                <table class="table spesifikasi-pendanaan">
+                                    <thead>
+                                        <tr>
+                                            <th>Jenis Dana Internal</th>
+                                            <th>Nominal</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <select class="form-control" name="dana[1][jenis_dana]" required>
+                                                    <option value="Pinjaman Internal">Pinjaman Internal</option>
+                                                    <option value="Investasi Internal">Investasi Internal</option>
+                                                    <option value="Pinjaman Bank">Pinjaman Bank</option>
+                                                    <option value="Kredit Usaha Rakyat">Kredit Usaha Rakyat</option>
+                                                    <option value="Kredit Modal Kerja">Kredit Modal Kerja</option>
+                                                    <option value="Kredit Investasi">Kredit Investasi</option>
+                                                    <option value="Kredit Komersial">Kredit Komersial</option>
+                                                    <option value="Dana dari Pemegang Saham">Dana dari Pemegang Saham</option>
+                                                    <option value="Reinvestasi Laba">Reinvestasi Laba</option>
+                                                    <option value="Dana dari Mitra Bisnis">Dana dari Mitra Bisnis</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" id="nominal_internal_display" placeholder="Nominal Pendanaan Internal" required>
+                                                <input type="hidden" id="nominal_internal" name="dana[1][nominal]">
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-remove-dana">
+                                                    <i class="fa-solid fa-minus" style="color: #ffffff;"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <!-- Tambahkan tombol untuk menambah dana -->
+                                <button type="button" class="btn btn-success btn-add-dana">
+                                    <i class="fa-solid fa-plus" style="color: #ffffff;"></i> Tambah Dana
+                                </button>
+                            </div>
+
+
+                            <div class="form-group">
                                 <div class="section-img">
                                     <h5>Unggah Foto Sampul Proyek</h5>
                                     <p>Gunakan foto Default</p>
                                     <label for="imageInput" class="choose-file-label">
                                         <div class="unggah-image">
                                             <img id="previewImage" src=""
-                                                alt="Unggah foto sampul 1920x1080
-(.png, .jpg, .jpeg) Maximal 5 MB">
+                                                alt="Unggah foto sampul 1920x1080(.png, .jpg, .jpeg) Maximal 5 MB">
                                         </div>
                                     </label>
                                     <input type="file" id="imageInput" name="img" style="display: none;">
@@ -328,7 +532,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 {{-- Indikator --}}
                 <div id="indicator-section" style="display: none">
                     <div class="container mt-5">
@@ -476,7 +680,147 @@
                 return isValid;
             }
         </script>
-        
+
+        {{-- Bagian untuk melakukan isi ke tanggal --}}
+        <script>
+            // Function to populate month options
+            function populateMonths(selectId) {
+              const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+              for (let i = 0; i < months.length; i++) {
+                const monthOption = document.createElement('option');
+                monthOption.value = (i + 1).toString().padStart(2, '0');
+                monthOption.text = months[i];
+                document.getElementById(selectId).appendChild(monthOption);
+              }
+            }
+
+            // Function to populate year options
+            function populateYears(selectId) {
+              const currentYear = new Date().getFullYear();
+              const startYear = 1900;
+              for (let i = startYear; i <= currentYear + 10; i++) {
+                const yearOption = document.createElement('option');
+                yearOption.value = i.toString();
+                yearOption.text = i.toString();
+                document.getElementById(selectId).appendChild(yearOption);
+              }
+            }
+
+            // Function to update date input
+            function updateDateInput(daySelectId, monthSelectId, yearSelectId, dateInputId) {
+              const day = document.getElementById(daySelectId).value;
+              const month = document.getElementById(monthSelectId).value;
+              const year = document.getElementById(yearSelectId).value;
+
+              if (day && month && year) {
+                const formattedDate = `${year}-${month}-${day}`;
+                document.getElementById(dateInputId).value = formattedDate;
+                console.log(formattedDate)
+              }
+            }
+
+            // Function to update days based on month and year selection
+            function updateDays(daySelectId, monthSelectId, yearSelectId) {
+              const daySelect = document.getElementById(daySelectId);
+              const monthSelect = document.getElementById(monthSelectId);
+              const yearSelect = document.getElementById(yearSelectId);
+
+              const previousDay = daySelect.value;
+              daySelect.innerHTML = '<option value="">Date</option>';
+
+              const selectedMonth = parseInt(monthSelect.value);
+              const selectedYear = parseInt(yearSelect.value);
+              let daysInMonth;
+
+              if (selectedMonth === 2) { // Februari
+                daysInMonth = (selectedYear % 4 === 0 && (selectedYear % 100 !== 0 || selectedYear % 400 === 0)) ? 29 : 28;
+              } else if ([4, 6, 9, 11].includes(selectedMonth)) { // April, Juni, September, November
+                daysInMonth = 30;
+              } else { // Januari, Maret, Mei, Juli, Agustus, Oktober, Desember
+                daysInMonth = 31;
+              }
+
+              for (let i = 1; i <= daysInMonth; i++) {
+                const dayOption = document.createElement('option');
+                dayOption.value = i.toString().padStart(2, '0');
+                dayOption.text = i.toString().padStart(2, '0');
+                daySelect.appendChild(dayOption);
+
+                if (i === parseInt(previousDay) && parseInt(previousDay) <= daysInMonth) {
+                  daySelect.value = previousDay;
+                }
+              }
+
+              if (parseInt(previousDay) > daysInMonth) {
+                daySelect.value = "";
+              }
+            }
+
+            // Initialize date pickers
+            populateMonths('start_month');
+            populateYears('start_year');
+            populateMonths('end_month');
+            populateYears('end_year');
+
+            // Add event listeners
+            document.getElementById('start_day').addEventListener('change', () => updateDateInput('start_day', 'start_month', 'start_year', 'start_date'));
+            document.getElementById('start_month').addEventListener('change', () => updateDays('start_day', 'start_month', 'start_year'));
+            document.getElementById('start_year').addEventListener('change', () => updateDays('start_day', 'start_month', 'start_year'));
+
+            document.getElementById('end_day').addEventListener('change', () => updateDateInput('end_day', 'end_month', 'end_year', 'end_date'));
+            document.getElementById('end_month').addEventListener('change', () => updateDays('end_day', 'end_month', 'end_year'));
+            document.getElementById('end_year').addEventListener('change', () => updateDays('end_day', 'end_month', 'end_year'));
+        </script>
+
+        {{-- Bagian preview untuk Video dan Pitch deck --}}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+            var pitchDeckInput = document.getElementById('pitch-deck-upload');
+            var videoInput = document.getElementById('video-upload');
+            var pitchDeckPreviewContainer = document.getElementById('pitch-deck-preview');
+            var videoPreviewContainer = document.getElementById('video-preview');
+
+            pitchDeckInput.addEventListener('change', function() {
+                var file = this.files[0];
+                if (file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var pdfPreview = document.createElement('embed');
+                    pdfPreview.src = e.target.result;
+                    pdfPreview.width = '100%';
+                    pdfPreview.height = '500px';
+                    pitchDeckPreviewContainer.innerHTML = '';
+                    pitchDeckPreviewContainer.appendChild(pdfPreview);
+                    pitchDeckPreviewContainer.innerHTML += `<p>File name: ${file.name}</p>`;
+                };
+                reader.readAsDataURL(file);
+                } else {
+                pitchDeckPreviewContainer.innerHTML = '';
+                }
+            });
+
+            videoInput.addEventListener('change', function() {
+                var file = this.files[0];
+                if (file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var videoPreview = document.createElement('video');
+                    videoPreview.src = e.target.result;
+                    videoPreview.width = '100%';
+                    videoPreview.height = '500px';
+                    videoPreview.controls = true;
+                    videoPreviewContainer.innerHTML = '';
+                    videoPreviewContainer.appendChild(videoPreview);
+                    videoPreviewContainer.innerHTML += `<p>File name: ${file.name}</p>`;
+                };
+                reader.readAsDataURL(file);
+                } else {
+                videoPreviewContainer.innerHTML = '';
+                }
+            });
+            });
+        </script>
+
         <script>
             // Ambil elemen select untuk provinsi dan kota/kabupaten
             const provinsiSelect = document.getElementById('provinsi');
@@ -894,7 +1238,7 @@
                 $('#next-to-indicator-section').on('click', function() {
                     const projectName = $('#nama').val();
                     const projectDescription = $('#deskripsi').val();
-                    
+
                     // Mendapatkan gambar SDG yang dipilih
                     const selectedSdgImages = $('.sdg-checkbox:checked').map(function() {
                         return $(this).closest('.sdg-item').find('img').attr('src');
@@ -916,7 +1260,7 @@
                     if (hasSdgDecreased()) {
                         // Jika SDG berubah, kosongkan checklist indikator
                         $('.indicator-checkbox').prop('checked', false);
-                    } 
+                    }
 
                     // Menyimpan SDG yang dipilih ke dalam previousSdgs setelah perpindahan halaman
                     previousSdgs = getSelectedSdgs();
@@ -1303,12 +1647,6 @@
                 $('#next-to-review-section, #back-to-metric-section').on('click', function() {
                     updateReviewSection();
                 });
-
-                // Submit form action
-                // $('#submit-project').on('click', function() {
-                //     // Perform form submission or AJAX request here
-                //     $('form').submit(); // Assuming your form has an action attribute defined
-                // });
             });
             $(document).ready(function() {
                 // Function to update review section with selected project details
@@ -1437,55 +1775,6 @@
                     $('#review-section').hide();
                     $('#metric-section').show();
                 });
-
-                // $('#submit-project').on('click', function() {
-                //     // Collect form data
-                //     var formData = new FormData();
-                //     formData.append('nama', $('#nama').val());
-                //     formData.append('deskripsi', $('#deskripsi').val());
-                //     formData.append('company_id', $('#company_id')
-                //         .val()); // Assuming $('#company_id').val() gives you the company_id integer
-
-                //     // Append sdg_ids
-                //     var sdgIds = $('.sdg-checkbox:checked').map(function() {
-                //         return $(this).val();
-                //     }).get();
-                //     formData.append('sdg_ids', JSON.stringify(sdgIds));
-
-                //     // Append indicator_ids
-                //     var indicatorIds = $('.indicator-checkbox:checked').map(function() {
-                //         return $(this).val();
-                //     }).get();
-                //     formData.append('indicator_ids', JSON.stringify(indicatorIds));
-
-                //     // Append metric_ids
-                //     var metricIds = $('.metric-checkbox:checked').map(function() {
-                //         return $(this).val();
-                //     }).get();
-                //     formData.append('metric_ids', JSON.stringify(metricIds));
-
-                //     // Handle img file
-                //     var imgFile = $('#img').prop('files')[0];
-                //     formData.append('img', imgFile);
-
-                //     // Perform AJAX request
-                //     $.ajax({
-                //         url: "{{ route('projects.store') }}",
-                //         method: 'POST',
-                //         data: formData,
-                //         contentType: false,
-                //         processData: false,
-                //         success: function(response) {
-                //             // Handle success response (redirect or show success message)
-                //             console.log(response);
-                //         },
-                //         error: function(xhr) {
-                //             // Handle error response (show error message if needed)
-                //             console.log(xhr.responseText);
-                //         }
-                //     });
-                // });
-
             });
         </script>
     </body>
