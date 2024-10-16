@@ -31,7 +31,7 @@
                     <td>Rp {{ number_format($round->target, 0, ',', '.') }}</td>
                     <td>{{ $round->announced_date ? \Carbon\Carbon::parse($round->announced_date)->format('j M, Y') : 'N/A' }}</td>
                     <td>Rp {{ number_format($round->money_raised, 0, ',', '.') }}</td>
-                    <td>{{ $round->leadInvestor->nama ?? 'Not selected' }}</td>
+                    <td>{{ $round->leadInvestor->org_name ?? 'Not selected' }}</td>
                     <td>
                         <a href="{{ route('company.funding_rounds.detail', $round->id) }}" class="btn btn-primary">View & Edit</a>
                     </td>

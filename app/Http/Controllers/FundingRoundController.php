@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\FundingRound;
 use App\Models\Company;
+use App\Models\Investor;
+use App\Models\Investment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -83,8 +85,11 @@ public function companyDetail(FundingRound $fundingRound)
     return view('funding_rounds.company.detail', compact('fundingRound', 'investors', 'company'));
 }
 
+
+
 public function companyUpdate(Request $request, FundingRound $fundingRound)
 {
+
     // Validasi input
     $validated = $request->validate([
         'name' => 'required|string|max:255',
@@ -101,7 +106,7 @@ public function companyUpdate(Request $request, FundingRound $fundingRound)
         'lead_investor_id' => $validated['lead_investor_id'],
     ]);
 
-    return redirect()->route('company.funding_rounds.detail', $fundingRound->id)->with('success', 'Funding Round updated successfully!');
+    return redirect()->route('company.funding_rounds.list', $fundingRound->id)->with('success', 'Funding Round updated successfully!');
 }
 public function companyCreate()
 {

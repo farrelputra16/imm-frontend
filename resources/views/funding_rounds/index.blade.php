@@ -120,7 +120,16 @@
                                     <td style="vertical-align: middle;">Rp {{ $fundingRound->target ? number_format($fundingRound->target,0, ',', '.') : 'N/A' }}</td>
                                     <td style="vertical-align: middle;">Rp {{ $fundingRound->money_raised ? number_format($fundingRound->money_raised,0, ',', '.') : 'N/A' }}</td>
                                     <td style="vertical-align: middle;">{{ $fundingRound->announced_date ? \Carbon\Carbon::parse($fundingRound->announced_date)->format('j M, Y') : 'N/A' }}</td>
-                                    <td style="vertical-align: middle;">{{ $fundingRound->lead_investor ?? 'N/A' }}</td>
+                                    <td style="vertical-align: middle;">
+                                        @if ($fundingRound->leadInvestor)
+                                            <a href="{{ route('investors.show', $fundingRound->leadInvestor->id) }}">
+                                                {{ $fundingRound->leadInvestor->org_name }}
+                                            </a>
+                                        @else
+                                            N/A
+                                        @endif
+                                    </td>
+
                                     <td style="vertical-align: middle;">
                                         <a href="{{ route('funding_rounds.show', $fundingRound->id) }}" class="btn btn-primary">View</a>
                                     </td>
