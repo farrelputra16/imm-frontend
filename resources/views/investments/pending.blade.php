@@ -40,23 +40,7 @@
                     <td>{{ $investment->bank_tujuan }}</td>
                     <td>{{ ucfirst($investment->status) }}</td>
                     <!-- Bagian untuk Report Project -->
-                    <td>
-                        @if($investment->status == 'approved')
-                            <!-- Link ke detail laporan keuangan proyek -->
-                            <a href="{{ route('homepageimm.detailbiaya', ['project_id' => $investment->project->id]) }}" class="btn btn-info">View Financial Report</a>
-                        @else
-                            <!-- Jika belum approved -->
-                            <span class="badge badge-secondary">Pending</span>
-                        @endif
-                    </td>
                     <!-- Report Company (biarkan logika ini tetap sesuai kebutuhan Anda) -->
-                    <td>
-                        @if($investment->status == 'approved')
-                            <a href="{{ route('companies-project.show', $investment->project->id) }}" class="btn btn-info">View Company Report</a>
-                        @else
-                            <span class="badge badge-secondary">Pending</span>
-                        @endif
-                    </td>
                 </tr>
             @endforeach
         </tbody>

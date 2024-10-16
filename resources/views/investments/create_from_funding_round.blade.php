@@ -20,7 +20,7 @@
         <!-- Investment amount -->
         <div class="form-group">
             <label for="amount">Investment Amount</label>
-            <input type="text" name="amount" id="amount" class="form-control" required min="1">
+            <input type="number" name="amount" id="amount" class="form-control" required min="1">
         </div>
 
         <!-- Investment date -->

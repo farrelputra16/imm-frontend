@@ -367,8 +367,8 @@ h2 {
                     @foreach($company->fundingRounds as $round)
                         <tr>
                             <td>{{ $round->name }}</td>
-                            <td>${{ number_format($round->money_raised, 0, ',', '.') }}</td>
-                            <td>${{ number_format($round->target, 0, ',', '.') }}</td>
+                            <td>Rp {{ number_format($round->money_raised, 0, ',', '.') }}</td>
+                            <td>Rp {{ number_format($round->target, 0, ',', '.') }}</td>
                             <td>
                                 @if(Auth::check() && Auth::user()->role === 'INVESTOR')
                                     <a href="{{ route('investments.createFromFundingRound', $round->id) }}" class="btn btn-primary">Invest Now</a>
