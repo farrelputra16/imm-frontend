@@ -31,10 +31,10 @@
             <input type="date" name="investment_date" id="investment_date" class="form-control" required>
         </div>
 
-        <!-- Funding Type -->
+        <!-- Funding Type (fetched from related company) -->
         <div class="form-group">
             <label for="funding_type">Funding Type</label>
-            <input type="text" name="funding_type" id="funding_type" class="form-control" required>
+            <input type="text" name="funding_type" id="funding_type" class="form-control" value="{{ $fundingRound->company->funding_stage }}" readonly>
         </div>
 
         <!-- Investment Type -->

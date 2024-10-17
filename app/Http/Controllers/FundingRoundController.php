@@ -126,11 +126,13 @@ public function companyCreate()
 
 public function companyStore(Request $request)
 {
-    // Validasi input
+    // Validasi input, tambahkan validation untuk funding_stage dan description
     $validated = $request->validate([
         'name' => 'required|string|max:255',
         'target' => 'nullable|numeric',
         'announced_date' => 'nullable|date',
+        'funding_stage' => 'nullable|string|max:255',  // Validation untuk funding_stage
+        'description' => 'nullable|string',  // Validation untuk description
     ]);
 
     // Ambil user yang login
@@ -150,13 +152,55 @@ public function companyStore(Request $request)
         'name' => $validated['name'],
         'target' => $validated['target'],
         'announced_date' => $validated['announced_date'],
+        'funding_stage' => $validated['funding_stage'],  // Menyimpan funding_stage
+        'description' => $validated['description'],  // Menyimpan description
     ]);
 
     return redirect()->route('company.funding_rounds.list')->with('success', 'Funding Round berhasil dibuat!');
 }
 
-    public function show(FundingRound $fundingRound)
-    {
-        return view('funding_rounds.show', compact('fundingRound'));
+
+// app/Http/Controllers/FundingRoundController.php
+
+// app/Http/Controllers/FundingRoundController.php
+
+public function startInvest($companyId)
+{
+    // Check if the logged-in user has the role 'INVESTOR'
+    $user = Auth::user();
+
+    if ($user->role !== 'INVESTOR') {
+        // Redirect to the home page or show an unauthorized error if not an INVESTOR
+        return redirect()->route('errors.403')->with('error', 'You do not have access to this page.');
     }
+
+    // Find the company being viewed using the company ID from the URL
+    $company = Company::find($companyId);
+
+    // If the company is not found, redirect back with an error
+    if (!$company) {
+        return redirect()->route('companies.list')->with('error', 'Company not found.');
+    }
+
+    // Get funding rounds that belong to this company
+    $fundingRounds = FundingRound::with('company', 'leadInvestor')
+        ->where('company_id', $company->id)
+        ->get();
+
+    // Pass the funding rounds and company to the view
+    return view('funding_rounds.start_invest', compact('fundingRounds', 'company'));
+}
+
+
+public function show(FundingRound $fundingRound)
+{
+    // Get all the investments for this funding round with investor details
+    $investments = Investment::with('investor')
+        ->where('funding_round_id', $fundingRound->id)
+        ->get();
+
+    // Pass the funding round and its investments to the view
+    return view('funding_rounds.show', compact('fundingRound', 'investments'));
+}
+
 }

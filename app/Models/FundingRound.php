@@ -15,7 +15,9 @@ class FundingRound extends Model
         'target',
         'announced_date',
         'money_raised',
-        'lead_investor_id'
+        'lead_investor_id',
+        'funding_stage',      // Tambahkan funding_stage
+        'description'
     ];
 
     /**

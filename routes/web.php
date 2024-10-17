@@ -156,6 +156,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/investor-home', function () {
             return view('investorspage.home'); // Return the view for investor homepage
         })->name('investor.home');
+        Route::get('/companies/{companyId}/start-invest', [FundingRoundController::class, 'startInvest'])->name('start.invest');
     });
 
     Route::group(['middleware' => ['auth', 'people']], function () {
@@ -182,6 +183,7 @@ Route::get('/company/funding-rounds/create', [FundingRoundController::class, 'co
 Route::post('/company/funding-rounds', [FundingRoundController::class, 'companyStore'])->name('company.funding_rounds.store');
 
     });
+    // routes/web.php
     // Routing untuk Funding Rounds dan Investments
 Route::get('/funding-rounds', [FundingRoundController::class, 'index'])->name('funding_rounds.index');
 Route::get('/funding-rounds/{fundingRound}', [FundingRoundController::class, 'show'])->name('funding_rounds.show');
