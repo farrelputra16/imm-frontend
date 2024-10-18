@@ -880,6 +880,8 @@
             });
         });
     </script>
+
+    {{-- Bagian untuk fokus filter tag --}}
     <script>
         $(document).ready(function() {
             // Filter tags based on search input

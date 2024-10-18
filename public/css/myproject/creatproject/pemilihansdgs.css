@@ -4,7 +4,7 @@ body {
     /* Add padding to avoid content being hidden behind fixed navbar */
 }
 
-.sdg-item {
+/* .sdg-item {
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 5px;
@@ -14,9 +14,9 @@ body {
     display: flex;
     align-items: center;
     transition: background-color 0.3s ease, transform 0.3s ease;
-}
+} */
 
-.sdg-item:hover {
+/* .sdg-item:hover {
     background-color: #f0f0f0;
     transform: translateY(-5px);
 }
@@ -30,16 +30,16 @@ body {
 .sdg-item h5 {
     margin: 0;
     flex-grow: 1;
-}
+} */
 
-.sdg-description {
+/* .sdg-description {
     display: none;
     padding: 10px;
     background-color: #f8f8f8;
     border-top: 1px solid #ccc;
     margin-top: 10px;
     animation: fadeIn 0.5s ease;
-}
+} */
 
 @keyframes fadeIn {
     from {
@@ -50,34 +50,27 @@ body {
     }
 }
 
-.sdg-item.active .sdg-description {
+/* .sdg-item.active .sdg-description {
     display: block;
 }
 
 .sdg-item.active {
     background-color: #e0e0e0;
-}
+} */
 
-.sdg-toggle {
+/* .sdg-toggle {
     position: absolute;
     right: 50px;
     font-size: 20px;
     color: #333;
     transition: transform 0.3s ease;
-}
+} */
 
-.sdg-item.active .sdg-toggle {
+/* .sdg-item.active .sdg-toggle {
     transform: rotate(180deg);
-}
+} */
 
-.sdg-checkbox {
-    position: absolute;
-    right: 10px;
-    width: 20px;
-    height: 20px;
-}
-
-.btn-continue {
+/* .btn-continue {
     display: block;
     margin: 20px auto;
     width: 200px;
@@ -92,7 +85,7 @@ body {
 .btn-continue:hover {
     background-color: #432b9b;
     text-decoration: none;
-}
+} */
 
 
 /* Efek loading */

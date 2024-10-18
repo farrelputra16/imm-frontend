@@ -90,6 +90,9 @@ class ProjectController extends Controller
             // 'dana' => 'required|array',
             // 'dana.*.jenis_dana' => 'required|string',
             // 'dana.*.nominal' => 'required|numeric',
+            'pitch_deck' => 'nullable|file|mimes:pdf,ppt,pptx|max:10000',
+            'video_pitch' => 'nullable|mimes:mp4,mov,avi,3gp,wmv,flv|max:10000',
+            'roadmap' => 'nullable|file|mimes:pdf,ppt,pptx|max:10000',
             'company_id' => 'required|exists:companies,id',
             'tag_ids' => 'array',
             'tag_ids.*' => 'exists:tags,id',
@@ -112,6 +115,27 @@ class ProjectController extends Controller
             $imageName = time() . '.' . $request->img->extension();
             $request->img->move(public_path('images'), $imageName);
             $validatedData['img'] = $imageName;
+        }
+
+        // Handle pitch deck upload
+        if ($request->hasFile('pitch_deck')) {
+            $pitchDeckName = time() . '-pitch-deck.' . $request->pitch_deck->extension();
+            $request->pitch_deck->move(public_path('files'), $pitchDeckName);
+            $validatedData['pitch_deck'] = $pitchDeckName;
+        }
+
+        // handle video upload
+        if ($request->hasFile('video_pitch')) {
+            $videoName = time() . '-video-pitch.' . $request->video_pitch->extension();
+            $request->video_pitch->move(public_path('files'), $videoName);
+            $validatedData['video_pitch'] = $videoName;
+        }
+
+        // handle roadmap upload
+        if ($request->hasFile('roadmap')) {
+            $roadmapName = time() . '-roadmap.' . $request->roadmap->extension();
+            $request->roadmap->move(public_path('files'), $roadmapName);
+            $validatedData['roadmap'] = $roadmapName;
         }
 
         // Create project

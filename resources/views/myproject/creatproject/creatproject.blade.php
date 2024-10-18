@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('css/myproject/creatproject/indicator.css') }}">
     <link rel="stylesheet" href="{{ asset('css/myproject/creatproject/creatproject.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/myproject/creatproject/pemilihansdgs.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('css/myproject/creatproject/pemilihansdgs.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.12/plyr.css">
 
@@ -149,7 +149,7 @@
         }
         .upload-box-custom {
             border: 2px solid #9b59b6;
-            border-radius: 5px;
+            border-radius: 8px;
             padding: 20px;
             text-align: center;
             margin-bottom: 30px;
@@ -170,7 +170,239 @@
             display: none;
             background-color: none;
         }
+        .custom-button {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #808080;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: #6f42c1;
+            background-color: white;
+            text-align: center;
+        }
 
+        /* Bagian Searching container */
+        .search-container {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+            margin: 50px auto;
+            margin-top: 0px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .search-container input {
+            border: none;
+            outline: none;
+            padding: 10px 15px;
+            flex-grow: 1;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+        .search-container button {
+            background-color: #6257CB;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+        .search-container button:hover {
+            background-color: #5146a6;
+        }
+        .search-container i {
+            margin-left: 10px;
+            color: #aaa;
+        }
+        .search-container input:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        /* Bagian untuk membuat img dan check box nya */
+        .image-container {
+            position: relative;
+            display: inline-block;
+            margin: 0px;
+            padding: 0px;
+            margin-right: 2px;
+            margin-bottom: 22px;
+            visibility: visible; /* Make images visible by default */
+            opacity: 1;
+            transition: visibility 0s, opacity 0.5s;
+        }
+
+        .image-container.hide {
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .image-container.show {
+            visibility: visible;
+            opacity: 1;
+        }
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            border-radius: 16px !important;
+            cursor: pointer;
+            transition-duration: 1.2s !important;
+        }
+        .image-container.selected img {
+            filter: brightness(0.5); /* adjust the value to your liking */
+            box-shadow: inset 0 0 0 100px rgba(0, 0, 0, 0.5); /* adjust the value to your liking */
+        }
+        .sdg-checkbox-img {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: white;
+            border-radius: 3px;
+        }
+
+        /* Bagian Filter */
+        .filter-section {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 16px;
+        }
+
+        .filter-section h5 {
+            font-weight: bold;
+        }
+
+        .filter-section .form-check-label {
+            margin-left: 10px;
+        }
+
+        .filter-section .btn-link {
+            color: #6c757d;
+            text-decoration: none;
+        }
+
+        .filter-section .btn-link:hover {
+            text-decoration: underline;
+        }
+
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            margin-top: 0px !important;
+            margin-left: 10px;
+        }
+
+        /* Form chekbox filter */
+        .categories-container {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 16px;
+            width: 100%;
+        }
+        .form-check-label {
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+        .form-check-input:checked + .form-check-label {
+            color: #6256CA;
+            font-weight: bold;
+        }
+
+        /* Bagian Indikator untuk perubahan cara penambpilan indicatornya */
+        .list-group-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        .list-group-item .number {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .list-group-item .title {
+            flex-grow: 1;
+        }
+        .list-group-item .info {
+            display: flex;
+            align-items: center;
+        }
+        .list-group-item .selected {
+            color: #6f42c1;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .content-container {
+            display: none;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            margin-top: 2px;
+            margin-bottom: 48px;
+        }
+        /* Bagian list label  */
+        .form-check-input:checked {
+            background-color: #6f42c1;
+            border-color: #6f42c1;
+        }
+
+        /* Bagian matriks */
+        .card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 0;
+            margin: 16px 0;
+        }
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            padding: 8px 16px;
+            border-bottom: none;
+        }
+        .card-body {
+            padding: 8px 24px;
+            color: #6c757d;
+        }
+        .card:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        .card:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            margin-right: 16px;
+            margin-top: 2px;
+        }
+        .header-right {
+            flex-grow: 1;
+        }
+        .header-right strong {
+            display: block;
+        }
+        .header-content {
+            display: flex;
+            align-items: flex-start;
+        }
+        .header-right div {
+            margin-left: 0;
+        }
+        .checkbox-container, .number-container {
+            display: flex;
+            align-items: center;
+        }
+        .number-container{
+            margin-left: 10px;
+        }
     </style>
 @endsection
 @section('content')
@@ -197,12 +429,26 @@
                         <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
                             <a href="#" style="text-decoration: none; color: #212B36;">Project Registration</a>
                         </li>
-                        <li aria-current="page" class="breadcrumb-item active sub-heading-1">
-                            <span style="color: black;">Register New Project</span>
+                        <li aria-current="page" class="breadcrumb-item active sub-heading-1" id="projectbread" style="margin-right: 4px;">
+                            <span class="breadcrumb-span" id="projectspan" style="color: #5A5A5A;">Register New Project</span>
+                        </li>
+                        <li aria-current="page" class="breadcrumb-item active sub-heading-1" id="sdgbread" style="margin-right: 4px; display: none;">
+                            <span class="breadcrumb-span" id="sdgspan" style="color: #5A5A5A; display: none;">SDGs Categories</span>
+                        </li>
+                        <li aria-current="page" class="breadcrumb-item active sub-heading-1" id="indikatorbread" style="margin-right: 4px; display: none;">
+                            <span class="breadcrumb-span" id="indikatorspan" style="color: #5A5A5A; display: none;">SDGs Indicators</span>
+                        </li>
+                        <li aria-current="page" class="breadcrumb-item active sub-heading-1" id="metricsbread" style="margin-right: 4px; display: none;">
+                            <span class="breadcrumb-span" id="metricsspan" style="color: #5A5A5A; display: none;">SDGs Metrics</span>
+                        </li>
+                        <li aria-current="page" class="breadcrumb-item active sub-heading-1" id="reviewbread" style="margin-right: 4px; display: none;">
+                            <span class="breadcrumb-span" id="reviewspan" style="color: #5A5A5A; display: none;">Review</span>
                         </li>
                     </ol>
                 </nav>
-                <h2 class="mb-5" id="buatproject" style="color: #6256CA">Register New Project</h2>
+
+                {{-- Bagian awal project --}}
+                <h2 class="mb-5" id="buatproject" style="color: #6256CA;">Register New Project</h2>
                 <div id="form-section">
                     <div class="row">
                         {{-- Input bagian kiri --}}
@@ -341,7 +587,7 @@
                                 <div class="upload-box-custom" onclick="document.getElementById('pitch-deck-upload').click();">
                                     <img src="{{ asset('images/upload.svg') }}" alt="Upload icon">
                                     <p>Upload your PDF pitch deck outlining your project and investment needs.</p>
-                                    <input type="file" id="pitch-deck-upload" accept=".pdf">
+                                    <input type="file" id="pitch-deck-upload" name="pitch_deck" accept=".pdf, .ppt, .pptx">
                                 </div>
                                 <div id="pitch-deck-preview"></div>
                             </div>
@@ -351,7 +597,7 @@
                                 <div class="upload-box-custom" onclick="document.getElementById('video-upload').click();">
                                   <img src="{{ asset('images/upload.svg') }}" alt="Upload icon">
                                   <p>Upload a short video presenting your project and its key highlights.</p>
-                                  <input type="file" id="video-upload" accept="video/*">
+                                  <input type="file" id="video-upload" name="video_pitch" accept="video/*">
                                 </div>
                                 <div id="video-preview" class="video-js vjs-default-skin" style="margin-bottom: 100px; display: none; width: 50%;">
                                   <video id="video" width="100%" height="auto" controls></video>
@@ -364,10 +610,21 @@
                         <div class="col-md-6">
                             <h3 class=" project-title" style="margin-bottom: 15px;">Investment Details</h3>
                             <div class="form-group mt-3">
-                                <label for="jumlah_pendanaan_display" class="sub-heading-1">Jumlah Dana Keseluruhan</label>
+                                <label for="jumlah_pendanaan_display" class="sub-heading-1">Investment Needs</label>
                                 <input type="text" class="form-control" id="jumlah_pendanaan_display"> <!-- Hanya untuk ditampilkan -->
                                 <!-- Hidden input untuk menyimpan nilai asli tanpa format -->
                                 <input type="hidden" class="form-control" name="jumlah_pendanaan" id="jumlah_pendanaan">
+                            </div>
+
+                            {{-- Tempat project Road Map --}}
+                            <div class="mt-4">
+                                <div class="mb-2 sub-heading-1">Project Roadmap</div>
+                                <div class="upload-box-custom" onclick="document.getElementById('roadmap-upload').click();">
+                                    <img src="{{ asset('images/upload.svg') }}" alt="Upload icon">
+                                    <p>Upload Your Project Roadmap Document (PDF atau PPT Format).</p>
+                                    <input type="file" id="roadmap-upload"  name="roadmap" accept=".pdf, .ppt, .pptx">
+                                </div>
+                                <div id="roadmap-preview"></div>
                             </div>
 
                             <div class="form-group">
@@ -499,60 +756,164 @@
                                     <input type="file" id="imageInput" name="img" style="display: none;">
 
                                 </div>
-                                <div class="d-flex justify-content-start mt-4">
-                                    <button type="button" class="btn btn-primary" id="next-to-sdg-section">Simpan dan
-                                        Lanjutkan</button>
-                                </div>
                             </div>
 
+                            {{-- Tempar Impat dan Matriks --}}
+                            <div class="form-group">
+                                <div class="section-title">Impact and Metrics</div>
+                                <div class="mt-4">
+                                    <div class="mt-3 sub-heading-1">SDGs Categories, Indicators, and Metrics</div>
+                                    <button type="button" class="custom-button mt-3" id="next-to-sdg-section">Add SDGs, Indicators, Metric</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="container mt-5">
+                {{-- Bagian SDG --}}
+                <div class="container-fluid mt-5">
                     <div class="form-group">
                         <div id="sdg-section" style="display: none;">
-                            <h2>Pilih SDGs yang Relevan dengan Proyek Anda</h2>
-                            @foreach ($sdgs as $sdg)
-                                <div class="sdg-item" data-sdg="{{ $sdg->id }} ">
-                                    <img src="{{ env('APP_BACKEND_URL') . '/images/' . $sdg->img }}"
-                                        alt="SDG {{ $sdg->order }}">
-                                    <h5 class="sdg-name">{{ $sdg->order }}. {{ $sdg->name }}</h5>
-                                    <i class="fas fa-chevron-down sdg-toggle"></i>
-                                    <input type="checkbox" class="sdg-checkbox" name="sdg_ids[]"
-                                        value="{{ $sdg->id }}">
+                            <h2 style="color: #6256CA;" class="mb-5">SDGs Categories</h2>
+                            <div class="row">
+                                {{-- Bagian filter --}}
+                                <div class="col-md-3">
+                                    <div class="filter-header" style="vertical-align: center;">
+                                        <h4><b>FILTER</b></h4>
+                                        <img src="{{ asset('images/filter.svg') }}" alt="Search Icon" style="width: 20px; height: 20px; margin-left: 10px;">
+                                    </div>
+                                    <div class="categories-container mt-3">
+                                        <div class="sub-heading-1" style="margin-bottom: 16px;">CATEGORIES</div>
+                                        <div class="form-check">
+                                            <input class="form-check-input filter-checkbox" type="checkbox" value="" id="socialImpact">
+                                            <label class="form-check-label" for="socialImpact">
+                                                Social Impact
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input filter-checkbox" type="checkbox" value="" id="environmentalImpact">
+                                            <label class="form-check-label" for="environmentalImpact">
+                                                Environmental Impact
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input filter-checkbox" type="checkbox" value="" id="economicImpact">
+                                            <label class="form-check-label" for="economicImpact">
+                                                Economic Impact
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input filter-checkbox" type="checkbox" value="" id="institutionalCollaborative">
+                                            <label class="form-check-label" for="institutionalCollaborative">
+                                                Institutional and Collaborative
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input filter-checkbox" type="checkbox" value="" id="urbanCommunityDevelopment">
+                                            <label class="form-check-label" for="urbanCommunityDevelopment">
+                                                Urban and Community Development
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="sdg-description">
-                                    <p>{{ $sdg->description ?? 'Tidak ada deskripsi' }}</p>
+                                {{-- Bagian SDG --}}
+                                <div class="col-md-9">
+                                    <div class="search-container">
+                                        <i class="fas fa-search" style="margin-left: 10px;"></i>
+                                        <input class="form-control" placeholder="Search Data" type="text" style="border: none;">
+                                        <button class="btn">Search</button>
+                                    </div>
+                                    @foreach ($sdgs as $sdg)
+                                        <div class="image-container" data-sdg="{{ $sdg->id }}">
+                                            @php
+                                                // Mendefinisikan URL gambar dari backend
+                                                $backendImage = env('APP_BACKEND_URL') . '/images/' . $sdg->img;
+
+                                                // Mendefinisikan path gambar default di public folder
+                                                $defaultImage = asset('images/' . $sdg->img);
+
+                                                // Logika pengecekan apakah gambar ada
+                                                $imageUrl = $sdg->img ? $backendImage : $defaultImage;
+                                            @endphp
+                                            <img src="{{ $imageUrl }}" alt="SDG {{ $sdg->order }}">
+                                            <input class="sdg-checkbox-img" name="sdg_ids[]" type="checkbox" value="{{ $sdg->id }}"/>
+                                        </div>
+                                        {{-- <div class="sdg-item" data-sdg="{{ $sdg->id }} ">
+                                            <img src="{{ env('APP_BACKEND_URL') . '/images/' . $sdg->img }}"
+                                                alt="SDG {{ $sdg->order }}">
+                                            <h5 class="sdg-name">{{ $sdg->order }}. {{ $sdg->name }}</h5>
+                                            <i class="fas fa-chevron-down sdg-toggle"></i>
+                                            <input type="checkbox" class="sdg-checkbox-img" name="sdg_ids[]"
+                                                value="{{ $sdg->id }}">
+                                        </div> --}}
+                                        {{-- <div class="sdg-description">
+                                            <p>{{ $sdg->description ?? 'Tidak ada deskripsi' }}</p>
+                                        </div> --}}
+                                    @endforeach
+                                    <div>
+                                        <span class="sub-heading-1" id="category-selected" value=""></span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-3">
+                                        <button type="button" class="btn btn-secondary"
+                                            id="back-to-form-section">Kembali</button>
+                                        <button type="button" class="btn btn-primary" id="next-to-indicator-section">Simpan dan
+                                            Lanjutkan</button>
+                                    </div>
                                 </div>
-                            @endforeach
-                            <div class="d-flex justify-content-between mt-3">
-                                <button type="button" class="btn btn-secondary"
-                                    id="back-to-form-section">Kembali</button>
-                                <button type="button" class="btn btn-primary" id="next-to-indicator-section">Simpan dan
-                                    Lanjutkan</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {{-- Indikator --}}
-                <div id="indicator-section" style="display: none">
+                <div id="indicator-section" style="display:none">
                     <div class="container mt-5">
-                        <h1 class="text-center" id="project-title"></h1>
-                        <p class="text-center">Goals SDGs project anda</p>
-                        <div class="d-flex justify-content-center mb-4" id="sdg-images-container"></div>
-                        <div class="text-center bg-light p-3 mb-4" id="project-long-description"></div>
-                        <h5 class="text-center mb-4">Tentukan indikator SDGs sebagai target project anda! Anda dapat
-                            memilih
-                            lebih dari satu indikator</h5>
+                        <h2 style="color: #6256CA;" class="mb-5">SDGs Indicators</h2>
+                        <div class="search-container" style="max-width: 2000px;">
+                            <i class="fas fa-search" style="margin-left: 10px;"></i>
+                            <input class="form-control" placeholder="Search Data" type="text" style="border: none;">
+                            <button class="btn">Search</button>
+                        </div>
+                        <span class="sub-heading-1" id="category-selected-indikator" style="margin-top: 24px;"></span>
+                        <div class="d-flex justify-content-start mb-4" id="sdg-images-container" style="margin-top: 24px;"></div>
+                        {{-- <div class="text-center bg-light p-3 mb-4" id="project-long-description"></div> --}}
 
-                        @foreach ($sdgs as $sdg)
-                            <div class="goal-description mb-4 p-3 bg-white shadow-sm rounded"
-                                id="goal{{ $sdg->id }}-description">
+                        <ul class="list-group">
+                            @foreach ($sdgs as $sdg)
+                                <li class="list-group-item" data-target="#content{{ $sdg->id }}">
+                                    <span class="number">{{ $sdg->id }}.</span>
+                                    <span class="title">{{ $sdg->short_name }}</span>
+                                    <div class="info">
+                                        <span class="selected-{{ $sdg->id }}" style="color: #6f42c1; font-weight: bold; margin-right: 10px;"></span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                </li>
+                                <div id="content{{ $sdg->id }}" class="content-container" style="display: none;">
+                                    @foreach ($sdg->indicators as $indicator)
+                                        <div class="indicator" style="margin-bottom: 16px;">
+                                            <label for="indicator-{{ $indicator->id }}" class="form-check-label" style="margin-left: 24px;">
+                                                <input type="checkbox" class="indicator-checkbox form-check-input filter-checkbox" id="indicator-{{ $indicator->id }}" name="indicator_ids[]" value="{{ $indicator->id }}" data-sdg="{{ $indicator->sdg_id }}" data-target="sub-container-{{ $indicator->id }}">
+                                                <span style="margin-right: 20px;">{{ $indicator->order }} </span><span>{{ $indicator->name }}</span>
+                                            </label>
+                                            <div class="sub-container" id="sub-container-{{ $indicator->id }}" style="display: none; margin-top: 10px;">
+                                                <div class="d-flex flex-column" style="gap: 15px; margin-left:45px;">
+                                                    @foreach ($indicator->childIndicators as $childIndicator)
+                                                        <div class="d-flex">
+                                                            <span>{{ $childIndicator->order }}</span>
+                                                            <span class="ml-2">{{ $childIndicator->name }}</span>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endforeach
+                        </ul>
+
+                        {{-- @foreach ($sdgs as $sdg)
+                            <div class="goal-description mb-4 p-3 bg-white shadow-sm rounded" id="goal{{ $sdg->id }}-description">
                                 <div class="d-flex align-items-center">
-                                    <img src="{{ env('APP_BACKEND_URL') . '/images/' . $sdg->img }}"
-                                        alt="SDG {{ $sdg->id }}" class="mr-3" width="50">
                                     <div>
                                         <h5 class="mb-0">SDGs Goals {{ $sdg->id }}</h5>
                                         <p class="mb-0">{{ $sdg->name }}</p>
@@ -570,10 +931,10 @@
                                                 <span class="ml-2">{{ $indicator->order }} </span><span class="ml-2">{{ $indicator->name }}</span>
                                             </label>
                                         </div>
-                                    @endif
+                                    @endif --}}
 
                                     {{-- Sub-container untuk indikator level 2 --}}
-                                    @if ($indicator->level == 1)
+                                    {{-- @if ($indicator->level == 1)
                                         <div class="sub-container" id="sub-container-{{ $indicator->id }}"
                                             style="display: none; margin-top: 10px;">
                                             <div class="d-flex flex-column" style="gap: 15px; margin-left:45px;">
@@ -588,7 +949,7 @@
                                     @endif
                                 @endforeach
                             </div>
-                        @endforeach
+                        @endforeach  --}}
 
 
                         <div class="d-flex justify-content-between mt-3">
@@ -599,28 +960,27 @@
 
                 </div>
 
-
+                {{-- Bagian Matriks --}}
                 <div id="metric-section" style="display: none;">
                     <div class="container mt-5">
-                        <h1 class="text-center">Pilih Metrik Berdasarkan Indikator yang Anda Pilih</h1>
-                        <div id="metrics" class="mb-4 p-3 bg-white shadow-sm rounded"></div>
-                        <div class="pagination mt-4">
-                            <ul id="pagination-links" class="pagination justify-content-center">
-                                <div class="pagination mt-4 d-flex justify-content-center">
-                                    <ul id="pagination-links" class="pagination">
-                                        <li class="page-item" id="previous-page-li">
-                                            <button type="button" class="btn btn-secondary page-link"
-                                                id="previous-page">Sebelumnya</button>
-                                        </li>
-                                        <!-- Page numbers will be dynamically inserted here -->
-                                        <li class="page-item" id="next-page-li">
-                                            <button type="button" class="btn btn-primary page-link"
-                                                id="next-page">Berikutnya</button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </ul>
+                        <h2 style="color: #6256CA;" class="mb-5">SDGs Metrics</h2>
+                        <div class="search-container" style="max-width: 2000px;">
+                            <i class="fas fa-search" style="margin-left: 10px;"></i>
+                            <input class="form-control" placeholder="Search Data" type="text" style="border: none;">
+                            <button class="btn">Search</button>
                         </div>
+                        <div id="metrics"></div>
+                        <div class="header-content justify-content-center">
+                            <div class="header-right">
+                                <!-- Page numbers will be dynamically inserted here -->
+                                <span id="pagination-numbers" class="mx-2"></span>
+                            </div>
+                            <div class="header-left">
+                                <button type="button" class="btn btn-primary" id="next-page">Berikutnya</button>
+                            </div>
+                        </div>
+
+
                         <div class="d-flex justify-content-between mt-3">
                             <button type="button" class="btn btn-secondary"
                                 id="back-to-indicator-section">Kembali</button>
@@ -630,11 +990,11 @@
                     </div>
                 </div>
 
-
+                {{-- Bagian Review --}}
                 <div id="review-section" style="display: none;">
 
                     <div class="container mt-5 pt-5">
-                        <h1 class="text-center">Detail Review: SDGs Goals, Indicators, dan Metrix</h1>
+                        <h2 class="text-center">Detail Review: SDGs Goals, Indicators, dan Metrix</h2>
                         <p class="text-center">Goals SDGs project anda</p>
                         <div class="d-flex justify-content-center mb-4" id="review-sdg-images-container"></div>
                         <div class="goals-text mt-4">
@@ -666,6 +1026,33 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <script>
+           function updateBreadcrumb(activeSection) {
+                const sections = ['project', 'sdg', 'indikator', 'metrics', 'review'];
+                const sectionIndex = sections.indexOf(activeSection);
+
+                sections.forEach((section, index) => {
+                    const spanId = section + 'span';
+                    const liId = section + 'bread';
+                    const spanElement = document.getElementById(spanId);
+                    const liElement = document.getElementById(liId);
+
+                    if (index <= sectionIndex) {
+                        liElement.removeAttribute('style');
+                        spanElement.removeAttribute('style');
+                        if (index === sectionIndex) {
+                            spanElement.style.color = '#5A5A5A';
+                        } else {
+                            spanElement.style.color = '#212B36';
+                        }
+                    } else {
+                        liElement.style.display = 'none';
+                        spanElement.style.display = 'none';
+                    }
+                });
+            }
+        </script>
 
         <script>
             function validationSection(sectionId){
@@ -783,23 +1170,50 @@
                 var videoInput = document.getElementById('video-upload');
                 var pitchDeckPreviewContainer = document.getElementById('pitch-deck-preview');
                 var videoPreviewContainer = document.getElementById('video-preview');
+                var roadMapInput = document.getElementById('roadmap-upload');
+                var roadMapPreviewContainer = document.getElementById('roadmap-preview');
+
+                roadMapInput.addEventListener('change', function() {
+                    var file = this.files[0];
+                    if (file) {
+                        if (file.type.startsWith('application/pdf') || file.type.startsWith('application/vnd.ms-powerpoint') || file.type.startsWith('application/vnd.openxmlformats-officedocument.presentationml.presentation')) {
+                            var pdfPreview = document.createElement('embed');
+                            pdfPreview.src = URL.createObjectURL(file);
+                            pdfPreview.width = '100%';
+                            pdfPreview.height = '500px';
+                            roadMapPreviewContainer.innerHTML = '';
+                            roadMapPreviewContainer.appendChild(pdfPreview);
+                            roadMapPreviewContainer.innerHTML += `<p>File name: ${file.name}</p>`;
+                        } else {
+                            alert('Please upload a valid PDF atau PPT file.');
+                            roadMapPreviewContainer.innerHTML = '';
+                        }
+                    } else {
+                        roadMapPreviewContainer.innerHTML = '';
+                    }
+                });
 
                 pitchDeckInput.addEventListener('change', function() {
                     var file = this.files[0];
                     if (file) {
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        var pdfPreview = document.createElement('embed');
-                        pdfPreview.src = e.target.result;
-                        pdfPreview.width = '100%';
-                        pdfPreview.height = '500px';
-                        pitchDeckPreviewContainer.innerHTML = '';
-                        pitchDeckPreviewContainer.appendChild(pdfPreview);
-                        pitchDeckPreviewContainer.innerHTML += `<p>File name: ${file.name}</p>`;
-                    };
-                    reader.readAsDataURL(file);
+                        if (file.type.startsWith('application/pdf') || file.type.startsWith('application/vnd.ms-powerpoint') || file.type.startsWith('application/vnd.openxmlformats-officedocument.presentationml.presentation')) {
+                            var reader = new FileReader();
+                            reader.onload = function(e) {
+                                var pdfPreview = document.createElement('embed');
+                                pdfPreview.src = e.target.result;
+                                pdfPreview.width = '100%';
+                                pdfPreview.height = '500px';
+                                pitchDeckPreviewContainer.innerHTML = '';
+                                pitchDeckPreviewContainer.appendChild(pdfPreview);
+                                pitchDeckPreviewContainer.innerHTML += `<p>File name: ${file.name}</p>`;
+                            };
+                            reader.readAsDataURL(file);
+                        } else {
+                            alert('Please upload a valid PDF atau PPT file.');
+                            pitchDeckPreviewContainer.innerHTML = '';
+                        }
                     } else {
-                    pitchDeckPreviewContainer.innerHTML = '';
+                        pitchDeckPreviewContainer.innerHTML = '';
                     }
                 });
 
@@ -924,47 +1338,90 @@
             });
         </script>
 
+        {{-- ada hubungkan ke indicator --}}
         <script>
             $(document).ready(function() {
-                $('.sdg-item').on('click', function(e) {
-                    if (!$(e.target).is('.sdg-checkbox')) {
-                        var checkbox = $(this).find('.sdg-checkbox');
+                // Menangani klik pada gambar untuk checkbox SDG
+                $('.image-container').on('click', function(e) {
+                    if (!$(e.target).is('.sdg-checkbox-img')) {
+                        var checkbox = $(this).find('.sdg-checkbox-img');
                         checkbox.prop('checked', !checkbox.prop('checked'));
+                        $(this).toggleClass('selected');
+                        updateCheckboxCount(); // Update the count whenever an image is clicked
                     }
-
-                    var description = $(this).next('.sdg-description');
-                    description.slideToggle();
-
-                    // Toggle the rotation class on the arrow icon
-                    $(this).find('.sdg-toggle').toggleClass('rotate-180');
                 });
 
-                $('.sdg-checkbox').on('click', function(e) {
+                // Menangani klik pada checkbox SDG
+                $('.sdg-checkbox-img').on('click', function(e) {
                     e.stopPropagation(); // Prevent the event from bubbling up to the parent div
+                    updateCheckboxCount(); // Update the count when checkbox is clicked
                 });
+
+                // Bagian filtering SDG
+                const sdgIdsByCategory = {
+                    social: [1, 3, 4, 5, 16],
+                    environmental: [6, 7, 12, 13, 14, 15],
+                    economic: [8, 9, 10, 11],
+                    institutional: [16, 17],
+                    urban: [11, 9]
+                };
+
+                // Mengambil semua checkbox filter
+                const checkboxesFilter = document.querySelectorAll('.filter-checkbox');
+
+                // Menambahkan event listener untuk checkbox filter
+                checkboxesFilter.forEach(checkbox => {
+                    checkbox.addEventListener('change', filterItems);
+                });
+
+                // Fungsi untuk memfilter item berdasarkan checkbox yang dipilih
+                function filterItems() {
+                    const sdgItems = document.querySelectorAll('.image-container');
+                    const selectedCategories = Array.from(checkboxesFilter)
+                        .filter(checkbox => checkbox.checked)
+                        .map(checkbox => {
+                            if (checkbox.id === 'socialImpact') return 'social';
+                            if (checkbox.id === 'environmentalImpact') return 'environmental';
+                            if (checkbox.id === 'economicImpact') return 'economic';
+                            if (checkbox.id === 'institutionalCollaborative') return 'institutional';
+                            if (checkbox.id === 'urbanCommunityDevelopment') return 'urban';
+                        });
+
+                    sdgItems.forEach(item => {
+                        const sdgId = item.getAttribute('data-sdg');
+                        const shouldDisplay = selectedCategories.length === 0 || selectedCategories.some(category => sdgIdsByCategory[category].includes(parseInt(sdgId)));
+                        if (shouldDisplay) {
+                            item.classList.remove('hide'); // Remove the hide class to display the image
+                        } else {
+                            item.classList.add('hide'); // Add the hide class to hide the image
+                        }
+                    });
+                }
+
+                // Fungsi untuk menghitung jumlah checkbox SDG yang dipilih
+                function updateCheckboxCount() {
+                    const categorySelectedSpan = document.getElementById('category-selected');
+                    const checkboxes = document.querySelectorAll('.sdg-checkbox-img');
+                    const checkedCount = Array.from(checkboxes).filter(checkbox => checkbox.checked).length;
+                    categorySelectedSpan.textContent = `${checkedCount} Categories Selected`;
+                }
 
                 $('#next-to-indicator-section').on('click', function() {
-                    // Hide all goal descriptions first
-                    $('.goal-description').hide();
-
-
-                    // Get all selected SDG checkboxes
-                    var selectedSdgs = $('.sdg-checkbox:checked');
-
-                    // Show goal descriptions only for selected SDGs
-                    selectedSdgs.each(function() {
-                        var sdgId = $(this).val();
-                        $('#goal' + sdgId + '-description').show();
-                    });
-
-                    // Move to the indicator section
                     $('#sdg-section').hide();
                     $('#indicator-section').show();
+
+                    var selectedSdgIds = $('.sdg-checkbox-img:checked').map(function() {
+                        var sdgId = $(this).val();
+                        $('#goal' + sdgId + '-description').show();
+                    }).get();
+                    console.log(selectedSdgIds);
+                    updateBreadcrumb('indikator');
                 });
 
                 $('#back-to-sdg-section').on('click', function() {
                     $('#indicator-section').hide();
                     $('#sdg-section').show();
+                    updateBreadcrumb('sdg');
                 });
             });
         </script>
@@ -996,22 +1453,39 @@
             });
         </script>
 
+        {{-- style terbaru javascript dari list group --}}
         <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                var checkboxes = document.querySelectorAll(".indicator-checkbox");
-
-                checkboxes.forEach(function(checkbox) {
-                    checkbox.addEventListener("change", function() {
-                        var subContainerId = this.getAttribute("data-target");
-                        var subContainer = document.getElementById(subContainerId);
-
-                        if (this.checked) {
-                            subContainer.style.display = "block"; // Menampilkan sub-container
-                        } else {
-                            subContainer.style.display = "none"; // Menyembunyikan sub-container
-                        }
-                    });
+            // Script untuk menampilkan dan menyembunyikan konten
+            document.querySelectorAll('.list-group-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const content = document.querySelector(targetId);
+                    content.style.display = content.style.display === 'none' ? 'block' : 'none';
                 });
+            });
+
+            // Script untuk menampilkan dan menyembunyikan sub-container indikator
+            document.querySelectorAll('.indicator-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const subContainerId = this.getAttribute('data-target');
+                    const subContainer = document.getElementById(subContainerId);
+                    subContainer.style.display = this.checked ? 'block' : 'none';
+                });
+            });
+        </script>
+
+        {{-- Campur aduk antara indikator, metriks, review --}}
+        <script>
+           // Event listener untuk checkbox indikator
+            $('.indicator-checkbox').on('change', function() {
+                var subContainerId = $(this).data('target');
+                var subContainer = $('#' + subContainerId);
+
+                if ($(this).is(':checked')) {
+                    subContainer.show(); // Menampilkan sub-container
+                } else {
+                    subContainer.hide(); // Menyembunyikan sub-container
+                }
             });
             $(document).ready(function() {
                 var index = 1;
@@ -1215,6 +1689,7 @@
                         $('#form-section').hide();
                         $('#buatproject').hide();
                         $('#sdg-section').show();
+                        updateBreadcrumb('sdg');
                     } else {
                         console.log('Ada field yang kosong');
                         // Tampilkan notifikasi kalau ada field yang kosong
@@ -1228,92 +1703,187 @@
                     }
                 });
 
-                $('#next-to-metric-section').on('click', function() {
-                    $('#indicator-section').hide();
-                    $('#metric-section').show();
-                });
-
-
-                $('#next-to-review-section').on('click', function() {
-                    $('#metric-section').hide();
-                    $('#review-section').show();
-                });
-
-
-                $('#back-to-metric-section').on('click', function() {
-                    $('#review-section').hide();
-                    $('#metric-section').show();
-                });
-
                 $('#back-to-form-section').on('click', function() {
                     $('#sdg-section').hide();
                     $('#form-section').show();
                     $('#buatproject').show();
+                    updateBreadcrumb('project');
                 });
 
-                // Melakukan penambahan logic untuk mengatur indicator sdg yang dipilih
-                // Menyimpan SDG yang dipilih sebelumnya
-                var previousSdgs = [];
+                $('#next-to-metric-section').on('click', function() {
+                    $('#indicator-section').hide();
+                    $('#metric-section').show();
+                    updateBreadcrumb('metrics');
+                });
+
+                $('#next-to-review-section').on('click', function() {
+                    $('#metric-section').hide();
+                    $('#review-section').show();
+                    updateBreadcrumb('review');
+                });
+
+                $('#back-to-metric-section').on('click', function() {
+                    $('#review-section').hide();
+                    $('#metric-section').show();
+                    updateBreadcrumb('metrics');
+                });
+
 
                 // Fungsi untuk mendapatkan SDG yang dipilih
                 function getSelectedSdgs() {
-                    return $('.sdg-checkbox:checked').map(function() {
+                    return $('.sdg-checkbox-img:checked').map(function() {
                         return $(this).val();
-                    }).get();
+                    }).get(); // Mengembalikan array dari nilai checkbox yang terpilih
                 }
 
-                // Fungsi untuk mengecek apakah ada perubahan pada SDG hanya jika SDG berkurang
-                function hasSdgDecreased() {
-                    var currentSdgs = getSelectedSdgs();
-                    if (currentSdgs.length ===  previousSdgs.length) {
-                        return JSON.stringify(currentSdgs) !== JSON.stringify(previousSdgs); // Mengecek apakah SDG saat ini berubah
+                function countSelectedIndicators() {
+                    var selectedSdgs = getSelectedSdgs();
+
+                    // Buat objek untuk menyimpan jumlah indikator terpilih per SDG
+                    var selectedIndicatorsCountBySdg = {};
+
+                    // Pastikan selectedSdgs adalah array
+                    if (!Array.isArray(selectedSdgs)) {
+                        selectedSdgs = [];
                     }
-                    return currentSdgs.length < previousSdgs.length; // Mengecek apakah SDG saat ini berkurang
+
+                    // Hitung jumlah indikator yang terpilih berdasarkan SDG yang dipilih
+                    $('.indicator-checkbox').each(function() {
+                        var indicatorSdgId = $(this).data('sdg'); // Ambil sdg_id dari checkbox
+                        if (selectedSdgs.includes(indicatorSdgId.toString()) && $(this).is(':checked')) {
+                            // Jika SDG ini belum ada di objek, inisialisasi dengan 0
+                            if (!selectedIndicatorsCountBySdg[indicatorSdgId]) {
+                                selectedIndicatorsCountBySdg[indicatorSdgId] = 0;
+                            }
+                            selectedIndicatorsCountBySdg[indicatorSdgId]++;
+                        }
+                    });
+
+                    // Perbarui tampilan jumlah indikator terpilih untuk setiap SDG
+                    for (var sdgId in selectedIndicatorsCountBySdg) {
+                        $('.selected-' + sdgId).text(selectedIndicatorsCountBySdg[sdgId] + ' Selected');
+                    }
+
+                    // Reset counter untuk SDG yang tidak dipilih
+                    $('.sdg-checkbox-img').each(function() {
+                        var sdgId = $(this).val();
+                        if (!selectedSdgs.includes(sdgId)) {
+                            $('.selected-' + sdgId).text('0 Selected'); // Reset ke 0 jika SDG tidak dipilih
+                        }
+                    });
                 }
 
+                // Fungsi untuk memperbarui visibilitas indikator dan elemen <li> berdasarkan SDG yang dipilih
+                function updateIndicatorVisibility() {
+                    var selectedSdgs = getSelectedSdgs();
+                    console.log("Selected SDGs: ", selectedSdgs); // Debugging
+
+                    // Menyembunyikan elemen <li> untuk SDG yang tidak dipilih
+                    $('.list-group-item').each(function() {
+                        var sdgId = $(this).data('target').replace('#content', ''); // Mengambil ID SDG dari data-target
+                        if (selectedSdgs.includes(sdgId.toString())) {
+                            $(this).show(); // Tampilkan elemen <li> jika SDG dipilih
+                        } else {
+                            $(this).hide(); // Sembunyikan elemen <li> jika SDG tidak dipilih
+                            // Sembunyikan konten terkait SDG yang dihapus
+                            $('#content' + sdgId).hide(); // Sembunyikan konten
+                        }
+                    });
+
+                    // Memperbarui visibilitas indikator
+                    $('.indicator').each(function() {
+                        var indicatorSdgId = $(this).find('.indicator-checkbox').data('sdg'); // Ambil sdg_id dari checkbox
+                        if (selectedSdgs.includes(indicatorSdgId.toString())) {
+                            $(this).show(); // Tampilkan indikator jika sdg_id sesuai
+                        } else {
+                            $(this).hide(); // Sembunyikan indikator
+                            $(this).find('.indicator-checkbox').prop('checked', false); // Uncheck checkbox
+                            $(this).find('.sub-container').hide(); // Sembunyikan sub-container
+                            $(this).find('.sub-container input[type="checkbox"]').prop('checked', false); // Uncheck child checkboxes
+                            countSelectedIndicators();
+                        }
+                    });
+
+                    // Jika tidak ada SDG yang dipilih, sembunyikan semua elemen terkait
+                    if (selectedSdgs.length === 0) {
+                        $('.list-group-item').hide(); // Sembunyikan semua elemen <li>
+                        $('.indicator').hide(); // Sembunyikan semua indikator
+                    }
+                }
+
+                // Panggil fungsi untuk menghitung indikator yang dipilih
+                countSelectedIndicators();
+
+                // Ketika SDG checkbox diubah
+                $('.sdg-checkbox-img').on('change', function() {
+                    updateIndicatorVisibility();
+                    countSelectedIndicators(); // Panggil untuk menghitung indikator setelah memperbarui visibilitas
+                });
+
+                // Event listener untuk checkbox indikator
+                $(document).on('change', '.indicator-checkbox', function() {
+                    var subContainerId = $(this).data('target');
+                    var subContainer = $('#' + subContainerId);
+
+                    if ($(this).is(':checked')) {
+                        subContainer.show(); // Menampilkan sub-container
+                    } else {
+                        subContainer.hide(); // Menyembunyikan sub-container
+                        subContainer.find('input[type="checkbox"]').prop('checked', false); // Uncheck child checkboxes
+                    }
+                    countSelectedIndicators(); // Panggil untuk menghitung indikator setelah perubahan
+                });
+
+                // Inisialisasi tampilan saat halaman dimuat
+                updateIndicatorVisibility();
+
+                // Masuk section indicator
                 $('#next-to-indicator-section').on('click', function() {
                     const projectName = $('#nama').val();
                     const projectDescription = $('#deskripsi').val();
 
                     // Mendapatkan gambar SDG yang dipilih
-                    const selectedSdgImages = $('.sdg-checkbox:checked').map(function() {
-                        return $(this).closest('.sdg-item').find('img').attr('src');
+                    const selectedSdgImages = $('.sdg-checkbox-img:checked').map(function() {
+                        return $(this).closest('.image-container').find('img').attr('src');
                     }).get();
-
-                    // Mengisi judul dan deskripsi proyek
-                    $('#project-title').text(projectName);
-                    $('#project-long-description').text(projectDescription);
 
                     // Menampilkan gambar SDG yang dipilih
                     $('#sdg-images-container').html('');
                     selectedSdgImages.forEach(function(src) {
-                        $('#sdg-images-container').append('<img src="' + src +
-                            '" alt="SDG" class="img-fluid mx-2 sdg-goal" data-target="#goal15-description">'
+                        $('#sdg-images-container').append(
+                            '<img src="' + src + '" alt="SDG" class="img-fluid mx-2 sdg-goal" style="border-radius: 8px;" data-target="#goal15-description">'
                         );
                     });
 
-                    // Mengecek apakah ada perubahan pada SDG
-                    if (hasSdgDecreased()) {
-                        // Jika SDG berubah, kosongkan checklist indikator
-                        $('.indicator-checkbox').prop('checked', false);
-                    }
+                    // Mengosongkan checklist indikator
+                    updateIndicatorVisibility(); // Perbarui visibilitas indikator
 
-                    // Menyimpan SDG yang dipilih ke dalam previousSdgs setelah perpindahan halaman
-                    previousSdgs = getSelectedSdgs();
+                    // Fungsi untuk menghitung jumlah checkbox SDG yang dipilih untuk bagian indikator
+                    function updateCheckboxCount() {
+                        const categorySelectedSpan = document.getElementById('category -selected-indikator');
+                        const checkboxes = document.querySelectorAll('.sdg-checkbox-img');
+                        const checkedCount = Array.from(checkboxes).filter(checkbox => checkbox.checked).length;
+                        categorySelectedSpan.textContent = `${ checkedCount} Categories Selected`;
+                    }
 
                     // Menyembunyikan SDG Section dan menampilkan Indicator Section
                     $('#sdg-section').hide();
                     $('#indicator-section').show();
+                    updateBreadcrumb('indikator');
+                    updateCheckboxCount();
                 });
 
 
                 $('#back-to-sdg-section').on('click', function() {
                     $('#indicator-section').hide();
                     $('#sdg-section').show();
+                    updateBreadcrumb('sdg');
                 });
 
+
+                // Masuk Section indikator
                 // Menambahkan untuk menghilangkan checklist indikator yang terkait bila sdg nya tidak dicentang
-                $('.sdg-checkbox').on('change', function() {
+                $('.sdg-checkbox-img').on('change', function() {
                     var sdgId = $(this).val();
                     $('.goal-description').hide();
                     $('#goal' + sdgId + '-description').show();
@@ -1329,6 +1899,7 @@
                     }
                 });
 
+                // Bagian Indidcator
                 $(document).on('change', '.indicator-checkbox', function() {
                     var indicatorId = $(this).val();
                     var subContainer = $('#sub-container-' + indicatorId);
@@ -1350,7 +1921,6 @@
                         subContainer.style.display = "none"; // Corrected to hide when not checked
                     }
                 });
-
 
                 var sdgGoals = document.querySelectorAll(".sdg-goal");
 
@@ -1386,13 +1956,16 @@
                     }
                 });
             });
-            // namabah baru
+
+
+            // namabah baru ini masuk metrik
             $(document).ready(function() {
                 var metricsPerPage = 15; // Jumlah metrik per halaman
                 var currentPage = 1; // Halaman saat ini
                 var metricsData = []; // Array untuk menyimpan data metrik dari response
 
                 // Fungsi untuk menampilkan metrik pada halaman tertentu
+               // Fungsi untuk menampilkan metrik pada halaman tertentu
                 function displayMetrics(page) {
                     var startIndex = (page - 1) * metricsPerPage;
                     var endIndex = startIndex + metricsPerPage;
@@ -1401,12 +1974,23 @@
                     $('#metrics').empty(); // Kosongkan container metrik terlebih dahulu
                     $.each(metricsSlice, function(index, metric) {
                         var metricHtml = `
-                            <div class="d-flex align-items-center justify-content-between p-3 my-3 border">
-                                <div class="metric-text">
-                                    <h5 style="color:#5940CB">(${metric.code}) ${metric.name}</h5>
-                                    <p class="mb-0 sdg-name-metric">${metric.definition}</p>
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="header-content">
+                                        <div class="header-left">
+                                            <div class="checkbox-container">
+                                                <input type="checkbox" class="metric-checkbox" name="metric_ids[]" value="${metric.id}">
+                                            </div>
+                                            <div class="number-container ms-2">
+                                                <span>${startIndex + index + 1}</span> <!-- Menampilkan nomor urut -->
+                                            </div>
+                                        </div>
+                                        <div class="header-right">
+                                            <strong style="color:#5940CB">(${metric.code}) ${metric.name}</strong>
+                                            <div>${metric.definition}</div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <input type="checkbox" class="metric-checkbox" name="metric_ids[]" value="${metric.id}">
                             </div>
                         `;
                         $('#metrics').append(metricHtml);
@@ -1440,12 +2024,14 @@
                 $('#back-to-indicator-section').on('click', function() {
                     $('#metric-section').hide();
                     $('#indicator-section').show();
+                    updateBreadcrumb('indikator');
                 });
 
                 // Event listener untuk tombol Simpan dan Lanjutkan ke Bagian Review
                 $('#next-to-review-section').on('click', function() {
                     $('#metric-section').hide();
                     $('#review-section').show();
+                    updateBreadcrumb('review');
                 });
 
                 // Contoh penggunaan AJAX untuk mendapatkan data metrik dari server
@@ -1490,8 +2076,10 @@
                         selectedMetricsIds = {}; // Reset metrics yang dipilih
                     }
 
+                    var matriksIndeksCount = 0;
                     // Function to fetch metrics based on selected tags and indicators
                     function fetchMetrics() {
+                        console.log("matriks Indeks count = ", matriksIndeksCount); // Debugging log
                         // Check jika ini load pertama kali
                         if (isFirstLoad) {
                             resetMetrics();
@@ -1512,18 +2100,40 @@
                                     console.log("No metrics found."); // Debugging log
                                 }
 
+
                                 // Iterate through metrics and append to #metrics container
                                 $.each(response.data, function(index, metric) {
                                     // Check if this metric is selected
                                     var isChecked = selectedMetricsIds[metric.id] ? 'checked' : '';
 
+                                    // Tentukan warna latar belakang berdasarkan indeks
+                                    var backgroundColor = (index % 2 === 0) ? '#ffffff' : '#F0F1F2'; // Abu-abu untuk genap, putih untuk ganjil
+                                    console.log("Ini merupakan Index", index)
+
+                                    if(index > matriksIndeksCount){
+                                        matriksIndeksCount = index;
+                                    } else{
+                                        matriksIndeksCount = matriksIndeksCount + 1;
+                                    }
+
                                     var metricHtml = `
-                                        <div class="d-flex align-items-center justify-content-between p-3 my-3 border">
-                                            <div class="metric-text">
-                                                <h5 style="color:#5940CB">(${metric.code}) ${metric.name}</h5>
-                                                <p class="mb-0 sdg-name-metric">${metric.definition}</p>
+                                        <div class="card metric-text" style="background-color: ${backgroundColor};">
+                                            <div class="card-header" style="margin-bottom: 0px;">
+                                                <div class="header-content">
+                                                    <div class="header-left">
+                                                        <div class="checkbox-container">
+                                                            <input type="checkbox" class="metric-checkbox" name="metric_ids[]" value="${metric.id}" ${isChecked}>
+                                                        </div>
+                                                        <div class="number-container ms-2">
+                                                            <span>${matriksIndeksCount}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="header-right">
+                                                        <strong style="color:#111928; font-weight:600; font-size:20px; margin-bottom: 8px;">(${metric.code}) ${metric.name}</strong>
+                                                        <div class="sdg-name-metric body-1" style="color:#6B7280; width:100%;">${metric.definition}</div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <input type="checkbox" class="metric-checkbox" name="metric_ids[]" value="${metric.id}" ${isChecked}>
                                         </div>
                                     `;
                                     $('#metrics').append(metricHtml);
@@ -1579,7 +2189,9 @@
                     // Function to initialize event handlers for checkboxes
                     function initializeCheckboxEventHandlers() {
                         console.log("Initializing checkbox event handlers..."); // Debugging log
-                        $('.metric-checkbox').on('change', function() {
+
+                        // Event handler for checkbox change
+                        $('.metric-checkbox').off('change').on('change', function() {
                             var metricId = $(this).val();
                             if ($(this).prop('checked')) {
                                 selectedMetricsIds[metricId] = true; // Store the ID in selectedMetricsIds
@@ -1587,9 +2199,10 @@
                                 delete selectedMetricsIds[metricId]; // Remove the ID from selectedMetricsIds
                             }
                         });
+
                         // Make the metric-text div clickable to toggle the checkbox
-                        $('.metric-text').on('click', function() {
-                            var checkbox = $(this).siblings('.metric-checkbox');
+                        $('.metric-text').off('click').on('click', function() {
+                            var checkbox = $(this).find('.metric-checkbox'); // Use find instead of siblings
                             checkbox.prop('checked', !checkbox.prop('checked'));
                             checkbox.trigger('change'); // Trigger the change event
                         });
@@ -1599,6 +2212,7 @@
                     $('#back-to-indicator-section').on('click', function() {
                         $('#metric-section').hide();
                         $('#indicator-section').show();
+                        updateBreadcrumb('indikator');
                         isFirstLoad = true; // Reset flag ke true ketika "Kembali" button ditekan
                     });
 
@@ -1610,72 +2224,157 @@
             $('#back-to-indicator-section').on('click', function() {
                 $('#metric-section').hide();
                 $('#indicator-section').show();
+                updateBreadcrumb('indikator');
+                matriksIndeksCount = 0;
             });
 
             $(document).ready(function() {
+
+                function getSelectedIndicators() {
+                    var selectedIndicators = [];
+
+                    // Loop through each SDG
+                    $('.list-group-item').each(function() {
+                        var sdgId = $(this).data('target').replace('#content', '');
+
+                        // Loop through each indicator under the SDG
+                        $('#content' + sdgId + ' .indicator-checkbox:checked').each(function() {
+                            var indicatorOrder = $(this).closest('label').find('span:first').text().trim();
+                            var indicatorName = $(this).closest('label').find('span:last').text().trim();
+                            selectedIndicators.push({
+                                sdgId: sdgId,
+                                order: indicatorOrder,
+                                name: indicatorName
+                            });
+                        });
+                    });
+
+                    return selectedIndicators;
+                }
+
+                function getSelectedMetrics() {
+                    var selectedMetrics = [];
+
+                    // Loop through each metric checkbox
+                    $('.metric-checkbox:checked').each(function() {
+                        var metricId = $(this).val();
+                        var metricName = $(this).closest('.metric-text').find('strong').text().trim();
+                        var metricDefinition = $(this).closest('.metric-text').find('.sdg-name-metric').text().trim();
+                        var metricCode = $(this).closest('.metric-text').find('strong').text().match(/\((.*?)\)/)[1]; // Ambil kode dari teks
+
+                        selectedMetrics.push({
+                            id: metricId,
+                            name: metricName,
+                            definition: metricDefinition,
+                            code: metricCode
+                        });
+                    });
+
+                    return selectedMetrics;
+                }
+
                 // Function to update review section with selected project details
                 function updateReviewSection() {
                     // Project Name
                     var projectName = $('#nama').val();
                     $('#project-title').text(projectName);
 
-                    // Selected SDG Images
-                    var selectedSdgImages = $('.sdg-checkbox:checked').map(function() {
-                        return $(this).closest('.sdg-item').find('img').attr('src');
-                    }).get();
-                    $('#sdg-images-container').html('');
-                    selectedSdgImages.forEach(function(src) {
-                        $('#sdg-images-container').append('<img src="' + src +
-                            '" alt="SDG" class="img-fluid mx-2 sdg-goal">');
-                    });
-
                     // Project Description
                     var projectDescription = $('#deskripsi').val();
                     $('#project-long-description').text(projectDescription);
 
-                    // Selected SDGs and Indicators
-                    var selectedSdgs = $('.sdg-checkbox:checked').map(function() {
-                        var sdgId = $(this).val();
-                        var sdgName = $(this).closest('.sdg-item').find('.sdg-name').text().trim();
-                        var sdgImage = $(this).closest('.sdg-item').find('img').attr('src');
-                        var selectedIndicators = $('#sub-container-' + sdgId + ' input:checked').map(
-                            function() {
-                                var indicatorId = $(this).val();
-                                var indicatorName = $(this).next().text().trim();
-                                return {
-                                    name: indicatorName
-                                };
-                            }).get();
-                        return {
-                            name: sdgName,
-                            image: sdgImage,
-                            indicators: selectedIndicators
-                        };
+                    // Selected SDG Images
+                    var selectedSdgImages = $('.sdg-checkbox-img:checked').map(function() {
+                        return $(this).closest('.image-container').find('img').attr('src');
                     }).get();
 
-                    var sdgsHtml = '';
-                    selectedSdgs.forEach(function(sdg) {
-                        sdgsHtml += '<div class="mb-4">';
-                        sdgsHtml += '<h3>' + sdg.name + '</h3>';
-                        sdgsHtml += '<img src="' + sdg.image + '" alt="' + sdg.name +
-                            '" class="img-fluid mx-2 sdg-goal">';
-                        sdgsHtml += '<div class="ml-4 mt-2">';
-                        sdg.indicators.forEach(function(indicator) {
-                            sdgsHtml += '<h5>' + indicator.name + '</h5>';
-                        });
-                        sdgsHtml += '</div></div>';
+                    $('#review-sdg-images-container').html('');
+                    selectedSdgImages.forEach(function(src) {
+                        $('#review-sdg-images-container').append('<img src="' + src + '" alt="SDG" class="img-fluid mx-2 sdg-goal" style="width: 150px; height: auto;">');
                     });
-                    $('#selected-sdgs-container').html(sdgsHtml);
+
+                    // Selected Indicators
+                    var selectedIndicators = getSelectedIndicators(); // Panggil fungsi baru
+                    var selectedIndicatorsHtml = '<h4>Selected Indicators:</h4>';
+
+                    if (selectedIndicators.length > 0) {
+                        // Kelompokkan indikator berdasarkan SDG
+                        var groupedIndicators = {};
+
+                        selectedIndicators.forEach(function(indicator) {
+                            if (!groupedIndicators[indicator.sdgId]) {
+                                groupedIndicators[indicator.sdgId] = [];
+                            }
+                            groupedIndicators[indicator.sdgId].push(indicator);
+                        });
+
+                        // Buat HTML untuk setiap SDG dan indikatornya
+                        for (var sdgId in groupedIndicators) {
+                            selectedIndicatorsHtml += '<div class="sdg-group">';
+                            selectedIndicatorsHtml += '<h5>SDGs ' + sdgId + '</h5>'; // Header untuk SDG
+                            selectedIndicatorsHtml += '<ul class="list-unstyled">';
+
+                            groupedIndicators[sdgId].forEach(function(indicator) {
+                                selectedIndicatorsHtml += '<li>' + indicator.order + '. ' + indicator.name + '</li>';
+                            });
+
+                            selectedIndicatorsHtml += '</ul>';
+                            selectedIndicatorsHtml += '<hr>'; // Pemisah antara SDG
+                            selectedIndicatorsHtml += '</div>';
+                        }
+                    } else {
+                        selectedIndicatorsHtml += '<p>No indicators selected.</p>';
+                    }
+
+                    $('#selected-indicators-container').html(selectedIndicatorsHtml);
 
                     // Selected Metrics
-                    var selectedMetrics = $('.metric-checkbox:checked').map(function() {
-                        return $(this).closest('.d-flex').find('h5').text().trim();
-                    }).get();
-                    var metricsHtml = '<div style=" m-3 border">';
-                    selectedMetrics.forEach(function(metric) {
-                        metricsHtml += '<h5 class="text-primary">' + metric + '</h5>';
-                    });
-                    metricsHtml += '</div>';
+                    var selectedMetrics = getSelectedMetrics(); // Panggil fungsi baru
+                    var metricsHtml = '<h4>Selected Metrics:</h4>';
+
+                    if (selectedMetrics.length > 0) {
+                        // Kelompokkan matriks berdasarkan kategori (misalkan kita menggunakan property 'category')
+                        var groupedMetrics = {};
+
+                        selectedMetrics.forEach(function(metric) {
+                            var category = metric.category || 'Uncategorized'; // Ganti dengan kategori yang sesuai jika ada
+                            if (!groupedMetrics[category]) {
+                                groupedMetrics[category] = [];
+                            }
+                            groupedMetrics[category].push(metric);
+                        });
+
+                        // Buat HTML untuk setiap kategori dan matriksnya
+                        for (var category in groupedMetrics) {
+                            metricsHtml += '<div class="metric-group">';
+                            groupedMetrics[category].forEach(function(metric) {
+                                metricsHtml += `
+                                    <div class="card metric-text">
+                                        <div class="card-header" style="margin-bottom: 0px;">
+                                            <div class="header-content">
+                                                <div class="header-left">
+                                                    <div class="checkbox-container">
+                                                        <input type="checkbox" class="metric-checkbox" name="metric_ids[]" value="${metric.id}" checked readonly>
+                                                    </div>
+                                                    <div class="number-container ms-2">
+                                                        <span>${metric.code}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="header-right">
+                                                    <strong style="color:#111928; font-weight:600; font-size:20px; margin-bottom: 8px;">(${metric.code}) ${metric.name}</strong>
+                                                    <div class="sdg-name-metric body-1" style="color:#6B7280; width:100%;">${metric.definition}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>`;
+                            });
+                            metricsHtml += '<hr>'; // Pemisah antara kategori
+                            metricsHtml += '</div>';
+                        }
+                    } else {
+                        metricsHtml += '<p>No metrics selected.</p>';
+                    }
+
                     $('#review-selected-metrics').html(metricsHtml);
                 }
 
@@ -1683,133 +2382,17 @@
                 $('#next-to-review-section, #back-to-metric-section').on('click', function() {
                     updateReviewSection();
                 });
-            });
-            $(document).ready(function() {
-                // Function to update review section with selected project details
-                function updateReviewSection() {
-                    // Project Name
-                    var projectName = $('#nama').val();
-                    $('#project-title').text(projectName);
 
-                    // Project Description
-                    var projectDescription = $('#deskripsi').val();
-                    $('#project-long-description').text(projectDescription);
-
-                    // Selected SDG Images
-                    var selectedSdgImages = $('.sdg-checkbox:checked').map(function() {
-                        return $(this).closest('.sdg-item').find('img').attr('src');
-                    }).get();
-                    $('#review-sdg-images-container').html('');
-                    selectedSdgImages.forEach(function(src) {
-                        $('#review-sdg-images-container').append('<img src="' + src +
-                            '" alt="SDG" class="img-fluid mx-2 sdg-goal">');
-
-                    });
-
-                    // Selected SDGs
-                    var selectedSdgs = $('.sdg-checkbox:checked').map(function() {
-                        var sdgId = $(this).val();
-                        var sdgOrder = $(this).closest('.sdg-item').find('h5').text().split('.')[0];
-                        var sdgName = $(this).closest('.sdg-item').find('h5').text().split('. ')[1];
-                        return {
-                            id: sdgId,
-                            order: sdgOrder,
-                            name: sdgName
-                        };
-                    }).get();
-
-                    // Populate selected SDGs container
-                    var sdgsHtml = '';
-                    selectedSdgs.forEach(function(sdg) {
-                        sdgsHtml += '<div class="goal-description">SDGs ' + sdg.order + '. ' + sdg.name +
-                            '</div>';
-                    });
-                    $('#selected-sdgs-container').html(sdgsHtml);
-
-                    // Selected Indicators
-                    var selectedIndicatorsHtml = '';
-                    selectedSdgs.forEach(function(sdg) {
-                        var sdgImage = $('#goal' + sdg.id + '-description').find('img').attr('src');
-                        var selectedIndicators = $('#goal' + sdg.id +
-                            '-description .indicator-checkbox:checked').map(function() {
-                            var indicatorOrder = $(this).closest('label').find('span:first').text()
-                                .trim();
-                            var indicatorName = $(this).closest('label').find('span:last').text()
-                                .trim();
-                            var childIndicators = $('#sub-container-' + $(this).val() + ' .d-flex').map(
-                                function() {
-                                    var childOrder = $(this).find('span:first').text().trim();
-                                    var childName = $(this).find('span:last').text().trim();
-                                    return {
-                                        order: childOrder,
-                                        name: childName
-                                    };
-                                }).get();
-                            return {
-                                order: indicatorOrder,
-                                name: indicatorName,
-                                children: childIndicators
-                            };
-                        }).get();
-
-                        if (selectedIndicators.length > 0) {
-                            selectedIndicatorsHtml += '<div class="sdg-indicators">';
-                            selectedIndicatorsHtml += '<div class="d-flex align-items-center">';
-                            selectedIndicatorsHtml += '<img src="' + sdgImage + '" alt="SDG ' + sdg.order +
-                                '" class="mr-3 rounded" width="100">';
-                            selectedIndicatorsHtml += '<h5>SDGs ' + sdg.order + '. ' + sdg.name + '</h5>';
-                            selectedIndicatorsHtml += '</div>';
-
-                            selectedIndicators.forEach(function(indicator) {
-                                selectedIndicatorsHtml += '<div class="indicator-item mt-4">';
-                                selectedIndicatorsHtml += '<h5>' + indicator.order + '. ' + indicator
-                                    .name + '</h5>';
-                                if (indicator.children.length > 0) {
-                                    selectedIndicatorsHtml += '<ul class="mt-2 ml-4">';
-                                    indicator.children.forEach(function(child) {
-                                        selectedIndicatorsHtml += '<li>' + child.order + ' ' +
-                                            child.name + '</li>';
-                                    });
-                                    selectedIndicatorsHtml += '</ul>';
-                                }
-                                selectedIndicatorsHtml += '</div>';
-                            });
-
-                            selectedIndicatorsHtml += '</div>';
-                        }
-                    });
-                    $('#selected-indicators-container').html(selectedIndicatorsHtml);
-
-                    // Selected Metrics
-                    var selectedMetrics = $('.metric-checkbox:checked').map(function() {
-                        return {
-                            title: $(this).closest('.d-flex').find('h5').text().trim(),
-                            description: $(this).closest('.d-flex').find('p').text().trim()
-                        };
-                    }).get();
-                    var metricsHtml = '<div>';
-                    selectedMetrics.forEach(function(metric) {
-                        metricsHtml +=
-                            '<div class="d-flex justify-content-between align-items-center p-3 border my-3">';
-                        metricsHtml += '<div><h5 class="indicator-title" style="color:#5940CB">' + metric
-                            .title + '</h5>';
-                        metricsHtml += '<p class="indicator-description">' + metric.description + '</p></div>';
-                        metricsHtml += '</div>';
-                    });
-                    metricsHtml += '</div>';
-                    $('#review-selected-metrics').html(metricsHtml);
-                }
-
-                // Update review section when the Next or Back buttons are clicked
                 $('#next-to-review-section').on('click', function() {
-                    updateReviewSection();
                     $('#metric-section').hide();
                     $('#review-section').show();
+                    updateBreadcrumb('review');
                 });
 
                 $('#back-to-metric-section').on('click', function() {
                     $('#review-section').hide();
                     $('#metric-section').show();
+                    updateBreadcrumb('metrics');
                 });
             });
         </script>

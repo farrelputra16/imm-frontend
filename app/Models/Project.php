@@ -8,7 +8,7 @@ use MattDaneshvar\Survey\Models\Survey;
 
 class Project extends Model
 {
-    protected $fillable = ['img', 'nama', 'deskripsi', 'tujuan', 'start_date', 'end_date', 'provinsi', 'kota', 'gmaps', 'jumlah_pendanaan', 'status', 'company_id'];
+    protected $fillable = ['img', 'nama', 'deskripsi', 'tujuan', 'start_date', 'end_date', 'provinsi', 'kota', 'gmaps', 'jumlah_pendanaan', 'status', 'company_id', 'video_pitch', 'pitch_deck', 'roadmap'];
 
     public function company()
     {
@@ -82,6 +82,4 @@ class Project extends Model
     {
         return $this->hasMany(Wishlist::class);
     }
-
 }
-
