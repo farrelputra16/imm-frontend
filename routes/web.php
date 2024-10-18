@@ -28,6 +28,7 @@ use App\Http\Controllers\InvestmentController;
 use App\Http\Controllers\ManagementKeuanganController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\FundingRoundController;
+use App\Http\Controllers\InvestorPageController;
 // Rute untuk autentikasi
 Auth::routes();
 Auth::routes(['verify' => true]);
@@ -153,9 +154,8 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::group(['middleware' => ['auth', 'investor']], function () {
-        Route::get('/investor-home', function () {
-            return view('investorspage.home'); // Return the view for investor homepage
-        })->name('investor.home');
+        Route::get('/investor-home', [InvestorPageController::class,'index']// Return the view for investor homepage
+        )->name('investor.home');
         Route::get('/companies/{companyId}/start-invest', [FundingRoundController::class, 'startInvest'])->name('start.invest');
     });
 
