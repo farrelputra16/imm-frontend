@@ -286,6 +286,10 @@
                             <a class="nav-link {{ Request::is('hubs.create.submission') ? 'active' : '' }}"
                                 href="{{ route('hubs.create.hubsubmission') }}">Daftarkan Hubs</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::is('company.funding_rounds.list') ? 'active' : '' }}"
+                                href="{{ route('company.funding_rounds.list') }}">Funding Rounds</a>
+                        </li>
                     @else
                         <!-- Navbar untuk user yang belum mendaftarkan perusahaan -->
                         <li class="nav-item">

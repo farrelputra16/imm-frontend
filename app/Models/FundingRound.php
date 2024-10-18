@@ -15,7 +15,9 @@ class FundingRound extends Model
         'target',
         'announced_date',
         'money_raised',
-        'lead_investor'
+        'lead_investor_id',
+        'funding_stage',      // Tambahkan funding_stage
+        'description'
     ];
 
     /**
@@ -31,8 +33,11 @@ class FundingRound extends Model
      */
     public function investments()
     {
-        return $this->belongsToMany(Investment::class, 'funding_round_investment')
-                    ->withPivot('amount')
-                    ->withTimestamps();
+        return $this->hasMany(Investment::class);
+    }
+
+    public function leadInvestor()
+    {
+        return $this->belongsTo(Investor::class, 'lead_investor_id');
     }
 }

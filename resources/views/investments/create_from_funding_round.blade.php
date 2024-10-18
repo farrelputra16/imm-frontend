@@ -20,7 +20,9 @@
         <!-- Investment amount -->
         <div class="form-group">
             <label for="amount">Investment Amount</label>
-            <input type="text" name="amount" id="amount" class="form-control" required min="1">
+            <input type="text" name="formatted_amount" id="formatted_amount" class="form-control" required>
+            <!-- Hidden field to store the unformatted value -->
+            <input type="hidden" name="amount" id="amount" value="">
         </div>
 
         <!-- Investment date -->
@@ -29,10 +31,10 @@
             <input type="date" name="investment_date" id="investment_date" class="form-control" required>
         </div>
 
-        <!-- Funding Type -->
+        <!-- Funding Type (fetched from related company) -->
         <div class="form-group">
             <label for="funding_type">Funding Type</label>
-            <input type="text" name="funding_type" id="funding_type" class="form-control" required>
+            <input type="text" name="funding_type" id="funding_type" class="form-control" value="{{ $fundingRound->company->funding_stage }}" readonly>
         </div>
 
         <!-- Investment Type -->
@@ -72,11 +74,17 @@
     </form>
 </div>
 
-<!-- Tambahkan script untuk auto-formatting angka -->
+<!-- Script for formatting amount and keeping the original value -->
 <script>
-    document.getElementById('amount').addEventListener('input', function (e) {
-        let value = e.target.value.replace(/\D/g, ''); // Hanya angka
-        e.target.value = new Intl.NumberFormat('id-ID').format(value); // Format ribuan dengan titik
+    document.getElementById('formatted_amount').addEventListener('input', function (e) {
+        // Remove any non-digit characters
+        let value = e.target.value.replace(/\D/g, '');
+
+        // Format the value as a currency
+        e.target.value = new Intl.NumberFormat('id-ID').format(value);
+
+        // Set the hidden input value to the raw number (no formatting)
+        document.getElementById('amount').value = value;
     });
 </script>
 @endsection

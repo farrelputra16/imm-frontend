@@ -64,4 +64,10 @@ class Investor extends Model
     {
         return $this->hasMany(Investment::class,'investor_id');
     }
+
+    public function getDisplayNameAttribute()
+{
+    return $this->org_name; // Pastikan ini menggunakan 'org_name' jika itu yang digunakan di database
+}
+
 }

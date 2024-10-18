@@ -115,10 +115,71 @@
     }
 
     .this-week-section {
-    text-align: center;
-    margin: 30px 0;
-}
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        background-color: #fff;
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: center;
+    }
 
+    .this-week-section h1 {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .this-week-section .row {
+        display: flex;
+        margin: 0;
+    }
+
+    .this-week-section .col-6 {
+        width: 50%;
+        text-align: center;
+        padding: 20px 0;
+    }
+
+    .this-week-section .col-6:not(:last-child) {
+        border-right: 1px solid #e0e0e0;
+    }
+
+    .this-week-section .row:not(:last-child) {
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .this-week-section .number {
+        font-size: 36px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .this-week-section .label {
+        font-size: 14px;
+        color: #666;
+    }
+
+    @media (max-width: 768px) {
+        .this-week-section {
+            width: 90%;
+        }
+    }
+    .fixed-width-table {
+        table-layout: fixed;  /* Forces columns to maintain fixed width */
+        width: 100%;          /* Ensures the table stretches to the full width */
+    }
+
+    .fixed-width-table th,
+    .fixed-width-table td {
+        width: 33%;           /* Ensures each column gets an equal width */
+        text-align: left;      /* Align text to the left for readability */
+    }
+
+    .fixed-width-table img {
+        width: 30px;          /* Ensuring images have a fixed size */
+        height: 30px;
+    }
 .highlight-title {
     font-size: 1.5rem; /* Perbesar ukuran judul */
     font-weight: bold;
@@ -176,10 +237,8 @@
 
     /* Card Hover and Pointer Effects */
     .card-inner {
-        border-radius: 10px;
+        border-radius: 20px;
         background-color: #fff;
-        padding: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         width: 80%;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         cursor: pointer; /* Show pointer */
@@ -188,7 +247,6 @@
     /* Hover Effect: Slight lift and shadow */
     .card-inner:hover {
         transform: translateY(-10px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     }
 
     .card-inner img {
@@ -512,54 +570,41 @@
             </div>
         </div>
 
-        <!-- Sidebar Section -->
-        <div class="col-md-4">
-            <div class="this-week-section">
-                <h2 class="highlight-title">This Week on IMM</h2>
+       <!-- Insights Section with Updated Alignment -->
+<div class="container">
+    <div class="row">
+        <!-- This Week Section (Top Center) -->
+        <div class="col-md-12 d-flex justify-content-center">
+            <div class="card this-week-section">
+                <h1>This Week on Crunchbase</h1>
                 <div class="row">
-                    <!-- Funding Rounds -->
-                    <div class="col-md-6">
-                        <div class="card stats-card custom-card">
-                            <div class="card-body">
-                                <h3>{{ $totalInvestments }}</h3>
-                                <p>FUNDING ROUNDS</p>
-                            </div>
-                        </div>
+                    <div class="col-6">
+                        <div class="number">393</div>
+                        <div class="label">FUNDING ROUNDS</div>
                     </div>
-
-                    <!-- Total Funding -->
-                    <div class="col-md-6">
-                        <div class="card stats-card custom-card">
-                            <div class="card-body">
-                                <h3>{{ $totalInvestments }}</h3>
-                                <p>TOTAL FUNDING</p>
-                            </div>
-                        </div>
+                    <div class="col-6">
+                        <div class="number">36.7B</div>
+                        <div class="label">TOTAL FUNDING</div>
                     </div>
                 </div>
-
                 <div class="row">
-                    <!-- Acquisitions Recorded -->
-                    <div class="col-md-6">
-                        <div class="card stats-card custom-card">
-                            <div class="card-body">
-                                <h3>{{ $totalInvestments }}</h3>
-                                <p>ACQUISITIONS RECORDED</p>
-                            </div>
-                        </div>
+                    <div class="col-6">
+                        <div class="number">163</div>
+                        <div class="label">ACQUISITIONS RECORDED</div>
                     </div>
-
-                    <!-- Acquisitions Amount -->
-                    <div class="col-md-6">
-                        <div class="card stats-card custom-card">
-                            <div class="card-body">
-                                <h3>{{ $totalInvestments }}</h3>
-                                <p>ACQUISITIONS AMOUNT</p>
-                            </div>
-                        </div>
+                    <div class="col-6">
+                        <div class="number">28.2B</div>
+                        <div class="label">ACQUISITIONS AMOUNT</div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- New Row for Cards (Aligned Below the This Week Section) -->
+    <div class="row justify-content-center">
+        <!-- Promo Card -->
+        <div class="col-md-12 d-flex justify-content-center">
             <div class="promo-card animate-right">
                 <div class="row align-items-center">
                     <!-- Left Side: Text and Button -->
@@ -570,7 +615,6 @@
                             <button class="btn">START FREE TRIAL</button>
                         </div>
                     </div>
-
                     <!-- Right Side: Image -->
                     <div class="col-md-4 d-flex justify-content-center">
                         <div class="promo-images">
@@ -579,61 +623,82 @@
                     </div>
                 </div>
 
-                <!-- Extra images below the promo card -->
+                <!-- Extra Images Below the Promo Card -->
                 <div class="extra-images d-flex justify-content-between">
                     <img src="images/landingpage/bitcoin-promo.png" alt="Extra Image 1">
                     <img src="images/landingpage/bitcoin-promo.png" alt="Extra Image 2">
                 </div>
             </div>
+        </div>
 
-            <div class="card">
-                <div class="card-header">Featured Searches and Lists</div>
-                <div class="card-body">
-                    <ul class="list-group">
-                        <li class="list-group-item">Government Docs Submitted to UW <span>50</span></li>
-                    </ul>
-                    <a class="btn-link" href="#">ALL Featured Searches and Lists ></a>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">Trending Companies</div>
-                <div class="card-body">
-                    @foreach ($companies as $company )
-                    <ul class="list-group">
-                        <li class="list-group-item">01. <img alt="Tesla Motors logo" src="https://placehold.co/30x30" /> {{ $company->nama }}</li>
-                    </ul>
-                    @endforeach
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">Trending Peoples</div>
-                <div class="card-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Role</th>
-                                <th>Location</th>
-                            </tr>
-                        </thead>
-                        @foreach ($people as $people )
-                        <tbody>
-                            <tr>
-                                <td>{{ $people->name }}</td>
-                                <td><img alt="Globex Corporation logo" src="https://placehold.co/30x30" /> {{ $people->role }}</td>
-                                <td>{{ $people->location }}</td>
-                            </tr>
-                        </tbody>
-                        @endforeach
-                    </table>
-                    <a class="btn-link" href="#">SHOW ALL EVENTS ></a>
-                </div>
-            </div>
+        <!-- Featured Searches and Lists Card -->
+<div class="col-md-12 d-flex justify-content-center">
+    <div class="card">
+        <div class="card-header">Featured Searches and Lists</div>
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item">Government Docs Submitted to UW <span>50</span></li>
+            </ul>
+            <a class="btn-link" href="#">ALL Featured Searches and Lists ></a>
         </div>
     </div>
 </div>
+
+<!-- Trending Companies Card -->
+<div class="col-md-12 d-flex justify-content-center">
+    <div class="card">
+        <div class="card-header">Trending Companies</div>
+        <div class="card-body">
+            <table class="table fixed-width-table">
+                <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Logo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($companies as $company)
+                    <tr>
+                        <td>{{ $company->nama }}</td>
+                        <td><img alt="Company Logo" src="https://placehold.co/30x30" /></td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Trending Peoples Card -->
+<div class="col-md-12 d-flex justify-content-center">
+    <div class="card">
+        <div class="card-header">Trending Peoples</div>
+        <div class="card-body">
+            <table class="table fixed-width-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Location</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($people as $person)
+                    <tr>
+                        <td>{{ $person->name }}</td>
+                        <td>{{ $person->role }}</td>
+                        <td>{{ $person->location }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <a class="btn-link" href="#">SHOW ALL EVENTS ></a>
+        </div>
+    </div>
+</div>
+
+
+
 
 <script>
     // Function to observe elements
