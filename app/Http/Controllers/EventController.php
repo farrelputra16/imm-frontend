@@ -6,6 +6,7 @@ use App\Models\Event;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Carbon\Carbon;
 
 class EventController extends Controller
@@ -13,7 +14,7 @@ class EventController extends Controller
 
     public function index()
     {
-
+        $islogin = Auth::check();
         $currentDateTime = Carbon::now();
 
         // Filter events where the start date is in the future
@@ -29,7 +30,15 @@ class EventController extends Controller
 
         $backendUrl = env('APP_BACKEND_URL');
 
-        return view('event.event', compact('events', 'backendUrl'));
+        // Inisialisasi $user sebagai null
+        $user = null;
+
+        if ($islogin) {
+            $user = Auth::user();
+        }
+
+        // Gunakan compact dengan variabel yang selalu ada
+        return view('event.event', compact('events', 'backendUrl', 'islogin', 'user'));
     }
 
 
@@ -42,11 +51,19 @@ class EventController extends Controller
         return redirect()->away($whatsappUrl);
     }
 
-
-    public function create()
+    public function create($user_id)
     {
-        $users = User::all();
-        return view('events.create', compact('users'));
+        // Cari user berdasarkan user_id
+        $user = User::find($user_id);
+
+        // Periksa apakah user ditemukan
+        if (!$user) {
+            // Jika user tidak ditemukan, Anda bisa mengarahkan ke halaman lain atau menampilkan pesan error
+            return redirect()->route('event.index')->with('error', 'User not found');
+        }
+
+        // Tampilkan view dengan data user
+        return view('event.create', compact('user'));
     }
 
     public function edit($id)
@@ -64,29 +81,63 @@ class EventController extends Controller
 
     public function store(Request $request)
     {
-
         $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'topic' => 'nullable|string|max:255',
-            'location' => 'required|string|max:255',
-            'start' => 'required|date',
-            'event_duration' => 'required|string|max:255',
-            'allowed_participants' => 'nullable|string|max:255',
-            'expected_participants' => 'nullable|integer',
-            'fee_type' => 'required|in:Free,Paid',
-            'organizer_name' => 'required|string|max:255',
-            'email' => 'required|string|max:255',
-            'nomor_tlpn' => 'required|string|max:255',
-            'cover_img' => 'nullable|string|max:255',
-            'hero_img' => 'nullable|string|max:255',
-            'users' => 'array|exists:users,id',
+            'title' => 'required|string|max:255', // Event Name
+            'description' => 'required|string', // Deskripsi Event
+            'topic' => 'nullable|string|max:255', // Event Theme
+            'location' => 'required|string|max:255', // Event Location
+            'start' => 'required|date', // Event Date
+            'event_duration' => 'required|string|max:255|regex:/^\d{2}\.\d{2} - \d{2}\.\d{2}$/', // Time format: 10.00 - 13.00
+            'allowed_participants' => 'nullable|string|max:255', // Who can Attend
+            'expected_participants' => 'nullable|integer|min:0', // Expected Number of Participants
+            'fee_type' => 'required|in:Free,Paid', // Registration Fee
+            'organizer_name' => 'required|string|max:255', // Organizer Name
+            'email' => 'required|email|max:255', // Email
+            'nomor_tlpn' => 'required|string|max:255', // Phone Number
+            'cover_img' => 'nullable|image|max:2048', // Cover Image
+            'hero_img' => 'nullable|image|max:2048', // Hero Image
+            'users' => 'array|exists:users,id', // Users
         ]);
 
-        $event = Event::create($validatedData);
+        // Cek apakah gambar sudah ada di database
+        $existingEvent = Event::where('title', $validatedData['title'])->first();
+
+        // Menyimpan gambar jika ada
+        $eventTitleSlug = Str::slug($validatedData['title']);
+        $timestamp = time();
+
+        if ($request->hasFile('cover_img')) {
+            $coverImage = $request->file('cover_img');
+            $coverImageName = "{$eventTitleSlug}_cover_{$timestamp}." . $coverImage->getClientOriginalExtension();
+            $coverImage->storeAs('event', $coverImageName, 'public');
+
+            // Simpan hanya nama file ke validated data
+            $validatedData['cover_img'] = $coverImageName;
+        } elseif ($existingEvent) {
+            // Jika event sudah ada, gunakan gambar yang ada
+            $validatedData['cover_img'] = $existingEvent->cover_img;
+        }
+
+        if ($request->hasFile('hero_img')) {
+            $heroImage = $request->file('hero_img');
+            $heroImageName = "{$eventTitleSlug}_hero_{$timestamp}." . $heroImage->getClientOriginalExtension();
+            $heroImage->storeAs('event', $heroImageName, 'public');
+
+            // Simpan hanya nama file ke validated data
+            $validatedData['hero_img'] = $heroImageName;
+        } elseif ($existingEvent) {
+            // Jika event sudah ada, gunakan gambar yang ada
+            $validatedData['hero_img'] = $existingEvent->hero_img;
+        }
+
+        // Buat event baru atau gunakan event yang sudah ada
+        $event = $existingEvent ?: Event::create($validatedData);
+
+        // Jika ada pengguna yang terdaftar, lampirkan ke event
         if (isset($validatedData['users'])) {
-            $event->users()->attach($validatedData['users']);
-        };
+            $event->add_user()->sync($validatedData['users']); // Gunakan sync untuk memperbarui relasi
+        }
+
         return redirect()->route('events.index')->with('success', 'Event created successfully.');
     }
 

@@ -269,7 +269,7 @@
 
     /* Crunchbase header styling */
     .header-crunchbase {
-        margin-top:80px;
+        margin-top: 80px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -277,21 +277,36 @@
     }
 
     .header-crunchbase h1 {
-        font-size: 4.5rem;
+        font-size: 4.5rem; /* Ukuran font besar */
         color: #6c757d;
         margin-bottom: 0;
+        white-space: nowrap; /* Mencegah teks membungkus */
     }
 
     .header-crunchbase h1 span {
         color: #6256CA;
+        white-space: nowrap; /* Mencegah teks membungkus */
     }
+
     .image-crunchbase {
-        max-width: 200px; /* Adjust image size */
-        margin-right: 120px;
+        max-width: 200px; /* Sesuaikan ukuran gambar */
+        width: auto; /* Pastikan gambar responsif */
+        height: auto; /* Menjaga rasio aspek gambar */
+        margin-left: 20px; /* Tambahkan margin kiri untuk memberi jarak dari teks */
+    }
+
+    .col-md-8 {
+        flex: 1; /* Mengizinkan kolom teks untuk mengambil ruang yang tersedia */
+        max-width: 70%; /* Atur lebar maksimum kolom */
+    }
+
+    .col-md-4 {
+        flex: 0 0 30%; /* Atur lebar kolom gambar */
+        max-width: 30%; /* Atur lebar maksimum kolom */
     }
     .card {
-    margin-bottom: 30px; /* Memberikan jarak antar card */
-}
+     margin-bottom: 30px; /* Memberikan jarak antar card */
+    }
 
 
     .news-item {
@@ -445,7 +460,7 @@
         <div class="col-md-6 animate-left">
             <h1>Make Your Decision <br>
                 <span id="changing-word">Faster.</span>
-              </h1>
+            </h1>
             <p>Make better decisions, faster, and more effectively, ensuring success in every aspect of your personal and professional life by focusing on clear goals, strategic planning, and continuous improvement.</p>
             <a href="#" class="btn btn-success">
                 <i class="fas fa-bolt"></i> SEE PLANS
@@ -494,7 +509,7 @@
     </div>
 </div>
 
-
+<div class="container">
     <div class="row">
         <div class="col-md-12 text-center">
             <a href="#" class="btn btn-success">
@@ -506,27 +521,33 @@
 
 <!-- Insights Section -->
 <div class="container">
-    <div class="header-crunchbase animate-right">
-        <div>
-            <h1>
-                CRUNCHBASE<br>
-                <span>INSIGHTS & ANALYSIS</span>
-            </h1>
-        </div>
-        <div>
-            <img src="images/landingpage/logocrunch.png" class="image-crunchbase" alt="Crunchbase Insights & Analysis Logo">
+    <div class="header-crunchbase animate-right text-start mb-4" style="padding: 0px; margin-right: 0px;">
+        <div class="row align-items-center"  style="padding: 0px;  margin-right: 0px;">
+
+
+            <div class="col-md-8">
+                <h1>
+                    CRUNCHBASE<br>
+                    <span>INSIGHTS & ANALYSIS</span>
+                </h1>
+            </div>
+            <div class="col-md-4 text-end"  style="padding-left: 100px;">
+
+                <img src="images/landingpage/logocrunch.png" class="image-crunchbase" alt="Crunchbase Insights & Analysis Logo">
+            </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-8">
+        <!-- Kolom Kiri: Latest Events dan Featured Funding Rounds -->
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
                     Latest Events
                 </div>
                 <div class="card-body">
                     <div class="news-item">
-                        @foreach ($events as $event )
+                        @foreach ($events as $event)
                         <img alt="Insight image 1" src="images/landingpage/speed.jpeg" />
                         <div class="news-content">
                             <div class="date">
@@ -542,7 +563,7 @@
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card mt-4">
                 <div class="card-header">
                     Featured Funding Rounds
                 </div>
@@ -558,9 +579,9 @@
                         <tbody>
                             @foreach ($investors as $investor)
                             <tr onclick="window.location.href='{{ route('investors.show', $investor->id) }}'">
-                                <td>{{ $investor ->org_name }}</td>
-                                <td>{{ $investor ->number_of_investments }}</td>
-                                <td>{{ $investor ->departments }}</td>
+                                <td>{{ $investor->org_name }}</td>
+                                <td>{{ $investor->number_of_investments }}</td>
+                                <td>{{ $investor->departments }}</td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -570,11 +591,8 @@
             </div>
         </div>
 
-       <!-- Insights Section with Updated Alignment -->
-<div class="container">
-    <div class="row">
-        <!-- This Week Section (Top Center) -->
-        <div class="col-md-12 d-flex justify-content-center">
+        <!-- Kolom Kanan: This Week on Crunchbase dan sisanya -->
+        <div class="col-md-6">
             <div class="card this-week-section">
                 <h1>This Week on Crunchbase</h1>
                 <div class="row">
@@ -598,14 +616,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- New Row for Cards (Aligned Below the This Week Section) -->
-    <div class="row justify-content-center">
-        <!-- Promo Card -->
-        <div class="col-md-12 d-flex justify-content-center">
-            <div class="promo-card animate-right">
+            <div class="promo-card animate-right mt-4">
                 <div class="row align-items-center">
                     <!-- Left Side: Text and Button -->
                     <div class="col-md-8">
@@ -629,70 +641,66 @@
                     <img src="images/landingpage/bitcoin-promo.png" alt="Extra Image 2">
                 </div>
             </div>
-        </div>
 
-        <!-- Featured Searches and Lists Card -->
-<div class="col-md-12 d-flex justify-content-center">
-    <div class="card">
-        <div class="card-header">Featured Searches and Lists</div>
-        <div class="card-body">
-            <ul class="list-group">
-                <li class="list-group-item">Government Docs Submitted to UW <span>50</span></li>
-            </ul>
-            <a class="btn-link" href="#">ALL Featured Searches and Lists ></a>
-        </div>
-    </div>
-</div>
+            <!-- Featured Searches and Lists Card -->
+            <div class="card mt-4">
+                <div class="card-header">Featured Searches and Lists</div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">Government Docs Submitted to UW <span>50</span></li>
+                    </ul>
+                    <a class="btn-link" href="#">ALL Featured Searches and Lists ></a>
+                </div>
+            </div>
 
-<!-- Trending Companies Card -->
-<div class="col-md-12 d-flex justify-content-center">
-    <div class="card">
-        <div class="card-header">Trending Companies</div>
-        <div class="card-body">
-            <table class="table fixed-width-table">
-                <thead>
-                    <tr>
-                        <th>Company</th>
-                        <th>Logo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($companies as $company)
-                    <tr>
-                        <td>{{ $company->nama }}</td>
-                        <td><img alt="Company Logo" src="https://placehold.co/30x30" /></td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+            <!-- Trending Companies Card -->
+            <div class="card mt-4">
+                <div class="card-header">Trending Companies</div>
+                <div class="card-body">
+                    <table class="table fixed-width-table">
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Logo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($companies as $company)
+                            <tr>
+                                <td>{{ $company->nama }}</td>
+                                <td><img alt="Company Logo" src="https://placehold.co/30x30" /></td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-<!-- Trending Peoples Card -->
-<div class="col-md-12 d-flex justify-content-center">
-    <div class="card">
-        <div class="card-header">Trending Peoples</div>
-        <div class="card-body">
-            <table class="table fixed-width-table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Role</th>
-                        <th>Location</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($people as $person)
-                    <tr>
-                        <td>{{ $person->name }}</td>
-                        <td>{{ $person->role }}</td>
-                        <td>{{ $person->location }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            <a class="btn-link" href="#">SHOW ALL EVENTS ></a>
+            <!-- Trending Peoples Card -->
+            <div class="card mt-4">
+                <div class="card-header">Trending Peoples</div>
+                <div class="card-body">
+                    <table class="table fixed-width-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Location</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($people as $person)
+                            <tr>
+                                <td>{{ $person->name }}</td>
+                                <td>{{ $person->role }}</td>
+                                <td>{{ $person->location }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <a class="btn-link" href="#">SHOW ALL EVENTS ></a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

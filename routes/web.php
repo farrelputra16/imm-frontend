@@ -79,6 +79,8 @@ Route::get('/survey-tangapan-diagram', function () {
 })->name('survey-tangapan-diagram');
 
 Route::get('event', [EventController::class, 'index'])->name('events.index');
+Route::get('/events/make/{user_id}', [EventController::class, 'create'])->name('events.make');
+Route::post('event', [EventController::class, 'store'])->name('events.store');
 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 
@@ -154,7 +156,9 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::group(['middleware' => ['auth', 'investor']], function () {
-        Route::get('/investor-home', [InvestorPageController::class,'index']// Return the view for investor homepage
+        Route::get(
+            '/investor-home',
+            [InvestorPageController::class, 'index'] // Return the view for investor homepage
         )->name('investor.home');
         Route::get('/companies/{companyId}/start-invest', [FundingRoundController::class, 'startInvest'])->name('start.invest');
     });
@@ -168,25 +172,24 @@ Route::middleware(['auth'])->group(function () {
     });
     Route::middleware(['auth'])->group(function () {
         // Menampilkan daftar funding rounds yang dimiliki oleh perusahaan yang login
-Route::get('/company/funding-rounds', [FundingRoundController::class, 'companyList'])->name('company.funding_rounds.list');
+        Route::get('/company/funding-rounds', [FundingRoundController::class, 'companyList'])->name('company.funding_rounds.list');
 
-// Menampilkan halaman detail dan edit untuk funding round perusahaan
-Route::get('/company/funding-rounds/{fundingRound}/detail', [FundingRoundController::class, 'companyDetail'])->name('company.funding_rounds.detail');
+        // Menampilkan halaman detail dan edit untuk funding round perusahaan
+        Route::get('/company/funding-rounds/{fundingRound}/detail', [FundingRoundController::class, 'companyDetail'])->name('company.funding_rounds.detail');
 
-// Menyimpan perubahan pada funding round perusahaan
-Route::put('/company/funding-rounds/{fundingRound}/update', [FundingRoundController::class, 'companyUpdate'])->name('company.funding_rounds.update');
+        // Menyimpan perubahan pada funding round perusahaan
+        Route::put('/company/funding-rounds/{fundingRound}/update', [FundingRoundController::class, 'companyUpdate'])->name('company.funding_rounds.update');
 
-// Form untuk membuat funding round baru untuk perusahaan
-Route::get('/company/funding-rounds/create', [FundingRoundController::class, 'companyCreate'])->name('company.funding_rounds.create');
+        // Form untuk membuat funding round baru untuk perusahaan
+        Route::get('/company/funding-rounds/create', [FundingRoundController::class, 'companyCreate'])->name('company.funding_rounds.create');
 
-// Menyimpan funding round baru yang diajukan perusahaan
-Route::post('/company/funding-rounds', [FundingRoundController::class, 'companyStore'])->name('company.funding_rounds.store');
-
+        // Menyimpan funding round baru yang diajukan perusahaan
+        Route::post('/company/funding-rounds', [FundingRoundController::class, 'companyStore'])->name('company.funding_rounds.store');
     });
     // routes/web.php
     // Routing untuk Funding Rounds dan Investments
-Route::get('/funding-rounds', [FundingRoundController::class, 'index'])->name('funding_rounds.index');
-Route::get('/funding-rounds/{fundingRound}', [FundingRoundController::class, 'show'])->name('funding_rounds.show');
+    Route::get('/funding-rounds', [FundingRoundController::class, 'index'])->name('funding_rounds.index');
+    Route::get('/funding-rounds/{fundingRound}', [FundingRoundController::class, 'show'])->name('funding_rounds.show');
     Route::middleware(['auth'])->group(function () {
         // Routing untuk Investments berdasarkan Funding Round
         Route::get('funding-rounds/{fundingRound}/invest', [InvestmentController::class, 'createFromFundingRound'])->name('investments.createFromFundingRound');

@@ -17,7 +17,17 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'email', 'img', 'password', 'nama_depan', 'nama_belakang', 'nik', 'negara', 'provinsi', 'alamat', 'telepon', 'role',
+        'email',
+        'img',
+        'password',
+        'nama_depan',
+        'nama_belakang',
+        'nik',
+        'negara',
+        'provinsi',
+        'alamat',
+        'telepon',
+        'role',
     ];
 
     /**
@@ -26,7 +36,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     /**
@@ -44,14 +55,14 @@ class User extends Authenticatable
      * @return string
      */
     public function getFullNameAttribute()
-{
-    if (is_null($this->nama_belakang)) {
+    {
+        if (is_null($this->nama_belakang)) {
+            return "{$this->nama_depan}";
+        }
+
         return "{$this->nama_depan}";
     }
-
-    return "{$this->nama_depan}";
-}
-     /**
+    /**
      * Set the default role for the user.
      *
      * @param string $value
@@ -59,7 +70,7 @@ class User extends Authenticatable
      */
     public function setRoleAttribute($value)
     {
-        $this->attributes['role'] = in_array($value, ['ADMIN', 'USER','INVESTOR', 'EVENT ORGANIZER', 'PEOPLE']) ? $value : 'USER';
+        $this->attributes['role'] = in_array($value, ['ADMIN', 'USER', 'INVESTOR', 'EVENT ORGANIZER', 'PEOPLE']) ? $value : 'USER';
     }
     public function people()
     {
@@ -76,7 +87,12 @@ class User extends Authenticatable
 
     public function events()
     {
-    return $this->belongsToMany(Event::class);
+        return $this->belongsToMany(Event::class, 'event_user', 'user_id', 'event_id');
+    }
+
+    public function add_event()
+    {
+        return $this->belongsToMany(Event::class, 'user_event');
     }
 
     // Relasi one-to-many dengan Wishlist
@@ -84,5 +100,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(Wishlist::class);
     }
-
 }

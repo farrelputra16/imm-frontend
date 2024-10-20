@@ -1205,7 +1205,7 @@
                                 pdfPreview.height = '500px';
                                 pitchDeckPreviewContainer.innerHTML = '';
                                 pitchDeckPreviewContainer.appendChild(pdfPreview);
-                                pitchDeckPreviewContainer.innerHTML += `<p>File name: ${file.name}</p>`;
+                                pitchDeckPreviewContainer.innerHTML += `<p>Fil e name: ${file.name}</p>`;
                             };
                             reader.readAsDataURL(file);
                         } else {

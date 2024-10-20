@@ -1,271 +1,196 @@
-@extends('layouts.app-navbar')
+@extends('layouts.app-landingpage')
 @section('title', 'Event Detail')
 
 @section('css')
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap');
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap");
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    text-decoration: none;
-    list-style-type: none;
-    font-family: "Quicksand", sans-serif;
-    overflow-x: none;
-}
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Quicksand:wght@300..700&display=swap');
 
-body {
-    background-color: white;
-}
-
-.btn {
-    width: 155px;
-    height: 44px;
-    background-color: transparent;
-    border: 2px solid #ffc107;
-    border-radius: 10px;
-    font-size: 20px;
-    font-family: "Poppins", sans-serif;
-    font-weight: 500;
-    color: #ffc107;
-}
-
-.btn-simpan {
-    width: 232px;
-    height: 58px;
-    border-radius: 10px;
-    border: none;
-    color: white;
-    background-color: #5940cb;
-}
-
-.btn-daftar {
-    width: 356px;
-    height: 44px;
-    background-color: #ffc107;
-    border-radius: 10px;
-    font-size: 24px;
-    font-family: "Poppins", sans-serif;
-    font-weight: 500;
-    color: #302400;
-}
-
-.banner {
-    width: 100%;
-    height: 610px;
-}
-
-.banner-img {
-    background-size: cover;
-    width: 100%;
-    height: 610px;
-}
-
-.content {
-    margin-top: 170px;
-    gap: 40px;
-}
-
-.nama-kegiatan {
-    font-size: 28px;
-    font-weight: 500;
-    max-width: 217px;
-    text-align: center;
-}
-
-footer {
-    width: 100%;
-    height: 481px;
-    background-color: #5271ff;
-    margin-top: 170px;
-}
-
-.row-footer {
-    margin-right: 5%;
-    margin-left: 5%;
-    height: 481px;
-}
-
-.row-footer-in {
-    width: 1220px;
-    height: 255px;
-}
-
-.span-footer {
-    font-size: 15px;
-    font-weight: bold;
-    color: #fff;
-}
-
-.sosmed {
-    gap: 10px;
-}
-
-.sosmed a {
-    color: #fff;
-    gap: 30px;
-    margin: 0 10px;
-}
-
-.col-footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.col {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.col-text2 {
-    display: flex;
-    justify-content: start;
-}
-
-.img-event {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-}
-
-.btn-daftar {
-    background-color: #ffc107;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 20px;
-    border-radius: 8px;
-}
-
-.form-control {
-    width: 494px;
-    height: 53px;
-    background-color: #e4e4e4;
-}
-
-.hidden-input {
-    display: none;
-}
-
-.btn-daftar:hover {
-    background-color: #e0a800;
-}
-
-.img-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 25px;
-}
-
-@media (max-width: 768px) {
-    .img-grid {
-        grid-template-columns: 1fr;
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        text-decoration: none;
+        list-style-type: none;
+        font-family: "Quicksand", sans-serif;
     }
-}
 
+    body {
+        background-color: white;
+    }
 
-/* Efek loading */
+    .banner {
+        width: 100%; /* Menggunakan 100vw untuk memenuhi lebar viewport */
+        height: 400px;
+        overflow: hidden; /* Menyembunyikan bagian gambar yang melampaui */
+        position: relative; /* Menambahkan posisi relatif untuk elemen anak */
+    }
 
+    .banner-img {
+        width: 100%; /* Memastikan gambar memenuhi lebar banner */
+        height: 100%; /* Memastikan gambar memenuhi tinggi banner */
+        object-fit: cover; /* Memastikan gambar terpotong dengan baik */
+    }
 
-/* Animasi umum untuk elemen lainnya */
+    .banner-text {
+        position: absolute; /* Mengatur posisi absolut untuk menimpa gambar */
+        top: 50%; /* Menempatkan teks di tengah vertikal */
+        right: 10px; /* Menempatkan teks sedikit dari kanan */
+        transform: translateY(-50%); /* Mengatur posisi vertikal agar tepat di tengah */
+        color: black; /* Warna teks */
+        font-size: 24px; /* Ukuran font */
+    }
+    .btn{
+        background-color: #C1E2A4;
+        border : none;
+    }
+    .header {
+        text-align: center;
+        margin-top: 20px;
+    }
 
+    .header h1 {
+        color: #6a0dad;
+        font-weight: bold;
+    }
+
+    .activities {
+        text-align: center;
+        margin-top: 40px;
+    }
+
+    .activities .icon {
+        font-size: 50px;
+        margin-bottom: 10px;
+    }
+
+    .activities .description {
+        font-weight: bold;
+    }
+
+    .activities .sub-description {
+        color: #555;
+    }
+
+    .call-to-action {
+        text-align: center;
+        margin-top: 40px;
+        font-weight: bold;
+        font-size: 24px;
+    }
+
+    .content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 40px;
+    }
+
+    .text-section {
+        flex: 1;
+        min-width: 300px;
+        text-align: center;
+    }
+
+    .image-section {
+        flex: 1;
+        min-width: 300px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .image-section img {
+        margin: 5px;
+    }
+
+    @media (max-width: 768px) {
+        .img-grid {
+            grid-template-columns: 1fr;
+        }
+    }
 </style>
 @endsection
+
 @section('content')
-
-
 <body>
-    <section class="banner" style=""> <img class="banner-img" src="{{ env('APP_BACKEND_URL') . '/images/' . $event->hero_img }}"
-            class="w-100 h-auto" alt="">
-    </section>
-    <div class="container content">
-        <div class="container">
-            <div class="row d-flex flex-column align-items-center justify-content-center text-center">
-                <p class="" style="max-width: 701px; font-size:32px">{{ $event->description }}</p>
-                <p>Topic: {{ $event->topic }}</p>
-                <p>Location: {{ $event->location }}</p>
-                <p>Start Date: {{ $event->start }}</p>
-                <p>Event Duration: {{ $event->event_duration }}</p>
-                <p>Allowed Participants: {{ $event->allowed_participants }}</p>
-                <p>Expected Participants: {{ $event->expected_participants }}</p>
-                <p>Fee Type: {{ $event->fee_type }}</p>
-                <p>Organizer Name: {{ $event->organizer_name }}</p>
-                <p>Email: {{ $event->email }}</p>
-                <p>Nomor Tlpn: {{ $event->nomor_tlpn }}</p>
-                @if (in_array(Auth::id(), $eventUsers))
-                    <a href="/event-register/{{ $event->id }}"><button class="btn-daftar mt-4" disabled >Anda Telah
-                            Terdaftar</button></a>
-                @else
-                    <a href="/event-register/{{ $event->id }}"><button class="btn-daftar mt-4">Daftar
-                            Sekarang</button></a>
-                @endif
-            </div>
+    <section class="banner">
+        <img class="banner-img" src="{{ env('APP_BACKEND_URL') . '/images/' . $event->hero_img }}" alt="Banner Image">
+        <div class="banner-text">
+            {{ $event->topic }} <!-- Menampilkan topik dari event -->
         </div>
+    </section>
+
+    <div class="d-flex justify-content-center">
+        @if (in_array(Auth::id(), $eventUsers))
+            <button class="btn btn-success mt-4" style="color:#5A5A5A" disabled>Has Been Registered</button>
+        @else
+            <a href="/event-register/{{ $event->id }}">
+                <button class="btn btn-primary mt-4" style="color:#212B36">Daftar Sekarang</button>
+            </a>
+        @endif
     </div>
 
-    <div class="container content d-flex flex-column justify-content-center">
-        <p class="text-center" style="font-size:32px; font-weight:bold">Kegiatan Bootcamp</p>
-        <div class="row d-flex justify-content-center align-items-center">
-            <div class="col-lg-4 col-md-6 col-sm-12 d-flex flex-column justify-content-center align-items-center">
-                <img src="{{ asset('images/icon-workshop.png') }}" alt="">
-                <span class="nama-kegiatan">Workshop dan Pelatihan</span>
+    <div class="header">
+        <h1>Sustainable Development Activities</h1>
+    </div>
+
+    <div class="activities container">
+ <div class="row">
+            <div class="col">
+                <div class="icon text-success">
+                    <i class="fas fa-tree"></i>
+                </div>
+                <div class="description">SDGs:</div>
+                <div class="sub-description">Tree Planting and Reforestation</div>
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-12 d-flex flex-column justify-content-center align-items-center">
-                <img src="{{ asset('images/icon-diskusi.png') }}" alt="">
-                <span class="nama-kegiatan">Panel
-                    Diskusi</span>
+            <div class="col">
+                <div class="icon text-danger">
+                    <i class="fas fa-recycle"></i>
+                </div>
+                <div class="description">SDGs:</div>
+                <div class="sub-description">Waste Management and Recycling</div>
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-12 d-flex flex-column justify-content-center align-items-center">
-                <img src="{{ asset('images/icon-mentor.png') }}" alt="">
-                <span class="nama-kegiatan">Mentorship Session</span>
+            <div class="col">
+                <div class="icon text-warning">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <div class="description">SDGs:</div>
+                <div class="sub -description">Renewable Energy Awareness</div>
             </div>
-        </div>
-        <div class="row mt-4 d-flex justify-content-center align-items-center">
-            <div class="col-lg-4 col-md-6 col-sm-12 d-flex flex-column justify-content-center align-items-center">
-                <img src="{{ asset('images/icon-networking.png') }}" alt="">
-                <span class="nama-kegiatan">Networking Lunch</span>
+            <div class="col">
+                <div class="icon text-secondary">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="description">SDGs:</div>
+                <div class="sub-description">Education for Sustainable Development</div>
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-12 d-flex flex-column justify-content-center align-items-center">
-                <img src="{{ asset('images/icon-pitching.png') }}" alt="">
-                <span class="nama-kegiatan">Pitching Session</span>
+            <div class="col">
+                <div class="icon text-primary">
+                    <i class="fas fa-faucet"></i>
+                </div>
+                <div class="description">SDGs:</div>
+                <div class="sub-description">Water Conservation Initiatives</div>
             </div>
         </div>
     </div>
 
     <div class="container content">
         <div class="row">
-            <div class="col-md-6">
-                <p style="font-size:40px">Bergabunglah dalam Bootcamp yang <strong>Akan Mengubah Bisnis Anda</strong>
-                </p>
-                @if (in_array(Auth::id(), $eventUsers))
-                    <a href="/event-register/{{ $event->id }}"><button class="btn-daftar mt-4" disabled>Anda Telah
-                            Terdaftar</button></a>
-                @else
-                    <a href="/event-register/{{ $event->id }}"><button class="btn-daftar mt-4">Daftar
-                            Sekarang</button></a>
-                @endif
-            </div>
-            <div class="col-md-6">
-                <div class="img-grid">
-                    <img src="{{ asset('images/img1-event.png') }}" class="img-event" alt="Event Image 1">
-                    <img src="{{ asset('images/img2-event.png') }}" class="img-event" alt="Event Image 2">
-                    <img src="{{ asset('images/img3-event.png') }}" class="img-event" alt="Event Image 3">
-                    <img src="{{ asset('images/img4-event.png') }}" class="img-event" alt="Event Image 4">
+            <div class="col-md-12 text-section">
+                <div class="call-to-action">
+                    Let’s Take Part In These Activities And Contribute To The Global Movement Towards Sustainability
                 </div>
+            </div>
+            <div class="col-md-12 image-section d-flex justify-content-center">
+                <img alt="People participating in a community event" height="100" src="{{ asset('images/gambar1_event.svg')}}" width="200"/>
+                <img alt="People installing solar panels" height="100" src="{{ asset('images/gambar_event2.svg') }}" width="200"/>
+                <img alt="Community gathering in a rural area" height="100" src="{{ asset('images/gambar_event3.svg') }}" width="200"/>
+                <img alt="Person teaching a group of people outdoors" height="100" src="{{ asset('images/gambar_event4.svg') }}" width="200"/>
             </div>
         </div>
     </div>
-
-
 </body>
-
-
 @endsection

@@ -146,12 +146,55 @@
             color: #999;
             margin-top: 50px;
         }
+
+        /* Tombol untuk pembuatan event */
+        .btn-create-event {
+            background-color: #6256CA;
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(98, 86, 202, 0.3);
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .btn-create-event:hover {
+            background-color: #5648B3;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(98, 86, 202, 0.5);
+        }
+
+        .btn-create-event:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(98, 86, 202, 0.5);
+        }
+
+        .btn-create-event i {
+            margin-right: 10px;
+        }
     </style>
 
 @section('content')
     <div class="container mt-5">
-        <h5 class="text-center mb-5" style="margin-top: 70px">Temukan wawasan tentang dampak baru disini</h5>
-        <div class="search-container">
+        @if ($islogin)
+            <div style="margin-bottom: 0px; display: flex; justify-content: flex-end;">
+                <a href="{{ route('events.make', ['user_id' => Auth::id()]) }}" class="btn btn-create-event">
+                    <i class="fas fa-plus-circle"></i> Buat Event Baru
+                </a>
+            </div>
+        @endif
+        <div class="align-items-center">
+            <div class="col-md-8">
+                <h4 class="mb-0" style="margin-top: 30px">Temukan wawasan tentang dampak baru disini</h4>
+            </div>
+        </div>
+        <div class="search-container mt-4">
             <input type="text" class="form-control" placeholder="Cari disini" id="searchInput">
             <button onclick="searchEvent()" class="btn-search"><i class="fas fa-search"></i></button>
         </div>
