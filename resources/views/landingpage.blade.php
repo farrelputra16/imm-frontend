@@ -523,8 +523,6 @@
 <div class="container">
     <div class="header-crunchbase animate-right text-start mb-4" style="padding: 0px; margin-right: 0px;">
         <div class="row align-items-center"  style="padding: 0px;  margin-right: 0px;">
-
-
             <div class="col-md-8">
                 <h1>
                     CRUNCHBASE<br>
