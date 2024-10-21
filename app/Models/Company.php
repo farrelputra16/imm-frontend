@@ -162,4 +162,8 @@ class Company extends Model
     {
         return $this->hasMany(FundingRound::class);
     }
+     public function investments()
+    {
+        return $this->hasMany(Investment::class, 'company_id');
+    }
 }

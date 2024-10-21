@@ -200,6 +200,8 @@ Route::middleware(['auth'])->group(function () {
 
         // Route untuk investor melihat pending investments
         Route::get('investments/pending', [InvestmentController::class, 'pending'])->name('investments.pending');
+        Route::get('investments/{investment}/status', [InvestmentController::class, 'status'])->name('investments.status');
+
 
         // Route untuk approve oleh pemilik perusahaan
         Route::post('investments/{investment}/approve', [InvestmentController::class, 'approve'])->name('investments.approve');
