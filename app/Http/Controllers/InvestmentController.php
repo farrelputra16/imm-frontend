@@ -32,10 +32,24 @@ class InvestmentController extends Controller
             // Pisahkan funding berdasarkan jenisnya
             foreach ($project->dana as $dana) {
                 if (in_array($dana->jenis_dana, [
-                    'Hibah', 'Investasi', 'Pinjaman', 'Pre-seed Funding', 'Seed Funding',
-                    'Series A Funding', 'Series B Funding', 'Series C Funding', 'Series D Funding',
-                    'Series E Funding', 'Debt Funding', 'Equity Funding', 'Convertible Debt',
-                    'Grants', 'Revenue-Based Financing', 'Private Equity', 'IPO'])) {
+                    'Hibah',
+                    'Investasi',
+                    'Pinjaman',
+                    'Pre-seed Funding',
+                    'Seed Funding',
+                    'Series A Funding',
+                    'Series B Funding',
+                    'Series C Funding',
+                    'Series D Funding',
+                    'Series E Funding',
+                    'Debt Funding',
+                    'Equity Funding',
+                    'Convertible Debt',
+                    'Grants',
+                    'Revenue-Based Financing',
+                    'Private Equity',
+                    'IPO'
+                ])) {
                     $externalFunding->push($dana);
                 } else {
                     $internalFunding->push($dana);
@@ -53,7 +67,7 @@ class InvestmentController extends Controller
         $investmentTypes = ['venture_capital', 'angel_investment', 'crowdfunding', 'government_grant', 'foundation_grant', 'buyout', 'growth_capital'];
 
         // Kirim data ke view
-        return view('investments.create', compact('company', 'fundingRound','projectsWithFunding', 'investmentTypes', 'firstName'));
+        return view('investments.create', compact('company', 'fundingRound', 'projectsWithFunding', 'investmentTypes', 'firstName'));
     }
 
     // Menyimpan data investasi
@@ -79,7 +93,7 @@ class InvestmentController extends Controller
             return redirect()->back()->withErrors(['error' => 'You must be an investor to invest.']);
         }
 
-        Investment ::create([
+        Investment::create([
             'investor_id' => $investor->id,
             'company_id' => $company->id,
             'funding_round_id' => $request->funding_round_id,
@@ -106,7 +120,14 @@ class InvestmentController extends Controller
             return redirect()->back()->withErrors(['error' => 'Investor not found. Please ensure you have registered as an investor.']);
         }
 
+        // Ambil semua investasi untuk investor yang terdaftar
         $investments = Investment::where('investor_id', $investor->id)->get();
+
+        // Jika Anda ingin menambahkan label investasi ke setiap investasi
+        foreach ($investments as $investment) {
+            $investment->investment_type_label = $investment->investment_type_label; // Menggunakan accessor
+        }
+
         return view('investments.pending', compact('investments'));
     }
 
@@ -170,6 +191,11 @@ class InvestmentController extends Controller
             $query->where('user_id', $user->id);
         })->get(); // Mengambil semua status (pending, approved, rejected)
 
+        // Jika Anda ingin menambahkan label investasi ke setiap investasi
+        foreach ($investments as $investment) {
+            $investment->investment_type_label = $investment->investment_type_label; // Menggunakan accessor
+        }
+
         return view('investments.approvals', compact('investments'));
     }
 
@@ -190,7 +216,6 @@ class InvestmentController extends Controller
         if ($request->status == 'approved') {
             CompanyIncome::create([
                 'company_id' => $investment->company_id,
-                'project_id' => $investment->project_id,
                 'date' => $investment->investment_date,
                 'pengirim' => $investment->pengirim,
                 'bank_asal' => $investment->bank_asal,
@@ -211,5 +236,4 @@ class InvestmentController extends Controller
         $investment->update(['status' => 'approved']);
         return redirect()->back()->with('success', 'Investment approved successfully.');
     }
-
 }

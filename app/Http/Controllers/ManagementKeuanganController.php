@@ -10,42 +10,31 @@ class ManagementKeuanganController extends Controller
 {
     public function show(Request $request)
     {
+        // Ambil pengguna yang sedang login
         $user = Auth::user();
-        $company = $user->companies; // Mengambil company terkait dengan user
+
+        // Ambil perusahaan terkait dengan user
+        $company = $user->companies()->first(); // Ambil satu perusahaan pertama, sesuaikan jika perlu
+
+        // Pastikan perusahaan ada
+        if (!$company) {
+            return redirect()->back()->with('error', 'Perusahaan tidak ditemukan.');
+        }
+
+        // Ambil pendapatan perusahaan dengan pagination
         $companyIncomeController = app(CompanyIncomeController::class);
-        $companyOutcomeController = app(CompanyOutcomeController::class);
+        $companyIncomes = $companyIncomeController->index($request); // Kirimkan request agar pagination berfungsi
 
-        $companyIncomes = $companyIncomeController->index();
-        $projects = app(ProjectController::class)->showProjectWithDanas($company->id);
+        // Tambahkan label investasi ke setiap income
+        foreach ($companyIncomes as $income) {
+            $income->investment_type_label = $income->investment_type_label; // Menggunakan accessor
+        }
 
-        $projectsWithFunding = $projects->map(function ($project) use ($companyIncomes) {
-            $externalFunding = collect();
-            $internalFunding = collect();
+        // Ambil proyek yang terkait dengan perusahaan dengan pagination
+        $projects = app(ProjectController::class)->showProject($company->id, $request);
 
-            foreach ($project->dana as $dana) {
-                if (in_array($dana->jenis_dana, ['Hibah', 'Investasi', 'Pinjaman', 'Pre-seed Funding', 'Seed Funding', 'Series A Funding', 'Series B Funding', 'Series C Funding', 'Series D Funding', 'Series E Funding', 'Debt Funding', 'Equity Funding', 'Convertible Debt', 'Grants', 'Revenue-Based Financing', 'Private Equity', 'IPO'])) {
-                    $externalFunding->push($dana);
-                } else {
-                    $internalFunding->push($dana);
-                }
-            }
-
-            $project->externalFunding = $externalFunding;
-            $project->internalFunding = $internalFunding;
-
-            // Hitung total dana masuk untuk proyek ini
-            $totalIncome = $companyIncomes->where('project_id', $project->id)->sum('jumlah');
-
-            // Hitung total pengeluaran untuk proyek ini
-            $totalOutcome = CompanyOutcome::where('project_id', $project->id)->sum('jumlah_biaya');
-
-            // Hitung total dana yang tersedia
-            $project->totalDanaTersedia = $totalIncome + $externalFunding->sum('nominal') + $internalFunding->sum('nominal') - $totalOutcome;
-
-            return $project;
-        });
-
-        return view('homepageimm.kelolapengeluaran', compact('companyIncomes', 'projectsWithFunding'));
+        // Kembalikan view dengan data yang diperlukan
+        return view('homepageimm.kelolapengeluaran', compact('companyIncomes', 'projects'));
     }
 
     public function createOutcome(Request $request)

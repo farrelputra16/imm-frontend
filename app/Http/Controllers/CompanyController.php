@@ -149,7 +149,7 @@ class CompanyController extends Controller
     // Pada bagian di bawah ini merupkan kode untuk menampilkan data company list yang sudah pernah dibuat oleh seluruh user ditambah dengan beberapa data dari luar yaitu danas
     public function companyList(Request $request)
     {
-        $rowsPerPage = $request->input('rows', 1);
+        $rowsPerPage = $request->input('rows', 10);
         $companies = Company::getFilteredCompaniesPaginated($request, $rowsPerPage);
         $companies->appends($request->only(['location', 'industry', 'departments', 'funding_type']));
 

@@ -124,12 +124,27 @@ h4 {
             <select name="tipe_investasi" id="tipe_investasi" class="form-control">
                 <option value="" {{ old('tipe_investasi') === '' ? 'selected' : '' }}>Tidak ada</option>
                 <option value="venture_capital" {{ old('tipe_investasi') === 'venture_capital' ? 'selected' : '' }}>Venture Capital</option>
-                <option value="angel_investment" {{ old('tipe_investasi') === 'angel_investment' ? 'selected' : '' }}>Angel Investment</option>
-                <option value="crowdfunding" {{ old('tipe_investasi') === 'crowdfunding' ? 'selected' : '' }}>Crowdfunding</option>
-                <option value="government_grant" {{ old('tipe_investasi') === 'government_grant' ? 'selected' : '' }}>Government Grant</option>
-                <option value="foundation_grant" {{ old('tipe_investasi') === 'foundation_grant' ? 'selected' : '' }}>Foundation Grant</option>
-                <option value="buyout" {{ old('tipe_investasi') === 'buyout' ? 'selected' : '' }}>Buyout</option>
-                <option value="growth_capital" {{ old('tipe_investasi') === 'growth_capital' ? 'selected' : '' }}>Growth Capital</option>
+                <option value="individual_angel" {{ old('tipe_investasi') === 'individual_angel' ? 'selected' : '' }}>Individual/Angel</option>
+                <option value="private_equity_firm" {{ old('tipe_investasi') === 'private_equity_firm' ? 'selected' : '' }}>Private Equity Firm</option>
+                <option value="accelerator" {{ old('tipe_investasi') === 'accelerator' ? 'selected' : '' }}>Accelerator</option>
+                <option value="investment_partner" {{ old('tipe_investasi') === 'investment_partner' ? 'selected' : '' }}>Investment Partner</option>
+                <option value="corporate_venture_capital" {{ old('tipe_investasi') === 'corporate_venture_capital' ? 'selected' : '' }}>Corporate Venture Capital</option>
+                <option value="micro_vc" {{ old('tipe_investasi') === 'micro_vc' ? 'selected' : '' }}>Micro VC</option>
+                <option value="angel_group" {{ old('tipe_investasi') === 'angel_group' ? 'selected' : '' }}>Angel Group</option>
+                <option value="incubator" {{ old('tipe_investasi') === 'incubator' ? 'selected' : '' }}>Incubator</option>
+                <option value="investment_bank" {{ old('tipe_investasi') === 'investment_bank' ? 'selected' : '' }}>Investment Bank</option>
+                <option value="family_investment_office" {{ old('tipe_investasi') === 'family_investment_office' ? 'selected' : '' }}>Family Investment Office</option>
+                <option value="venture_debt" {{ old('tipe_investasi') === 'venture_debt' ? 'selected' : '' }}>Venture Debt</option>
+                <option value="co_working_space" {{ old('tipe_investasi') === 'co_working_space' ? 'selected' : '' }}>Co-Working Space</option>
+                <option value="fund_of_funds" {{ old('tipe_investasi') === 'fund_of_funds' ? 'selected' : '' }}>Fund Of Funds</option>
+                <option value="hedge_fund" {{ old('tipe_investasi') === 'hedge_fund' ? 'selected' : '' }}>Hedge Fund</option>
+                <option value="government_office" {{ old('tipe_investasi') === 'government_office' ? 'selected' : '' }}>Government Office</option>
+                <option value="university_program" {{ old('tipe_investasi') === 'university_program' ? 'selected' : '' }}>University Program</option>
+                <option value="entrepreneurship_program" {{ old('tipe_investasi') === 'entrepreneurship_program' ? 'selected' : '' }}>Entrepreneurship Program</option>
+                <option value="secondary_purchaser" {{ old('tipe_investasi') === 'secondary_purchaser' ? 'selected' : '' }}>Secondary Purchaser</option>
+                <option value="startup_competition" {{ old('tipe_investasi') === 'startup_competition' ? 'selected' : '' }}>Startup Competition</option>
+                <option value="syndicate" {{ old('tipe_investasi') === 'syndicate' ? 'selected' : '' }}>Syndicate</option>
+                <option value="pension_funds" {{ old('tipe_investasi') === 'pension_funds' ? 'selected' : '' }}>Pension Funds</option>
             </select>
         </div>
         <button type="submit" class="btn btn-primary">Tambah Dana</button>

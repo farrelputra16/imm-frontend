@@ -318,10 +318,19 @@ class ProjectController extends Controller
         return view('companies.project-detail', compact('project', 'documents', 'initialMetricProjects'));
     }
 
-    public function showProjectWithDanas($id)
+    public function showProject($id, Request $request)
     {
         $company = Company::findOrFail($id);
-        $projects = $company->projects()->with('dana')->get();
-        return $projects;
+
+        // Ambil jumlah baris per halaman dari request, default ke 10
+        $rowsPerPage = $request->input('rows', 10);
+        $searchTerm = $request->input('search_expense', ''); // Ambil input pencarian untuk expense
+
+        // Ambil proyek terkait dengan perusahaan dan paginate dengan pencarian
+        $projects = $company->projects()
+            ->where('nama', 'LIKE', "%{$searchTerm}%") // Ganti 'nama' dengan kolom yang ingin dicari
+            ->paginate($rowsPerPage);
+
+        return $projects; // Pastikan ini mengembalikan objek LengthAwarePaginator
     }
 }

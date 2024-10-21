@@ -42,12 +42,27 @@
             <label for="tipe_investasi">Investment Type</label>
             <select name="tipe_investasi" id="tipe_investasi" class="form-control">
                 <option value="venture_capital">Venture Capital</option>
-                <option value="angel_investment">Angel Investment</option>
-                <option value="crowdfunding">Crowdfunding</option>
-                <option value="government_grant">Government Grant</option>
-                <option value="foundation_grant">Foundation Grant</option>
-                <option value="buyout">Buyout</option>
-                <option value="growth_capital">Growth Capital</option>
+                <option value="individual_angel">Individual/Angel</option>
+                <option value="private_equity_firm">Private Equity Firm</option>
+                <option value="accelerator">Accelerator</option>
+                <option value="investment_partner">Investment Partner</option>
+                <option value="corporate_venture_capital">Corporate Venture Capital</option>
+                <option value="micro_vc">Micro VC</option>
+                <option value="angel_group">Angel Group</option>
+                <option value="incubator">Incubator</option>
+                <option value="investment_bank">Investment Bank</option>
+                <option value="family_investment_office">Family Investment Office</option>
+                <option value="venture_debt">Venture Debt</option>
+                <option value="co_working_space">Co-Working Space</option>
+                <option value="fund_of_funds">Fund Of Funds</option>
+                <option value="hedge_fund">Hedge Fund</option>
+                <option value="government_office">Government Office</option>
+                <option value="university_program">University Program</option>
+                <option value="entrepreneurship_program">Entrepreneurship Program</option>
+                <option value="secondary_purchaser">Secondary Purchaser</option>
+                <option value="startup_competition">Startup Competition</option>
+                <option value="syndicate">Syndicate</option>
+                <option value="pension_funds">Pension Funds</option>
             </select>
         </div>
 

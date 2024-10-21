@@ -23,11 +23,30 @@
     @if ($investments->isEmpty())
         <p>No investments found.</p>
     @else
+    @php
+        // Mapping antara funding type dan label yang ingin ditampilkan
+        $fundingTypes = [
+            'pre_seed' => 'Pre-seed Funding',
+            'seed' => 'Seed Funding',
+            'series_a' => 'Series A Funding',
+            'series_b' => 'Series B Funding',
+            'series_c' => 'Series C Funding',
+            'series_d' => 'Series D Funding',
+            'series_e' => 'Series E Funding',
+            'debt' => 'Debt Funding',
+            'equity' => 'Equity Funding',
+            'convertible_debt' => 'Convertible Debt',
+            'grants' => 'Grants',
+            'revenue_based' => 'Revenue-Based Financing',
+            'private_equity' => 'Private Equity',
+            'ipo' => 'Initial Public Offering (IPO)',
+        ];
+    @endphp
+
         <table class="table" id="investmentTable"> <!-- Tambahkan ID untuk tabel -->
             <thead>
                 <tr>
                     <th>Investor</th>
-                    <th>Project</th>
                     <th>Amount</th>
                     <th>Investment Date</th>
                     <th>Funding Type</th> <!-- Kolom baru untuk Funding Type -->
@@ -45,8 +64,10 @@
                         <td>{{ $investment->investor->org_name }}</td>
                         <td>{{ number_format($investment->amount, 0, ',', '.') }} IDR</td>
                         <td>{{ \Carbon\Carbon::parse($investment->investment_date)->format('j M, Y') }}</td>
-                        <td>{{ $investment->funding_type }}</td> <!-- Menampilkan Funding Type -->
-                        <td>{{ ucfirst(str_replace('_', ' ', $investment->tipe_investasi)) }}</td> <!-- Menampilkan Investment Type -->
+                        <td>
+                            {{ $fundingTypes[$investment->funding_type] ?? 'Unknown Funding Type' }} <!-- Menampilkan Funding Type -->
+                        </td>
+                        <td>{{ $investment->investment_type_label }} <!-- Menggunakan accessor --></td> <!-- Menampilkan Investment Type -->
                         <td>{{ $investment->pengirim }}</td> <!-- Menampilkan Pengirim -->
                         <td>{{ $investment->bank_asal }}</td> <!-- Menampilkan Bank Asal -->
                         <td>{{ $investment->bank_tujuan }}</td> <!-- Menampilkan Bank Tujuan -->

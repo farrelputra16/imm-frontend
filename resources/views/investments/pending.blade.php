@@ -14,7 +14,6 @@
         <thead>
             <tr>
                 <th>Company</th>
-                <th>Project</th>
                 <th>Amount</th>
                 <th>Investment Date</th>
                 <th>Funding Type</th>
@@ -34,7 +33,7 @@
                     <td>Rp{{ number_format($investment->amount, 0, ',', '.') }}</td>
                     <td>{{ $investment->investment_date ? \Carbon\Carbon::parse($investment->investment_date)->format('j M, Y') : 'N/A' }}</td>
                     <td>{{ $investment->funding_type }}</td>
-                    <td>{{ ucfirst(str_replace('_', ' ', $investment->tipe_investasi)) }}</td>
+                    <td>{{ $investment->investment_type_label }}</td>
                     <td>{{ $investment->pengirim }}</td>
                     <td>{{ $investment->bank_asal }}</td>
                     <td>{{ $investment->bank_tujuan }}</td>

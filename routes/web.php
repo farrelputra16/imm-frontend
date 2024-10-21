@@ -143,6 +143,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [ManagementKeuanganController::class, 'show'])->name('kelolapengeluaran');
     });
 
+    // Rute untuk pencarian pengeluaran yang juga mengarah ke metode show
+    Route::get('/kelola-pengeluaran/search-expense', [ManagementKeuanganController::class, 'show'])->name('searchExpense');
+
     // Routes untuk Dana Masuk (Company Income)
     Route::prefix('dana-masuk')->group(function () {
         Route::get('/tambah', [CompanyIncomeController::class, 'show'])->name('createCompanyIncome');
