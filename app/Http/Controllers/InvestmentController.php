@@ -98,17 +98,20 @@ class InvestmentController extends Controller
 
     // Menampilkan daftar pending investment untuk investor
     public function pending()
-    {
-        $investor = Investor::where('user_id', Auth::id())->first();
+{
+    $investor = Investor::where('user_id', Auth::id())->first();
 
-        if (!$investor) {
-            // Redirect back with an error message if the investor is not found
-            return redirect()->back()->withErrors(['error' => 'Investor not found. Please ensure you have registered as an investor.']);
-        }
-
-        $investments = Investment::where('investor_id', $investor->id)->get();
-        return view('investments.pending', compact('investments'));
+    if (!$investor) {
+        // Redirect back with an error message if the investor is not found
+        return redirect()->back()->withErrors(['error' => 'Investor not found. Please ensure you have registered as an investor.']);
     }
+
+    // Ambil semua investasi milik investor yang login tanpa memfilter status
+    $investments = Investment::where('investor_id', $investor->id)->get();
+
+    return view('investments.pending', compact('investments'));
+}
+
 
     public function createFromFundingRound(FundingRound $fundingRound)
     {
@@ -203,6 +206,19 @@ class InvestmentController extends Controller
 
         return redirect()->route('investments.approvals')->with('success', 'Investment status updated successfully!');
     }
+    public function status(Investment $investment)
+{
+    // Hanya izinkan investor yang memiliki investasi ini untuk melihat detailnya
+    $user = Auth::user();
+    $investor = Investor::where('user_id', $user->id)->first();
+
+    if ($investor->id !== $investment->investor_id) {
+        return redirect()->route('investments.pending')->withErrors(['error' => 'You do not have access to this investment.']);
+    }
+
+    // Mengirim data investasi ke view untuk ditampilkan
+    return view('investments.status', compact('investment'));
+}
 
 
     // Menyetujui investasi oleh pemilik perusahaan

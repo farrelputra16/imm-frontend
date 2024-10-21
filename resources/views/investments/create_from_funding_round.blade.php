@@ -1,90 +1,162 @@
-@extends('layouts.app-investments')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invest in Funding Round</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .form-container {
+            max-width: 800px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-title {
+            text-align: center;
+            color: #6c63ff;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+        .form-group label {
+            font-weight: bold;
+            color: #333;
+        }
+        .form-control {
+            border: 1px solid #6c63ff;
+            border-radius: 4px;
+        }
+        .btn-primary {
+            background-color: #6c63ff;
+            border-color: #6c63ff;
+        }
+        .btn-outline-secondary {
+            border-color: #6c63ff;
+            color: #6c63ff;
+        }
+        .btn-outline-secondary:hover {
+            background-color: #6c63ff;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container form-container">
+        <div class="form-title">Invest in Funding Round: {{ $fundingRound->name }}</div>
 
-@section('content')
-<div class="container">
-    <h1>Invest in Funding Round: {{ $fundingRound->name }}</h1>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+        <form action="{{ route('investments.storeFromFundingRound', $fundingRound->id) }}" method="POST">
+            @csrf
 
-    <form action="{{ route('investments.storeFromFundingRound', $fundingRound->id) }}" method="POST">
-        @csrf
+            <div class="row mb-3">
+                <!-- Investment amount -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="formatted_amount">Investment Amount</label>
+                        <input type="text" name="formatted_amount" id="formatted_amount" class="form-control" required placeholder="Enter the amount you wish to invest">
+                        <!-- Hidden field to store the unformatted value -->
+                        <input type="hidden" name="amount" id="amount" value="">
+                    </div>
+                </div>
 
-        <!-- Investment amount -->
-        <div class="form-group">
-            <label for="amount">Investment Amount</label>
-            <input type="text" name="formatted_amount" id="formatted_amount" class="form-control" required>
-            <!-- Hidden field to store the unformatted value -->
-            <input type="hidden" name="amount" id="amount" value="">
-        </div>
+                <!-- Investment date -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="investment_date">Investment Date</label>
+                        <input type="date" name="investment_date" id="investment_date" class="form-control" required>
+                    </div>
+                </div>
+            </div>
 
-        <!-- Investment date -->
-        <div class="form-group">
-            <label for="investment_date">Investment Date</label>
-            <input type="date" name="investment_date" id="investment_date" class="form-control" required>
-        </div>
+            <div class="row mb-3">
+                <!-- Funding Type (fetched from related company) -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="funding_type">Funding Type</label>
+                        <input type="text" name="funding_type" id="funding_type" class="form-control" value="{{ $fundingRound->company->funding_stage }}" readonly>
+                    </div>
+                </div>
 
-        <!-- Funding Type (fetched from related company) -->
-        <div class="form-group">
-            <label for="funding_type">Funding Type</label>
-            <input type="text" name="funding_type" id="funding_type" class="form-control" value="{{ $fundingRound->company->funding_stage }}" readonly>
-        </div>
+                <!-- Investment Type -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="tipe_investasi">Investment Type</label>
+                        <select name="tipe_investasi" id="tipe_investasi" class="form-control">
+                            <option value="venture_capital">Venture Capital</option>
+                            <option value="angel_investment">Angel Investment</option>
+                            <option value="crowdfunding">Crowdfunding</option>
+                            <option value="government_grant">Government Grant</option>
+                            <option value="foundation_grant">Foundation Grant</option>
+                            <option value="buyout">Buyout</option>
+                            <option value="growth_capital">Growth Capital</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
 
-        <!-- Investment Type -->
-        <div class="form-group">
-            <label for="tipe_investasi">Investment Type</label>
-            <select name="tipe_investasi" id="tipe_investasi" class="form-control">
-                <option value="venture_capital">Venture Capital</option>
-                <option value="angel_investment">Angel Investment</option>
-                <option value="crowdfunding">Crowdfunding</option>
-                <option value="government_grant">Government Grant</option>
-                <option value="foundation_grant">Foundation Grant</option>
-                <option value="buyout">Buyout</option>
-                <option value="growth_capital">Growth Capital</option>
-            </select>
-        </div>
+            <div class="row mb-3">
+                <!-- Pengirim (Sender) -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="pengirim">Sender (Pengirim)</label>
+                        <input type="text" name="pengirim" id="pengirim" class="form-control" value="{{ $firstName }}" required>
+                    </div>
+                </div>
 
-        <!-- Pengirim (Sender) -->
-        <div class="form-group">
-            <label for="pengirim">Sender (Pengirim)</label>
-            <input type="text" name="pengirim" id="pengirim" class="form-control" value="{{ $firstName }}" required>
-        </div>
+                <!-- Bank Asal (Originating Bank) -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="bank_asal">Originating Bank (Bank Asal)</label>
+                        <input type="text" name="bank_asal" id="bank_asal" class="form-control" required>
+                    </div>
+                </div>
+            </div>
 
-        <!-- Bank Asal (Originating Bank) -->
-        <div class="form-group">
-            <label for="bank_asal">Originating Bank (Bank Asal)</label>
-            <input type="text" name="bank_asal" id="bank_asal" class="form-control" required>
-        </div>
+            <div class="row mb-3">
+                <!-- Bank Tujuan (Destination Bank) -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="bank_tujuan">Destination Bank (Bank Tujuan)</label>
+                        <input type="text" name="bank_tujuan" id="bank_tujuan" class="form-control" required>
+                    </div>
+                </div>
+            </div>
 
-        <!-- Bank Tujuan (Destination Bank) -->
-        <div class="form-group">
-            <label for="bank_tujuan">Destination Bank (Bank Tujuan)</label>
-            <input type="text" name="bank_tujuan" id="bank_tujuan" class="form-control" required>
-        </div>
+            <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-outline-secondary me-2">Cancel</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
 
-        <!-- Submit button -->
-        <button type="submit" class="btn btn-primary">Submit Investment</button>
-    </form>
-</div>
+    <!-- Script for formatting amount and keeping the original value -->
+    <script>
+        document.getElementById('formatted_amount').addEventListener('input', function (e) {
+            // Remove any non-digit characters
+            let value = e.target.value.replace(/\D/g, '');
 
-<!-- Script for formatting amount and keeping the original value -->
-<script>
-    document.getElementById('formatted_amount').addEventListener('input', function (e) {
-        // Remove any non-digit characters
-        let value = e.target.value.replace(/\D/g, '');
+            // Format the value as a currency
+            e.target.value = new Intl.NumberFormat('id-ID').format(value);
 
-        // Format the value as a currency
-        e.target.value = new Intl.NumberFormat('id-ID').format(value);
-
-        // Set the hidden input value to the raw number (no formatting)
-        document.getElementById('amount').value = value;
-    });
-</script>
-@endsection
+            // Set the hidden input value to the raw number (no formatting)
+            document.getElementById('amount').value = value;
+        });
+    </script>
+</body>
+</html>
