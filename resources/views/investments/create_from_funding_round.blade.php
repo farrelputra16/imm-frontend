@@ -99,22 +99,6 @@
                         <label for="tipe_investasi">Investment Type</label>
                         <select name="tipe_investasi" id="tipe_investasi" class="form-control">
                             <option value="venture_capital">Venture Capital</option>
-                            <option value="angel_investment">Angel Investment</option>
-                            <option value="crowdfunding">Crowdfunding</option>
-                            <option value="government_grant">Government Grant</option>
-                            <option value="foundation_grant">Foundation Grant</option>
-                            <option value="buyout">Buyout</option>
-                            <option value="growth_capital">Growth Capital</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-        <!-- Investment Type -->
-        <div class="form-group">
-            <label for="tipe_investasi">Investment Type</label>
-            <select name="tipe_investasi" id="tipe_investasi" class="form-control">
-                <option value="venture_capital">Venture Capital</option>
                 <option value="individual_angel">Individual/Angel</option>
                 <option value="private_equity_firm">Private Equity Firm</option>
                 <option value="accelerator">Accelerator</option>
@@ -136,8 +120,10 @@
                 <option value="startup_competition">Startup Competition</option>
                 <option value="syndicate">Syndicate</option>
                 <option value="pension_funds">Pension Funds</option>
-            </select>
-        </div>
+                        </select>
+                    </div>
+                </div>
+            </div>
             <div class="row mb-3">
                 <!-- Pengirim (Sender) -->
                 <div class="col-md-6">

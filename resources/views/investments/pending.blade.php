@@ -22,12 +22,10 @@
                 <th>Origin Bank</th>
                 <th>Destination Bank</th>
                 <th>Status</th>
-                <th>Report Financial</th>
-                <th>Report Project</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($investments as $investment)
+            @forelse($investments as $investment)
                 <tr>
                     <td>{{ $investment->company->nama }}</td>
                     <td>Rp{{ number_format($investment->amount, 0, ',', '.') }}</td>
@@ -37,36 +35,16 @@
                     <td>{{ $investment->pengirim }}</td>
                     <td>{{ $investment->bank_asal }}</td>
                     <td>{{ $investment->bank_tujuan }}</td>
-                    <td>{{ ucfirst($investment->status) }}</td>
-                    <!-- Bagian untuk Report Project -->
-                    <!-- Report Company (biarkan logika ini tetap sesuai kebutuhan Anda) -->
-    @if($investments->isEmpty())
-        <p>No pending investments at the moment.</p>
-    @else
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Company Name</th>
-                    <th>Amount</th>
-                    <th>Investment Date</th>
-                    <th>Status</th>
-                    <th>Action</th>
+                    <td>
+                        <a href="{{ route('investments.status', $investment->id) }}" class="btn btn-info">View Details</a>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach($investments as $investment)
-                    <tr>
-                        <td>{{ $investment->company->nama }}</td>
-                        <td>Rp{{ number_format($investment->amount) }}</td>
-                        <td>{{ $investment->investment_date->format('d-m-Y') }}</td>
-                        <td>{{ ucfirst($investment->status) }}</td>
-                        <td>
-                            <a href="{{ route('investments.status', $investment->id) }}" class="btn btn-info">View Details</a>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @endif
+            @empty
+                <tr>
+                    <td colspan="11">No pending investments at the moment.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
 </div>
 @endsection
