@@ -1,3 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <!-- Other stylesheets or meta tags -->
+    <style>
+        .navbar-landingpage {
+            background-color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-family: 'Montserrat', sans-serif;
+            border-bottom: 1px solid #5940CB;
+        }
+
+        .navbar-landingpage .logo img {
+            height: 40px;
+            margin-right: 20px;
+            transition: transform 0.5s ease-in-out, filter 0.5s ease-in-out;
+        }
+
+        .navbar-landingpage .logo img:hover {
+            transform: scale(1.1) rotate(360deg);
+            filter: drop-shadow(0 0 10px #5940CB);
+        }
+
+        .navbar-landingpage .navbar {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            font-weight: 500;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .navbar-landingpage .navbar a {
+            color: #333;
+            text-decoration: none;
+            padding: 10px 15px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+     .navbar-landingpage .navbar a::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background: #5940CB;
+            transition: width 0.3s ease;
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+        }
+
+        .navbar-landingpage .navbar a:hover::after {
+            width: 100%;
+        }
+
+        .navbar-landingpage .navbar a:hover {
+            color: #5940CB;
+        }
+
+        .navbar-landingpage .dropdown-menu {
+            background-color: #fff;
+            border-radius: 5px;
+            border: none;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-landingpage .dropdown-menu a {
+            color: #333;
+            padding: 10px 20px;
+        }
+
+        .navbar-landingpage .dropdown-menu a:hover {
+            background-color: #f0f0f0;
+        }
+
+        .navbar-landingpage .login-btn,
+        .navbar-landingpage .register-btn {
+            background-color: transparent;
+            color: #5940CB;
+            border: 2px solid #5940CB;
+            padding: 8px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            text-decoration: none;
+        }
+
+        .navbar-landingpage .login-btn {
+            margin-left: 15px;
+        }
+
+        .navbar-landingpage .register-btn {
+            margin-left: 15px;
+            background-color: #5940CB;
+            color: white;
+        }
+
+        .navbar-landingpage .login-btn:hover {
+            background-color: #f5f5f5;
+        }
+
+        .navbar-landingpage .register-btn:hover {
+            background-color: #4829a0;
+        }
+
+        .navbar-landingpage .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .navbar-landingpage .notification-icon {
+            font-size: 1.5rem;
+            color: orange;
+            cursor: pointer;
+            margin-right: 20px;
+        }
+
+        .navbar-landingpage .notification-dropdown .dropdown-menu {
+            width: 300px;
+        }
+
+        .navbar-landingpage .notification-dropdown .dropdown-item {
+            padding: 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .navbar-landingpage .notification-time {
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        .navbar-landingpage .notification-dropdown .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .navbar-landingpage .dropdown-submenu {
+            position: relative;
+        }
+
+        .navbar-landingpage .dropdown-submenu .dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-left: .1rem;
+            margin-right: .1rem;
+        }
+        .ml-2 {
+            color:black;
+        }
+        .nav-wrapper {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
 <div class="navbar-landingpage">
     <!-- Logo -->
     <div class="logo">
@@ -114,171 +279,15 @@
         @endauth
     </div>
 </div>
-
+</body>
+</html>
 <!-- Font Awesome for icons -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-<style>
-    .navbar-landingpage {
-        background-color: #fff;
-        padding: 10px 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        font-family: 'Montserrat', sans-serif;
-        border-bottom: 1px solid #5940CB;
-    }
-
-    .navbar-landingpage .logo img {
-        height: 40px;
-        margin-right: 20px;
-        transition: transform 0.5s ease-in-out, filter 0.5s ease-in-out;
-    }
-
-    .navbar-landingpage .logo img:hover {
-        transform: scale(1.1) rotate(360deg);
-        filter: drop-shadow(0 0 10px #5940CB);
-    }
-
-    .navbar-landingpage .navbar {
-        display: flex;
-        gap: 30px;
-        align-items: center;
-        font-weight: 500;
-        font-size: 1rem;
-        color: #333;
-    }
-
-    .navbar-landingpage .navbar a {
-        color: #333;
-        text-decoration: none;
-        padding: 10px 15px;
-        position: relative;
-        transition: color 0.3s ease;
-    }
-
- .navbar-landingpage .navbar a::after {
-        content: '';
-        display: block;
-        width: 0;
-        height: 2px;
-        background: #5940CB;
-        transition: width 0.3s ease;
-        position: absolute;
-        left: 0;
-        bottom: -5px;
-    }
-
-    .navbar-landingpage .navbar a:hover::after {
-        width: 100%;
-    }
-
-    .navbar-landingpage .navbar a:hover {
-        color: #5940CB;
-    }
-
-    .navbar-landingpage .dropdown-menu {
-        background-color: #fff;
-        border-radius: 5px;
-        border: none;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .navbar-landingpage .dropdown-menu a {
-        color: #333;
-        padding: 10px 20px;
-    }
-
-    .navbar-landingpage .dropdown-menu a:hover {
-        background-color: #f0f0f0;
-    }
-
-    .navbar-landingpage .login-btn,
-    .navbar-landingpage .register-btn {
-        background-color: transparent;
-        color: #5940CB;
-        border: 2px solid #5940CB;
-        padding: 8px 20px;
-        border-radius: 5px;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: transform 0.3s ease, background-color 0.3s ease;
-        text-decoration: none;
-    }
-
-    .navbar-landingpage .login-btn {
-        margin-left: 15px;
-    }
-
-    .navbar-landingpage .register-btn {
-        margin-left: 15px;
-        background-color: #5940CB;
-        color: white;
-    }
-
-    .navbar-landingpage .login-btn:hover {
-        background-color: #f5f5f5;
-    }
-
-    .navbar-landingpage .register-btn:hover {
-        background-color: #4829a0;
-    }
-
-    .navbar-landingpage .profile-img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-    }
-
-    .navbar-landingpage .notification-icon {
-        font-size: 1.5rem;
-        color: orange;
-        cursor: pointer;
-        margin-right: 20px;
-    }
-
-    .navbar-landingpage .notification-dropdown .dropdown-menu {
-        width: 300px;
-    }
-
-    .navbar-landingpage .notification-dropdown .dropdown-item {
-        padding: 10px;
-        border-bottom: 1px solid #f0f0f0;
-    }
-
-    .navbar-landingpage .notification-time {
-        font-size: 0.8rem;
-        color: #999;
-    }
-
-    .navbar-landingpage .notification-dropdown .dropdown-item:last-child {
-        border-bottom: none;
-    }
-
-    .navbar-landingpage .dropdown-submenu {
-        position: relative;
-    }
-
-    .navbar-landingpage .dropdown-submenu .dropdown-menu {
-        top: 0;
-        left: 100%;
-        margin-left: .1rem;
-        margin-right: .1rem;
-    }
-    .ml-2 {
-        color:black;
-    }
-    .nav-wrapper {
-        display: flex;
-        align-items: center;
-    }
-</style>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+

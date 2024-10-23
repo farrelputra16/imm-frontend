@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 @extends('layouts.app-landingpage')
 
 <style>
@@ -747,3 +748,4 @@ document.addEventListener('DOMContentLoaded', observeElements);
   </script>
 
 @endsection
+</html>
