@@ -22,8 +22,10 @@
 
         <div class="mb-3">
             <label for="name" class="form-label">Funding Round Name</label>
-            <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
+            <!-- Set as readonly so the user cannot edit -->
+            <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" readonly>
         </div>
+
 
         <div class="mb-3">
             <label for="target" class="form-label">Target Amount</label>
@@ -84,5 +86,51 @@
         <a href="{{ route('company.funding_rounds.list') }}" class="btn btn-secondary">Back to Funding Rounds</a>
     </div>
 </div>
+<script>
+    // Ketika DOM siap
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ambil elemen-elemen yang diperlukan
+        const fundingStage = document.getElementById('funding_stage');
+        const fundingName = document.getElementById('name');
+        const companyName = '{{ $company->name }}'; // Ambil nama perusahaan dari PHP
+
+        // Fungsi untuk mengubah nama funding round secara otomatis
+        function updateFundingName() {
+            const stageValue = fundingStage.options[fundingStage.selectedIndex].text; // Ambil teks dari stage yang dipilih
+            if (stageValue && companyName) {
+                fundingName.value = stageValue + ' - ' + companyName; // Gabungkan stage dan nama perusahaan
+            }
+        }
+
+        // Panggil fungsi saat page load dan saat funding stage berubah
+        fundingStage.addEventListener('change', updateFundingName);
+
+        // Set awal nilai nama funding round
+        updateFundingName();
+    });
+ </script>
+<script>
+   // Ketika DOM siap
+   document.addEventListener('DOMContentLoaded', function() {
+       // Ambil elemen-elemen yang diperlukan
+       const fundingStage = document.getElementById('funding_stage');
+       const fundingName = document.getElementById('name');
+       const companyName = '{{ $company->nama }}'; // Ambil nama perusahaan dari PHP
+
+       // Fungsi untuk mengubah nama funding round secara otomatis
+       function updateFundingName() {
+           const stageValue = fundingStage.options[fundingStage.selectedIndex].text; // Ambil teks dari stage yang dipilih
+           if (stageValue && companyName) {
+               fundingName.value = stageValue + ' - ' + companyName; // Gabungkan stage dan nama perusahaan
+           }
+       }
+
+       // Panggil fungsi saat page load dan saat funding stage berubah
+       fundingStage.addEventListener('change', updateFundingName);
+
+       // Set awal nilai nama funding round
+       updateFundingName();
+   });
+</script>
 
 @endsection
