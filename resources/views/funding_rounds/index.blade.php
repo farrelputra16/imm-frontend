@@ -115,7 +115,7 @@
                                         @endif
                                     </td>
                                     <td style="vertical-align: middle;">
-                                        {{ $fundingRound->company->funding_stage ?? 'N/A' }}
+                                        {{ $fundingRound->funding_stage ?? 'N/A' }}
                                     </td>
                                     <td style="vertical-align: middle;">Rp {{ $fundingRound->target ? number_format($fundingRound->target,0, ',', '.') : 'N/A' }}</td>
                                     <td style="vertical-align: middle;">Rp {{ $fundingRound->money_raised ? number_format($fundingRound->money_raised,0, ',', '.') : 'N/A' }}</td>
