@@ -39,21 +39,17 @@ class CompanyOutcomeController extends Controller
 
     public function detailOutcome($project_id)
     {
-        $outcomes = CompanyOutcome::where('project_id', $project_id)->get();
+        $rowsPerPage = request('rows') ?? 10;
+
+        // Make sure you are always paginating, even if outcomes are empty
+        $outcomes = CompanyOutcome::where('project_id', $project_id)->paginate($rowsPerPage);
 
         $project = Project::findOrFail($project_id);
-
         $user = auth()->user();
-
         $isCompany = $user->role === 'USER';
 
-        if ($outcomes->isEmpty()) {
-            return view('homepageimm.detailbiaya', ['project_id' => $project_id, 'outcomes' => collect(), 'project' => $project, 'isCompany' => $isCompany]);
-        }
-        // Kirim flag ke view untuk menentukan akses
         return view('homepageimm.detailbiaya', compact('outcomes', 'project_id', 'project', 'isCompany'));
     }
-
 
     public function create($project_id)
     {
@@ -69,7 +65,6 @@ class CompanyOutcomeController extends Controller
             'keterangan' => 'required|string|max:1000',
             'bukti' => 'nullable|file|mimes:pdf,jpeg,jpg,png|max:5000',
             'project_id' => 'required|exists:projects,id',
-            'pelaporan_dana' => 'required|string|in:internal,external',
         ]);
 
         $buktiFileName = null;
@@ -78,13 +73,8 @@ class CompanyOutcomeController extends Controller
             $buktiFile = $request->file('bukti');
             $buktiFileName = time() . '.' . $buktiFile->getClientOriginalExtension();
 
-            // Tentukan direktori berdasarkan pelaporan_dana
-            $directory = $validatedData['pelaporan_dana'] === 'external'
-                ? 'public/laporan_pengeluaran_eksternal'
-                : 'public/laporan_pengeluaran_internal';
-
-            // Simpan file ke direktori yang sesuai
-            $buktiFile->storeAs($directory, $buktiFileName);
+            // Simpan file ke direktori 'public/laporan_pengeluaran'
+            $buktiFile->storeAs('public/laporan_pengeluaran', $buktiFileName);
         }
 
         $outcome = CompanyOutcome::create([
@@ -93,7 +83,6 @@ class CompanyOutcomeController extends Controller
             'keterangan' => $validatedData['keterangan'],
             'bukti' => $buktiFileName,
             'project_id' => $validatedData['project_id'],
-            'pelaporan_dana' => $validatedData['pelaporan_dana'],
         ]);
 
         // AMbils emua investor yang berinvestasi di proyek ini

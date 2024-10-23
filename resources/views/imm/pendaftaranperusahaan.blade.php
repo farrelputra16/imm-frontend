@@ -130,20 +130,34 @@
                         <label for="funding_stage">Funding Stage</label>
                         <select name="funding_stage" id="funding_stage" class="form-control" required>
                             <option value="" disabled selected>Pilih Funding Stage</option>
-                            <option value="pre_seed">Pre-seed Funding</option>
-                            <option value="seed">Seed Funding</option>
-                            <option value="series_a">Series A Funding</option>
-                            <option value="series_b">Series B Funding</option>
-                            <option value="series_c">Series C Funding</option>
-                            <option value="series_d">Series D Funding</option>
-                            <option value="series_e">Series E Funding</option>
-                            <option value="debt">Debt Funding</option>
-                            <option value="equity">Equity Funding</option>
-                            <option value="convertible_debt">Convertible Debt</option>
-                            <option value="grants">Grants</option>
-                            <option value="revenue_based">Revenue-Based Financing</option>
+                            <option value="pre_seed">Pre-Seed</option>
+                            <option value="seed">Seed</option>
+                            <option value="series_a">Series A</option>
+                            <option value="series_b">Series B</option>
+                            <option value="series_c">Series C</option>
+                            <option value="series_d">Series D</option>
+                            <option value="series_e">Series E</option>
+                            <option value="series_f">Series F</option>
+                            <option value="series_g">Series G</option>
+                            <option value="series_h">Series H</option>
+                            <option value="series_i">Series I</option>
+                            <option value="series_j">Series J</option>
+                            <option value="venture_series_unknown">Venture - Series Unknown</option>
+                            <option value="angel">Angel</option>
                             <option value="private_equity">Private Equity</option>
-                            <option value="ipo">Initial Public Offering (IPO)</option>
+                            <option value="debt_financing">Debt Financing</option>
+                            <option value="convertible_note">Convertible Note</option>
+                            <option value="grant">Grant</option>
+                            <option value="corporate_round">Corporate Round</option>
+                            <option value="equity_crowdfunding">Equity Crowdfunding</option>
+                            <option value="product_crowdfunding">Product Crowdfunding</option>
+                            <option value="secondary_market">Secondary Market</option>
+                            <option value="post_ipo_equity">Post-IPO Equity</option>
+                            <option value="post_ipo_debt">Post-IPO Debt</option>
+                            <option value="post_ipo_secondary">Post-IPO Secondary</option>
+                            <option value="non_equity_assistance">Non-equity Assistance</option>
+                            <option value="initial_coin_offering">Initial Coin Offering</option>
+                            <option value="undisclosed">Undisclosed</option>
                         </select>
                         <div class="invalid-feedback">
                             Please select a funding type.
@@ -192,7 +206,7 @@
                             <!-- Selected tags will be displayed here -->
                         </div>
                     </div>
-                    
+
                     <!-- Modal -->
                     <div class="modal fade" id="tagModal" tabindex="-1" aria-labelledby="tagModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
@@ -243,7 +257,7 @@
             </div>
         </form>
     </div>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const teleponInput = document.getElementById('formGroupExampleInput5');
