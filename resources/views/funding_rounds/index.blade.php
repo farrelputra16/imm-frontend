@@ -87,7 +87,7 @@
             <div class="table-section">
                 <div class="table-responsive">
                     <table class="table table-hover table-strip" style="margin-bottom: 0px;">
-                        <thead>
+                        <thead class="sub-heading-2">
                             <tr>
                                 <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle;">Name</th>
                                 <th scope="col" style="vertical-align: middle;">Company</th>
