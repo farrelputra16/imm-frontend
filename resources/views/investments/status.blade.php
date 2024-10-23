@@ -108,7 +108,10 @@
 
     <!-- Illustration -->
     <div class="illustration">
-        <img src="{{ asset('images/status/pic.png') }}" alt="Illustration of two people discussing a document in an office setting" width="400" height="300">
+        <img src="{{ asset('images/status/' . ($investment->status === 'approved' ? 'approve.png' : 'pending.png')) }}"
+             alt="Illustration related to the investment status"
+             width="400"
+             height="300">
     </div>
 
     <!-- Status Text -->
