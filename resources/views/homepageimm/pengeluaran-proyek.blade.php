@@ -136,6 +136,8 @@
         <form id="addOutcomeForm" action="{{ route('companyOutcome.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="project_id" value="{{ $project->id }}">
+            <input type="hidden" name="company_id"  value="{{ $project->company_id }}">
+
 
             <div class="mb-3">
                 <label for="date" class="form-label">Date</label>
@@ -147,7 +149,7 @@
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Description</label>
-                <textarea class="form-control" id="description" rows="3" name="keterangan" placeholder="cth. Pembelian karung beras bekas (5 lusin)" style="width: 100%" required>"Robotic Arm Design" is a project focused on developing and refining robotic arm systems for automation tasks, enhancing precision and efficiency in various industries.</textarea>
+                <textarea class="form-control" id="description" rows="3" name="pelaporan_dana" placeholder="cth. Pembelian karung beras bekas (5 lusin)" style="width: 100%" required></textarea>
             </div>
             <div class="mb-3">
                 <label for="proof" class="form-label">Proof of Purchase</label>

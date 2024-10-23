@@ -62,9 +62,10 @@ class CompanyOutcomeController extends Controller
         $validatedData = $request->validate([
             'date' => 'required|date',
             'jumlah_biaya' => 'required|numeric',
-            'keterangan' => 'required|string|max:1000',
-            'bukti' => 'nullable|file|mimes:pdf,jpeg,jpg,png|max:5000',
+            'bukti' => 'nullable|file|mimes:pdf,jpeg,jpg,png|max:10000',
+            'pelaporan_dana' => 'nullable|string',
             'project_id' => 'required|exists:projects,id',
+            'company_id' => 'required|exists:companies,id',
         ]);
 
         $buktiFileName = null;
@@ -80,13 +81,13 @@ class CompanyOutcomeController extends Controller
         $outcome = CompanyOutcome::create([
             'date' => $validatedData['date'],
             'jumlah_biaya' => $validatedData['jumlah_biaya'],
-            'keterangan' => $validatedData['keterangan'],
             'bukti' => $buktiFileName,
+            'pelaporan_dana' => $validatedData['pelaporan_dana'],
             'project_id' => $validatedData['project_id'],
         ]);
 
-        // AMbils emua investor yang berinvestasi di proyek ini
-        $investments = Investment::where('project_id', $validatedData['project_id'])->get();
+        // AMbils emua investor yang berinvestasi di perusahaan ini
+        $investments = Investment::where('company_id', $validatedData['company_id'])->get();
 
         foreach ($investments as $investment) {
             $investor = $investment->investor;
@@ -102,7 +103,6 @@ class CompanyOutcomeController extends Controller
             }
         }
 
-        return redirect()->route('homepageimm.detailbiaya', ['project_id' => $validatedData['project_id']])
-            ->with('success', 'Penggunaan dana berhasil ditambahkan.');
+        return redirect()->route('homepageimm.detailbiaya', ['project_id' => $validatedData['project_id']])->with('success', 'Penggunaan dana berhasil ditambahkan.');
     }
 }

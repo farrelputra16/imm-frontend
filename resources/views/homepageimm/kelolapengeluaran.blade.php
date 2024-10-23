@@ -313,12 +313,12 @@
                             <tr>
                                 <td style="vertical-align: middle; border-left: 1px solid #BBBEC5;">{{ $loop->iteration }}</td> <!-- Menampilkan nomor urut -->
                                 <td style="vertical-align: middle;">{{ $project->nama }}</td>
+                                <td style="vertical-align: middle;">{{ $project->status }}</td> <!-- Menampilkan status proyek -->
                                 @if (!$isUserRole)
-                                    <td style="vertical-align: middle;">{{ $project->status }}</td> <!-- Menampilkan status proyek -->
+                                    <td style="vertical-align: middle;">Rp{{ number_format($project->jumlah_pendanaan, 0, ',', '.') }}</td> <!-- Menampilkan total dana tersedia -->
                                     <td style="vertical-align: middle;">{{ $project->start_date ? \Carbon\Carbon::parse($project->start_date)->format('j M, Y') : 'N/A' }}</td>
                                     <td style="vertical-align: middle;">{{ $project->end_date ? \Carbon\Carbon::parse($project->end_date)->format('j M, Y') : 'N/A' }}</td>
                                 @endif
-                                <td style="vertical-align: middle;">Rp{{ number_format($project->jumlah_pendanaan, 0, ',', '.') }}</td> <!-- Menampilkan total dana tersedia -->
                                 <td style="vertical-align: middle; border-right: 1px solid #BBBEC5; text-align: center  ;">
                                     <a href="{{ route('homepageimm.detailbiaya', ['project_id' => $project->id]) }}" style="text-decoration: underline;">cek disini</a>
                                 </td>
