@@ -476,20 +476,34 @@
                             <label for="funding_stage">Funding Stage Perusahaan</label>
                             <select name="funding_stage" id="funding_stage" class="form-control" required readonly>
                                 <option value="" disabled>Pilih Funding Stage Perusahaan</option>
-                                <option value="Pre-Seed" @if($company->funding_stage == 'Pre-Seed') selected @endif>Pre-Seed</option>
-                                <option value="Seed" @if($company->funding_stage == 'Seed') selected @endif>Seed</option>
-                                <option value="Series A" @if($company->funding_stage == 'Series A') selected @endif>Series A</option>
-                                <option value="Series B" @if($company->funding_stage == 'Series B') selected @endif>Series B</option>
-                                <option value="Series C" @if($company->funding_stage == 'Series C') selected @endif>Series C</option>
-                                <option value="Series D" @if($company->funding_stage == 'Series D') selected @endif>Series D</option>
-                                <option value="Series E" @if($company->funding_stage == 'Series E') selected @endif>Series E</option>
-                                <option value="Debt" @if($company->funding_stage == 'Debt') selected @endif>Debt</option>
-                                <option value="Equity" @if($company->funding_stage == 'Equity') selected @endif>Equity</option>
-                                <option value="Convertible Debt" @if($company->funding_stage == 'Convertible Debt') selected @endif>Convertible Debt</option>
-                                <option value="Grants" @if($company->funding_stage == 'Grants') selected @endif>Grants</option>
-                                <option value="Revenue-Based Financing" @if($company->funding_stage == 'Revenue-Based Financing') selected @endif>Revenue-Based Financing</option>
-                                <option value="Private Equity" @if($company->funding_stage == 'Private Equity') selected @endif>Private Equity</option>
-                                <option value="Initial Public Offering (IPO)" @if($company->funding_stage == 'Initial Public Offering (IPO)') selected @endif>Initial Public Offering (IPO)</option>
+                                <option value="pre_seed" @if($company->funding_stage == 'pre_seed') selected @endif>Pre-Seed</option>
+                                <option value="seed" @if($company->funding_stage == 'seed') selected @endif>Seed</option>
+                                <option value="series_a" @if($company->funding_stage == 'series_a') selected @endif>Series A</option>
+                                <option value="series_b" @if($company->funding_stage == 'series_b') selected @endif>Series B</option>
+                                <option value="series_c" @if($company->funding_stage == 'series_c') selected @endif>Series C</option>
+                                <option value="series_d" @if($company->funding_stage == 'series_d') selected @endif>Series D</option>
+                                <option value="series_e" @if($company->funding_stage == 'series_e') selected @endif>Series E</option>
+                                <option value="series_f" @if($company->funding_stage == 'series_f') selected @endif>Series F</option>
+                                <option value="series_g" @if($company->funding_stage == 'series_g') selected @endif>Series G</option>
+                                <option value="series_h" @if($company->funding_stage == 'series_h') selected @endif>Series H</option>
+                                <option value="series_i" @if($company->funding_stage == 'series_i') selected @endif>Series I</option>
+                                <option value="series_j" @if($company->funding_stage == 'series_j') selected @endif>Series J</option>
+                                <option value="venture_series_unknown" @if($company->funding_stage == 'venture_series_unknown') selected @endif>Venture - Series Unknown</option>
+                                <option value="angel" @if($company->funding_stage == 'angel') selected @endif>Angel</option>
+                                <option value="private_equity" @if($company->funding_stage == 'private_equity') selected @endif>Private Equity</option>
+                                <option value="debt_financing" @if($company->funding_stage == 'debt_financing') selected @endif>Debt Financing</option>
+                                <option value="convertible_note" @if($company->funding_stage == 'convertible_note') selected @endif>Convertible Note</option>
+                                <option value="grant" @if($company->funding_stage == 'grant') selected @endif>Grant</option>
+                                <option value="corporate_round" @if($company->funding_stage == 'corporate_round') selected @endif>Corporate Round</option>
+                                <option value="equity_crowdfunding" @if($company->funding_stage == 'equity_crowdfunding') selected @endif>Equity Crowdfunding</option>
+                                <option value="product_crowdfunding" @if($company->funding_stage == 'product_crowdfunding') selected @endif>Product Crowdfunding</option>
+                                <option value="secondary_market" @if($company->funding_stage == 'secondary_market') selected @endif>Secondary Market</option>
+                                <option value="post_ipo_equity" @if($company->funding_stage == 'post_ipo_equity') selected @endif>Post-IPO Equity</option>
+                                <option value="post_ipo_debt" @if($company->funding_stage == 'post_ipo_debt') selected @endif>Post-IPO Debt</option>
+                                <option value="post_ipo_secondary" @if($company->funding_stage == 'post_ipo_secondary') selected @endif>Post-IPO Secondary</option>
+                                <option value="non_equity_assistance" @if($company->funding_stage == 'non_equity_assistance') selected @endif>Non-equity Assistance</option>
+                                <option value="initial_coin_offering" @if($company->funding_stage == 'initial_coin_offering') selected @endif>Initial Coin Offering</option>
+                                <option value="undisclosed" @if($company->funding_stage == 'undisclosed') selected @endif>Undisclosed</option>Offering (IPO)</option>
                             </select>
                         </div>
                         <!-- Dropdown for Business Model -->

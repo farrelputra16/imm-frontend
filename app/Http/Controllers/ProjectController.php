@@ -21,22 +21,48 @@ class ProjectController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
+        // Cek apakah role pengguna adalah "USER"
+        $isUserRole = $user->role === 'USER';
         $search = $request->input('search');
 
-        $allProjectsQuery = Project::with('tags', 'sdgs', 'indicators', 'metrics', 'targetPelanggan', 'dana')
-            ->whereHas('company', function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            });
+        if ($isUserRole) {
+            $allProjectsQuery = Project::with('tags', 'sdgs', 'indicators', 'metrics', 'targetPelanggan', 'dana')
+                ->whereHas('company', function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                });
 
-        if ($search) {
-            $allProjectsQuery->where('nama', 'like', '%' . $search . '%');
+            if ($search) {
+                $allProjectsQuery->where('nama', 'like', '%' . $search . '%');
+            }
+
+            $allProjects = $allProjectsQuery->get();
+            $ongoingProjects = $allProjects->where('status', 'Belum selesai');
+            $completedProjects = $allProjects->where('status', 'Selesai');
+
+            return view('myproject.myproject', compact('allProjects', 'ongoingProjects', 'completedProjects', 'search', 'isUserRole'));
+        } else {
+            $companyId = $request->input('company_id'); // Mengambil company_id dari request
+            $rowsPerPage = $request->input('rows', 10); // Default 10 rows per page
+
+            // Pastikan company_id ada dan valid
+            if (!$companyId) {
+                return redirect()->back()->with('error', 'Company ID tidak valid.');
+            }
+
+            $allProjectsQuery = Project::with('tags', 'sdgs', 'indicators', 'metrics', 'targetPelanggan', 'dana')
+                ->whereHas('company', function ($query) use ($companyId) {
+                    $query->where('id', $companyId); // Filter berdasarkan company_id
+                });
+
+            if ($search) {
+                $allProjectsQuery->where('nama', 'like', '%' . $search . '%');
+            }
+
+            $ongoingProjects = $allProjectsQuery->where('status', 'Belum selesai')->paginate($rowsPerPage)->appends(['search' => $search, 'rows' => $rowsPerPage]);
+            $completedProjects = $allProjectsQuery->where('status', 'Selesai')->paginate($rowsPerPage)->appends(['search' => $search, 'rows' => $rowsPerPage]);
+
+            return view('myproject.myproject', compact('ongoingProjects', 'completedProjects', 'search', 'isUserRole', 'rowsPerPage', 'companyId'));
         }
-
-        $allProjects = $allProjectsQuery->get();
-        $ongoingProjects = $allProjects->where('status', 'Belum selesai');
-        $completedProjects = $allProjects->where('status', 'Selesai');
-
-        return view('myproject.myproject', compact('allProjects', 'ongoingProjects', 'completedProjects', 'search'));
     }
 
 
@@ -200,12 +226,15 @@ class ProjectController extends Controller
         $documents = DB::table('project_dokumen')->where('project_id', $id)->get();
         $initialMetricProjects = $project->metricProjects()->whereNull('report_month')->whereNull('report_year')->get();
 
+        // Cek apakah role pengguna adalah "USER"
+        $isUserRole = Auth::user()->role === 'USER';
+
         $projectData = $this->relationshipsToArray($project);
         $projectData['documents'] = $documents->toArray();
 
         Log::debug('Project Viewed (All Data):', $projectData);
 
-        return view('myproject.detail', compact('project', 'documents', 'initialMetricProjects'));
+        return view('myproject.detail', compact('project', 'documents', 'initialMetricProjects', 'isUserRole'));
     }
 
     public function update(Request $request, $id)

@@ -204,11 +204,11 @@
                             <div class="card-body">
                                 <div class="edit-container">
                                     <h5 class="card-title">Nama Proyek</h5>
-                                    <i class="fas fa-edit edit-icon" id="edit-nama-proyek"
-                                        onclick="enableEdit('nama-proyek')"></i>
+                                    @if ($isUserRole)
+                                        <i class="fas fa-edit edit-icon" id="edit-nama-proyek" onclick="enableEdit('nama-proyek')"></i>
+                                    @endif
                                 </div>
-                                <input type="text" class="form-control" id="nama-proyek" name="nama"
-                                    value="{{ $project->nama }}" readonly>
+                                <input type="text" class="form-control" id="nama-proyek" name="nama" value="{{ $project->nama }}" readonly>
                             </div>
                         </div>
 
@@ -216,8 +216,9 @@
                             <div class="card-body">
                                 <div class="edit-container">
                                     <h5 class="card-title">Deskripsi Proyek</h5>
-                                    <i class="fas fa-edit edit-icon" id="edit-deskripsi-proyek"
-                                        onclick="enableEdit('deskripsi-proyek')"></i>
+                                    @if ($isUserRole)
+                                        <i class="fas fa-edit edit-icon" id="edit-deskripsi-proyek" onclick="enableEdit('deskripsi-proyek')"></i>
+                                    @endif
                                 </div>
                                 <textarea class="form-control" id="deskripsi-proyek" name="deskripsi" rows="4" readonly>{{ $project->deskripsi }}</textarea>
                             </div>
@@ -240,10 +241,10 @@
                         <div class="card mb-4">
                             <div class="card-body d-flex justify-content-between align-items-center">
                                 <h5 class="card-title">Dokumen Validitas Data</h5>
-                                <button type="button" class="btn btn-purple" id="tambah-dokumen"
-                                    onclick="document.getElementById('file-input').click()">Tambah Dokumen</button>
-                                <input type="file" class="form-control" id="file-input" name="documents[]"
-                                    style="display: none;" multiple>
+                                @if ($isUserRole)
+                                    <button type="button" class="btn btn-purple" id="tambah-dokumen" onclick="document.getElementById('file-input').click()">Tambah Dokumen</button>
+                                @endif
+                                <input type="file" class="form-control" id="file-input" name="documents[]" style="display: none;" multiple>
                             </div>
                             <ul class="list-group" id="file-list" style="scrolly">
                                 @if ($documents->isEmpty())
@@ -273,40 +274,45 @@
         <div class="card mb-4">
             <div class="card-body d-flex justify-content-between align-items-center">
                 <h5 class="card-title">Survey Pendukung</h5>
-                <a href="{{ route('surveys.create', $project->id) }}" class="btn btn-purple">Tambah Survey</a>
+                @if ($isUserRole)
+                    <a href="{{ route('surveys.create', $project->id) }}" class="btn btn-purple">Tambah Survey</a>
+                @endif
             </div>
             <ul class="list-group">
                 @forelse ($project->surveys as $survey)
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         {{ $survey->name }}
-                        <div>
-                            <a href="{{ route('surveys.edit', $survey->id) }}" class="btn btn-sm"><i class="fas fa-edit"></i></a>
-                            <form action="{{ route('surveys.destroy', $survey->id) }}" method="POST" class="delete-survey-form" id="delete-survey-{{ $survey->id }}" style="display: inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm delete-survey-btn" onclick="return confirm('Apakah anda yakin akan menghapus survey ini?')">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </form>
-                        </div>
+                        @if ($isUserRole)
+                            <div>
+                                <a href="{{ route('surveys.edit', $survey->id) }}" class="btn btn-sm"><i class="fas fa-edit"></i></a>
+                                <form action="{{ route('surveys.destroy', $survey->id) }}" method="POST" class="delete-survey-form" id="delete-survey-{{ $survey->id }}" style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm delete-survey-btn" onclick="return confirm('Apakah anda yakin akan menghapus survey ini?')">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        @endif
                     </li>
                 @empty
                     <li class="list-group-item">No survey found.</li>
                 @endforelse
             </ul>
         </div>
-        
-        <!-- Selesaikan Project Button -->
-        <form id="completeProjectForm" action="{{ route('projects.complete', $project->id) }}" method="POST">
-            @csrf
-            <input type="hidden" name="status" value="Selesai">
-            <input type="hidden" name="tanggal_penyelesaian" value="{{ now()->toDateString() }}">
-            <button type="button" id="completeProjectBtn" class="btn btn-purple btn-block mb-5 {{ $project->status === 'Selesai' ? 'disabled' : '' }}"
-                {{ $project->status === 'Selesai' ? 'disabled' : '' }}>
-                {{ $project->status === 'Selesai' ? 'Project telah selesai' : 'Project Selesai' }}
-            </button>
-        </form>
 
+        <!-- Selesaikan Project Button -->
+        @if ($isUserRole)
+            <form id="completeProjectForm" action="{{ route('projects.complete', $project->id) }}" method="POST">
+                @csrf
+                <input type="hidden" name="status" value="Selesai">
+                <input type="hidden" name="tanggal_penyelesaian" value="{{ now()->toDateString() }}">
+                <button type="button" id="completeProjectBtn" class="btn btn-purple btn-block mb-5 {{ $project->status === 'Selesai' ? 'disabled' : '' }}"
+                    {{ $project->status === 'Selesai' ? 'disabled' : '' }}>
+                    {{ $project->status === 'Selesai' ? 'Project telah selesai' : 'Project Selesai' }}
+                </button>
+            </form>
+        @endif
 
         <div class="modal fade" id="confirmCompleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmCompleteModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -328,6 +334,7 @@
             </div>
         </div>
         </div>
+
         <!-- Right Content -->
         <div class="col-lg-4">
             <div class="card mb-4">
@@ -337,16 +344,19 @@
                     <ul class="list-group mt-3 scrollable" id="metricsList">
                         @foreach ($initialMetricProjects as $metricProject)
                             <li class="list-group-item">
-                                <a href="{{ route('metric-impact.show', ['projectId' => $project->id, 'metricId' => $metricProject->metric_id, 'metricProjectId' => $metricProject->id]) }}"
-                                    class="text-dark metric-item">{{ $metricProject->metric->name }}</a>
+                                @if ($isUserRole)
+                                    <a href="{{ route('metric-impact.show', ['projectId' => $project->id, 'metricId' => $metricProject->metric_id, 'metricProjectId' => $metricProject->id]) }}"
+                                        class="text-dark metric-item">{{ $metricProject->metric->name }}</a>
+                                @else
+                                    <a href="{{ route('companies-metric-impact.show', ['projectId' => $project->id, 'metricId' => $metricProject->metric_id, 'metricProjectId' => $metricProject->id]) }}"
+                                        class="text-dark metric-item">{{ $metricProject->metric->name }}</a>
+                                @endif
                             </li>
                         @endforeach
                     </ul>
                     <p id="noMetricsMessage" class="text-center mt-3" style="display: none;">Metric tidak ditemukan</p>
                 </div>
             </div>
-
-            
 
             <div class="card mb-4">
                 <div class="card-body">
@@ -360,18 +370,20 @@
             </div>
             </div>
 
-        <div class="container d-flex justify-content-center mt-5">
-            <button type="submit" class="btn w-50 btn-purple px-4 py-2 btn-wide text-white hidden" id="save-button"
-                style="font-weight:bold;">Simpan Perubahan Detail Proyek</button>
-        </div>
-    
+        @if ($isUserRole)
+            <div class="container d-flex justify-content-center mt-5">
+                <button type="submit" class="btn w-50 btn-purple px-4 py-2 btn-wide text-white hidden" id="save-button"
+                    style="font-weight:bold;">Simpan Perubahan Detail Proyek</button>
+            </div>
+        @endif
+
 
         <script>
             // Script untuk menangani klik pada tombol Project Selesai
             document.getElementById('completeProjectBtn').addEventListener('click', function() {
                 $('#confirmCompleteModal').modal('show'); // Tampilkan modal konfirmasi
             });
-        
+
             // Script untuk menangani klik pada tombol konfirmasi di modal
             document.getElementById('confirmCompleteBtn').addEventListener('click', function() {
                 document.getElementById('completeProjectForm').submit(); // Kirim form jika dikonfirmasi
@@ -394,7 +406,7 @@
                     showSaveButton();
                 });
 
-   
+
 
                 $('#file-input').on('change', function() {
                     var files = this.files;

@@ -3,6 +3,7 @@
 
 @section('css')
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
 <style>
     @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap");
@@ -269,6 +270,32 @@ h4 {
         cursor: pointer;
     }
 
+    #map {
+            height: 600px; /* Tinggi peta */
+            width: 1000px; /* Lebar peta */
+        }
+
+        .location-info {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
     @media (max-width: 768px) {
         .navbar-nav .nav-item .nav-link {
             margin-right: 0;
@@ -276,7 +303,7 @@ h4 {
         }
 
         .box, .box1, .box2 {
-          
+
         }
     }
 
@@ -329,7 +356,7 @@ h4 {
 
     <div class="container-fluid d-flex justify-content-center" style="padding-top: 120px;">
         <div class="map-container">
-            <h2>Proyek Berdasarkan Wilayah</h2>
+            {{-- <h2>Proyek Berdasarkan Wilayah</h2>
             <div class="map">
                 <div id="outer-wrapper">
                     <div id="inner-wrapper">
@@ -339,9 +366,15 @@ h4 {
                     </div>
                 </div>
             </div>
-            <div id="location-info" class="location-info"></div>
+            <div id="location-info" class="location-info"></div> --}}
+            <div class="map-container">
+                <h1>Peta Proyek</h1>
+                <div id="map"></div>
+                <div id="modal-content" class="location-info"></div>
+            </div>
         </div>
     </div>
+
     <div class="modal fade" id="provinceModal" tabindex="-1" aria-labelledby="provinceModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
@@ -377,9 +410,9 @@ h4 {
             </div>
         </div>
     </div>
-    
+
     <div class="container d-flex justify-content-center mt-5">
-        <a href="{{ route('kelolapengeluaran') }}"><button class="btn-kelola">Management Keuangan</button></a> 
+        <a href="{{ route('kelolapengeluaran', ['company_id' => $company->id]) }}"><button class="btn-kelola">Management Keuangan</button></a>
     </div>
 
     <div class="container mt-5">
@@ -553,7 +586,105 @@ h4 {
     });
 </script>
 
-    
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Contoh data proyek
+        var projects = [
+            {
+                "id_proyek": 1,
+                "nama": "Proyek A",
+                "kota": "Jakarta",
+                "latitude": -6.2088,
+                "longitude": 106.8456,
+                "target_pelanggan": [
+                    {
+                        "id_proyek": 1,
+                        "status": "Aktif",
+                        "rentang_usia": "18-25",
+                        "deskripsi_pelanggan": "Mahasiswa"
+                    }
+                ],
+                "gmaps": "https://maps.google.com/?q=-6.2088,106.8456"
+            },
+            {
+                "id_proyek": 2,
+                "nama": "Proyek B",
+                "kota": "Bandung",
+                "latitude": -6.9175,
+                "longitude": 107.6193,
+                "target_pelanggan": [
+                    {
+                        "id_proyek": 2,
+                        "status": "Tidak Aktif",
+                        "rentang_usia": "25-35",
+                        "deskripsi_pelanggan": "Pengusaha"
+                    }
+                ],
+                "gmaps": "https://maps.google.com/?q=-6.9175,107.6193"
+            },
+            {
+                "id_proyek": 3,
+                "nama": "Proyek C",
+                "kota": "Yogyakarta",
+                "latitude": -7.7956,
+                "longitude": 110.3695,
+                "target_pelanggan": [
+                    {
+                        "id_proyek": 3,
+                        "status": "Aktif",
+                        "rentang_usia": "30-40",
+                        "deskripsi_pelanggan": "Karyawan"
+                    }
+                ],
+                "gmaps": "https://maps.google.com/?q=-7.7956,110.3695"
+            }
+        ];
+
+        // Inisialisasi peta
+        var map = L.map('map').setView([-2.5, 118], 5); // Koordinat tengah Indonesia
+
+        // Tambahkan layer peta dari OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Tambahkan marker untuk setiap proyek
+        projects.forEach(function (project) {
+            // Pastikan project memiliki latitude dan longitude
+            if (project.latitude && project.longitude) {
+                var marker = L.marker([project.latitude, project.longitude]).addTo(map);
+
+                // Buat popup untuk marker
+                var targetPelanggan = project.target_pelanggan.find(tp => tp.id_proyek === project.id_proyek);
+                var popupContent = `<strong>${project.nama}</strong><br>
+                                    Kota: ${project.kota}<br>
+                                    <a href="${project.gmaps}" target="_blank">Lihat di Google Maps</a><br>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Status</th>
+                                                <th>Rentang Usia</th>
+                                                <th>Deskripsi Pelanggan</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>${targetPelanggan ? targetPelanggan.status : '-'}</td>
+                                                <td>${targetPelanggan ? targetPelanggan.rentang_usia : '-'}</td>
+                                                <td>${targetPelanggan ? targetPelanggan.deskripsi_pelanggan : '-'}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>`;
+
+                marker.bindPopup(popupContent);
+            }
+        });
+    });
+</script>
+
+
 </body>
 
 @endsection

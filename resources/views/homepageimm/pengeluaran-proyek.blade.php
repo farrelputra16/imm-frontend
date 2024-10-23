@@ -36,14 +36,6 @@
         border-radius: 5px;
     }
 
-    .btn-tambahdana {
-        width: 246px;
-        height: 35px;
-        background-color: #5940CB;
-        color: white;
-        border: none;
-        border-radius: 5px;
-    }
 
     .form-control {
         width: 298px;
@@ -60,28 +52,6 @@
     a:hover {
         color: black;
         text-decoration: none;
-    }
-
-    input[type="date"] {
-        width: 274px;
-    }
-
-    input[type="number"] {
-        width: 274px;
-    }
-
-    .upload-container input[type="file"] {
-        display: none;
-    }
-
-    .upload-container button {
-        margin-right: 10px;
-        padding: 10px 20px;
-        border: none;
-        background-color: #007bff;
-        color: white;
-        cursor: pointer;
-        border-radius: 5px;
     }
 
     .upload-container .file-name {
@@ -125,16 +95,41 @@
         justify-content: center;
         font-size: 14px;
     }
+    .form-label {
+            font-weight: bold;
+        }
+    .btn-purple {
+        background-color: #5940CB;
+        color: white;
+    }
+    /* breadcumb */
+    .breadcrumb {
+        background-color: white;
+        padding: 0;
+    }
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: ">";
+        margin-right: 14px;
+        color: #9CA3AF;
+    }
 </style>
 @endsection
 
 @section('content')
     <div class="container" style="padding-top: 120px">
-        <a href="{{ route('homepageimm.detailbiaya', ['project_id' => $project->id]) }}">
-            <h4 class="d-flex align-items-center">
-                <strong style="font-size: 40px;">&lt;</strong> Tambah penggunaan dana
-            </h4>
-        </a>
+        <nav aria-label="breadcrumb" class="mb-5">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                    <a href="{{ route('homepage') }}" style="text-decoration: none; color: #212B36;">Home</a>
+                </li>
+                <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                    <a href="{{ url()->previous() }}" style="text-decoration: none; color: #212B36;">Financial Management</a>
+                </li>
+                <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                    <a href="{{ url()->previous() }}" style="text-decoration: none; color: #212B36;">Add New Income Entry</a>
+                </li>
+            </ol>
+        </nav>
     </div>
 
     <div class="container mt-5">
@@ -142,56 +137,30 @@
             @csrf
             <input type="hidden" name="project_id" value="{{ $project->id }}">
 
-            <div class="row mt-4">
-                <div class="col-3">
-                    <h5>Tanggal</h5>
-                </div>
-                <div class="col-8">
-                    <input type="date" name="date" class="form-control" required>
-                </div>
+            <div class="mb-3">
+                <label for="date" class="form-label">Date</label>
+                <input type="date" class="form-control" id="date" name="date" style="width: 100%" required>
             </div>
-            <div class="row mt-4">
-                <div class="col-3">
-                    <h5>Jumlah Biaya(RP)</h5>
-                </div>
-                <div class="col-8">
-                    <input type="number" name="jumlah_biaya" class="form-control" placeholder="1000000" required>
-                </div>
+            <div class="mb-3">
+                <label for="amount" class="form-label">Amount</label>
+                <input type="number" class="form-control" id="amount" name="jumlah_biaya" style="width: 100%" required>
             </div>
-            <div class="row mt-4">
-                <div class="col-3">
-                    <h5>Pelaporan Dana</h5>
-                </div>
-                <div class="col-8">
-                    <select name="pelaporan_dana" class="form-control" required>
-                        <option value="" disabled selected>Pilih Tipe Pelaporan Dana</option>
-                        <option value="internal">Internal</option>
-                        <option value="external">Eksternal</option>
-                    </select>
-                </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" rows="3" name="keterangan" placeholder="cth. Pembelian karung beras bekas (5 lusin)" style="width: 100%" required>"Robotic Arm Design" is a project focused on developing and refining robotic arm systems for automation tasks, enhancing precision and efficiency in various industries.</textarea>
             </div>
-            <div class="row mt-4">
-                <div class="col-3">
-                    <h5>Keterangan</h5>
-                </div>
-                <div class="col-8">
-                    <textarea name="keterangan" class="form-control" placeholder="cth. Pembelian karung beras bekas (5 lusin)" cols="60" rows="7" required></textarea>
-                </div>
-            </div>
-            <div class="row mt-4">
-                <div class="col-3">
-                    <h5>Upload Bukti</h5>
-                </div>
-                <div class="col-8">
-                    <button class="btn-unggah btn btn-primary" onclick="document.getElementById('file-input').click()" type="button">Unggah File</button>
-                    <span class="file-name">Unggah bukti dalam bentuk .jpg/.jpeg/.png (scan bukti pembayaran)</span>
-                    <input type="file" id="file-input" name="bukti" onchange="updateFileName()" style="display: none">
-                </div>
-            </div>
+            <div class="mb-3">
+                <label for="proof" class="form-label">Proof of Purchase</label>
+                <div class="input-group">
+                    <span class="input-group-text" onclick="document.getElementById('file-input').click()" type="button" style="background-color: white; border-right: none;">
+                        <i class="fas fa-file-alt"  style="font-size: 18px; background-color: white;"></i>
 
-            <div class="container d-flex justify-content-center mt-5">
-                <button type="button" class="btn-tambah px-3 btn btn-success" data-toggle="modal" data-target="#confirmationModal">Tambah Data</button>
+                    </span>
+                    <input type="file" class="form-control" id="file-input" name="bukti" onchange="updateFileName()" style="display: none;">
+                    <input type="text" class="form-control file-name" style="background-color: white; border-left: none;" readonly>
+                </div>
             </div>
+            <button type="button" class="btn btn-purple" data-toggle="modal" data-target="#confirmationModal">Add Income</button>
         </form>
     </div>
     <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
@@ -206,7 +175,7 @@
                 <div class="modal-body">
                     <p class="text-muted">Catatan: Data yang anda tambahkan tidak bisa diubah kembali, pastikan semua input data sudah benar.</p>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer" style="justify-content: space-between;">
                     <button type="button" class="btn btn-keluar" data-dismiss="modal">Belum, cek kembali</button>
                     <button type="button" id="confirmUpdate" class="btn btn-masuk">Ya, sudah benar</button>
                 </div>
@@ -218,7 +187,7 @@
         function updateFileName() {
             var input = document.getElementById('file-input');
             var fileName = input.files.length > 0 ? input.files[0].name : 'Tidak ada file yang dipilih';
-            document.querySelector('.file-name').textContent = fileName;
+            document.querySelector('.file-name').value = fileName; // Ganti textContent dengan value
         }
 
         document.getElementById('confirmUpdate').addEventListener('click', function() {

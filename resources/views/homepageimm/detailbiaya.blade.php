@@ -4,6 +4,7 @@
 @section('css')
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
 <style>
     * {
     margin: 0;
@@ -12,18 +13,7 @@
     text-decoration: none;
     list-style-type: none;
 }
-tr{
-    background-color: #5940cb;
 
-}
-
-th{
-    color: white;
-}
-
-td{
-    color: black;
-}
 .tabel {
     background-color: #F7F6FB;
     border-radius: 5px;
@@ -48,8 +38,8 @@ td{
 }
 
 .btn-tambahdana {
-    width: 246px;
-    height: 35px;
+    width: 120px;
+    height: 40px;
     background-color: #5940CB;
     color: white;
     border: none;
@@ -187,58 +177,124 @@ margin-top: 20px;
     font-size: 14px;
     /* Adjust the font size as needed */
 }
+/* breadcumb */
+.breadcrumb {
+    background-color: white;
+    padding: 0;
+}
+.breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+    margin-right: 14px;
+    color: #9CA3AF;
+}
 </style>
 
 @endsection
 
 @section('content')
 <div class="container" style="padding-top: 120px">
-    <div class="row d-flex justify-content-between">
-        <a href="{{ url()->previous() }}">
-            <h4 class="d-flex align-items-center">
-                <strong style="font-size: 40px;">&lt;</strong>
-                Detail penggunaan biaya proyek {{ $project->nama }}
-            </h4>
-        </a>
-        <!-- Tampilkan tombol "Tambah Penggunaan Dana" hanya jika role-nya company -->
-        @if($isCompany)
-        <a href="{{ route('selectProjectOutcome', ['project_id' => $project_id]) }}">
-            <button class="btn-tambahdana">Tambah Penggunaan Dana</button>
-        </a>
-        @endif
+    <div class="row d-flex justify-content-start">
+        <nav aria-label="breadcrumb" class="mb-5">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                    @if ($isCompany)
+                        <a href="{{ route('homepage') }}" style="text-decoration: none; color: #212B36;">Home</a>
+                    @else
+                        <a href="{{ route('investments.pending') }}" style="text-decoration: none; color: #212B36;">Home</a>
+                    @endif
+                </li>
+                <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                    <a href="{{ url()->previous() }}" style="text-decoration: none; color: #212B36;">Financial Management</a>
+                </li>
+                <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                    <a href="{{ url()->previous() }}" style="text-decoration: none; color: #212B36;">Add New Income Entry</a>
+                </li>
+            </ol>
+        </nav>
     </div>
 </div>
 
 
 <div class="container mt-2">
-
     <h5>Detail Biaya</h5>
-    <table id="details-table" class="table text-center border">
-        <thead>
-            <tr>
-                <th>Tanggal</th>
-                <th>Jumlah Biaya</th>
-                <th>Pelaporan_dana</th>
-                <th>Keterangan</th>
-                <th>Bukti</th>
-            </tr>
-        </thead>
-        <tbody id="outcome-list">
-            @foreach ($outcomes as $outcome)
-            <tr>
-                <td>{{ $outcome->date }}</td>
-                <td>Rp{{ number_format($outcome->jumlah_biaya, 0, ',', '.') }}</td>
-                <td>{{ $outcome->pelaporan_dana }}</td>
-                <td>{{ $outcome->keterangan }}</td>
-                <td>
-                    <span data-toggle="modal" style="cursor: pointer" data-target="#notificationModal{{ $outcome->id }}">
-                        <img src="{{ asset('images/icon-bukti.svg') }}" alt="Bukti">
-                    </span>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <!-- Tampilkan tombol "Tambah Penggunaan Dana" hanya jika role-nya company -->
+    <div class="d-flex justify-content-end align-items-center" style="margin-top: 48px;">
+        <div class="d-flex align-items-center">
+            <div class="search-container" style="margin-right:10px; margin-bottom: 0px;">
+                <i class="fas fa-search" style="margin-left: 10px;"></i>
+                <form method="GET" action="{{ route('homepageimm.detailbiaya', ['project_id' => $project->id]) }}">
+                    <input class="form-control" placeholder="Search Income" type="text" style="border: none;" name="search_income" id="search_Income" value="{{ request('search_income') }}">
+                    <input type="hidden" name="rows" value="{{ request('rows', 10) }}">
+                </form>
+            </div>
+            @if($isCompany)
+            <a href="{{ route('selectProjectOutcome', ['project_id' => $project_id]) }}">
+                <button class="btn-tambahdana">Add New</button>
+            </a>
+        </div>
+    </div>
+
+    @endif
+    <div class="table-responsive" style="margin-bottom: 0px;">
+        <table id="details-table" class="table table-hover table-strip mt-3" style="margin-bottom: 0px;">
+            <thead>
+                <tr>
+                    <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle;">No.</th>
+                    <th scope="col" style="vertical-align: middle;">Tanggal</th>
+                    <th scope="col" style="vertical-align: middle;">Jumlah Biaya</th>
+                    <th scope="col" style="vertical-align: middle;">Pelaporan Dana</th>
+                    <th scope="col" style="vertical-align: middle;">Keterangan</th>
+                    <th scope="col" style="border-top-right-radius: 20px; vertical-align: middle;">Bukti</th>
+                </tr>
+            </thead>
+            <tbody id="outcome-list">
+                @if ($outcomes->isEmpty())
+                    <tr>
+                        <td colspan="6" class="text-center" style="border-left: 1px solid #BBBEC5; border-right: 1px solid #BBBEC5;">Tidak ada Outcome</td>
+                    </tr>
+                @else
+                    @foreach ($outcomes as $outcome)
+                    <tr>
+                        <td style="vertical-align: middle; border-left: 1px solid #BBBEC5;">{{ $loop->iteration + ($outcomes->currentPage() - 1) * $outcomes->perPage() }}</td>
+                        <td style="vertical-align: middle;">{{ $outcome->date ? \Carbon\Carbon::parse($outcome->date)->format('j M, Y') : 'N/A' }}</td>
+                        <td style="vertical-align: middle;">Rp{{ number_format($outcome->jumlah_biaya, 0, ',', '.') }}</td>
+                        <td style="vertical-align: middle;">{{ $outcome->pelaporan_dana }}</td>
+                        <td style="vertical-align: middle;">{{ $outcome->keterangan }}</td>
+                        <td style="vertical-align: middle; border-right: 1px solid #BBBEC5;">
+                            <span data-toggle="modal" style="cursor: pointer" data-target="#notificationModal{{ $outcome->id }}">
+                                <img src="{{ asset('images/icon-bukti.svg') }}" alt="Bukti">
+                            </span>
+                        </td>
+                    </tr>
+                    @endforeach
+                @endif
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Footer sebagai bagian dari tabel -->
+    <div class="d-flex justify-content-between align-items-center mb-3 align-self-center" style="padding: 20px; background-color: #ffffff; border-bottom: 1px solid #ddd; border-left: 1px solid #ddd; border-right: 1px solid #ddd; border-top: 1px solid #BBBEC5; margin-top:0px; height:100px; border-end-end-radius: 20px; border-end-start-radius: 20px; height: 60px;">
+        <form method="GET" action="{{ route('homepageimm.detailbiaya', ['project_id' => $project->id]) }}" class="mb-0">
+            <div class="d-flex align-items-center">
+                <label for="rowsPerPage" class="me-2">Rows per page:</label>
+                <select name="rows" id="rowsPerPage" class="form-select me-2" onchange="this.form.submit()" style="width: 50%px; margin-left: 5px; margin-right: 5px;">
+                    <option value="10" {{ request('rows') == 10 ? 'selected' : '' }}>10</option>
+                    <option value="50" {{ request('rows') == 50 ? 'selected' : '' }}>50</option>
+                    <option value="100" {{ request('rows') == 100 ? 'selected' : '' }}>100</option>
+                </select>
+                <div>
+                    @if(!$outcomes->isEmpty())
+                        <span>Total {{ ($outcomes->currentPage() - 1) * $outcomes->perPage() + 1 }} - {{ ($outcomes->currentPage() - 1) * $outcomes->perPage() + $outcomes->count() }} of {{ $outcomes->total() }}</span>
+                    @else
+                        <span>No outcomes found.</span>
+                    @endif
+                </div>
+            </div>
+        </form>
+        <div>
+            {{ $outcomes->withQueryString()->links('pagination::bootstrap-4') }}
+        </div>
+    </div>
 
     <!-- "Detail biaya tidak ditemukan" message -->
     <div id="no-results" class="text-center py-3" style="display: none;">

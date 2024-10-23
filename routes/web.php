@@ -139,9 +139,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/detail-biaya/{project_id}', [CompanyOutcomeController::class, 'detailOutcome'])->name('homepageimm.detailbiaya');
 
     // Routes untuk Manajemen Keuangan
-    Route::prefix('kelolapengeluaran')->group(function () {
-        Route::get('/', [ManagementKeuanganController::class, 'show'])->name('kelolapengeluaran');
-    });
+    Route::get('kelolapengeluaran/{company_id}', [ManagementKeuanganController::class, 'show'])->name('kelolapengeluaran');
 
     // Rute untuk pencarian pengeluaran yang juga mengarah ke metode show
     Route::get('/kelola-pengeluaran/search-expense', [ManagementKeuanganController::class, 'show'])->name('searchExpense');
