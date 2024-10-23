@@ -124,10 +124,6 @@
                     </div>
                 </div>
             </div>
-<<<<<<< HEAD
-
-=======
->>>>>>> 1106987f22838a26b3f8da50aca4b5c10b196f94
             <div class="row mb-3">
                 <!-- Pengirim (Sender) -->
                 <div class="col-md-6">

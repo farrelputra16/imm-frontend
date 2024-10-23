@@ -240,13 +240,34 @@
                             <label for="investment_stage">Tahap Investasi</label>
                             <select id="investment_stage" name="investment_stage" class="form-control" required>
                                 <option value="">Pilih Tahap Investasi</option>
-                                <option value="Pre-Seed" {{ old('investment_stage') == 'Pre-Seed' ? 'selected' : '' }}>Pre-Seed</option>
-                                <option value="Seed" {{ old('investment_stage') == 'Seed' ? 'selected' : '' }}>Seed</option>
-                                <option value="Series A" {{ old('investment_stage') == 'Series A' ? 'selected' : '' }}>Series A</option>
-                                <option value="Series B" {{ old('investment_stage') == 'Series B' ? 'selected' : '' }}>Series B</option>
-                                <option value="Series C" {{ old('investment_stage') == 'Series C' ? 'selected' : '' }}>Series C</option>
-                                <option value="Series D" {{ old('investment_stage') == 'Series D' ? 'selected' : '' }}>Series D</option>
-                                <option value="IPO" {{ old('investment_stage') == 'IPO' ? 'selected' : '' }}>IPO</option>
+                                <option value="pre_seed">Pre-Seed</option>
+                                <option value="seed">Seed</option>
+                                <option value="series_a">Series A</option>
+                                <option value="series_b">Series B</option>
+                                <option value="series_c">Series C</option>
+                                <option value="series_d">Series D</option>
+                                <option value="series_e">Series E</option>
+                                <option value="series_f">Series F</option>
+                                <option value="series_g">Series G</option>
+                                <option value="series_h">Series H</option>
+                                <option value="series_i">Series I</option>
+                                <option value="series_j">Series J</option>
+                                <option value="venture_series_unknown">Venture - Series Unknown</option>
+                                <option value="angel">Angel</option>
+                                <option value="private_equity">Private Equity</option>
+                                <option value="debt_financing">Debt Financing</option>
+                                <option value="convertible_note">Convertible Note</option>
+                                <option value="grant">Grant</option>
+                                <option value="corporate_round">Corporate Round</option>
+                                <option value="equity_crowdfunding">Equity Crowdfunding</option>
+                                <option value="product_crowdfunding">Product Crowdfunding</option>
+                                <option value="secondary_market">Secondary Market</option>
+                                <option value="post_ipo_equity">Post-IPO Equity</option>
+                                <option value="post_ipo_debt">Post-IPO Debt</option>
+                                <option value="post_ipo_secondary">Post-IPO Secondary</option>
+                                <option value="non_equity_assistance">Non-equity Assistance</option>
+                                <option value="initial_coin_offering">Initial Coin Offering</option>
+                                <option value="undisclosed">Undisclosed</option>
                             </select>
                         </div>
                     </div>

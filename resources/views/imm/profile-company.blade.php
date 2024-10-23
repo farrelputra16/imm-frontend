@@ -413,6 +413,15 @@
         margin-bottom: 5px;
         font-size: 14px;
     }
+    .breadcrumb {
+        background-color: white;
+        padding: 0;
+    }
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: ">";
+        margin-right: 14px;
+        color: #9CA3AF;
+    }
 </style>
 @endsection
 

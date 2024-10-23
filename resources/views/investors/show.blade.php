@@ -33,16 +33,26 @@
         margin-top: 20px;
     }
 
+   .breadcrumb {
+      background-color: white;
+      padding: 0;
+   }
+   .breadcrumb-item + .breadcrumb-item::before {
+      content: ">";
+      margin-right: 14px;
+      color: #9CA3AF;
+   }
+
 </style>
 
 <div class="container mt-4">
    <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
          <li class="breadcrumb-item">
-            <a href="#">Home</a>
+            <a href="#"  style="text-decoration: none; color: #212B36;">Home</a>
          </li>
          <li class="breadcrumb-item">
-            <a href="#">Find Investor</a>
+            <a href="#"  style="text-decoration: none; color: #212B36;" >Find Investor</a>
          </li>
          <li class="breadcrumb-item active" aria-current="page">Investor Profile</li>
       </ol>
@@ -81,7 +91,7 @@
                 <th>Year</th>
             </tr>
         </thead>
-        
+
        <tbody>
           @foreach ($investor->investments as $investment)
           <tr>

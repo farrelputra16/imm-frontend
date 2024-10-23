@@ -111,30 +111,28 @@ class ProjectController extends Controller
             'end_date' => 'required|date',
             'provinsi' => 'required|string',
             'kota' => 'required|string',
-            'gmaps' => 'required|string',
+            'gmaps' => 'nullable|string', // Menjadikan gmaps tidak wajib
             'jumlah_pendanaan' => 'required|numeric',
-            // 'dana' => 'required|array',
-            // 'dana.*.jenis_dana' => 'required|string',
-            // 'dana.*.nominal' => 'required|numeric',
             'pitch_deck' => 'nullable|file|mimes:pdf,ppt,pptx|max:10000',
             'video_pitch' => 'nullable|mimes:mp4,mov,avi,3gp,wmv,flv|max:10000',
             'roadmap' => 'nullable|file|mimes:pdf,ppt,pptx|max:10000',
             'company_id' => 'required|exists:companies,id',
-            'tag_ids' => 'array',
+            'tag_ids' => 'nullable|array', // Menjadikan tag_ids tidak wajib
             'tag_ids.*' => 'exists:tags,id',
-            'sdg_ids' => 'array',
+            'sdg_ids' => 'nullable|array', // Menjadikan sdg_ids tidak wajib
             'sdg_ids.*' => 'exists:sdgs,id',
-            'indicator_ids' => 'array',
+            'indicator_ids' => 'nullable|array', // Menjadikan indicator_ids tidak wajib
             'indicator_ids.*' => 'exists:indicators,id',
-            'metric_ids' => 'array',
+            'metric_ids' => 'nullable|array', // Menjadikan metric_ids tidak wajib
             'metric_ids.*' => 'exists:metrics,id',
-            'target_pelanggans' => 'array',
+            'target_pelanggans' => 'nullable|array', // Menjadikan target_pelanggans tidak wajib
             'target_pelanggans.*.status' => 'nullable|string',
             'target_pelanggans.*.rentang_usia' => 'nullable|string',
             'target_pelanggans.*.deskripsi_pelanggan' => 'nullable|string',
         ]);
 
         $validatedData['status'] = 'Belum selesai';
+
 
         // Handle image upload
         if ($request->hasFile('img')) {
@@ -150,14 +148,14 @@ class ProjectController extends Controller
             $validatedData['pitch_deck'] = $pitchDeckName;
         }
 
-        // handle video upload
+        // Handle video upload
         if ($request->hasFile('video_pitch')) {
             $videoName = time() . '-video-pitch.' . $request->video_pitch->extension();
             $request->video_pitch->move(public_path('files'), $videoName);
             $validatedData['video_pitch'] = $videoName;
         }
 
-        // handle roadmap upload
+        // Handle roadmap upload
         if ($request->hasFile('roadmap')) {
             $roadmapName = time() . '-roadmap.' . $request->roadmap->extension();
             $request->roadmap->move(public_path('files'), $roadmapName);
@@ -167,23 +165,24 @@ class ProjectController extends Controller
         // Create project
         $project = Project::create($validatedData);
 
-        // Attach related models
-        $project->tags()->attach($request->input('tag_ids'));
-        $project->sdgs()->attach($request->input('sdg_ids'));
-        $project->indicators()->attach($request->input('indicator_ids'));
-        $project->metrics()->attach($request->input('metric_ids'));
+        // Attach related models if they exist
+        if ($request->has('tag_ids')) {
+            $project->tags()->attach($request->input('tag_ids'));
+        }
 
-        // Save dana (funding) data
-        // if ($request->has('dana')) {
-        //     foreach ($request->dana as $dana) {
-        //         $project->dana()->create([
-        //             'jenis_dana' => $dana['jenis_dana'],
-        //             'nominal' => $dana['nominal'],
-        //         ]);
-        //     }
-        // }
+        if ($request->has('sdg_ids')) {
+            $project->sdgs()->attach($request->input('sdg_ids'));
+        }
 
-        // Save target customers
+        if ($request->has('indicator_ids')) {
+            $project->indicators()->attach($request->input('indicator_ids'));
+        }
+
+        if ($request->has('metric_ids')) {
+            $project->metrics()->attach($request->input('metric_ids'));
+        }
+
+        // Save target customers if they exist
         if ($request->has('target_pelanggans')) {
             foreach ($request->target_pelanggans as $target) {
                 $project->targetPelanggan()->create([
@@ -193,6 +192,7 @@ class ProjectController extends Controller
                 ]);
             }
         }
+
 
         return redirect()->route('myproject.myproject')->with('success', 'Project created successfully');
     }

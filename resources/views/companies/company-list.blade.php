@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
+<link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 
 
 <div class="container-fluid">
@@ -96,14 +97,14 @@
                     <thead>
                         <tr>
                             <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle;"><input type="checkbox" value="all_check" id="select_all"></th>
-                            <th scope="col" style="vertical-align: middle;">Organization <br> Name</th>
-                            <th scope="col" style="vertical-align: middle;">Founded <br> Date</th>
-                            <th scope="col" style="vertical-align: middle;">Last Funding <br> Date</th>
-                            <th scope="col" style="vertical-align: middle;">Last Funding <br> Type</th>
-                            <th scope="col" style="vertical-align: middle;">Number of <br> Employees</th>
-                            <th scope="col" style="vertical-align: middle;">Business Model</th>
-                            <th scope="col" style="vertical-align: middle;">Description</th>
-                            <th scope="col" style="border-top-right-radius: 20px; vertical-align: middle;">Job Departments</th>
+                            <th scope="col" class="sub-heading-2" style="vertical-align: middle;">Organization <br> Name</th>
+                            <th scope="col" class="sub-heading-2" style="vertical-align: middle;">Founded <br> Date</th>
+                            <th scope="col" class="sub-heading-2" style="vertical-align: middle;">Last Funding <br> Date</th>
+                            <th scope="col" class="sub-heading-2" style="vertical-align: middle;">Last Funding <br> Type</th>
+                            <th scope="col" class="sub-heading-2" style="vertical-align: middle;">Number of <br> Employees</th>
+                            <th scope="col" class="sub-heading-2" style="vertical-align: middle;">Business Model</th>
+                            <th scope="col" class="sub-heading-2" style="vertical-align: middle;">Description</th>
+                            <th scope="col" class="sub-heading-2" style="border-top-right-radius: 20px; vertical-align: middle;">Job Departments</th>
                         </tr>
                     </thead>
                     <tbody>
