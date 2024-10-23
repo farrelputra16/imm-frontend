@@ -59,7 +59,7 @@
 
             <div class="table-responsive">
                 <table class="table table-hover table-strip" style="border-top-left-radius: 20px; border-top-right-radius: 20px; overflow: hidden;">
-                    <thead>
+                    <thead class="sub-heading-2">
                         <tr>
                             <th>Name</th>
                             <th>Primary Job Title</th>

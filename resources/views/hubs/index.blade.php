@@ -14,7 +14,7 @@
         </div>
     </div>
 
-    <h1 class="header"><b>Hubs</b></h1>
+    <h2 class="header"><b>Hubs</b></h2>
 
     <div class="row">
         <!-- Filter Section -->
@@ -62,7 +62,7 @@
 
             <div class="table-responsive">
                 <table class="table table-hover table-strip" style="margin-bottom: 0px; border-top-left-radius: 20px; border-top-right-radius: 20px; overflow: hidden; ">
-                    <thead>
+                    <thead class="sub-heading-2">
                         <tr>
                             <th>Hub Name</th>
                             <th>Province</th>

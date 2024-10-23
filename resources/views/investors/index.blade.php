@@ -76,7 +76,7 @@
 
             <div class="table-responsive">
                 <table class="table table-hover table-strip" style="margin-bottom: 0px; border-top-left-radius: 20px; border-top-right-radius: 20px; overflow: hidden;">
-                    <thead>
+                    <thead class="sub-heading-2">
                         <tr>
                             <th><input type="checkbox" /></th>
                             <th>Organization Name</th>
