@@ -89,7 +89,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="funding_type">Funding Type</label>
-                        <input type="text" name="funding_type" id="funding_type" class="form-control" value="{{ $fundingRound->company->funding_stage }}" readonly>
+                        <input type="text" name="funding_type" id="funding_type" class="form-control" value="{{ $fundingRound->funding_stage }}" readonly>
                     </div>
                 </div>
 
