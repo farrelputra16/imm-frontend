@@ -58,13 +58,29 @@ class ProfileController extends Controller
     public function editCompanyProfile()
     {
         $user = Auth::user();
-        $company = $user->companies;
-        $team = $company->teamMembers;
-        $departments = Department::all(); // Pastikan ini mengambil semua departemen
-        $selectedDepartments = $company->departments; // Ambil departemen yang sudah dipilih oleh perusahaan
+        $company = $user->companies->first(); // Ambil perusahaan yang relevan
 
         if (!$company) {
             return redirect('/imm');
+        }
+
+        // Ambil anggota tim dari company, lalu ambil department melalui position
+        $team = $company->teamMembers()->get();
+
+        // Ambil semua departemen
+        $departments = Department::all();
+        $selectedDepartments = $company->departments;
+
+        // Mengambil nama departemen berdasarkan posisi dari tabel 'team'
+        foreach ($team as $member) {
+            // Ambil ID dari posisi yang tersimpan di pivot 'team'
+            $positionId = $member->pivot->position;
+
+            // Cari departemen berdasarkan ID posisi
+            $department = Department::find($positionId);
+
+            // Jika departemen ditemukan, set nama departemennya
+            $member->departmentName = $department ? $department->name : 'No department assigned';
         }
 
         return view('imm.profile-company', compact('company', 'user', 'team', 'departments', 'selectedDepartments'));
@@ -150,4 +166,6 @@ class ProfileController extends Controller
 
         return redirect()->route('profile-company')->with('success', 'Profil perusahaan berhasil diperbarui.');
     }
+
+    public function addTeamMember() {}
 }

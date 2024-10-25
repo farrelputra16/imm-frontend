@@ -51,22 +51,6 @@
             margin-top: 20px;
         }
 
-        .btn-delete,
-        .btn-detail {
-            width: 140px;
-            height: 33px;
-            border: 1px solid black;
-            font-weight: 500;
-        }
-
-        .btn-delete {
-            background-color: rgba(255, 26, 26, 0.5);
-        }
-
-        .btn-detail {
-            background-color: rgba(217, 217, 217, 0.44);
-        }
-
         .see-all-button {
             text-align: center;
             margin-top: 20px;
@@ -143,6 +127,137 @@
             border-radius: 0.25rem 0.25rem 0 0; /* Sudut melengkung hanya di atas */
             margin-bottom: -1px; /* Menghindari overlap dengan border bawah tab tidak aktif */
         }
+
+        /* Initial Card Body */
+        .card-body {
+            max-height: 180px; /* Initial height */
+            overflow: hidden; /* Hide overflow when not expanded */
+            transition: max-height 0.5s ease; /* Smooth transition for max-height */
+            background-color: white; /* Default background color */
+        }
+
+        /* Expand Card Body on Hover */
+        .card:hover .card-body {
+            max-height: 500px; /* Maximum height when expanded */
+            background-color: #6256CA; /* Background turns purple */
+        }
+
+        /* Card styles */
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease; /* Smooth transition for card */
+            overflow: hidden; /* Ensure content fits */
+            background-color: #fff; /* Default background */
+        }
+
+        .card-img-top {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        /* Card title and text */
+        .card-title {
+            color: #6A1B9A;
+            font-weight: bold;
+            transition: color 0.3s ease; /* Smooth transition for color */
+        }
+
+        .card-text {
+            color: #757575;
+            transition: color 0.3s ease; /* Smooth transition for color */
+        }
+
+        .icon-text {
+            display: flex;
+            align-items: center;
+            color: #6A1B9A;
+            transition: color 0.3s ease; /* Smooth transition for color */
+        }
+
+        .icon-text img {
+            margin-right: 5px;
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Button Styles */
+        .btn-delete, .btn-detail {
+            width: 140px;
+            height: 33px;
+            border: 1px solid white; /* Default border */
+            font-weight: 500;
+            background-color: transparent; /* Transparent background */
+            color: white; /* White text */
+            opacity: 0; /* Initially hidden */
+            transition: opacity 0.3s ease, background-color 0.3s ease;
+        }
+
+        /* Delete Button Style */
+        .btn-delete {
+            background-color: rgba(255, 26, 26, 0.5);
+        }
+
+        /* Detail Button Style */
+        .btn-detail {
+            background-color: rgba(217, 217, 217, 0.44);
+        }
+
+        /* Show buttons on hover */
+        .card:hover .btn-delete,
+        .card:hover .btn-detail {
+            opacity: 1; /* Buttons become visible */
+            border-color: white; /* White border */
+            color: white; /* White text */
+        }
+
+        /* Change text color on hover */
+        .card:hover .card-title,
+        .card:hover .card-text,
+        .card:hover .icon-text,
+        .card:hover .icon-text span {
+            color: white; /* Change all text inside card-body to white */
+        }
+
+        /* Card and Icon Styles */
+        .icon-text {
+            display: flex;
+            align-items: center;
+            color: #6A1B9A; /* Purple color by default */
+            transition: color 0.3s ease; /* Smooth transition for color */
+        }
+
+        .iconify {
+            color: #6A1B9A; /* Purple color by default */
+            transition: color 0.3s ease; /* Smooth transition for icon color */
+            font-size: 18px; /* Default icon size */
+        }
+
+        .icon-text span {
+            margin-left: 5px; /* Space between icon and text */
+        }
+
+        /* Hover effect */
+        .card:hover .iconify,
+        .card:hover .icon-text {
+            color: white; /* Change color to white on hover */
+        }
+
+
+        /* Hover state of buttons */
+        .btn-delete:hover,
+        .btn-detail:hover {
+            background-color: transparent; /* No background on hover */
+            border-color: white; /* White border on hover */
+        }
+        .three-dots {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            color: #000;
+        }
     </style>
 @endsection
 
@@ -172,31 +287,49 @@
         @endif
 
         @if ($isUserRole)
-            <h2 class="project-title">Draft Project</h2>
-            <div class="row mt-5">
-                <div class="col-md-8">
-                    <div class="input-group">
-                        <input type="text" id="search-all-projects" class="form-control search-input"
-                            placeholder="Cari project anda" aria-label="Search">
-                        <div class="input-group-append">
-                            <button type="button" class="input-group-text search-icon" aria-label="Search Button"><i
-                                    class="fas fa-search"></i></button>
-                        </div>
-                    </div>
-                </div>
-                @if ($isUserRole) <!-- Jika bukan USER, tampilkan tombol Create New Project -->
-                <div class="col-md-4 text-right">
-                    <a href="creatproject">
-                        <button class="btn-primary btn-create-project">Create New Project</button>
-                    </a>
-                </div>
-                @endif
-            </div>
+            <nav aria-label="breadcrumb" class="mb-5">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                        <a href="{{ route('homepage') }}" style="text-decoration: none; color: #212B36;">Home</a>
+                    </li>
+                    <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                        <a href="#" style="text-decoration: none; color: #212B36;">Impact Measurement & Management</a>
+                    </li>
+                </ol>
+            </nav>
 
-            <div class="section d-flex justify-content-between justify-content-center">
-                <h4 class="project-title mb-5 mt-5">Semua Proyek ({{ $allProjects->count() }})</h4>
+            <h2 class="project-title" style="color: #6256CA;">Dashboard IMM</h2>
+            @if ($allProjects->count() > 6)
+                <div class="row mt-5">
+                    <div class="col-md-8">
+                            <div class="input-group">
+                                <input type="text" id="search-all-projects" class="form-control search-input"
+                                    placeholder="Cari project anda" aria-label="Search">
+                                <div class="input-group-append">
+                                    <button type="button" class="input-group-text search-icon" aria-label="Search Button"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                    </div>
+                    @if ($isUserRole) <!-- Jika bukan USER, tampilkan tombol Create New Project -->
+                    <div class="col-md-4 text-right">
+                        <a href="creatproject">
+                            <button class="btn-primary btn-create-project">Create New Project</button>
+                        </a>
+                    </div>
+                    @endif
+                </div>
+            @endif
+
+            <div class="section d-flex justify-content-between justify-content-center" style="margin-top: 60px;">
+                <h3 class="project-title" style="color: #6256CA;">Recent Projects</h3>
                 @if ($allProjects->count() > 6)
-                    <h5 class="seeAll" id="show-all-btn">Lihat Semua</h5>
+                    <h5 class="seeAll" id="show-all-btn">View All</h5>
+                @else
+                    <div class="col-md-4 text-right">
+                        <a href="creatproject">
+                            <button class="btn-primary btn-create-project">Create New Project</button>
+                        </a>
+                    </div>
                 @endif
             </div>
 
@@ -211,24 +344,44 @@
                             @foreach ($allProjects as $index => $project)
                                 <div class="col-md-4 mb-4" id="project-{{ $project->id }}"
                                     @if ($index >= 6) style="display: none;" @endif>
-                                    <div class="card project-card" style="height: 300px">
-                                        <img height="150px"
+                                    <div class="card project-card" style="width: 20rem;">
+                                        <img
+                                            class="card-img-top"
                                             src="{{ $project->img ? asset('images/' . $project->img) : asset('images/default_project.png') }}"
-                                            class="card-img-top" alt="">
-                                        <div class="card-body">
+                                            alt="Project Image"
+                                            width="286"
+                                            height="160"
+                                        />
+                                        <div class="card-body position-relative">
                                             <h5 class="card-title">{{ $project->nama }}</h5>
-                                            <div class="d-flex">
+                                            <p class="card-text">
+                                                Bringing together skills training and support for women to start or expand their own businesses
+                                            </p>
+                                            <div class="d-flex justify-content-start">
+                                                <div class="icon-text me-3">
+                                                    <span class="iconify" data-icon="mdi:calendar-month" data-inline="false" style="font-size: 18px;"></span>
+                                                    <span>May 2024</span>
+                                                </div>
+                                                <div class="icon-text" style="margin-left: 10px; margin-right: 10px; opacity: 0.5;"> | </div>
+                                                <div class="icon-text">
+                                                    <span class="iconify" data-icon="mdi:map-marker" data-inline="false" style="font-size: 18px;"></span>
+                                                    <span>DKI Jakarta</span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Button container -->
+                                            <div class="d-flex mt-3">
                                                 @if ($isUserRole)
-                                                    <a href="detail/{{ $project->id }}" class="btn btn-detail mt-2">Detail</a>
+                                                    <a href="detail/{{ $project->id }}" class="btn btn-detail">Detail</a>
                                                 @else
-                                                    <a href="{{ route('companies-project.show', $project->id) }}" class="btn btn-detail mt-2">Detail</a>
+                                                    <a href="{{ route('companies-project.show', $project->id) }}" class="btn btn-detail">Detail</a>
                                                 @endif
-                                                @if ($isUserRole) <!-- Jika bukan USER, tampilkan tombol Delete -->
-                                                <form action="{{ route('projects.destroy', $project->id) }}" method="POST" style="display: inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="button" class="btn btn-delete mt-2" data-project-id="{{ $project->id }}">Delete</button>
-                                                </form>
+                                                @if ($isUserRole)
+                                                    <form action="{{ route('projects.destroy', $project->id) }}" method="POST" style="display: inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" class="btn btn-delete" data-project-id="{{ $project->id }}">Delete</button>
+                                                    </form>
                                                 @endif
                                             </div>
                                         </div>
@@ -259,7 +412,7 @@
                 </div>
             </div>
 
-            <div class="container">
+            {{-- <div class="container">
                 <h2 class="project-title mb-5 mt-5">Proyek yang sedang dikerjakan</h2>
                 <div class="row mt-5">
 
@@ -347,7 +500,7 @@
                         @endif
                     </tbody>
                 </table>
-            </div>
+            </div> --}}
         @else
             {{-- Bagian ini untuk investor --}}
             <div class="row">
@@ -464,6 +617,8 @@
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+
     <script>
             $('.btn-delete').on('click', function(e) {
                 e.preventDefault();

@@ -341,10 +341,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/profile-company', [ProfileController::class, 'editCompanyProfile'])->name('profile-company');
     Route::put('/profile-company/{id}', [ProfileController::class, 'updateCompanyProfile'])->name('profile-company.update');
-    Route::get('/profile-company', [ProfileController::class, 'editCompanyProfile'])
-        ->name('profile-company')
-        ->middleware('check.company');
     Route::get('/profile-company', [ProfileController::class, 'editCompanyProfile'])->name('profile-company')->middleware('check.company');
+    // Route::get('/profile-company', [ProfileController::class, 'editCompanyProfile'])->name('profile-company')->middleware('check.company');
 
     // routes untuk anggota team dari company
     Route::get('/search-people', [TeamController::class, 'searchPeople']);

@@ -607,7 +607,7 @@
                                 <div class="team-card">
                                     <img src="{{ isset($person->image) ? asset('images/' . $person->image) : asset('images/1720765715.webp') }}" alt="{{ $person->name }}" class="rounded-circle mb-3" width="100" height="100">
                                     <div class="team-name">{{ $person->name }}</div>
-                                    <div class="team-role">{{ $person->pivot->position }}</div>
+                                    <span class="selected-tag">{{ $person->departmentName }}</span>
                                     <div class="action-buttons">
                                         <button class="btn-edit" data-id="{{ $person->id }}" data-name="{{ $person->name }}" data-role="{{ $person->pivot->position }}" data-photo="{{ isset($person->image) ? asset('images/' . $person->image) : asset('images/1720765715.web') }}" data-toggle="modal" data-target="#editTeamModal">Edit</button>
                                         <button class="btn-delete" data-id="{{ $person->id }}" data-company-id="{{ $company->id }}" id="team-member-{{ $person->id }}">
@@ -620,9 +620,8 @@
                             <p>No team members available. Please add new members.</p>
                         @endif
                     </div>
-                    <button type="button" class="btn-add" data-toggle="modal" data-target="#addTeamModal">Add New Team Member</button>
                 </div>
-
+                <button type="button" class="btn-add" data-toggle="modal" data-target="#addTeamModal">Add New Team Member</button>
                 <!-- Add Team Member Modal -->
                 <div class="modal fade" id="addTeamModal" tabindex="-1" aria-labelledby="addTeamModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
@@ -646,8 +645,10 @@
                                         <input type="text" class="form-control" id="companyId" value="{{ $company->id }}" readonly>
                                     </div>
                                     <div class="form-group">
-                                        <label for="position">Position</label>
-                                        <input type="text" class="form-control" id="position" placeholder="Position">
+                                        <label for="position">Position Department</label>
+                                        <select id="position" class="form-control">
+                                            <option value="">Pilih Departemen</option>
+                                        </select>
                                     </div>
                                 </form>
                             </div>
@@ -677,7 +678,9 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="editPosition">Position</label>
-                                        <input type="text" class="form-control" id="editPosition" placeholder="Position">
+                                        <select class="form-control" id="editPosition" disabled>
+                                            <option value="">Pilih Departemen</option>
+                                        </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="editPhoto">Photo</label>
@@ -817,25 +820,36 @@
     {{-- ! Javascript untuk menangani handle terkait team baik untuk menambahkan menghapus dan mencari orang --}}
     <script>
       $(document).ready(function() {
-        // Menangani input pencarian orang
-        $('#searchPeople').on('input', function() {
-            var query = $(this).val();
-            if (query.length > 2) {
-                $.ajax({
-                    url: '/search-people',
-                    method: 'GET',
-                    data: { query: query },
-                    success: function(data) {
-                        $('#peopleResults').html('');
-                        $.each(data, function(index, person) {
-                            $('#peopleResults').append('<div class="person-result" data-id="' + person.id + '">' + person.name + ' (' + person.gmail + ')</div>');
-                        });
-                    }
-                });
-            } else {
-                $('#peopleResults').html('');
-            }
-        });
+
+            // Menyimpan token CSRF dalam variabel JavaScript
+            var csrfToken = '{{ csrf_token() }}';
+
+            // Menambahkan CSRF token ke dalam header Ajax
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            });
+
+            // Menangani input pencarian orang
+            $('#searchPeople').on('input', function() {
+                var query = $(this).val();
+                if (query.length > 2) {
+                    $.ajax({
+                        url: '/search-people',
+                        method: 'GET',
+                        data: { query: query },
+                        success: function(data) {
+                            $('#peopleResults').html('');
+                            $.each(data, function(index, person) {
+                                $('#peopleResults').append('<div class="person-result" data-id="' + person.id + '">' + person.name + ' (' + person.gmail + ')</div>');
+                            });
+                        }
+                    });
+                } else {
+                    $('#peopleResults').html('');
+                }
+            });
 
              // Handle click on search results
             $(document).on('click', '.person-result', function() {
@@ -846,16 +860,27 @@
             });
 
             // Handle add team member button click
-            $('#addTeamButton').on('click', function() {
-                var personId = $('#selectedPersonId').val();
-                var companyId = $('#companyId').val();
-                var position = $('#position').val();
-                $.ajax({
-                    url: '/add-team-member',
-                    method: 'POST',
-                    data: { person_id: personId, company_id: companyId, position: position },
-                    success: function(data) {
-                        location.reload();
+            $(document).ready(function() {
+                // Handle add team member button click
+                $('#addTeamButton').on('click', function() {
+                    var personId = $('#selectedPersonId').val();
+                    var companyId = $('#companyId').val();
+                    var position = $('#position').val();
+
+                    if (position) {
+                        $.ajax({
+                            url: '/team/store',
+                            method: 'POST',
+                            data: { person_id: personId, company_id: companyId, position: position },
+                            success: function(data) {
+                                location.reload(); // Reload halaman setelah berhasil
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Error adding team member:', error);
+                            }
+                        });
+                    } else {
+                        alert("Silakan pilih posisi departemen.");
                     }
                 });
             });
@@ -863,13 +888,26 @@
             // Menangani tombol edit team member
             $(document).on('click', '.btn-edit', function() {
                 var personId = $(this).data('id');
-                var name = $(this).data('name');
-                var role = $(this).data('role');
-                var photo = $(this).data('photo');
-                $('#editName').val(name);
-                $('#editPosition').val(role);
-                $('#editPhoto').val(photo);
-                $('#editPersonId').val(personId);
+
+                $.ajax({
+                    url: '/team/' + personId + '/edit',
+                    method: 'GET',
+                    success: function(data) {
+                        // Pastikan data yang diterima valid
+                        if (data) {
+                            $('#editName').val(data.name);
+                            $('#editPosition').val(data.position); // Pastikan posisi sudah ada di dropdown
+                            $('#editPhoto').val(data.photo); // Jika Anda ingin menampilkan foto yang ada
+                            $('#editPersonId').val(data.id);
+                        } else {
+                            alert("Data anggota tim tidak ditemukan.");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching team member data:', error);
+                        alert("Terjadi kesalahan saat mengambil data anggota tim.");
+                    }
+                });
             });
 
             // Menangani tombol simpan perubahan team member
@@ -877,15 +915,33 @@
                 var personId = $('#editPersonId').val();
                 var name = $('#editName').val();
                 var role = $('#editPosition').val();
-                var photo = $('#editPhoto').val();
-                $.ajax({
-                    url: '/edit-team-member',
-                    method: 'POST',
-                    data: { person_id: personId, name: name, position: role, photo: photo },
-                    success: function(data) {
-                        location.reload();
+                var photo = $('#editPhoto')[0].files[0]; // Ambil file foto
+
+                if (role) {
+                    var formData = new FormData();
+                    formData.append('name', name);
+                    formData.append('position', role);
+                    if (photo) {
+                        formData.append('photo', photo);
                     }
-                });
+
+                    $.ajax({
+                        url: '/team/' + personId,
+                        method: 'PUT',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function(data) {
+                            location.reload(); // Reload halaman setelah berhasil
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error updating team member:', error);
+                            alert("Terjadi kesalahan saat memperbarui anggota tim.");
+                        }
+                    });
+                } else {
+                    alert("Silakan pilih posisi departemen.");
+                }
             });
 
             // Menangani tombol hapus team member
@@ -956,8 +1012,21 @@
                 $('#selectedTags').html(selectedTags.map(tag => `<span class="selected-tag">${tag}</span>`).join(''));
             }
 
+            function updatePositionDepartment() {
+                var $positionSelect = $('#position');
+                $positionSelect.empty().append('<option value="">Pilih Departemen</option>');
+
+                $('#tagCloud .tag-button.selected').each(function () {
+                    var $tagId = $(this).data('tag-id');
+                    var $tagName = $(this).text();
+                    $positionSelect.append(`<option value="${$tagId}">${$tagName}</option>`);
+                })
+
+                $positionSelect.prop('disabled', $positionSelect.find('option').length <= 1);
+            }
             // Initial update of selected tags
             updateSelectedTags();
+            updatePositionDepartment();
         });
     </script>
 </div>

@@ -21,4 +21,9 @@ class Team extends Model
     {
         return $this->belongsTo(People::class, 'people_id');
     }
+
+    public function position()
+    {
+        return $this->belongsTo(Department::class, 'position');
+    }
 }
