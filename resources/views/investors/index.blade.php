@@ -36,14 +36,35 @@
                     <div class="mb-3">
                         <h6>INVESTMENT STAGE</h6>
                         <select class="form-control select2" name="investment_stage">
-                            <option value="">Select Investment Stage</option>
-                            <option value="Pre-Seed" {{ old('investment_stage') == 'Pre-Seed' ? 'selected' : '' }}>Pre-Seed</option>
-                            <option value="Seed" {{ old('investment_stage') == 'Seed' ? 'selected' : '' }}>Seed</option>
-                            <option value="Series A" {{ old('investment_stage') == 'Series A' ? 'selected' : '' }}>Series A</option>
-                            <option value="Series B" {{ old('investment_stage') == 'Series B' ? 'selected' : '' }}>Series B</option>
-                            <option value="Series C" {{ old('investment_stage') == 'Series C' ? 'selected' : '' }}>Series C</option>
-                            <option value="Series D" {{ old('investment_stage') == 'Series D' ? 'selected' : '' }}>Series D</option>
-                            <option value="IPO" {{ old('investment_stage') == 'IPO' ? 'selected' : '' }}>IPO</option>
+                            <option value="" {{ old('investment_stage') == '' ? 'selected' : '' }}>Pilih Tahap Investasi</option>
+                            <option value="pre_seed" {{ old('investment_stage') == 'pre_seed' ? 'selected' : '' }}>Pre-Seed</option>
+                            <option value="seed" {{ old('investment_stage') == 'seed' ? 'selected' : '' }}>Seed</option>
+                            <option value="series_a" {{ old('investment_stage') == 'series_a' ? 'selected' : '' }}>Series A</option>
+                            <option value="series_b" {{ old('investment_stage') == 'series_b' ? 'selected' : '' }}>Series B</option>
+                            <option value="series_c" {{ old('investment_stage') == 'series_c' ? 'selected' : '' }}>Series C</option>
+                            <option value="series_d" {{ old('investment_stage') == 'series_d' ? 'selected' : '' }}>Series D</option>
+                            <option value="series_e" {{ old('investment_stage') == 'series_e' ? 'selected' : '' }}>Series E</option>
+                            <option value="series_f" {{ old('investment_stage') == 'series_f' ? 'selected' : '' }}>Series F</option>
+                            <option value="series_g" {{ old('investment_stage') == 'series_g' ? 'selected' : '' }}>Series G</option>
+                            <option value="series_h" {{ old('investment_stage') == 'series_h' ? 'selected' : '' }}>Series H</option>
+                            <option value="series_i" {{ old('investment_stage') == 'series_i' ? 'selected' : '' }}>Series I</option>
+                            <option value="series_j" {{ old('investment_stage') == 'series_j' ? 'selected' : '' }}>Series J</option>
+                            <option value="venture_series_unknown" {{ old('investment_stage') == 'venture_series_unknown' ? 'selected' : '' }}>Venture - Series Unknown</option>
+                            <option value="angel" {{ old('investment_stage') == 'angel' ? 'selected' : '' }}>Angel</option>
+                            <option value="private_equity" {{ old('investment_stage') == 'private_equity' ? 'selected' : '' }}>Private Equity</option>
+                            <option value="debt_financing" {{ old('investment_stage') == 'debt_financing' ? 'selected' : '' }}>Debt Financing</option>
+                            <option value="convertible_note" {{ old('investment_stage') == 'convertible_note' ? 'selected' : '' }}>Convertible Note</option>
+                            <option value="grant" {{ old('investment_stage') == 'grant' ? 'selected' : '' }}>Grant</option>
+                            <option value="corporate_round" {{ old('investment_stage') == 'corporate_round' ? 'selected' : '' }}>Corporate Round</option>
+                            <option value="equity_crowdfunding" {{ old('investment_stage') == 'equity_crowdfunding' ? 'selected' : '' }}>Equity Crowdfunding</option>
+                            <option value="product_crowdfunding" {{ old('investment_stage') == 'product_crowdfunding' ? 'selected' : '' }}>Product Crowdfunding</option>
+                            <option value="secondary_market" {{ old('investment_stage') == 'secondary_market' ? 'selected' : '' }}>Secondary Market</option>
+                            <option value="post_ipo_equity" {{ old('investment_stage') == 'post_ipo_equity' ? 'selected' : '' }}>Post-IPO Equity</option>
+                            <option value="post_ipo_debt" {{ old('investment_stage') == 'post_ipo_debt' ? 'selected' : '' }}>Post-IPO Debt</option>
+                            <option value="post_ipo_secondary" {{ old('investment_stage') == 'post_ipo_secondary' ? 'selected' : '' }}>Post-IPO Secondary</option>
+                            <option value="non_equity_assistance" {{ old('investment_stage') == 'non_equity_assistance' ? 'selected' : '' }}>Non-equity Assistance</option>
+                            <option value="initial_coin_offering" {{ old('investment_stage') == 'initial_coin_offering' ? 'selected' : '' }}>Initial Coin Offering</option>
+                            <option value="undisclosed" {{ old('investment_stage') == 'undisclosed' ? 'selected' : '' }}>Undisclosed</option>
                         </select>
                     </div>
 

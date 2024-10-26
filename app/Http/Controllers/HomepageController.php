@@ -21,25 +21,24 @@ class HomepageController extends Controller
     {
         $user = Auth::user();
         $company = $user->companies;
-    
+
         $totalBalance = CompanyIncome::where('company_id', $company->id)->sum('jumlah');
 
         $totalOutcome = CompanyOutcome::whereHas('project', function ($query) use ($company) {
-                $query->where('company_id', $company->id);
-            })
-            ->sum('jumlah_biaya');
-    
+            $query->where('company_id', $company->id);
+        })->sum('jumlah_biaya');
+
         $sdgs = Sdg::all();
-    
+
         $allProjects = Project::with('tags', 'sdgs', 'indicators', 'metrics', 'targetPelanggan', 'dana')
             ->whereHas('company', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })
             ->get();
-    
+
         $ongoingProjects = $allProjects->where('status', 'Belum selesai');
         $completedProjects = $allProjects->where('status', 'Selesai');
-    
+
         return view('homepageimm.homepage', compact('sdgs', 'allProjects', 'ongoingProjects', 'completedProjects', 'company', 'user', 'totalBalance', 'totalOutcome'));
-    }    
+    }
 }

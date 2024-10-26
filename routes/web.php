@@ -17,18 +17,19 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\InvestorController;
 use App\Http\Controllers\WishlistController;
-use App\Http\Controllers\LandingPageController;
-use App\Http\Controllers\VerificationController;
-use App\Http\Controllers\CompanyIncomeController;
-use App\Http\Controllers\MetricProjectController;
-use App\Http\Controllers\CompanyOutcomeController;
-use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\InvestmentController;
-use App\Http\Controllers\ManagementKeuanganController;
-use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\FundingRoundController;
 use App\Http\Controllers\InvestorPageController;
+use App\Http\Controllers\VerificationController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\CompanyIncomeController;
+use App\Http\Controllers\MetricProjectController;
+use App\Http\Controllers\CompanyFinanceController;
+use App\Http\Controllers\CompanyOutcomeController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\ManagementKeuanganController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 // Rute untuk autentikasi
 Auth::routes();
 Auth::routes(['verify' => true]);
@@ -143,6 +144,11 @@ Route::middleware(['auth'])->group(function () {
 
     // Rute untuk pencarian pengeluaran yang juga mengarah ke metode show
     Route::get('/kelola-pengeluaran/search-expense', [ManagementKeuanganController::class, 'show'])->name('searchExpense');
+
+    // Rute untuk menampilkan tempat table financial report
+    Route::get('/company-finances/{companyId}', [CompanyFinanceController::class, 'index'])->name('company_finances.index');
+    Route::get('/company-finances/create', [CompanyFinanceController::class, 'create'])->name('company_finances.create');
+    Route::post('/company-finances', [CompanyFinanceController::class, 'store'])->name('company_finances.store');
 
     // Routes untuk Dana Masuk (Company Income)
     Route::prefix('dana-masuk')->group(function () {

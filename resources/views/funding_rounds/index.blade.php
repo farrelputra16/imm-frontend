@@ -40,21 +40,30 @@
                     <div class="mb-3">
                         <h6>FUNDING TYPE</h6>
                         <select name="funding_type" id="funding_type" class="form-control">
-                            <option value="" {{ request()->get('funding_type') === null ? 'selected' : '' }}>Funding Type</option>
-                            <option value="pre_seed" {{ request()->get('funding_type') === 'pre_seed' ? 'selected' : '' }}>Pre-seed Funding</option>
-                            <option value="seed" {{ request()->get('funding_type') === 'seed' ? 'selected' : '' }}>Seed Funding</option>
-                            <option value="series_a" {{ request()->get('funding_type') === 'series_a' ? 'selected' : '' }}>Series A Funding</option>
-                            <option value="series_b" {{ request()->get('funding_type') === 'series_b' ? 'selected' : '' }}>Series B Funding</option>
-                            <option value="series_c" {{ request()->get('funding_type') === 'series_c' ? 'selected' : '' }}>Series C Funding</option>
-                            <option value="series_d" {{ request()->get('funding_type') === 'series_d' ? 'selected' : '' }}>Series D Funding</option>
-                            <option value="series_e" {{ request()->get('funding_type') === 'series_e' ? 'selected' : '' }}>Series E Funding</option>
-                            <option value="debt" {{ request()->get('funding_type') === 'debt' ? 'selected' : '' }}>Debt Funding</option>
-                            <option value="equity" {{ request()->get('funding_type') === 'equity' ? 'selected' : '' }}>Equity Funding</option>
-                            <option value="convertible_debt" {{ request()->get('funding_type') === 'convertible_debt' ? 'selected' : '' }}>Convertible Debt</option>
-                            <option value="grants" {{ request()->get('funding_type') === 'grants' ? 'selected' : '' }}>Grants</option>
-                            <option value="revenue_based" {{ request()->get('funding_type') === 'revenue_based' ? 'selected' : '' }}>Revenue-Based Financing</option>
-                            <option value="private_equity" {{ request()->get('funding_type') === 'private_equity' ? 'selected' : '' }}>Private Equity</option>
-                            <option value="ipo" {{ request()->get('funding_type') === 'ipo' ? 'selected' : '' }}>Initial Public Offering (IPO)</option>
+                            <option value="" {{ request()->get('funding_type') === null ? 'selected' : '' }}>Tipe Pendanaan</option>
+                            <option value="pre_seed" {{ request()->get('funding_type') === 'pre_seed' ? 'selected' : '' }}>Pendanaan Pre-Seed</option>
+                            <option value="seed" {{ request()->get('funding_type') === 'seed' ? 'selected' : '' }}>Pendanaan Seed</option>
+                            <option value="series_a" {{ request()->get('funding_type') === 'series_a' ? 'selected' : '' }}>Pendanaan Series A</option>
+                            <option value="series_b" {{ request()->get('funding_type') === 'series_b' ? 'selected' : '' }}>Pendanaan Series B</option>
+                            <option value="series_c" {{ request()->get('funding_type') === 'series_c' ? 'selected' : '' }}>Pendanaan Series C</option>
+                            <option value="series_d" {{ request()->get('funding_type') === 'series_d' ? 'selected' : '' }}>Pendanaan Series D</option>
+                            <option value="series_e" {{ request()->get('funding_type') === 'series_e' ? 'selected' : '' }}>Pendanaan Series E</option>
+                            <option value="series_f" {{ request()->get('funding_type') === 'series_f' ? 'selected' : '' }}>Pendanaan Series F</option>
+                            <option value="series_g" {{ request()->get('funding_type') === 'series_g' ? 'selected' : '' }}>Pendanaan Series G</option>
+                            <option value="series_h" {{ request()->get('funding_type') === 'series_h' ? 'selected' : '' }}>Pendanaan Series H</option>
+                            <option value="series_i" {{ request()->get('funding_type') === 'series_i' ? 'selected' : '' }}>Pendanaan Series I</option>
+                            <option value="series_j" {{ request()->get('funding_type') === 'series_j' ? 'selected' : '' }}>Pendanaan Series J</option>
+                            <option value="venture_series_unknown" {{ request()->get('funding_type') === 'venture_series_unknown' ? 'selected' : '' }}>Venture - Seri Tidak Diketahui</option>
+                            <option value="angel" {{ request()->get('funding_type') === 'angel' ? 'selected' : '' }}>Pendanaan Angel</option>
+                            <option value="private_equity" {{ request()->get('funding_type') === 'private_equity' ? 'selected' : '' }}>Ekuitas Swasta</option>
+                            <option value="debt" {{ request()->get('funding_type') === 'debt' ? 'selected' : '' }}>Pendanaan Utang</option>
+                            <option value="convertible_debt" {{ request()->get('funding_type') === 'convertible_debt' ? 'selected' : '' }}>Utang Konversi</option>
+                            <option value="grants" {{ request()->get('funding_type') === 'grants' ? 'selected' : '' }}>Hibah</option>
+                            <option value="revenue_based" {{ request()->get('funding_type') === 'revenue_based' ? 'selected' : '' }}>Pendanaan Berbasis Pendapatan</option>
+                            <option value="ipo" {{ request()->get('funding_type') === 'ipo' ? 'selected' : '' }}>Penawaran Umum Perdana (IPO)</option>
+                            <option value="crowdfunding" {{ request()->get('funding_type') === 'crowdfunding' ? 'selected' : '' }}>Crowdfunding</option>
+                            <option value="initial_coin_offering" {{ request()->get('funding_type') === 'initial_coin_offering' ? 'selected' : '' }}>Penawaran Koin Awal</option>
+                            <option value="undisclosed" {{ request()->get('funding_type') === 'undisclosed' ? 'selected' : '' }}>Tidak Diketahui</option>
                         </select>
                     </div>
 

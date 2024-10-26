@@ -3,7 +3,9 @@
 
 @section('css')
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+<link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
+
 
 <style>
     @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap");
@@ -11,6 +13,7 @@ html,
 body {
     margin: 0;
     font-family: "Poppins", sans-serif;
+    padding-top:50px;
 }
 
 * {
@@ -27,36 +30,24 @@ body {
 .btn-kelola {
     width: 300px;
     height: 43px;
-    background-color: #524eff;
+    background-color: #6256CA;
     color: white;
     font-size: 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
 }
-
-
-/* end footer */
 
 .boxx {
     gap: 40px;
 }
 
-.box1 {
+.box1, .box2 {
     background-color: white;
     padding: 10px;
     border-radius: 17px;
     text-align: center;
     width: 100%;
     border: 1px solid #d1d1d1;
-}
-
-.box2 {
-    border: 1px solid #d1d1d1;
-    background-color: white;
-    padding: 10px;
-    border-radius: 14px;
-    text-align: center;
-    width: 100%;
 }
 
 .balance-card,
@@ -85,9 +76,9 @@ span {
 }
 
 .price {
-    font-size: 24px;
-    font-weight: 500;
-    color: black;
+    font-size: 20px;
+    font-weight: bold;
+    color: #6256CA;
 }
 
 p {
@@ -100,14 +91,9 @@ p {
 
 h4 {
     font-size: 39px;
-    /* Ukuran font yang lebih besar */
     color: #ffffff;
-    /* Warna teks putih untuk kontras yang baik pada latar belakang gelap */
-    /* Bayangan teks untuk meningkatkan keterbacaan */
     font-weight: bold;
-    /* Membuat font tebal */
     line-height: 1.2;
-    /* Menyesuaikan tinggi baris untuk penampilan yang lebih baik */
 }
 
 .notification-section {
@@ -125,7 +111,6 @@ h4 {
 .row {
     display: flex;
     width: 100%;
-    /* Ensure the row takes full width */
     justify-content: space-between;
     align-items: center;
 }
@@ -180,16 +165,21 @@ h4 {
 }
 
 .map-container {
-    margin: 100px 0;
-}
-
-.map {
     position: relative;
-    display: inline-block;
+    width: 100%;
+    height: 600px;
+    margin: 20px 0;
 }
 
 .map img {
     width: 100%;
+    height: 100%;
+}
+
+#map {
+    height: 100%; /* Pastikan peta mengisi seluruh kontainer */
+    width: 100%; /* Pastikan peta mengisi seluruh kontainer */
+    z-index: 0; /* Pastikan peta berada di belakang elemen lain */
 }
 
 .city-overlay {
@@ -202,16 +192,28 @@ h4 {
     transition: transform 0.3s ease-in-out;
 }
 
-#bandung {
-    top: 55%;
-    /* Sesuaikan posisi berdasarkan peta */
-    left: 43%;
-    /* Sesuaikan posisi berdasarkan peta */
+.marker {
+    position: absolute;
+    z-index: 1; /* Pastikan marker berada di atas peta */
 }
 
-.city-overlay.active {
-    transform: scale(5);
-    z-index: 10;
+#outer-wrapper {
+    width: 1268px;
+    height: 480px;
+    overflow: hidden;
+    position: relative;
+}
+
+#inner-wrapper {
+    position: absolute;
+    top: -130px;
+    height: 800px;
+    width: 100%;
+}
+
+#regions_div {
+    width: 100%;
+    height: 100%;
 }
 
 .location-info {
@@ -220,157 +222,240 @@ h4 {
     font-weight: bold;
 }
 
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 0px;
+}
 
-/* Menambahkan transisi pada navbar */
-    .map-container {
-        margin-top: 20px;
-        position: relative;
-    }
+.dashboard-title {
+    font-weight: bold;
+}
 
-    .map img {
-        width: 100%;
-        height: auto;
-    }
+.scope {
+    text-align: left;
+}
 
-    .city-overlay {
-        position: absolute;
-        cursor: pointer;
-    }
+.scope h5 {
+    font-size: 1rem;
+    color: #6a1b9a;
+}
 
-    .location-info {
-        margin-top: 10px;
-    }
-    #outer-wrapper {
-        width: 1268px;
-        height: 480px;  /* Set a fixed height to control the map display area */
-        overflow: hidden;
-        position: relative;
-    }
-    #inner-wrapper {
-        position: absolute;
-        top: -130px;  /* Adjust this value to move the map up */
-        height: 800px; /* Adjust this value to ensure the map covers the div and cuts off bottom */
-        width: 100%;
-    }
-    #regions_div {
-        width: 100%;
-        height: 100%;  /* Make sure the map takes the full height of the inner-wrapper */
-    }
-    .marker {
-    width: 10px;
-    height: 10px;
-    background-color: red;
-    border-radius: 50%;
+.scope h6 {
+    font-size: 1.2rem;
+    color: #1e88e5;
+    font-weight: bold;
+}
+
+.info-box {
     position: absolute;
-    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 200px;
+    z-index: 1; /* Pastikan info box berada di atas peta */
+}
+
+.info-box i {
+    font-size: 1.5rem;
+    margin-left: 10px;
+}
+
+.info-box.expenditure {
+    top: 20px;
+    left: 20px;
+}
+
+.info-box.funds {
+    top: 100px;
+    left: 20px;
+}
+
+.goals-container {
+    position: absolute;
+    top: 20px;
+    right: 2px;
+    width: 300px;
+    max-height: 550px;
+    overflow-y: scroll;
+    background: transparent;
+    padding: 0px;
+    padding-left: 30px;
+    z-index: 1; /* Pastikan goals container berada di atas peta */
+}
+
+.goals-container::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+}
+
+.goal {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    width: 250px;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.goal:hover, .goal:active {
+    transform: translateX(-30px);
+}
+
+.goal img {
+    width: 50px;
+    height: 50px;
+    margin-left: 10px;
+}
+
+.goal div {
+    flex: 1;
+    word-wrap: break-word;
+}
+
+.create-project-btn {
+    display: block;
+    width: 200px;
+    margin: 20px auto;
+    background-color: #6a1b9a;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.breadcrumb {
+    background-color: white;
+    padding: 0;
+}
+.breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+    margin-right: 14px;
+    color: #9CA3AF;
+}
+
+@media (max-width: 768px) {
+    .navbar-nav .nav-item .nav-link {
+        margin-right: 0;
+        margin-bottom: 10px;
     }
 
+    .box, .box1, .box2 {
+        /* Add styles for smaller screens */
+    }
+}
 
-    .sdg-container .grid-item {
-        cursor: pointer;
+@media (max-width: 576px) {
+    .analytics-title, .balance-card, .outcome-card, .report-container h4, .sdg-container .grid-item img {
+        font-size: 14px;
     }
 
-    #map {
-            height: 600px; /* Tinggi peta */
-            width: 1000px; /* Lebar peta */
-        }
-
-        .location-info {
-            margin-top: 20px;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-    @media (max-width: 768px) {
-        .navbar-nav .nav-item .nav-link {
-            margin-right: 0;
-            margin-bottom: 10px;
-        }
-
-        .box, .box1, .box2 {
-
-        }
+    .navbar-brand, .navbar-nav .nav-link {
+        font-size: 14px;
     }
 
-    @media (max-width: 576px) {
-        .analytics-title, .balance-card, .outcome-card, .report-container h4, .sdg-container .grid-item img {
-            font-size: 14px;
-        }
-
-        .navbar-brand, .navbar-nav .nav-link {
-            font-size: 14px;
-        }
-
-        .btn-report {
-            font-size: 14px;
-            padding: 5px 10px;
-        }
-
-        .progress-bar-container, .map-container {
-            width: 100%;
-            overflow-x: auto;
-        }
-
-        .progress-bar {
-            width: 100%;
-        }
-
-        .box1,.box2{
-            background-color: white;
-            padding: 10px;
-            border-radius: 17px;
-            text-align: center;
-            width: 140px;
-            border: 1px solid #d1d1d1;
-        }
-        .price{
-            font-size: 10px
-        }
-
-        .boxxx{
-            display:flex;
-            justify-content: space-evenly;
-            flex-direction: row;
-        }
+    .btn-report {
+        font-size: 14px;
+        padding: 5px 10px;
     }
+
+    .progress-bar-container, .map-container {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .progress-bar {
+        width: 100%;
+    }
+
+    .box1, .box2 {
+        background-color: white;
+        padding: 10px;
+        border-radius: 17px;
+        text-align: center;
+        width: 140px;
+        border: 1px solid #d1d1d1;
+    }
+
+    .price {
+        font-size:8px;
+    }
+
+    .boxxx {
+        display: flex;
+        justify-content: space-evenly;
+        flex-direction: row;
+    }
+}
 </style>
 @endsection
 @section('content')
 
 <body>
+    <div class="container"  style="margin-bottom: 0px; margin-top: 0px;">
+        <nav aria-label="breadcrumb" class="mb-5">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                        <a href="{{ route('landingpage') }}" style="text-decoration: none; color: #212B36;">Home</a>
+                </li>
+                <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                    <a href="{{ route('homepage') }}" style="text-decoration: none; color: #212B36;">Dashboard</a>
+                </li>
+            </ol>
+        </nav>
 
-    <div class="container-fluid d-flex justify-content-center" style="padding-top: 120px;">
-        <div class="map-container">
-            {{-- <h2>Proyek Berdasarkan Wilayah</h2>
-            <div class="map">
-                <div id="outer-wrapper">
-                    <div id="inner-wrapper">
-                        <div id="map">
-                            <div id="regions_div"></div>
-                        </div>
-                    </div>
-                </div>
+        <div class="header">
+            <h2 style="color: #6256CA;">Dashboard</h2>
+            <div class="scope">
+                <h5 style="color: #282828; font-size: 16px;">Scope</h5>
+                <h6 style="color: #6256CA; font-size: 21.42px;">Sustainable <br> Development Goals</h6>
             </div>
-            <div id="location-info" class="location-info"></div> --}}
-            <div class="map-container">
-                <h1>Peta Proyek</h1>
-                <div id="map"></div>
-                <div id="modal-content" class="location-info"></div>
+        </div>
+    </div>
+    <div class="container d-flex justify-content-center" style="padding-top: 0px; margin-top:0px;">
+        <div class="map-container">
+            <div id="map"></div>
+            <div id="modal-content" class="location-info"></div>
+
+            <!-- Info Boxes -->
+            <div class="info-box expenditure">
+                <div>
+                    <div>Expenditure</div>
+                    <span class="price" id="totalOutcome">Rp{{ number_format($totalOutcome, 0, ',', '.') }}</span>
+                </div>
+                <img src="{{ asset('images/expense.svg') }}" height="40" width="40">
+            </div>
+            <div class="info-box funds">
+                <div>
+                    <div>Amount of Funds</div>
+                    <span class="price" id="totalBalance">Rp{{ number_format($totalBalance, 0, ',', '.') }}</span>
+                </div>
+                <img src="{{ asset('images/zondicons_wallet.svg') }}" height="40" width="40">
+            </div>
+
+            <!-- Goals Container -->
+            <div class="goals-container">
+                @foreach($sdgs as $sdg)
+                    <div class="goal" data-index="{{ $sdg->id }}">
+                        <div>
+                            <div class="sub-heading-2" style="color: #6256CA;"> {{ $sdg->short_name }}</div>
+                            <div style="font-weight: 600; font-size: 12px; color: #505052;">SDG {{ $sdg->id }}</div>
+                            <span style="font-size: 10px; color: black; opacity: 0.3;">{{ $sdg->name }}</span>
+                        </div>
+                        <img src="{{ asset('images/' .$sdg->img) }}" alt="Icon for {{ $sdg->short_name  }}" height="50" width="50" class="sdg-icon">
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>
@@ -392,27 +477,13 @@ h4 {
             </div>
         </div>
     </div>
-    <div class="container d-flex boxx justify-content-center">
-        <div class="box1">
-            <div class="balance-card">
-                <i class="fas fa-wallet mb-3"></i>
-                <span class="total-text">Total Hibah</span>
-                <span class="price" id="totalBalance">Rp{{ number_format($totalBalance, 0, ',', '.') }}</span>
-            </div>
-        </div>
-        <div class="box2">
-            <div class="outcome-card">
-                <div class="w-100 d-flex justify-content-between">
-                    <i class="fas fa-chart-line mb-3"></i>
-                </div>
-                <span>Total Pengeluaran Hibah</span>
-                <span class="price" id="totalOutcome">Rp{{ number_format($totalOutcome, 0, ',', '.') }}</span>
-            </div>
-        </div>
+
+    <div class="container d-flex justify-content-center mt-5">
+        <a href="{{ route('kelolapengeluaran', ['company_id' => $company->id]) }}"><button class="btn-kelola">Financial Project Report</button></a>
     </div>
 
     <div class="container d-flex justify-content-center mt-5">
-        <a href="{{ route('kelolapengeluaran', ['company_id' => $company->id]) }}"><button class="btn-kelola">Management Keuangan</button></a>
+        <a href="{{ route('company_finances.index', ['companyId' => $company->id]) }}"><button class="btn-kelola">Financial Report</button></a>
     </div>
 
     <div class="container mt-5">
@@ -428,6 +499,13 @@ h4 {
     </div>
 
 
+    {{-- <div class="container">
+        <div class="map-container">
+            <img src="https://storage.googleapis.com/a1aa/image/ADKVsTCpmWrpMRff27FM86DGCHExcp3X0f572ur4dw5eOgqOB.jpg" alt="Map of Southeast Asia with markers for various projects" height="500" width="800">
+
+        </div>
+        <button class="create-project-btn">Create a Project</button>
+    </div> --}}
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
@@ -569,18 +647,24 @@ h4 {
 
     document.addEventListener('DOMContentLoaded', function () {
         var projects = @json($allProjects);
-        var gridItems = document.querySelectorAll('.grid-item');
+        var sdgContainers = document.querySelectorAll('.goal');
 
-        gridItems.forEach(function (item) {
-            var sdgId = item.getAttribute('data-index');
-            var isActive = projects.some(function (project) {
+        sdgContainers.forEach(function (container) {
+            var sdgId = container.getAttribute('data-index');
+            var hasActiveProjects = projects.some(function (project) {
                 return project.sdgs.some(function (sdg) {
                     return sdg.id == sdgId;
                 });
             });
 
-            if (isActive) {
-                item.classList.add('active');
+            var sdgIcon = container.querySelector('.sdg-icon');
+
+            if (hasActiveProjects) {
+                // Jika ada proyek aktif, atur opacity menjadi 1
+                sdgIcon.style.opacity = 1;
+            } else {
+                // Jika tidak ada proyek aktif, atur opacity menjadi 0.3
+                sdgIcon.style.opacity = 0.3;
             }
         });
     });
@@ -607,42 +691,14 @@ h4 {
                 ],
                 "gmaps": "https://maps.google.com/?q=-6.2088,106.8456"
             },
-            {
-                "id_proyek": 2,
-                "nama": "Proyek B",
-                "kota": "Bandung",
-                "latitude": -6.9175,
-                "longitude": 107.6193,
-                "target_pelanggan": [
-                    {
-                        "id_proyek": 2,
-                        "status": "Tidak Aktif",
-                        "rentang_usia": "25-35",
-                        "deskripsi_pelanggan": "Pengusaha"
-                    }
-                ],
-                "gmaps": "https://maps.google.com/?q=-6.9175,107.6193"
-            },
-            {
-                "id_proyek": 3,
-                "nama": "Proyek C",
-                "kota": "Yogyakarta",
-                "latitude": -7.7956,
-                "longitude": 110.3695,
-                "target_pelanggan": [
-                    {
-                        "id_proyek": 3,
-                        "status": "Aktif",
-                        "rentang_usia": "30-40",
-                        "deskripsi_pelanggan": "Karyawan"
-                    }
-                ],
-                "gmaps": "https://maps.google.com/?q=-7.7956,110.3695"
-            }
+            // Tambahkan proyek lainnya di sini
         ];
 
-        // Inisialisasi peta
-        var map = L.map('map').setView([-2.5, 118], 5); // Koordinat tengah Indonesia
+        // Inisialisasi peta tanpa kontrol zoom
+        var map = L.map('map', {
+            zoomControl: false,
+            attributionControl: false
+        }).setView([-2.5, 118], 5); // Koordinat tengah Indonesia
 
         // Tambahkan layer peta dari OpenStreetMap
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

@@ -26,20 +26,29 @@
     @php
         // Mapping antara funding type dan label yang ingin ditampilkan
         $fundingTypes = [
-            'pre_seed' => 'Pre-seed Funding',
-            'seed' => 'Seed Funding',
-            'series_a' => 'Series A Funding',
-            'series_b' => 'Series B Funding',
-            'series_c' => 'Series C Funding',
-            'series_d' => 'Series D Funding',
-            'series_e' => 'Series E Funding',
-            'debt' => 'Debt Funding',
-            'equity' => 'Equity Funding',
-            'convertible_debt' => 'Convertible Debt',
-            'grants' => 'Grants',
-            'revenue_based' => 'Revenue-Based Financing',
-            'private_equity' => 'Private Equity',
-            'ipo' => 'Initial Public Offering (IPO)',
+           'pre_seed' => 'Pre-Seed',
+            'seed' => 'Seed',
+            'series_a' => 'Series A',
+            'series_b' => 'Series B',
+            'series_c' => 'Series C',
+            'series_d' => 'Series D',
+            'series_e' => 'Series E',
+            'series_f' => 'Series F', // Jika Anda ingin menambahkan ini
+            'series_g' => 'Series G', // Jika Anda ingin menambahkan ini
+            'series_h' => 'Series H', // Jika Anda ingin menambahkan ini
+            'series_i' => 'Series I', // Jika Anda ingin menambahkan ini
+            'series_j' => 'Series J', // Jika Anda ingin menambahkan ini
+            'venture_series_unknown' => 'Venture - Seri Tidak Diketahui',
+            'angel' => 'Angel',
+            'private_equity' => 'Ekuitas Swasta',
+            'debt' => 'Utang',
+            'convertible_debt' => 'Utang Konversi',
+            'grants' => 'Hibah',
+            'revenue_based' => 'Berbasis Pendapatan',
+            'ipo' => 'Penawaran Umum Perdana (IPO)',
+            'crowdfunding' => 'Crowdfunding',
+            'initial_coin_offering' => 'Penawaran Koin Awal',
+            'undisclosed' => 'Tidak Diketahui',
         ];
     @endphp
 

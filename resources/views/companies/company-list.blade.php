@@ -47,21 +47,35 @@
                     <div class="mb-3">
                         <h6>FUNDING TYPE</h6>
                         <select name="funding_type" id="funding_type" class="form-control" onchange="filterByFundingType(this.value)">
-                            <option value="" {{ request()->get('funding_type') === null ? 'selected' : '' }}>Funding Type</option>
-                            <option value="pre_seed" {{ request()->get('funding_type') === 'pre_seed' ? 'selected' : '' }}>Pre-seed Funding</option>
-                            <option value="seed" {{ request()->get('funding_type') === 'seed' ? 'selected' : '' }}>Seed Funding</option>
-                            <option value="series_a" {{ request()->get('funding_type') === 'series_a' ? 'selected' : '' }}>Series A Funding</option>
-                            <option value="series_b" {{ request()->get('funding_type') === 'series_b' ? 'selected' : '' }}>Series B Funding</option>
-                            <option value="series_c" {{ request()->get('funding_type') === 'series_c' ? 'selected' : '' }}>Series C Funding</option>
-                            <option value="series_d" {{ request()->get('funding_type') === 'series_d' ? 'selected' : '' }}>Series D Funding</option>
-                            <option value="series_e" {{ request()->get('funding_type') === 'series_e' ? 'selected' : '' }}>Series E Funding</option>
-                            <option value="debt" {{ request()->get('funding_type') === 'debt' ? 'selected' : '' }}>Debt Funding</option>
-                            <option value="equity" {{ request()->get('funding_type') === 'equity' ? 'selected' : '' }}>Equity Funding</option>
-                            <option value="convertible_debt" {{ request()->get('funding_type') === 'convertible_debt' ? 'selected' : '' }}>Convertible Debt</option>
-                            <option value="grants" {{ request()->get('funding_type') === 'grants' ? 'selected' : '' }}>Grants</option>
-                            <option value="revenue_based" {{ request()->get('funding_type') === 'revenue_based' ? 'selected' : '' }}>Revenue-Based Financing</option>
-                            <option value="private_equity" {{ request()->get('funding_type') === 'private_equity' ? 'selected' : '' }}>Private Equity</option>
-                            <option value="ipo" {{ request()->get('funding_type') === 'ipo' ? 'selected' : '' }}>Initial Public Offering (IPO)</option>
+                            <option value="" {{ request()->get('investment_stage') === null ? 'selected' : '' }}>Pilih Tahap Investasi</option>
+                            <option value="pre_seed" {{ request()->get('investment_stage') === 'pre_seed' ? 'selected' : '' }}>Pendanaan Pre-Seed</option>
+                            <option value="seed" {{ request()->get('investment_stage') === 'seed' ? 'selected' : '' }}>Pendanaan Seed</option>
+                            <option value="series_a" {{ request()->get('investment_stage') === 'series_a' ? 'selected' : '' }}>Pendanaan Series A</option>
+                            <option value="series_b" {{ request()->get('investment_stage') === 'series_b' ? 'selected' : '' }}>Pendanaan Series B</option>
+                            <option value="series_c" {{ request()->get('investment_stage') === 'series_c' ? 'selected' : '' }}>Pendanaan Series C</option>
+                            <option value="series_d" {{ request()->get('investment_stage') === 'series_d' ? 'selected' : '' }}>Pendanaan Series D</option>
+                            <option value="series_e" {{ request()->get('investment_stage') === 'series_e' ? 'selected' : '' }}>Pendanaan Series E</option>
+                            <option value="series_f" {{ request()->get('investment_stage') === 'series_f' ? 'selected' : '' }}>Pendanaan Series F</option>
+                            <option value="series_g" {{ request()->get('investment_stage') === 'series_g' ? 'selected' : '' }}>Pendanaan Series G</option>
+                            <option value="series_h" {{ request()->get('investment_stage') === 'series_h' ? 'selected' : '' }}>Pendanaan Series H</option>
+                            <option value="series_i" {{ request()->get('investment_stage') === 'series_i' ? 'selected' : '' }}>Pendanaan Series I</option>
+                            <option value="series_j" {{ request()->get('investment_stage') === 'series_j' ? 'selected' : '' }}>Pendanaan Series J</option>
+                            <option value="venture_series_unknown" {{ request()->get('investment_stage') === 'venture_series_unknown' ? 'selected' : '' }}>Venture - Seri Tidak Diketahui</option>
+                            <option value="angel" {{ request()->get('investment_stage') === 'angel' ? 'selected' : '' }}>Pendanaan Angel</option>
+                            <option value="private_equity" {{ request()->get('investment_stage') === 'private_equity' ? 'selected' : '' }}>Ekuitas Swasta</option>
+                            <option value="debt_financing" {{ request()->get('investment_stage') === 'debt_financing' ? 'selected' : '' }}>Pendanaan Utang</option>
+                            <option value="convertible_note" {{ request()->get('investment_stage') === 'convertible_note' ? 'selected' : '' }}>Nota Konversi</option>
+                            <option value="grant" {{ request()->get('investment_stage') === 'grant' ? 'selected' : '' }}>Hibah</option>
+                            <option value="corporate_round" {{ request()->get('investment_stage') === 'corporate_round' ? 'selected' : '' }}>Putaran Korporat</option>
+                            <option value="equity_crowdfunding" {{ request()->get('investment_stage') === 'equity_crowdfunding' ? 'selected' : '' }}>Crowdfunding Ekuitas</option>
+                            <option value="product_crowdfunding" {{ request()->get('investment_stage') === 'product_crowdfunding' ? 'selected' : '' }}>Crowdfunding Produk</option>
+                            <option value="secondary_market" {{ request()->get('investment_stage') === 'secondary_market' ? 'selected' : '' }}>Pasar Sekunder</option>
+                            <option value="post_ipo_equity" {{ request()->get('investment_stage') === 'post_ipo_equity' ? 'selected' : '' }}>Ekuitas Pasca-IPO</option>
+                            <option value="post_ipo_debt" {{ request()->get('investment_stage') === 'post_ipo_debt' ? 'selected' : '' }}>Utang Pasca-IPO</option>
+                            <option value="post_ipo_secondary" {{ request()->get('investment_stage') === 'post_ipo_secondary' ? 'selected' : '' }}>Sekunder Pasca-IPO</option>
+                            <option value="non_equity_assistance" {{ request()->get('investment_stage') === 'non_equity_assistance' ? 'selected' : '' }}>Bantuan Non-Ekuitas</option>
+                            <option value="initial_coin_offering" {{ request()->get('investment_stage') === 'initial_coin_offering' ? 'selected' : '' }}>Penawaran Koin Awal</option>
+                            <option value="undisclosed" {{ request()->get('investment_stage') === ' undisclosed' ? 'selected' : '' }}>Tidak Diketahui</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Search</button>
