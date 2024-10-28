@@ -8,6 +8,7 @@
     {{-- <link rel="stylesheet" href="{{ asset('css/myproject/creatproject/pemilihansdgs.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.12/plyr.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
@@ -403,6 +404,26 @@
         .number-container{
             margin-left: 10px;
         }
+
+        /* Bagian khusus untuk map */
+        .map-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            margin: 20px 0;
+        }
+
+        #map {
+            height: 100%; /* Pastikan peta mengisi seluruh kontainer */
+            width: 100%; /* Pastikan peta mengisi seluruh kontainer */
+            z-index: 0; /* Pastikan peta berada di belakang elemen lain */
+        }
+
+        .location-info {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
     </style>
 @endsection
 @section('content')
@@ -648,100 +669,15 @@
                                 <input type="text" class="form-control" id="gmaps" name="gmaps" required>
                             </div>
 
-                            {{-- <!-- Opsi Apakah Ada Pendanaan Eksternal -->
+                            {{-- Tempat untuk menjadi bagian container dari peta --}}
                             <div class="form-group">
-                                <label for="external_funding">Apakah Proyek Ini Memiliki Pendanaan Eksternal?</label>
-                                <select class="form-control" id="external_funding" name="external_funding">
-                                    <option value="" disabled selected>Pilih Jawaban</option>
-                                    <option value="yes">Ya</option>
-                                    <option value="no">Tidak</option>
-                                </select>
+                                <div class="map-container">
+                                    <div id="map"></div>
+                                    <div id="modal-content" class="location-info"></div>
+                                </div>
                             </div>
-
-                            <!-- Bagian untuk pendanaan eksternal (disembunyikan jika "Tidak") -->
-                            <div id="external-funding-section" style="display: none;">
-                                <label for="jenis_dana_eksternal">Jenis Dana Eksternal</label>
-                                <select class="form-control" name="dana[0][jenis_dana]" required>
-                                    <option value="Hibah">Hibah</option>
-                                    <option value="Investasi">Investasi</option>
-                                    <option value="Pinjaman">Pinjaman</option>
-                                    <option value="Pre-seed Funding">Pre-seed Funding</option>
-                                    <option value="Seed Funding">Seed Funding</option>
-                                    <option value="Series A Funding">Series A Funding</option>
-                                    <option value="Series B Funding">Series B Funding</option>
-                                    <option value="Series C Funding">Series C Funding</option>
-                                    <option value="Series D Funding">Series D Funding</option>
-                                    <option value="Series E Funding">Series E Funding</option>
-                                    <option value="Debt Funding">Debt Funding</option>
-                                    <option value="Equity Funding">Equity Funding</option>
-                                    <option value="Convertible Debt">Convertible Debt</option>
-                                    <option value="Grants">Grants</option>
-                                    <option value="Revenue-Based Financing">Revenue-Based Financing</option>
-                                    <option value="Private Equity">Private Equity</option>
-                                    <option value="IPO">IPO</option>
-                                    <option value="Lainnya">Lainnya</option>
-                                </select>
-                                <!-- Ubah dari input type="number" ke input type="text" -->
-                                <input type="text" class="form-control mt-2" id="nominal_eksternal_display" placeholder="Nominal Pendanaan Eksternal" required>
-                                <!-- Input tersembunyi untuk menyimpan nilai asli tanpa format -->
-                                <input type="hidden" id="nominal_eksternal" name="dana[0][nominal]">
-                            </div>
-
-                            <!-- Opsi Apakah Ada Pendanaan Internal -->
-                            <div class="form-group mt-3">
-                                <label for="internal_funding">Apakah Proyek Ini Memiliki Pendanaan Internal?</label>
-                                <select class="form-control" id="internal_funding" name="internal_funding">
-                                    <option value="" disabled selected>Pilih Jawaban</option>
-                                    <option value="yes">Ya</option>
-                                    <option value="no">Tidak</option>
-                                </select>
-                            </div>
-
-                            <!-- Bagian untuk pendanaan internal (disembunyikan jika "Tidak") -->
-                            <div id="internal-funding-section" style="display: none;">
-                                <label for="jenis_dana_internal">Pendanaan Internal</label>
-                                <table class="table spesifikasi-pendanaan">
-                                    <thead>
-                                        <tr>
-                                            <th>Jenis Dana Internal</th>
-                                            <th>Nominal</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <select class="form-control" name="dana[1][jenis_dana]" required>
-                                                    <option value="Pinjaman Internal">Pinjaman Internal</option>
-                                                    <option value="Investasi Internal">Investasi Internal</option>
-                                                    <option value="Pinjaman Bank">Pinjaman Bank</option>
-                                                    <option value="Kredit Usaha Rakyat">Kredit Usaha Rakyat</option>
-                                                    <option value="Kredit Modal Kerja">Kredit Modal Kerja</option>
-                                                    <option value="Kredit Investasi">Kredit Investasi</option>
-                                                    <option value="Kredit Komersial">Kredit Komersial</option>
-                                                    <option value="Dana dari Pemegang Saham">Dana dari Pemegang Saham</option>
-                                                    <option value="Reinvestasi Laba">Reinvestasi Laba</option>
-                                                    <option value="Dana dari Mitra Bisnis">Dana dari Mitra Bisnis</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <input type="text" class="form-control" id="nominal_internal_display" placeholder="Nominal Pendanaan Internal" required>
-                                                <input type="hidden" id="nominal_internal" name="dana[1][nominal]">
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-danger btn-remove-dana">
-                                                    <i class="fa-solid fa-minus" style="color: #ffffff;"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <!-- Tambahkan tombol untuk menambah dana -->
-                                <button type="button" class="btn btn-success btn-add-dana">
-                                    <i class="fa-solid fa-plus" style="color: #ffffff;"></i> Tambah Dana
-                                </button>
-                            </div> --}}
-
+                            <input type="hidden" id="latitude" name="latitude">
+                            <input type="hidden" id="longitude" name="longitude">
 
                             <div class="form-group">
                                 <div class="section-img">
@@ -1318,6 +1254,53 @@
             provinsiSelect.addEventListener('change', populateCities);
         </script>
 
+        {{-- Bagian untuk peta penting mendapatkan langitud  dan logitude yang nantinya akan dimasukkan ke dalam link google maps --}}
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Inisialisasi peta tanpa kontrol zoom
+                var map = L.map('map', {
+                    zoomControl: false,
+                    attributionControl: false
+                }).setView([-2.5, 118], 5); // Koordinat tengah Indonesia
+
+                // Tambahkan layer peta dari OpenStreetMap
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+
+                var currentMarker = null; // Variabel untuk menyimpan marker saat ini
+
+                // Tambahkan event click untuk menambahkan marker
+                map.on('click', function(e) {
+                    var lat = e.latlng.lat;
+                    var lng = e.latlng.lng;
+
+                    // Jika ada marker saat ini, hapus marker tersebut
+                    if (currentMarker) {
+                        map.removeLayer(currentMarker);
+                    }
+
+                    // Tambahkan marker baru ke peta
+                    currentMarker = L.marker([lat, lng]).addTo(map)
+                        .bindPopup('Latitude: ' + lat + '<br>Longitude: ' + lng)
+                        .openPopup();
+
+                    // Simpan nilai latitude dan longitude ke input tersembunyi
+                    document.getElementById('latitude').value = lat;
+                    document.getElementById('longitude').value = lng;
+                    // checking apakah sudah masuk ke dalam input
+                    console.log(document.getElementById('latitude').value);
+                    console.log(document.getElementById('longitude').value);
+
+                    // Update URL Google Maps
+                    var gmapsUrl = 'https://www.google.com/maps?q=' + lat + ',' + lng;
+                    document.getElementById('gmaps').value = gmapsUrl;
+                });
+            });
+        </script>
+
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 var imageInput = document.getElementById('imageInput');
@@ -1507,33 +1490,7 @@
                     $(this).closest('tr').remove();
                 });
 
-                // var indexDana = 2; // Start index for internal funding
 
-                // Tampilkan/ Sembunyikan bagian pendanaan eksternal berdasarkan pilihan
-                // $("#external_funding").change(function () {
-                //     var selectedValue = $(this).val();
-                //     if (selectedValue === "yes") {
-                //         $("#external-funding-section").show();
-                //     } else {
-                //         $("#external-funding-section").hide();
-                //         $("#nominal_eksternal_display").val('');
-                //         $("#nominal_eksternal").val(0);
-                //     }
-                //     updateTotalFunding();
-                // });
-
-                // Tampilkan/ Sembunyikan bagian pendanaan internal berdasarkan pilihan
-                // $("#internal_funding").change(function () {
-                //     var selectedValue = $(this).val();
-                //     if (selectedValue === "yes") {
-                //         $("#internal-funding-section").show();
-                //     } else {
-                //         $("#internal-funding-section").hide();
-                //         $("#nominal_internal_display").val('');
-                //         $("#nominal_internal").val(0);
-                //     }
-                //     updateTotalFunding();
-                // });
 
                 // Fungsi untuk menghapus format Rupiah
                 function removeFormatRupiah(angka) {
@@ -1568,119 +1525,6 @@
                     $(this).val(formatRupiah(originalValue));
                     $("#jumlah_pendanaan").val(originalValue);
                 });
-
-                // Format input menjadi Rupiah saat diinput
-                // function formatAndUpdate() {
-                //     var nominal = $(this).val();
-                //     var originalValue = removeFormatRupiah(nominal);
-                //     $(this).val(formatRupiah(originalValue));
-
-                //     // Simpan nilai asli ke input tersembunyi
-                //     $(this).siblings('input[type="hidden"]').val(originalValue);
-                //     updateTotalFunding();
-                // }
-
-                // $("#nominal_eksternal_display, #nominal_internal_display").on('input', formatAndUpdate);
-
-                // Update jumlah dana keseluruhan saat nominal eksternal atau internal berubah
-                // function updateTotalFunding() {
-                //     var totalFunding = 0;
-
-                //     // Loop through all nominal inputs and sum their values
-                //     $('input[name^="dana"]').each(function() {
-                //         var nominal = parseFloat($(this).val()) || 0;
-                //         totalFunding += nominal;
-                //     });
-
-                //     $("#jumlah_pendanaan_display").val(formatRupiah(totalFunding.toString()));
-                //     $("#jumlah_pendanaan").val(totalFunding);
-                // }
-
-                // Fungsi untuk menambahkan baris pendanaan internal baru
-                // $(".btn-add-dana").click(function() {
-                //     var selectedOptions = $('.spesifikasi-pendanaan select').map(function() {
-                //         return $(this).val();
-                //     }).get();
-
-                //     var options = [
-                //         'Pinjaman Internal',
-                //         'Investasi Internal',
-                //         'Pinjaman Bank',
-                //         'Kredit Usaha Rakyat',
-                //         'Kredit Modal Kerja',
-                //         'Kredit Investasi',
-                //         'Kredit Komersial',
-                //         'Dana dari Pemegang Saham',
-                //         'Reinvestasi Laba',
-                //         'Dana dari Mitra Bisnis'
-                //     ];
-
-                //     var availableOptions = options.filter(function(option) {
-                //         return !selectedOptions.includes(option);
-                //     });
-
-                //     if (availableOptions.length === 0) {
-                //         return;
-                //     }
-
-                //     var optionsHtml = availableOptions.map(function(option) {
-                //         return '<option value="' + option + '">' + option + '</option>';
-                //     }).join('');
-
-                //     var newRow = `
-                //         <tr>
-                //             <td>
-                //                 <select class="form-control" name="dana[${indexDana}][jenis_dana]" required>
-                //                     ${optionsHtml}
-                //                 </select>
-                //             </td>
-                //             <td>
-                //                 <input type="text" class="form-control nominal-internal-display" placeholder="Nominal Pendanaan Internal" required>
-                //                 <input type="hidden" name="dana[${indexDana}][nominal]">
-                //             </td>
-                //             <td>
-                //                 <button type=" button" class="btn btn-danger btn-remove-dana">
-                //                     <i class="fa-solid fa-minus" style="color: #ffffff;"></i>
-                //                 </button>
-                //             </td>
-                //         </tr>
-                //     `;
-
-                //     $('.spesifikasi-pendanaan tbody').append(newRow);
-                //     indexDana++;
-
-                //     if (availableOptions.length === 1) {
-                //         $(".btn-add-dana").prop('disabled', true);
-                //     }
-
-                //     // Add event listener to new input
-                //     $('.nominal-internal-display').last().on('input', formatAndUpdate);
-                // });
-
-                // // Fungsi untuk menghapus baris pendanaan internal
-                // $(document).on('click', '.btn-remove-dana', function() {
-                //     $(this).closest('tr').remove();
-                //     indexDana--;
-
-                //     var selectedOptions = $('.spesifikasi-pendanaan select').map(function() {
-                //         return $(this).val();
-                //     }).get();
-
-                //     var options = [
-                //         'Pinjaman Internal',
-                //         'Investasi Internal'
-                //     ];
-
-                //     var availableOptions = options.filter(function(option) {
-                //         return !selectedOptions.includes(option);
-                //     });
-
-                //     if (availableOptions.length > 0) {
-                //         $(".btn-add-dana").prop('disabled', false);
-                //     }
-                // });
-
-
 
                 // Tombol Next ke SDG section ditambahkan check input required
                 $('#next-to-sdg-section').on('click', function() {

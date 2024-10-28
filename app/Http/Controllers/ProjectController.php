@@ -102,6 +102,7 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
+        ddd($request->all());
         $validatedData = $request->validate([
             'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10000',
             'nama' => 'required|string',

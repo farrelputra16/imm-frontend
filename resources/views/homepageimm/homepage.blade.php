@@ -279,13 +279,13 @@ h4 {
 .goals-container {
     position: absolute;
     top: 20px;
-    right: 2px;
-    width: 300px;
+    right: 5px;
+    width: 350px;
     max-height: 550px;
     overflow-y: scroll;
     background: transparent;
     padding: 0px;
-    padding-left: 30px;
+    padding-left: 35px;
     z-index: 1; /* Pastikan goals container berada di atas peta */
 }
 
@@ -302,19 +302,25 @@ h4 {
     padding: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 10px;
-    width: 250px;
+    cursor: pointer;
+    padding-left: 10px;
+    width: 300px;
     height: auto;
     transition: transform 0.3s ease;
+    border: 2px solid transparent; /* Border default */
 }
 
-.goal:hover, .goal:active {
+.goal:hover, .goal.active {
     transform: translateX(-30px);
+    border: 2px solid #6256CA; /* Border saat hover atau aktif */
 }
 
 .goal img {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
     margin-left: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Menambahkan efek bayangan */
 }
 
 .goal div {
@@ -451,7 +457,7 @@ h4 {
                         <div>
                             <div class="sub-heading-2" style="color: #6256CA;"> {{ $sdg->short_name }}</div>
                             <div style="font-weight: 600; font-size: 12px; color: #505052;">SDG {{ $sdg->id }}</div>
-                            <span style="font-size: 10px; color: black; opacity: 0.3;">{{ $sdg->name }}</span>
+                            <span style="font-size: 10px; color: black; opacity: 0.5; margin-top: 2px; margin-bottom: 2px; line-height: 0.2;">{{ $sdg->name }}</span>
                         </div>
                         <img src="{{ asset('images/' .$sdg->img) }}" alt="Icon for {{ $sdg->short_name  }}" height="50" width="50" class="sdg-icon">
                     </div>
@@ -485,27 +491,6 @@ h4 {
     <div class="container d-flex justify-content-center mt-5">
         <a href="{{ route('company_finances.index', ['companyId' => $company->id]) }}"><button class="btn-kelola">Financial Report</button></a>
     </div>
-
-    <div class="container mt-5">
-        <div class="sdg-container">
-            <div class="grid">
-                @foreach ($sdgs as $sdg)
-                    <div class="grid-item" data-index="{{ $sdg->id }}">
-                        <img src="{{ asset('images/E-WEB-Goal-' . $sdg->id . '.png') }}" alt="Goal {{ $sdg->id }}">
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </div>
-
-
-    {{-- <div class="container">
-        <div class="map-container">
-            <img src="https://storage.googleapis.com/a1aa/image/ADKVsTCpmWrpMRff27FM86DGCHExcp3X0f572ur4dw5eOgqOB.jpg" alt="Map of Southeast Asia with markers for various projects" height="500" width="800">
-
-        </div>
-        <button class="create-project-btn">Create a Project</button>
-    </div> --}}
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
@@ -660,12 +645,16 @@ h4 {
             var sdgIcon = container.querySelector('.sdg-icon');
 
             if (hasActiveProjects) {
-                // Jika ada proyek aktif, atur opacity menjadi 1
                 sdgIcon.style.opacity = 1;
             } else {
-                // Jika tidak ada proyek aktif, atur opacity menjadi 0.3
                 sdgIcon.style.opacity = 0.3;
             }
+
+            // Event listener untuk klik
+            container.addEventListener('click', function () {
+                // Toggle kelas active
+                container.classList.toggle('active');
+            });
         });
     });
 </script>
