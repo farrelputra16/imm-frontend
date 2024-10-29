@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Investment;
+use App\Models\Company;
 use Illuminate\Support\Facades\Auth;
 use ConsoleTVs\Charts\Classes\Chartjs\Chart;
 use Carbon\Carbon;
@@ -40,6 +41,10 @@ class InvestorPageController extends Controller
                                          ->take(7) // Ambil 7 transaksi terbaru
                                          ->get();
 
+        $companies = Company::select('nama', 'startup_summary')
+                                         ->take(5)
+                                         ->get();
+
         // Mengambil daftar perusahaan yang telah diinvestasikan oleh investor yang login
         $investedCompanies = Investment::where('investor_id', $investor_id)
                                        ->with('company')
@@ -62,6 +67,9 @@ class InvestorPageController extends Controller
         $chart2->dataset('Investment Amount per Year', 'line', $amounts);
 
         // Kirim data ke view, termasuk companyFunded, transactionCount, dan totalInvested
-        return view('investorspage.home', compact('recentTransactions', 'investedCompanies', 'chart2', 'companyFunded', 'transactionCount', 'totalInvested'));
+        return view('investorspage.home', compact('recentTransactions', 'investedCompanies', 'chart2', 'companyFunded', 'transactionCount', 'totalInvested','companies'));
     }
+    // InvestmentController.php
+
+
 }

@@ -2,154 +2,261 @@
 @section('title', 'Halaman IMM')
 
 @section('css')
-<link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" rel="stylesheet"/>
+<link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
 <style>
     body {
         font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
     }
-    .profile-card {
-        margin-top: 150px;
-        background-color: #e0e7ff;
+
+    /* Profile Header Styles */
+    .profile-header {
+        height: 181px;
+        margin-top: 100px;
+        background-color: #702DFF;
+        color: white;
+        padding: 20px;
         border-radius: 15px;
-        padding: 70px;
+        position: relative;
         display: flex;
         align-items: center;
-        margin-bottom: 70px;
-        position: relative;
+        justify-content: space-between;
     }
-    .profile-card img {
-        border-radius: 50%;
-        width: 120px;
-        height: 120px;
-        margin-right: 20px;
+
+    .profile-header .info {
+        display: flex;
+        flex-direction: column;
     }
-    .profile-card .name {
-        font-size: 24px;
-        font-weight: bold;
-        color: #6256CA;
+
+    .profile-header .info h1 {
+        font-size: 2.5rem;
+        margin: 0;
     }
-    .profile-card .role {
-        font-size: 16px;
-        color: #6256CA;
+
+    .profile-header .info h1 .fa-hand-wave {
+        margin-left: 10px;
     }
-    .profile-card .right-image {
+
+    /* Circular Profile Image with White Border */
+    .profile-image {
         position: absolute;
-        right: -18px;
-        top: 0;
-        height: 100%;
-        border-radius: 0 15px 15px 0;
+        right: 100px;
+        bottom: -150px;
+        width: 258px;
+        height: 258px;
+        border-radius: 50%;
         overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
-    .profile-card .right-image img {
+
+    .profile-image img {
+        width: 100%;
         height: 100%;
-        width: auto;
         object-fit: cover;
-        border-radius: 0 15px 15px 0;
     }
-    .image-card {
-        margin-bottom: 70px;
+
+    /* Minimal Gap for Stats Section */
+    .stats {
+        margin-top: 40px;
+        display: flex;
+        gap: 2px;
+        flex-wrap: wrap;
     }
-    .image-card .position-relative {
-        margin-right: 15px;
-        margin-left: 15px;
+
+    .stats .col-md-3,
+    .stats .col-sm-4 {
+        padding-left: 0;
+        padding-right: 0;
     }
-    @media (max-width: 768px) {
-        .image-card .position-relative {
-            margin-right: 0;
-            margin-left: 0;
-        }
+
+    .stats .stat {
+        background-color: white;
+        border-radius: 8px;
+        padding: 15px;
+        text-align: left;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        width: 220px;
+        height: 80px;
+        display: flex;
+        align-items: center;
     }
+
+    .stat img {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+        border-radius: 50%;
+    }
+
+    .stat-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .stat-content h3 {
+        margin: 0;
+        font-size: 1rem;
+        color: #5F5F5F;
+    }
+
+    .stat-content p {
+        margin: 3px 0 0;
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+
     .chart-card {
-        background-color: #2d2d6d;
-        border-radius: 10px;
+        border: 1px solid #702DFF;
+        margin-top: 80px;
+        background-color: white;
+        border-radius: 20px;
         padding: 20px;
         text-align: center;
         color: white;
         margin-bottom: 90px;
     }
-    .chart-card img {
-        width: 100%;
-        border-radius: 10px;
-    }
+
     .investor-card {
         border: none;
         border-radius: 15px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         margin-bottom: 20px;
     }
+
     .investor-card-header {
+        margin-left: 10px;
+        color: #6256CA;
         background-color: #fff;
         border-bottom: 5px;
-        font-size: 1.3rem;
+        font-size: 1.7rem;
         font-weight: bold;
-        text-align: center;
+        text-align: left;
         margin-bottom: 8px;
     }
+
     .investor-table th, .investor-table td {
         vertical-align: middle;
     }
+
     .investor-table th {
-        font-weight: bold;
+        font-weight: normal;
     }
+
+    .investor-table td {
+        color: #5F5F5F;
+    }
+
     .investor-btn-link {
-        color: #007bff;
+        color: #5F5F5F;
         text-decoration: none;
     }
+
     .investor-btn-link:hover {
         text-decoration: underline;
     }
+
     .investor-show-all {
         text-align: center;
         padding: 10px 0;
         font-weight: bold;
     }
+
     .investor-show-all a {
-        color: #007bff;
+        color: black;
         text-decoration: none;
     }
+
     .investor-show-all a:hover {
         text-decoration: underline;
+    }
+
+    /* Carousel Styles */
+    .custom-carousel-container {
+        margin-top: 70px;
+    }
+
+    .carousel-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    /* Adjusted height for a taller carousel */
+    .carousel-card img {
+        width: 100%;
+        height: 380px; /* Increase height for taller carousel */
+        object-fit: cover;
+    }
+
+    .carousel-card-body {
+        padding: 15px;
+        background-color: white;
+    }
+
+    .carousel-card-title {
+        color: #6256CA;
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    .carousel-controls {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        background-color: #702DFF;
+        border-radius: 50%;
+        padding: 10px;
     }
 </style>
 @endsection
 
 @section('content')
-<div class="container mt-4">
-    <div class="profile-card d-flex">
-        <img alt="Profile picture" height="80" src="images/investorpage/obama.jpg" width="80"/>
-        <div>
-            <div class="name">{{ Auth::user()->nama_depan }}</div>
-            <div class="role">Investor</div>
+<div class="container mt-5">
+    <div class="profile-header">
+        <div class="info">
+            <p>INVESTOR</p>
+            <h1>{{ Auth::user()->nama_depan }}👋 <i class="fas fa-hand-wave"></i></h1>
         </div>
-        <div class="right-image">
-            <img src="images/landingpage/investorpage.jpeg" alt="Profile background image">
+        <div class="profile-image">
+            <img src="images/investorpage/obama.jpg" alt="Profile image of Agraditya Putra smiling, wearing glasses and a white shirt" />
         </div>
     </div>
+</div>
 
-    <div class="row image-card">
-        <div class="col-md-4">
-            <div class="position-relative">
-                <img src="{{ asset('images/investorpage/card1.png') }}" alt="Card 1" class="img-fluid" />
-                <div class="position-absolute top-50 start-50 translate-middle text-white">
+<div class="container mt-5">
+    <div class="row stats">
+        <div class="col-md-3 col-sm-4">
+            <div class="stat">
+                <img src="images/investorpage/icon1.svg" alt="Project Icon" />
+                <div class="stat-content">
                     <h3>{{ $companyFunded }}</h3>
                     <p>Companies Funded</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="position-relative">
-                <img src="{{ asset('images/investorpage/card2.png') }}" alt="Card 2" class="img-fluid" />
-                <div class="position-absolute top-50 start-50 translate-middle text-white">
+        <div class="col-md-3 col-sm-4">
+            <div class="stat">
+                <img src="images/investorpage/icon2.svg" alt="Company Icon" />
+                <div class="stat-content">
                     <h3>{{ $transactionCount }}</h3>
                     <p>Transactions</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="position-relative">
-                <img src="{{ asset('images/investorpage/card3.png') }}" alt="Card 3" class="img-fluid" />
-                <div class="position-absolute top-50 start-50 translate-middle text-white">
+        <div class="col-md-3 col-sm-4">
+            <div class="stat">
+                <img src="images/investorpage/icon3.svg" alt="Investment Icon" />
+                <div class="stat-content">
                     <h3>Rp{{ number_format($totalInvested) }}</h3>
                     <p>Total Invested</p>
                 </div>
@@ -157,8 +264,10 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
+    <!-- Chart and Carousel Side by Side -->
+    <div class="row mt-5">
+        <!-- Chart Column -->
+        <div class="col-md-6">
             <div class="chart-card">
                 <h3>Investment Trends</h3>
                 <div>{!! $chart2->container() !!}</div>
@@ -166,9 +275,39 @@
                 {!! $chart2->script() !!}
             </div>
         </div>
-    </div>
 
-    <div class="row">
+        <!-- Carousel Column -->
+<div class="col-md-6 custom-carousel-container">
+    <div id="customCarousel" class="carousel slide custom-carousel" data-bs-ride="carousel">
+        <div class="carousel-controls">
+            <button class="carousel-control-prev" type="button" data-bs-target="#customCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#customCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <div class="carousel-inner">
+            @foreach ($companies as $index => $company)
+                <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                    <div class="carousel-card">
+                        <img src="https://storage.googleapis.com/a1aa/image/xsDrvMl6olZBGd3phCL7krIDHG174HxZSa5oobictMu9s46E.jpg" alt="Company Image {{ $index + 1 }}">
+                        <div class="carousel-card-body">
+                            <h5 class="carousel-card-title">{{ $company->nama }}</h5>
+                            <p>{{ $company->startup_summary }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</div>
+
+
+    <!-- Tables Below Chart and Carousel -->
+    <div class="row mt-5">
         <div class="col-md-6">
             <div class="investor-card">
                 <div class="investor-card-header">Recent Transactions</div>
@@ -228,4 +367,7 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 @endsection

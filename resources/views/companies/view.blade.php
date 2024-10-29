@@ -150,7 +150,7 @@
     </div>
 
     <div class="funding-section mt-5">
-        <h2>Previous Funding</h2>
+        <h2>Funding</h2>
         <table class="table table-bordered">
             <thead>
                 <tr>
