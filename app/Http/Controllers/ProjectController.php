@@ -65,8 +65,6 @@ class ProjectController extends Controller
         }
     }
 
-
-
     public function create()
     {
         $companies = Company::all();

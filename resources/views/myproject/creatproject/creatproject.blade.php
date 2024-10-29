@@ -619,7 +619,7 @@
                             <div class="section-title">Supporting Materials</div>
                             <div class="mt-4">
                                 <div class="mb-2 sub-heading-1">Pitch Deck</div>
-                                <div class="upload-box-custom" id="pitch-deck-dropzone" onclick="document.getElementById('pitch-deck-upload').click();">
+                                <div class="upload-box-custom" id="pitch-deck-dropzone">
                                     <img src="{{ asset('images/upload.svg') }}" alt="Upload icon">
                                     <p>Upload your PDF pitch deck outlining your project and investment needs.</p>
                                     <input type="file" id="pitch-deck-upload" name="pitch_deck" accept=".pdf, .ppt, .pptx" style="display:none;">
@@ -629,14 +629,15 @@
 
                             <div class="mt-4">
                                 <div class="mb-2 sub-heading-1">Video Presentation</div>
-                                <div class="upload-box-custom" id="video-dropzone" onclick="document.getElementById('video-upload').click();">
+                                <div class="upload-box-custom" id="video-dropzone">
                                     <img src="{{ asset('images/upload.svg') }}" alt="Upload icon">
                                     <p>Upload a short video presenting your project and its key highlights.</p>
                                     <input type="file" id="video-upload" name="video_pitch" accept="video/*" style="display:none;">
                                 </div>
-                                <div id="video-preview" class="video-js vjs-default-skin" style="margin-bottom: 300px; display: none; width: 100%;">
+                                <div id="video-preview" class="video-js vjs-default-skin" style="margin-bottom: 175px; display: none; width: 100%;">
                                     <video id="video" width="100%" height="auto" controls></video>
                                 </div>
+                                <div id="video-name" style="margin-bottom: 20px;"></div>
                             </div>
                         </div>
 
@@ -653,7 +654,7 @@
                             {{-- Tempat project Road Map --}}
                             <div class="mt-4">
                                 <div class="mb-2 sub-heading-1">Project Roadmap</div>
-                                <div class="upload-box-custom" id="roadmap-dropzone" onclick="document.getElementById('roadmap-upload').click();">
+                                <div class="upload-box-custom" id="roadmap-dropzone">
                                     <img src="{{ asset('images/upload.svg') }}" alt="Upload icon">
                                     <p>Upload Your Project Roadmap Document (PDF atau PPT Format).</p>
                                     <input type="file" id="roadmap-upload" name="roadmap" accept=".pdf, .ppt, .pptx" style="display:none;">
@@ -1112,49 +1113,49 @@
             document.getElementById('end_year').addEventListener('change', () => updateDays('end_day', 'end_month', 'end_year'));
         </script>
 
-        {{-- Bagian handle drag and drop --}}
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                // Fungsi untuk menangani upload file dan preview
-                function handleFileUpload(input, previewContainer, acceptedTypes) {
+                function handleFileUpload(input, previewContainer) {
                     var file = input.files[0];
                     if (file) {
-                        // Periksa apakah tipe file yang diunggah ada dalam acceptedTypes
-                        if (acceptedTypes.some(type => file.type === type || file.name.endsWith(type))) {
+                        var reader = new FileReader();
+                        reader.onload = function(e) {
                             if (file.type.startsWith('video/')) {
-                                // Handle video preview
                                 var videoPreview = document.getElementById('video');
-                                var videoURL = URL.createObjectURL(file);
-                                videoPreview.src = videoURL;
-                                previewContainer.style.display = 'block'; // Tampilkan video
+                                var namePreview = document.getElementById('video-name');
+                                videoPreview.src = e.target.result;
+                                previewContainer.style.display = 'block';
+                                namePreview.innerHTML += `<p>File name: ${file.name}</p>`;
                             } else {
-                                // Handle PDF/PPT preview
                                 var pdfPreview = document.createElement('embed');
-                                pdfPreview.src = URL.createObjectURL(file);
+                                pdfPreview.src = e.target.result;
                                 pdfPreview.width = '100%';
                                 pdfPreview.height = '500px';
-                                previewContainer.innerHTML = ''; // Kosongkan preview sebelumnya
+                                previewContainer.innerHTML = '';
                                 previewContainer.appendChild(pdfPreview);
+                                previewContainer.innerHTML += `<p>File name: ${file.name}</p>`;
                             }
-                        } else {
-                            alert('Please upload a valid file type.');
-                            previewContainer.innerHTML = '';
-                        }
-                    } else {
-                        previewContainer.innerHTML = '';
+                        };
+                        reader.readAsDataURL(file);
                     }
                 }
 
-                // Fungsi untuk mengatur drag-and-drop
-                function setupDragAndDrop(dropzoneId, inputId, acceptedTypes, previewContainerId) {
+                function setupFileInput(dropzoneId, inputId, previewContainerId) {
                     var dropzone = document.getElementById(dropzoneId);
                     var input = document.getElementById(inputId);
                     var previewContainer = document.getElementById(previewContainerId);
 
+                    // Fungsi untuk menangani klik pada dropzone
                     dropzone.addEventListener('click', function() {
                         input.click();
                     });
 
+                    // Event listener untuk input file
+                    input.addEventListener('change', function() {
+                        handleFileUpload(input, previewContainer);
+                    });
+
+                    // Event listener untuk drag-and-drop
                     dropzone.addEventListener('dragover', function(e) {
                         e.preventDefault();
                         dropzone.classList.add('dragover');
@@ -1170,112 +1171,15 @@
                         var files = e.dataTransfer.files;
                         if (files.length > 0) {
                             input.files = files;
-                            handleFileUpload(input, previewContainer, acceptedTypes);
+                            handleFileUpload(input, previewContainer);
                         }
                     });
                 }
 
                 // Setup untuk setiap dropzone
-                setupDragAndDrop('pitch-deck-dropzone', 'pitch-deck-upload', ['.pdf', '.ppt', '.pptx', 'application/pdf', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'], 'pitch-deck-preview');
-                setupDragAndDrop('video-dropzone', 'video-upload', ['video/mp4', 'video/x-msvideo', 'video/x-flv', 'video/x-m4v', 'video/x-matroska', 'video/*'], 'video-preview');
-                setupDragAndDrop('roadmap-dropzone', 'roadmap-upload', ['.pdf', '.ppt', '.pptx', 'application/pdf', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'], 'roadmap-preview');
-            });
-        </script>
-
-        {{-- Bagian preview untuk Video dan Pitch deck --}}
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                var pitchDeckInput = document.getElementById('pitch-deck-upload');
-                var videoInput = document.getElementById('video-upload');
-                var pitchDeckPreviewContainer = document.getElementById('pitch-deck-preview');
-                var videoPreviewContainer = document.getElementById('video-preview');
-                var roadMapInput = document.getElementById('roadmap-upload');
-                var roadMapPreviewContainer = document.getElementById('roadmap-preview');
-
-                roadMapInput.addEventListener('change', function() {
-                    var file = this.files[0];
-                    if (file) {
-                        if (file.type.startsWith('application/pdf') || file.type.startsWith('application/vnd.ms-powerpoint') || file.type.startsWith('application/vnd.openxmlformats-officedocument.presentationml.presentation')) {
-                            var pdfPreview = document.createElement('embed');
-                            pdfPreview.src = URL.createObjectURL(file);
-                            pdfPreview.width = '100%';
-                            pdfPreview.height = '500px';
-                            roadMapPreviewContainer.innerHTML = '';
-                            roadMapPreviewContainer.appendChild(pdfPreview);
-                            roadMapPreviewContainer.innerHTML += `<p>File name: ${file.name}</p>`;
-                        } else {
-                            alert('Please upload a valid PDF atau PPT file.');
-                            roadMapPreviewContainer.innerHTML = '';
-                        }
-                    } else {
-                        roadMapPreviewContainer.innerHTML = '';
-                    }
-                });
-
-                pitchDeckInput.addEventListener('change', function() {
-                    var file = this.files[0];
-                    if (file) {
-                        if (file.type.startsWith('application/pdf') || file.type.startsWith('application/vnd.ms-powerpoint') || file.type.startsWith('application/vnd.openxmlformats-officedocument.presentationml.presentation')) {
-                            var reader = new FileReader();
-                            reader.onload = function(e) {
-                                var pdfPreview = document.createElement('embed');
-                                pdfPreview.src = e.target.result;
-                                pdfPreview.width = '100%';
-                                pdfPreview.height = '500px';
-                                pitchDeckPreviewContainer.innerHTML = '';
-                                pitchDeckPreviewContainer.appendChild(pdfPreview);
-                                pitchDeckPreviewContainer.innerHTML += `<p>File name: ${file.name}</p>`;
-                            };
-                            reader.readAsDataURL(file);
-                        } else {
-                            alert('Please upload a valid PDF atau PPT file.');
-                            pitchDeckPreviewContainer.innerHTML = '';
-                        }
-                    } else {
-                        pitchDeckPreviewContainer.innerHTML = '';
-                    }
-                });
-
-                videoInput.addEventListener('change', function() {
-                    var file = this.files[0];
-                    if (file) {
-                        if (file.type.startsWith('video/')) {
-                        var videoPreviewContainer = document.getElementById('video-preview');
-                        var videoPreview = document.getElementById('video');
-                        if (!videoPreview) {
-                            console.error("Could not find video element with id 'video'");
-                            return;
-                        }
-
-                        videoPreviewContainer.innerHTML = ''; // Kosongkan preview video sebelumnya
-                        videoPreviewContainer.style.display = 'none'; // Sembunyikan preview video sebelumnya
-
-                        var videoURL = URL.createObjectURL(file);
-                        videoPreview.src = videoURL;
-                        videoPreview.type = file.type;
-
-                        // Tambahkan event listener untuk menampilkan preview video setelah video tersebut sepenuhnya dimuat
-                        videoPreview.addEventListener('canplay', function() {
-                            videoPreviewContainer.style.display = 'block'; // Tampilkan preview video setelah video dimuat
-                        });
-
-                        videoPreviewContainer.appendChild(videoPreview);
-                        videoPreviewContainer.innerHTML += `<p>File name: ${file.name}</p>`;
-
-                        // Tambahkan event listener untuk menghapus objek URL saat video tidak lagi dibutuhkan
-                        videoPreview.addEventListener('loadedmetadata', function() {
-                            URL.revokeObjectURL(videoURL);
-                        });
-                        } else {
-                        alert('Please upload a valid video file.');
-                        videoPreviewContainer.innerHTML = '';
-                        videoPreviewContainer.style.display = 'none'; // Sembunyikan preview video
-                        }
-                    } else {
-                        videoPreviewContainer.innerHTML = '';
-                        videoPreviewContainer.style.display = 'none'; // Sembunyikan preview video
-                    }
-                });
+                setupFileInput('pitch-deck-dropzone', 'pitch-deck-upload', 'pitch-deck-preview');
+                setupFileInput('video-dropzone', 'video-upload', 'video-preview');
+                setupFileInput('roadmap-dropzone', 'roadmap-upload', 'roadmap-preview');
             });
         </script>
         <script src="https://vjs.zencdn.net/7.10.1/video.js"></script>
