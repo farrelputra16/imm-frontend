@@ -347,7 +347,7 @@
                                     <div class="card project-card" style="width: 20rem;">
                                         <img
                                             class="card-img-top"
-                                            src="{{ $project->img ? asset('images/' . $project->img) : asset('images/default_project.png') }}"
+                                            src="{{ $project->img ? asset('storage/project/' . $project->nama . '/' . $project->img) : asset('images/default_project.png') }}"
                                             alt="Project Image"
                                             width="286"
                                             height="160"

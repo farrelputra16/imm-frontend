@@ -171,6 +171,11 @@
             display: none;
             background-color: none;
         }
+
+        .upload-box-custom.dragover {
+            border-color: #007bff; /* Warna border saat dragover */
+            background-color: #f0f8ff; /* Warna latar belakang saat dragover */
+        }
         .custom-button {
             width: 100%;
             padding: 10px;
@@ -470,6 +475,15 @@
 
                 {{-- Bagian awal project --}}
                 <h2 class="mb-5" id="buatproject" style="color: #6256CA;">Register New Project</h2>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <div id="form-section">
                     <div class="row">
                         {{-- Input bagian kiri --}}
@@ -605,26 +619,25 @@
                             <div class="section-title">Supporting Materials</div>
                             <div class="mt-4">
                                 <div class="mb-2 sub-heading-1">Pitch Deck</div>
-                                <div class="upload-box-custom" onclick="document.getElementById('pitch-deck-upload').click();">
+                                <div class="upload-box-custom" id="pitch-deck-dropzone" onclick="document.getElementById('pitch-deck-upload').click();">
                                     <img src="{{ asset('images/upload.svg') }}" alt="Upload icon">
                                     <p>Upload your PDF pitch deck outlining your project and investment needs.</p>
-                                    <input type="file" id="pitch-deck-upload" name="pitch_deck" accept=".pdf, .ppt, .pptx">
+                                    <input type="file" id="pitch-deck-upload" name="pitch_deck" accept=".pdf, .ppt, .pptx" style="display:none;">
                                 </div>
                                 <div id="pitch-deck-preview"></div>
                             </div>
 
                             <div class="mt-4">
                                 <div class="mb-2 sub-heading-1">Video Presentation</div>
-                                <div class="upload-box-custom" onclick="document.getElementById('video-upload').click();">
-                                  <img src="{{ asset('images/upload.svg') }}" alt="Upload icon">
-                                  <p>Upload a short video presenting your project and its key highlights.</p>
-                                  <input type="file" id="video-upload" name="video_pitch" accept="video/*">
+                                <div class="upload-box-custom" id="video-dropzone" onclick="document.getElementById('video-upload').click();">
+                                    <img src="{{ asset('images/upload.svg') }}" alt="Upload icon">
+                                    <p>Upload a short video presenting your project and its key highlights.</p>
+                                    <input type="file" id="video-upload" name="video_pitch" accept="video/*" style="display:none;">
                                 </div>
-                                <div id="video-preview" class="video-js vjs-default-skin" style="margin-bottom: 100px; display: none; width: 50%;">
-                                  <video id="video" width="100%" height="auto" controls></video>
+                                <div id="video-preview" class="video-js vjs-default-skin" style="margin-bottom: 300px; display: none; width: 100%;">
+                                    <video id="video" width="100%" height="auto" controls></video>
                                 </div>
                             </div>
-
                         </div>
 
                         {{-- Bagian input sebelah kanan --}}
@@ -640,10 +653,10 @@
                             {{-- Tempat project Road Map --}}
                             <div class="mt-4">
                                 <div class="mb-2 sub-heading-1">Project Roadmap</div>
-                                <div class="upload-box-custom" onclick="document.getElementById('roadmap-upload').click();">
+                                <div class="upload-box-custom" id="roadmap-dropzone" onclick="document.getElementById('roadmap-upload').click();">
                                     <img src="{{ asset('images/upload.svg') }}" alt="Upload icon">
                                     <p>Upload Your Project Roadmap Document (PDF atau PPT Format).</p>
-                                    <input type="file" id="roadmap-upload"  name="roadmap" accept=".pdf, .ppt, .pptx">
+                                    <input type="file" id="roadmap-upload" name="roadmap" accept=".pdf, .ppt, .pptx" style="display:none;">
                                 </div>
                                 <div id="roadmap-preview"></div>
                             </div>
@@ -1024,7 +1037,7 @@
             function populateYears(selectId) {
               const currentYear = new Date().getFullYear();
               const startYear = 1900;
-              for (let i = startYear; i <= currentYear + 10; i++) {
+              for (let i = startYear; i <= currentYear + 100; i++) {
                 const yearOption = document.createElement('option');
                 yearOption.value = i.toString();
                 yearOption.text = i.toString();
@@ -1097,6 +1110,76 @@
             document.getElementById('end_day').addEventListener('change', () => updateDateInput('end_day', 'end_month', 'end_year', 'end_date'));
             document.getElementById('end_month').addEventListener('change', () => updateDays('end_day', 'end_month', 'end_year'));
             document.getElementById('end_year').addEventListener('change', () => updateDays('end_day', 'end_month', 'end_year'));
+        </script>
+
+        {{-- Bagian handle drag and drop --}}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Fungsi untuk menangani upload file dan preview
+                function handleFileUpload(input, previewContainer, acceptedTypes) {
+                    var file = input.files[0];
+                    if (file) {
+                        // Periksa apakah tipe file yang diunggah ada dalam acceptedTypes
+                        if (acceptedTypes.some(type => file.type === type || file.name.endsWith(type))) {
+                            if (file.type.startsWith('video/')) {
+                                // Handle video preview
+                                var videoPreview = document.getElementById('video');
+                                var videoURL = URL.createObjectURL(file);
+                                videoPreview.src = videoURL;
+                                previewContainer.style.display = 'block'; // Tampilkan video
+                            } else {
+                                // Handle PDF/PPT preview
+                                var pdfPreview = document.createElement('embed');
+                                pdfPreview.src = URL.createObjectURL(file);
+                                pdfPreview.width = '100%';
+                                pdfPreview.height = '500px';
+                                previewContainer.innerHTML = ''; // Kosongkan preview sebelumnya
+                                previewContainer.appendChild(pdfPreview);
+                            }
+                        } else {
+                            alert('Please upload a valid file type.');
+                            previewContainer.innerHTML = '';
+                        }
+                    } else {
+                        previewContainer.innerHTML = '';
+                    }
+                }
+
+                // Fungsi untuk mengatur drag-and-drop
+                function setupDragAndDrop(dropzoneId, inputId, acceptedTypes, previewContainerId) {
+                    var dropzone = document.getElementById(dropzoneId);
+                    var input = document.getElementById(inputId);
+                    var previewContainer = document.getElementById(previewContainerId);
+
+                    dropzone.addEventListener('click', function() {
+                        input.click();
+                    });
+
+                    dropzone.addEventListener('dragover', function(e) {
+                        e.preventDefault();
+                        dropzone.classList.add('dragover');
+                    });
+
+                    dropzone.addEventListener('dragleave', function() {
+                        dropzone.classList.remove('dragover');
+                    });
+
+                    dropzone.addEventListener('drop', function(e) {
+                        e.preventDefault();
+                        dropzone.classList.remove('dragover');
+                        var files = e.dataTransfer.files;
+                        if (files.length > 0) {
+                            input.files = files;
+                            handleFileUpload(input, previewContainer, acceptedTypes);
+                        }
+                    });
+                }
+
+                // Setup untuk setiap dropzone
+                setupDragAndDrop('pitch-deck-dropzone', 'pitch-deck-upload', ['.pdf', '.ppt', '.pptx', 'application/pdf', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'], 'pitch-deck-preview');
+                setupDragAndDrop('video-dropzone', 'video-upload', ['video/mp4', 'video/x-msvideo', 'video/x-flv', 'video/x-m4v', 'video/x-matroska', 'video/*'], 'video-preview');
+                setupDragAndDrop('roadmap-dropzone', 'roadmap-upload', ['.pdf', '.ppt', '.pptx', 'application/pdf', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'], 'roadmap-preview');
+            });
         </script>
 
         {{-- Bagian preview untuk Video dan Pitch deck --}}
@@ -1197,45 +1280,54 @@
         </script>
         <script src="https://vjs.zencdn.net/7.10.1/video.js"></script>
 
+
+        {{-- Bagian untuk peta penting mendapatkan langitud  dan logitude yang nantinya akan dimasukkan ke dalam link google maps --}}
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
         <script>
-            // Ambil elemen select untuk provinsi dan kota/kabupaten
             const provinsiSelect = document.getElementById('provinsi');
             const kotaSelect = document.getElementById('kota');
-            let provincesData = []; // Simpan data provinsi yang di-fetch
+            let provincesData = [];
+            let currentMarker = null; // Variable to store the current marker
 
-            // Fetch data provinsi saat halaman dimuat
+            // Initialize the map without zoom controls and attribution
+            const map = L.map('map', {
+                zoomControl: false,
+                attributionControl: false
+            }).setView([-2.5, 118], 4); // Default view
+
+            // Add tile layer from OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19
+            }).addTo(map);
+
+            // Fetch provinces data
             fetch('https://kanglerian.github.io/api-wilayah-indonesia/api/provinces.json')
                 .then(response => response.json())
                 .then(provinces => {
-                    provincesData = provinces; // Simpan data provinsi
-                    // Iterasi setiap provinsi dan tambahkan sebagai option ke select provinsi
+                    provincesData = provinces;
                     provinces.forEach(provinsi => {
                         const option = document.createElement('option');
-                        option.value = provinsi.name; // Menggunakan nama sebagai nilai
+                        option.value = provinsi.id; // Use ID as value
                         option.textContent = provinsi.name;
-                        option.dataset.id = provinsi.id; // Simpan ID provinsi di dataset
                         provinsiSelect.appendChild(option);
                     });
                 })
                 .catch(error => console.error('Error fetching provinces:', error));
 
-            // Fungsi untuk memanggil API kota/kabupaten berdasarkan ID provinsi
+            // Populate cities based on selected province
             function populateCities() {
-                const selectedProvinsiName = provinsiSelect.value;
-                const selectedProvinsiId = getProvinsiIdByName(selectedProvinsiName);
+                const selectedProvinsiId = provinsiSelect.value;
                 const regenciesUrl = `https://kanglerian.github.io/api-wilayah-indonesia/api/regencies/${selectedProvinsiId}.json`;
 
-                // Kosongkan dropdown kota/kabupaten saat memilih provinsi baru
+                // Clear previous city options
                 kotaSelect.innerHTML = '<option value="" disabled selected>Pilih Kota/Kabupaten</option>';
 
-                // Fetch data kota/kabupaten berdasarkan ID provinsi yang dipilih
                 fetch(regenciesUrl)
                     .then(response => response.json())
                     .then(regencies => {
-                        // Iterasi setiap kota/kabupaten dan tambahkan sebagai option ke select kota/kabupaten
                         regencies.forEach(regency => {
                             const option = document.createElement('option');
-                            option.value = regency.name; // Menggunakan nama sebagai nilai
+                            option.value = regency.name; // Use city name as value
                             option.textContent = regency.name;
                             kotaSelect.appendChild(option);
                         });
@@ -1243,61 +1335,66 @@
                     .catch(error => console.error(`Error fetching regencies for provinsi ${selectedProvinsiId}:`, error));
             }
 
+            // Update map view when a city is selected
+            kotaSelect.addEventListener('change', function () {
+                const selectedCity = this.value;
 
-            // Fungsi untuk mendapatkan ID provinsi berdasarkan nama
-            function getProvinsiIdByName(name) {
-                const provinsi = provincesData.find(provinsi => provinsi.name === name);
-                return provinsi ? provinsi.id : null;
-            }
+                // Use Nominatim API to get the latitude and longitude
+                fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(selectedCity)}, Indonesia&format=json`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const lat = data[0].lat;
+                        const lng = data[0].lon;
 
-            // Tambahkan event listener untuk dropdown provinsi
+                        // Set map view to the selected city
+                        map.setView([lat, lng], 10); // Zoom in to the city
+
+         // Update hidden inputs for latitude and longitude
+                        document.getElementById('latitude').value = lat;
+                        document.getElementById('longitude').value = lng;
+
+                        // Update Google Maps URL
+                        const gmapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+                        document.getElementById('gmaps').value = gmapsUrl;
+
+                        // Remove previous marker
+                        if (currentMarker) {
+                            map.removeLayer(currentMarker);
+                        }
+
+                        // Add a new marker at the selected city
+                        currentMarker = L.marker([lat, lng]).addTo(map)
+                            .bindPopup('Latitude: ' + lat + '<br>Longitude: ' + lng)
+                            .openPopup();
+                    })
+                    .catch(error => console.error('Error fetching coordinates:', error));
+            });
+
+            // Add event listener for province selection
             provinsiSelect.addEventListener('change', populateCities);
-        </script>
 
-        {{-- Bagian untuk peta penting mendapatkan langitud  dan logitude yang nantinya akan dimasukkan ke dalam link google maps --}}
-        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                // Inisialisasi peta tanpa kontrol zoom
-                var map = L.map('map', {
-                    zoomControl: false,
-                    attributionControl: false
-                }).setView([-2.5, 118], 5); // Koordinat tengah Indonesia
+            // Add event listener for map click
+            map.on('click', function (e) {
+                const lat = e.latlng.lat;
+                const lng = e.latlng.lng;
 
-                // Tambahkan layer peta dari OpenStreetMap
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    maxZoom: 19,
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                }).addTo(map);
+                // Remove previous marker
+                if (currentMarker) {
+                    map.removeLayer(currentMarker);
+                }
 
-                var currentMarker = null; // Variabel untuk menyimpan marker saat ini
+                // Add a new marker at the clicked location
+                currentMarker = L.marker([lat, lng]).addTo(map)
+                    .bindPopup('Latitude: ' + lat + '<br>Longitude: ' + lng)
+                    .openPopup();
 
-                // Tambahkan event click untuk menambahkan marker
-                map.on('click', function(e) {
-                    var lat = e.latlng.lat;
-                    var lng = e.latlng.lng;
+                // Update hidden inputs for latitude and longitude
+                document.getElementById('latitude').value = lat;
+                document.getElementById('longitude').value = lng;
 
-                    // Jika ada marker saat ini, hapus marker tersebut
-                    if (currentMarker) {
-                        map.removeLayer(currentMarker);
-                    }
-
-                    // Tambahkan marker baru ke peta
-                    currentMarker = L.marker([lat, lng]).addTo(map)
-                        .bindPopup('Latitude: ' + lat + '<br>Longitude: ' + lng)
-                        .openPopup();
-
-                    // Simpan nilai latitude dan longitude ke input tersembunyi
-                    document.getElementById('latitude').value = lat;
-                    document.getElementById('longitude').value = lng;
-                    // checking apakah sudah masuk ke dalam input
-                    console.log(document.getElementById('latitude').value);
-                    console.log(document.getElementById('longitude').value);
-
-                    // Update URL Google Maps
-                    var gmapsUrl = 'https://www.google.com/maps?q=' + lat + ',' + lng;
-                    document.getElementById('gmaps').value = gmapsUrl;
-                });
+                // Update Google Maps URL
+                const gmapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+                document.getElementById('gmaps').value = gmapsUrl;
             });
         </script>
 

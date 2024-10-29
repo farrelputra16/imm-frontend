@@ -302,17 +302,15 @@ h4 {
     padding: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 10px;
-    cursor: pointer;
-    padding-left: 10px;
+    cursor: pointer; /* Ensures the cursor changes to a pointer */
     width: 300px;
-    height: auto;
     transition: transform 0.3s ease;
-    border: 2px solid transparent; /* Border default */
+    border: 2px solid transparent; /* Default border */
 }
 
 .goal:hover, .goal.active {
     transform: translateX(-30px);
-    border: 2px solid #6256CA; /* Border saat hover atau aktif */
+    border: 2px solid #6256CA; /* Highlight when hovered or active */
 }
 
 .goal img {
@@ -320,9 +318,8 @@ h4 {
     height: 60px;
     border-radius: 10px;
     margin-left: 10px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Menambahkan efek bayangan */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Shadow effect */
 }
-
 .goal div {
     flex: 1;
     word-wrap: break-word;
@@ -349,6 +346,66 @@ h4 {
     content: ">";
     margin-right: 14px;
     color: #9CA3AF;
+}
+
+/* popup content di peta  */
+.leaflet-popup-content {
+    font-family: 'Arial', sans-serif; /* Ganti dengan font yang Anda inginkan */
+    font-size: 14px;
+    padding: 10px; /* Padding di dalam popup */
+}
+
+.leaflet-popup-content strong {
+    color: #d9534f; /* Warna untuk nama proyek */
+    display: block; /* Membuat nama proyek berada di baris baru */
+    margin-bottom: 10px; /* Jarak bawah */
+}
+
+.leaflet-popup-content a {
+    color: #007bff; /* Warna link */
+    text-decoration: none; /* Menghilangkan garis bawah */
+}
+
+.leaflet-popup-content a:hover {
+    text-decoration: underline; /* Garis bawah saat hover */
+}
+
+.leaflet-popup-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px; /* Jarak atas tabel */
+}
+
+.leaflet-popup-content th, .leaflet-popup-content td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.leaflet-popup-content th {
+    background-color: #f2f2f2; /* Warna latar belakang header tabel */
+    text-align: left;
+}
+
+.leaflet-popup-content tr:hover {
+    background-color: #f5f5f5; /* Warna latar belakang saat hover */
+}
+
+.sdg-list ul {
+    list-style-type: none; /* Menghilangkan bullet points */
+    padding: 0; /* Menghilangkan padding default */
+    margin: 0; /* Menghilangkan margin default */
+}
+
+.sdg-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px; /* Jarak antar item */
+}
+
+.sdg-list img {
+    width: 24px; /* Ukuran ikon */
+    height: 24px; /* Ukuran ikon */
+    margin-right: 8px; /* Jarak antara ikon dan teks */
 }
 
 @media (max-width: 768px) {
@@ -455,11 +512,11 @@ h4 {
                 @foreach($sdgs as $sdg)
                     <div class="goal" data-index="{{ $sdg->id }}">
                         <div>
-                            <div class="sub-heading-2" style="color: #6256CA;"> {{ $sdg->short_name }}</div>
+                            <div class="sub-heading-2" style="color: #6256CA;">{{ $sdg->short_name }}</div>
                             <div style="font-weight: 600; font-size: 12px; color: #505052;">SDG {{ $sdg->id }}</div>
                             <span style="font-size: 10px; color: black; opacity: 0.5; margin-top: 2px; margin-bottom: 2px; line-height: 0.2;">{{ $sdg->name }}</span>
                         </div>
-                        <img src="{{ asset('images/' .$sdg->img) }}" alt="Icon for {{ $sdg->short_name  }}" height="50" width="50" class="sdg-icon">
+                        <img src="{{ asset('images/' .$sdg->img) }}" alt="Icon for {{ $sdg->short_name }}" height="50" width="50" class="sdg-icon">
                     </div>
                 @endforeach
             </div>
@@ -492,148 +549,114 @@ h4 {
         <a href="{{ route('company_finances.index', ['companyId' => $company->id]) }}"><button class="btn-kelola">Financial Report</button></a>
     </div>
 
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
-    google.charts.load('current', {
-        'packages': ['geochart'],
-    });
-    google.charts.setOnLoadCallback(drawRegionsMap);
 
-    function drawRegionsMap() {
-        var projects = @json($allProjects);
-        var provinceToISO = {
-            "ACEH": "ID-AC",
-            "SUMATERA UTARA": "ID-SU",
-            "SUMATERA BARAT": "ID-SB",
-            "RIAU": "ID-RI",
-            "JAMBI": "ID-JA",
-            "SUMATERA SELATAN": "ID-SS",
-            "BENGKULU": "ID-BE",
-            "LAMPUNG": "ID-LA",
-            "KEPULAUAN BANGKA BELITUNG": "ID-BB",
-            "KEPULAUAN RIAU": "ID-KR",
-            "DKI JAKARTA": "ID-JK",
-            "JAWA BARAT": "ID-JB",
-            "JAWA TENGAH": "ID-JT",
-            "DI YOGYAKARTA": "ID-YO",
-            "JAWA TIMUR": "ID-JI",
-            "BANTEN": "ID-BT",
-            "BALI": "ID-BA",
-            "NUSA TENGGARA BARAT": "ID-NB",
-            "NUSA TENGGARA TIMUR": "ID-NT",
-            "KALIMANTAN BARAT": "ID-KB",
-            "KALIMANTAN TENGAH": "ID-KT",
-            "KALIMANTAN SELATAN": "ID-KS",
-            "KALIMANTAN TIMUR": "ID-KI",
-            "KALIMANTAN UTARA": "ID-KU",
-            "SULAWESI UTARA": "ID-SA",
-            "SULAWESI TENGAH": "ID-ST",
-            "SULAWESI SELATAN": "ID-SN",
-            "SULAWESI TENGGARA": "ID-SG",
-            "GORONTALO": "ID-GO",
-            "SULAWESI BARAT": "ID-SR",
-            "MALUKU": "ID-MA",
-            "MALUKU UTARA": "ID-MU",
-            "PAPUA": "ID-PA",
-            "PAPUA BARAT": "ID-PB",
-            "PAPUA BARAT DAYA": "ID-PD",
-            "PAPUA SELATAN": "ID-PS",
-            "PAPUA PEGUNUNGAN": "ID-PP",
-            "PAPUA TENGAH": "ID-PT"
-        };
-
-        var isoToProvince = {};
-        for (var province in provinceToISO) {
-            isoToProvince[provinceToISO[province]] = province;
-        }
-
-        var provinceProjects = projects.reduce((acc, project) => {
-            var provinceCode = provinceToISO[project.provinsi];
-            if (!acc[provinceCode]) {
-                acc[provinceCode] = [];
-            }
-
-            // Menemukan target pelanggan proyek berdasarkan id proyek
-            var targetPelanggan = project.target_pelanggan.find(tp => tp.id_proyek === project.id_proyek);
-
-            // Menambahkan informasi proyek ke dalam akumulator
-            acc[provinceCode].push({
-                name: project.nama,
-                city: project.kota,
-                gmaps: project.gmaps,
-                status: targetPelanggan ? targetPelanggan.status : '-',
-                rentang_usia: targetPelanggan ? targetPelanggan.rentang_usia : '-',
-                deskripsi_pelanggan: targetPelanggan ? targetPelanggan.deskripsi_pelanggan : '-',
-            });
-
-            return acc;
-        }, {});
-
-        var data = google.visualization.arrayToDataTable([
-            ['Province', 'Projects', { role: 'tooltip', p: { html: true } }],
-            ...Object.entries(provinceProjects).map(([province, projectDetails]) => [
-                { v: province, f: '' },
-                projectDetails.length,
-                `<div style="padding:5px"><strong>${isoToProvince[province]}</strong><ul>${projectDetails.map(detail => `
-                    <li>${detail.name}</li>`).join('')}</ul></div>`
-            ])
-        ]);
-
-        var options = {
-            region: 'ID',
-            displayMode: 'regions',
-            resolution: 'provinces',
-            backgroundColor: 'transparent',
-            datalessRegionColor: 'rgb(89, 64, 203)',
-            colorAxis: { colors: ['rgb(57, 197, 44)', 'rgb(57, 197, 44)'] },
-            enableRegionInteractivity: true,
-            legend: 'none',
-            tooltip: { isHtml: true }
-        };
-
-        var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
-
-        google.visualization.events.addListener(chart, 'regionClick', function (event) {
-            var province = isoToProvince[event.region];
-            if (province && provinceProjects[event.region]) {
-                var projectDetails = provinceProjects[event.region];
-                var modalContent = `<h5>Proyek di ${province}</h5><ul>`;
-                projectDetails.forEach(detail => {
-                    modalContent += `<li><strong>${detail.name}</strong><br>
-                        Kota: ${detail.city}<br>
-                        <a href="${detail.gmaps}" target="_blank">Lihat di Google Maps</a><br>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Status</th>
-                                    <th>Rentang Usia</th>
-                                    <th>Deskripsi Pelanggan</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>${detail.status}</td>
-                                    <td>${detail.rentang_usia}</td>
-                                    <td>${detail.deskripsi_pelanggan}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </li>`;
-                });
-
-                modalContent += `</ul>`;
-                document.getElementById('modal-content').innerHTML = modalContent;
-                $('#provinceModal').modal('show');
-            }
-        });
-
-        chart.draw(data, options);
-    }
-
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
     document.addEventListener('DOMContentLoaded', function () {
         var projects = @json($allProjects);
         var sdgContainers = document.querySelectorAll('.goal');
+        var markers = []; // Array to store markers
 
+        // Initialize the map
+        var map = L.map('map', {
+            zoomControl: false,
+            attributionControl: false
+        }).setView([-2.5, 118], 5);
+
+        // Add OpenStreetMap layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Function to create markers
+        function createMarkers() {
+            projects.forEach(function (project) {
+                if (project.latitude && project.longitude) {
+                    var redIcon = L.icon({
+                        iconUrl: '/images/maps-marker.svg',
+                        iconSize: [25, 41],
+                        iconAnchor: [12, 41],
+                        popupAnchor: [1, -34],
+                    });
+
+                    var marker = L.marker([project.latitude, project.longitude], { icon: redIcon }).addTo(map);
+                    markers.push({ marker: marker, project: project });
+
+                    // Create popup content
+                    var targetPelanggan = project.target_pelanggan.find(tp => tp.id_proyek === project.id_proyek);
+                    var sdgList = project.sdgs.map(sdg => {
+                        return `<li data-sdg-id="${sdg.id}" style="display: flex; align-items: center; margin-bottom: 5px;">
+                                    <img src="/images/${sdg.img}" alt="SDG ${sdg.id}" style="width: 24px; height: 24px; margin-right: 8px;">
+                                    SDG ${sdg.id}
+                                </li>`;
+                    }).join('');
+
+                    var popupContent = `<strong>${project.nama}</strong><br>
+                                        Kota: ${project.kota}<br>
+                                        <a href="${project.gmaps}" target="_blank">Lihat di Google Maps</a><br>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Status</th>
+                                                    <th>Rentang Usia</th>
+                                                    <th>Deskripsi Pelanggan</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>${targetPelanggan ? targetPelanggan.status : '-'}</td>
+                                                    <td>${targetPelanggan ? targetPelanggan.rentang_usia : '-'}</td>
+                                                    <td>${targetPelanggan ? targetPelanggan.deskripsi_pelanggan : '-'}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="sdg-list" style="margin-top: 5px;">
+                                            <strong>Indikator SDG:</strong>
+                                            <ul>
+                                                ${sdgList.length > 0 ? sdgList : '<li>Tidak ada SDG yang terkait</li>'}
+                                            </ul>
+                                        </div>`;
+
+                    marker.bindPopup(popupContent);
+                }
+            });
+        }
+
+        // Create markers on map
+        createMarkers();
+
+        // Set up event listeners for SDG containers
+        sdgContainers.forEach(function (container) {
+            container.addEventListener('click', function () {
+                container.classList.toggle('active');
+                updateMarkers();
+            });
+        });
+
+        // Function to update markers based on active SDGs
+        function updateMarkers() {
+            var activeSdgs = Array.from(sdgContainers)
+                .filter(container => container.classList.contains('active'))
+                .map(container => parseInt(container.getAttribute('data-index')));
+
+            markers.forEach(function (markerData) {
+                var project = markerData.project;
+                var sdgIds = project.sdgs.map(sdg => sdg.id);
+
+                if (activeSdgs.length > 0) {
+                    if (sdgIds.some(id => activeSdgs.includes(id))) {
+                        markerData.marker.addTo(map);
+                    } else {
+                        map.removeLayer(markerData.marker);
+                    }
+                } else {
+                    markerData.marker.addTo(map);
+                }
+            });
+        }
+
+        // Initial call to set the opacity of SDG icons
         sdgContainers.forEach(function (container) {
             var sdgId = container.getAttribute('data-index');
             var hasActiveProjects = projects.some(function (project) {
@@ -642,88 +665,12 @@ h4 {
                 });
             });
 
-            var sdgIcon = container.querySelector('.sdg-icon');
+            var sdgIcon = container .querySelector('.sdg-icon');
 
             if (hasActiveProjects) {
                 sdgIcon.style.opacity = 1;
             } else {
                 sdgIcon.style.opacity = 0.3;
-            }
-
-            // Event listener untuk klik
-            container.addEventListener('click', function () {
-                // Toggle kelas active
-                container.classList.toggle('active');
-            });
-        });
-    });
-</script>
-
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Contoh data proyek
-        var projects = [
-            {
-                "id_proyek": 1,
-                "nama": "Proyek A",
-                "kota": "Jakarta",
-                "latitude": -6.2088,
-                "longitude": 106.8456,
-                "target_pelanggan": [
-                    {
-                        "id_proyek": 1,
-                        "status": "Aktif",
-                        "rentang_usia": "18-25",
-                        "deskripsi_pelanggan": "Mahasiswa"
-                    }
-                ],
-                "gmaps": "https://maps.google.com/?q=-6.2088,106.8456"
-            },
-            // Tambahkan proyek lainnya di sini
-        ];
-
-        // Inisialisasi peta tanpa kontrol zoom
-        var map = L.map('map', {
-            zoomControl: false,
-            attributionControl: false
-        }).setView([-2.5, 118], 5); // Koordinat tengah Indonesia
-
-        // Tambahkan layer peta dari OpenStreetMap
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-
-        // Tambahkan marker untuk setiap proyek
-        projects.forEach(function (project) {
-            // Pastikan project memiliki latitude dan longitude
-            if (project.latitude && project.longitude) {
-                var marker = L.marker([project.latitude, project.longitude]).addTo(map);
-
-                // Buat popup untuk marker
-                var targetPelanggan = project.target_pelanggan.find(tp => tp.id_proyek === project.id_proyek);
-                var popupContent = `<strong>${project.nama}</strong><br>
-                                    Kota: ${project.kota}<br>
-                                    <a href="${project.gmaps}" target="_blank">Lihat di Google Maps</a><br>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Status</th>
-                                                <th>Rentang Usia</th>
-                                                <th>Deskripsi Pelanggan</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>${targetPelanggan ? targetPelanggan.status : '-'}</td>
-                                                <td>${targetPelanggan ? targetPelanggan.rentang_usia : '-'}</td>
-                                                <td>${targetPelanggan ? targetPelanggan.deskripsi_pelanggan : '-'}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>`;
-
-                marker.bindPopup(popupContent);
             }
         });
     });

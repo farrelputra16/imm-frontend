@@ -102,64 +102,73 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
-        ddd($request->all());
-        $validatedData = $request->validate([
-            'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10000',
-            'nama' => 'required|string',
-            'deskripsi' => 'required|string',
-            'tujuan' => 'required|string',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date',
-            'provinsi' => 'required|string',
-            'kota' => 'required|string',
-            'gmaps' => 'nullable|string', // Menjadikan gmaps tidak wajib
-            'jumlah_pendanaan' => 'required|numeric',
-            'pitch_deck' => 'nullable|file|mimes:pdf,ppt,pptx|max:10000',
-            'video_pitch' => 'nullable|mimes:mp4,mov,avi,3gp,wmv,flv|max:10000',
-            'roadmap' => 'nullable|file|mimes:pdf,ppt,pptx|max:10000',
-            'company_id' => 'required|exists:companies,id',
-            'tag_ids' => 'nullable|array', // Menjadikan tag_ids tidak wajib
-            'tag_ids.*' => 'exists:tags,id',
-            'sdg_ids' => 'nullable|array', // Menjadikan sdg_ids tidak wajib
-            'sdg_ids.*' => 'exists:sdgs,id',
-            'indicator_ids' => 'nullable|array', // Menjadikan indicator_ids tidak wajib
-            'indicator_ids.*' => 'exists:indicators,id',
-            'metric_ids' => 'nullable|array', // Menjadikan metric_ids tidak wajib
-            'metric_ids.*' => 'exists:metrics,id',
-            'target_pelanggans' => 'nullable|array', // Menjadikan target_pelanggans tidak wajib
-            'target_pelanggans.*.status' => 'nullable|string',
-            'target_pelanggans.*.rentang_usia' => 'nullable|string',
-            'target_pelanggans.*.deskripsi_pelanggan' => 'nullable|string',
-        ]);
-
+        try {
+            $validatedData = $request->validate([
+                'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10000',
+                'nama' => 'required|string',
+                'deskripsi' => 'required|string',
+                'tujuan' => 'required|string',
+                'start_date' => 'required|date',
+                'end_date' => 'required|date',
+                'provinsi' => 'required|string',
+                'kota' => 'required|string',
+                'gmaps' => 'nullable|string',
+                'latitude' => 'required|numeric', // Ubah ke required jika ingin memastikan ada
+                'longitude' => 'required|numeric', // Ubah ke required jika ingin memastikan ada
+                'jumlah_pendanaan' => 'required|numeric',
+                'pitch_deck' => 'nullable|file|mimes:pdf,ppt,pptx|max:10000',
+                'video_pitch' => 'nullable|mimes:mp4,mov,avi,3gp,wmv,flv|max:100000',
+                'roadmap' => 'nullable|file|mimes:pdf,ppt,pptx|max:10000',
+                'company_id' => 'required|exists:companies,id',
+                'tag_ids' => 'nullable|array',
+                'tag_ids.*' => 'exists:tags,id',
+                'sdg_ids' => 'nullable|array',
+                'sdg_ids.*' => 'exists:sdgs,id',
+                'indicator_ids' => 'nullable|array',
+                'indicator_ids.*' => 'exists:indicators,id',
+                'metric_ids' => 'nullable|array',
+                'metric_ids.*' => 'exists:metrics,id',
+                'target_pelanggans' => 'nullable|array',
+                'target_pelanggans.*.status' => 'nullable|string',
+                'target_pelanggans.*.rentang_usia' => 'nullable|string',
+                'target_pelanggans.*.deskripsi_pelanggan' => 'nullable|string',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Mengambil pesan kesalahan
+            $errors = $e->validator->errors();
+            // Mengembalikan kembali dengan pesan kesalahan
+            return back()->withErrors($errors)->withInput();
+        }
         $validatedData['status'] = 'Belum selesai';
 
+        // Tentukan path untuk folder project
+        $projectFolder = 'public/project/' . $validatedData['nama'];
 
         // Handle image upload
         if ($request->hasFile('img')) {
             $imageName = time() . '.' . $request->img->extension();
-            $request->img->move(public_path('images'), $imageName);
+            $request->img->storeAs($projectFolder, $imageName);
             $validatedData['img'] = $imageName;
         }
 
         // Handle pitch deck upload
         if ($request->hasFile('pitch_deck')) {
             $pitchDeckName = time() . '-pitch-deck.' . $request->pitch_deck->extension();
-            $request->pitch_deck->move(public_path('files'), $pitchDeckName);
+            $request->pitch_deck->storeAs($projectFolder, $pitchDeckName);
             $validatedData['pitch_deck'] = $pitchDeckName;
         }
 
         // Handle video upload
         if ($request->hasFile('video_pitch')) {
             $videoName = time() . '-video-pitch.' . $request->video_pitch->extension();
-            $request->video_pitch->move(public_path('files'), $videoName);
+            $request->video_pitch->storeAs($projectFolder, $videoName);
             $validatedData['video_pitch'] = $videoName;
         }
 
         // Handle roadmap upload
         if ($request->hasFile('roadmap')) {
             $roadmapName = time() . '-roadmap.' . $request->roadmap->extension();
-            $request->roadmap->move(public_path('files'), $roadmapName);
+            $request->roadmap->storeAs($projectFolder, $roadmapName);
             $validatedData['roadmap'] = $roadmapName;
         }
 
@@ -193,7 +202,6 @@ class ProjectController extends Controller
                 ]);
             }
         }
-
 
         return redirect()->route('myproject.myproject')->with('success', 'Project created successfully');
     }

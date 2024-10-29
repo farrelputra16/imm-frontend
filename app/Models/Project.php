@@ -8,7 +8,25 @@ use MattDaneshvar\Survey\Models\Survey;
 
 class Project extends Model
 {
-    protected $fillable = ['img', 'nama', 'deskripsi', 'tujuan', 'start_date', 'end_date', 'provinsi', 'kota', 'gmaps', 'jumlah_pendanaan', 'status', 'company_id', 'video_pitch', 'pitch_deck', 'roadmap'];
+    protected $fillable = [
+        'img',
+        'nama',
+        'deskripsi',
+        'tujuan',
+        'start_date',
+        'end_date',
+        'provinsi',
+        'kota',
+        'gmaps',
+        'latitude',
+        'longitude',
+        'jumlah_pendanaan',
+        'pitch_deck',
+        'video_pitch',
+        'roadmap',
+        'status',
+        'company_id',
+    ];
 
     public function company()
     {

@@ -242,7 +242,7 @@
             margin-bottom: 20px;
         }
 
-        #pitch-deck-preview, #video-preview {
+        #pitch-deck-preview, #video-preview, #roadmap-preview {
             background-color: #f8f9fa;
             padding: 15px;
             border: 1px solid #ced4da;
@@ -421,7 +421,7 @@
                                     <div class="mb-2 sub-heading-1">Pitch Deck</div>
                                     <div id="pitch-deck-preview">
                                         @if ($project->pitch_deck)
-                                            <embed src="{{ Storage::url('pitch_decks/' . $project->pitch_deck) }}" type="application/pdf" width="100%" height="500px" />
+                                            <embed src="{{ asset('storage/project/' . $project->nama . '/' . $project->pitch_deck) }}" type="application/pdf" width="100%" height="500px" />
                                             <p>File name: {{ $project->pitch_deck }}</p>
                                         @else
                                             <p>No Pitch Deck available.</p>
@@ -435,12 +435,25 @@
                                     <div id="video-preview" class="video-js vjs-default-skin" style="margin-bottom: 20px; width: 100%;">
                                         @if ($project->video_pitch)
                                             <video id="video" width="100%" height="auto" controls>
-                                                <source src="{{ Storage::url('videos/' . $project->video_pitch) }}" type="video/mp4">
+                                                <source src="{{ asset('storage/project/' . $project->nama . '/' . $project->video_pitch) }}" type="video/mp4">
                                                 Your browser does not support the video tag.
                                             </video>
                                             <p>File name: {{ $project->video_pitch }}</p>
                                         @else
                                             <p>No Video available.</p>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <!-- Preview Roadmap -->
+                                <div class="mt-4">
+                                    <div class="mb-2 sub-heading-1">Roadmap</div>
+                                    <div id="roadmap-preview">
+                                        @if ($project->roadmap)
+                                            <embed src="{{ asset('storage/project/' . $project->nama . '/' . $project->roadmap) }}" type="application/pdf" width="100%" height="500px" />
+                                            <p>File name: {{ $project->roadmap }}</p>
+                                        @else
+                                            <p>No Roadmap available.</p>
                                         @endif
                                     </div>
                                 </div>
