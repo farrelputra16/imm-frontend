@@ -86,7 +86,7 @@ class CompanyOutcomeController extends Controller
             'project_id' => $validatedData['project_id'],
         ]);
 
-        // AMbils emua investor yang berinvestasi di perusahaan ini
+        // AMbil semua investor yang berinvestasi di perusahaan ini
         $investments = Investment::where('company_id', $validatedData['company_id'])->get();
 
         foreach ($investments as $investment) {

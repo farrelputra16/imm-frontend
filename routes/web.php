@@ -147,8 +147,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Rute untuk menampilkan tempat table financial report
     Route::get('/company-finances/{companyId}', [CompanyFinanceController::class, 'index'])->name('company_finances.index');
-    Route::get('/company-finances/create', [CompanyFinanceController::class, 'create'])->name('company_finances.create');
-    Route::post('/company-finances', [CompanyFinanceController::class, 'store'])->name('company_finances.store');
+    Route::get('/company-finances/create/{companyId}', [CompanyFinanceController::class, 'create'])->name('company_finances.create');
+    Route::post('/company-finances/store', [CompanyFinanceController::class, 'store'])->name('company_finances.store');
 
     // Routes untuk Dana Masuk (Company Income)
     Route::prefix('dana-masuk')->group(function () {

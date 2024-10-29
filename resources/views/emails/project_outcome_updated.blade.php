@@ -47,6 +47,7 @@
 
         .btn:hover {
             background-color: #4836a1;
+            color: #ffffff;
         }
     </style>
     <title>Update Pengeluaran Proyek</title>

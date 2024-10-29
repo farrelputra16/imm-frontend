@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Investment;
 use Illuminate\Http\Request;
 use App\Models\CompanyFinance;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ProjectFinancialUpdated;
 
 class CompanyFinanceController extends Controller
 {
@@ -52,7 +56,7 @@ class CompanyFinanceController extends Controller
     public function store(Request $request)
     {
         // Validasi data yang diterima
-        $request->validate([
+        $validatedData = $request->validate([
             'company_id' => 'required|exists:companies,id',
             'total_pendapatan' => 'required|numeric',
             'laba_kotor' => 'required|numeric',
@@ -60,13 +64,32 @@ class CompanyFinanceController extends Controller
             'laba_sebelum_pajak' => 'required|numeric',
             'laba_bersih_tahun_berjalan' => 'required|numeric',
             'status_quarter' => 'required|string',
-            'tahun' => 'required|integer',
+            'tahun' => 'required|string',
         ]);
 
         // Simpan data baru
-        CompanyFinance::create($request->all());
+        $finance = CompanyFinance::create($validatedData);
 
-        return redirect()->route('company_finances.index', $request->company_id)
-            ->with('success', 'Data Company Finance berhasil disimpan.');
+        // Ambil semua investor yang berinvestasi di perusahaan ini
+        $investments = Investment::where('company_id', $validatedData['company_id'])->get();
+
+        foreach ($investments as $investment) {
+            $investor = $investment->investor;
+            $user = $investor->user;
+            $email = $user->email;
+            $investorName = $user->nama_depan; // Ambil nama investor
+            $investorName .= $user->nama_belakang ? ' ' . $user->nama_belakang : ''; // Tambahkan nama belakang jika ada
+
+            try {
+                // Kirim email ke investor
+                Mail::to($email)->send(new ProjectFinancialUpdated($finance, $investorName));
+            } catch (\Exception $e) {
+                // Log error jika email gagal dikirim
+                Log::error("Email gagal dikirim ke {$email}: " . $e->getMessage());
+            }
+        }
+
+        return redirect()->route('company_finances.index', $validatedData['company_id'])
+            ->with('success', 'Data Company Finance berhasil disimpan dan email telah dikirim kepada semua investor.');
     }
 }

@@ -38,7 +38,7 @@
                             <a href="{{ route('investments.status', $investment->id) }}" class="btn btn-info">View Details</a>
                         </td>
                         <td>
-                            <a href="{{ route('kelolapengeluaran', ['company_id' => $investment->company->id]) }}" class="btn btn-info">Report Financial</a>
+                            <a href="{{ route('company_finances.index', ['companyId' => $investment->company->id]) }}" class="btn btn-info">Report Financial</a>
                         </td>
                         <td>
                             @if($investment->company) <!-- Pastikan company ada -->
