@@ -371,11 +371,7 @@
 
                                             <!-- Button container -->
                                             <div class="d-flex mt-3">
-                                                @if ($isUserRole)
                                                     <a href="detail/{{ $project->id }}" class="btn btn-detail">Detail</a>
-                                                @else
-                                                    <a href="{{ route('companies-project.show', $project->id) }}" class="btn btn-detail">Detail</a>
-                                                @endif
                                                 @if ($isUserRole)
                                                     <form action="{{ route('projects.destroy', $project->id) }}" method="POST" style="display: inline;">
                                                         @csrf
@@ -411,96 +407,6 @@
                     </div>
                 </div>
             </div>
-
-            {{-- <div class="container">
-                <h2 class="project-title mb-5 mt-5">Proyek yang sedang dikerjakan</h2>
-                <div class="row mt-5">
-
-                </div>
-                <div class="d-flex justify-content-between align-items-center mb-3 mt-3 ongoing-projects-filters">
-                    <div class="dropdown">
-                        <div class="  p-2 d-flex justify-content-center align-items-center " style="border: 1px solid #6c63ff; width:90px; border-radius:5px;">
-                            {{ $ongoingProjects->count() }} of {{ $allProjects->count() }}
-                        </div>
-                    </div>
-                </div>
-                <table class="table mt-3 ongoing-projects-table border text-center">
-                    <thead>
-                        <tr>
-                            <th>Project Name</th>
-                            <th>Tanggal Mulai</th>
-                            <th>Tenggat Waktu</th>
-                            <th>Tujuan SDGs</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody id="ongoing-project-list">
-                        @if ($ongoingProjects->isEmpty())
-                            <tr>
-                                <td colspan="5" class="text-center">
-                                    <div class="container border py-3">
-                                        Tidak ada project yang sedang dikerjakan.
-                                    </div>
-                                </td>
-                            </tr>
-                        @else
-                            @foreach ($ongoingProjects as $project)
-                                <tr>
-                                    <td>{{ $project->nama }}</td>
-                                    <td>{{ $project->start_date }}</td>
-                                    <td>{{ $project->end_date }}</td>
-                                    <td>{{ $project->sdgs->implode('order', ', ') }}</td>
-                                    <td>{{ 'Rp' . number_format($project->jumlah_pendanaan, 0, ',', '.') }}</td>
-                                </tr>
-                            @endforeach
-                        @endif
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="container">
-                <h2 class="project-title mb-5 mt-5">Proyek Selesai</h2>
-
-                <div class="d-flex justify-content-between align-items-center mb-3 mt-3 ongoing-projects-filters">
-                    <div class="dropdown">
-                        <div class="  p-2 d-flex justify-content-center align-items-center " style="border: 1px solid #6c63ff; width:90px;border-radius:5px;">
-                            {{ $completedProjects->count() }} of {{ $allProjects->count() }}
-                        </div>
-                    </div>
-                </div>
-                <table class="table mt-3 done-projects-table border text-center">
-                    <thead>
-                        <tr>
-                            <th>Nama Proyek</th>
-                            <th>Tanggal Penyelesaian</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="done-project-list">
-                        @if ($completedProjects->isEmpty())
-                            <tr>
-                                <td colspan="3" class="text-center">
-                                    <div class="container border py-3">
-                                        Tidak ada project yang terselesaikan.
-                                    </div>
-                                </td>
-                            </tr>
-                        @else
-                            @foreach ($completedProjects as $project)
-                                <tr>
-                                    <td>{{ $project->nama }}</td>
-                                    <td>{{ $project->tanggal_penyelesaian }}</td>
-                                    <td>
-                                        <div class="span bg-success text-white" style="padding: 5px 0; border-radius:50px">
-                                            {{ $project->status }}
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @endif
-                    </tbody>
-                </table>
-            </div> --}}
         @else
             {{-- Bagian ini untuk investor --}}
             <div class="row">
@@ -528,7 +434,7 @@
                                         <td style="vertical-align: middle;">{{ $project->start_date ? \Carbon\Carbon::parse($project->start_date)->format('j M, Y') : 'N/A' }}</td>
                                         <td style="vertical-align: middle;">{{ $project->end_date ? \Carbon\Carbon::parse($project->end_date)->format('j M, Y') : 'N/A' }}</td>
                                         <td style="vertical-align: middle; border-right: 1px solid #BBBEC5; text-align: center;">
-                                            <a href="{{ route('companies-project.show', $project->id) }}" style="color: black; text-decoration: underline;">Detail</a>
+                                            <a href="detail/{{ $project->id }}" style="color: black; text-decoration: underline;">Detail</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -582,7 +488,7 @@
                                         <td style="vertical-align: middle;">{{ $project->start_date ? \Carbon\Carbon::parse($project->start_date)->format('j M, Y') : 'N/A' }}</td>
                                         <td style="vertical-align: middle;">{{ $project->end_date ? \Carbon\Carbon::parse($project->end_date)->format('j M, Y') : 'N/A' }}</td>
                                         <td style="vertical-align: middle; border-right: 1px solid #BBBEC5; text-align: center;">
-                                            <a href="{{ route('companies-project.show', $project->id) }}" style="color: black; text-decoration: underline;">Detail</a>
+                                            <a href="detail/{{ $project->id }}" style="color: black; text-decoration: underline;">Detail</a>
                                         </td>
                                     </tr>
                                 @endforeach

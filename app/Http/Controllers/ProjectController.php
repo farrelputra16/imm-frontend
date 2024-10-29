@@ -327,32 +327,32 @@ class ProjectController extends Controller
         return redirect()->route('projects.index')->with('success', 'Project deleted successfull');
     }
 
-    /**
-     * Menambahkan untuk menampilkan detail project tanpa dapat dirubah khusus bagi investor
-     */
-    public function show($id)
-    {
-        // Ambil proyek beserta relasinya
-        $project = Project::with('tags', 'sdgs', 'indicators', 'metrics', 'targetPelanggan', 'dana', 'surveys')->findOrFail($id);
+    // /**
+    //  * Menambahkan untuk menampilkan detail project tanpa dapat dirubah khusus bagi investor
+    //  */
+    // public function show($id)
+    // {
+    //     // Ambil proyek beserta relasinya
+    //     $project = Project::with('tags', 'sdgs', 'indicators', 'metrics', 'targetPelanggan', 'dana', 'surveys')->findOrFail($id);
 
-        // Ambil dokumen proyek dari tabel project_dokumen
-        $documents = DB::table('project_dokumen')->where('project_id', $id)->get();
+    //     // Ambil dokumen proyek dari tabel project_dokumen
+    //     $documents = DB::table('project_dokumen')->where('project_id', $id)->get();
 
-        // Ambil metrics yang belum memiliki report_month dan report_year
-        $initialMetricProjects = $project->metricProjects()->whereNull('report_month')->whereNull('report_year')->get();
+    //     // Ambil metrics yang belum memiliki report_month dan report_year
+    //     $initialMetricProjects = $project->metricProjects()->whereNull('report_month')->whereNull('report_year')->get();
 
-        // Ubah relasi proyek ke dalam array untuk keperluan logging
-        $projectData = $this->relationshipsToArray($project);
+    //     // Ubah relasi proyek ke dalam array untuk keperluan logging
+    //     $projectData = $this->relationshipsToArray($project);
 
-        // Tambahkan dokumen ke dalam data proyek
-        $projectData['documents'] = $documents->toArray();
+    //     // Tambahkan dokumen ke dalam data proyek
+    //     $projectData['documents'] = $documents->toArray();
 
-        // Logging data proyek untuk debugging
-        Log::debug('Project Viewed (All Data):', $projectData);
+    //     // Logging data proyek untuk debugging
+    //     Log::debug('Project Viewed (All Data):', $projectData);
 
-        // Kirim data ke view
-        return view('companies.project-detail', compact('project', 'documents', 'initialMetricProjects'));
-    }
+    //     // Kirim data ke view
+    //     return view('companies.project-detail', compact('project', 'documents', 'initialMetricProjects'));
+    // }
 
     public function showProject($id, Request $request)
     {
