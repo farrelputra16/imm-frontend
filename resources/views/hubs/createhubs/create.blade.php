@@ -14,11 +14,6 @@
         box-sizing: border-box;
     }
 
-    option {
-        background-color: #343a40;
-        color: white;
-    }
-
     .form-control {
         margin-bottom: 20px;
     }
@@ -33,7 +28,6 @@
         border-color: #495057;
     }
 
-    /* Dynamic fields button styling */
     .add-field-btn {
         background-color: #343a40;
         color: white;
@@ -64,7 +58,7 @@
         </div>
     @endif
 
-    <form id="hub-form" action="{{ route('hubs.store') }}" method="POST">
+    <form action="{{ route('hubs.store') }}" method="POST" onsubmit="prepareForm()">
         @csrf
         <div class="form-group">
             <label for="name">Nama Hub:</label>
@@ -96,8 +90,8 @@
             <label>Fasilitas:</label>
             <div id="facilities-wrapper">
                 <div class="d-flex align-items-center mb-2">
-                    <input type="text" class="form-control" name="facilities[]" placeholder="Contoh: Wi-Fi, Lab, Kantin">
-                    <button type="button" class="add-field-btn" onclick="addField('facilities-wrapper', 'facilities[]')">+</button>
+                    <input type="text" class="form-control" placeholder="Contoh: Wi-Fi, Lab, Kantin">
+                    <button type="button" class="add-field-btn" onclick="addField('facilities-wrapper')">+</button>
                 </div>
             </div>
 
@@ -105,19 +99,14 @@
             <label>Program:</label>
             <div id="programs-wrapper">
                 <div class="d-flex align-items-center mb-2">
-                    <input type="text" class="form-control" name="programs[]" placeholder="Contoh: Startup Accelerator, Community Development">
-                    <button type="button" class="add-field-btn" onclick="addField('programs-wrapper', 'programs[]')">+</button>
+                    <input type="text" class="form-control" placeholder="Contoh: Startup Accelerator, Community Development">
+                    <button type="button" class="add-field-btn" onclick="addField('programs-wrapper')">+</button>
                 </div>
             </div>
 
-            <!-- Alumni Field with Tagging Feature -->
-            <label for="alumni">Alumni:</label>
-            <select class="form-control" id="alumni" name="alumni[]" multiple>
-                @foreach($companies as $company)
-                    <option value="{{ $company->id }}">{{ $company->nama }}</option>
-                @endforeach
-            </select>
-            <small class="text-muted">Tekan Ctrl (Windows) atau Cmd (Mac) untuk memilih lebih dari satu perusahaan.</small>
+            <!-- Hidden Inputs for Converted Strings -->
+            <input type="hidden" id="facilities" name="facilities">
+            <input type="hidden" id="programs" name="programs">
         </div>
         <button type="submit" class="btn btn-primary">Kirim Pengajuan</button>
     </form>
@@ -170,12 +159,35 @@
 
     provinsiSelect.addEventListener('change', populateCities);
 
+    // Prepare form data for facilities and programs fields before submission
+    function prepareForm() {
+        // Gather facilities
+        const facilitiesInputs = document.querySelectorAll('#facilities-wrapper input');
+        const facilities = Array.from(facilitiesInputs)
+            .map(input => input.value)
+            .filter(value => value.trim() !== '') // Remove empty values
+            .join(','); // Join with commas
+
+        // Set hidden input for facilities
+        document.getElementById('facilities').value = facilities;
+
+        // Gather programs
+        const programsInputs = document.querySelectorAll('#programs-wrapper input');
+        const programs = Array.from(programsInputs)
+            .map(input => input.value)
+            .filter(value => value.trim() !== '') // Remove empty values
+            .join(','); // Join with commas
+
+        // Set hidden input for programs
+        document.getElementById('programs').value = programs;
+    }
+
     // Add Dynamic Field
-    function addField(wrapperId, fieldName) {
+    function addField(wrapperId) {
         const wrapper = document.getElementById(wrapperId);
         const newField = document.createElement('div');
         newField.classList.add('d-flex', 'align-items-center', 'mb-2');
-        newField.innerHTML = `<input type="text" class="form-control" name="${fieldName}" placeholder="Masukkan ${wrapperId === 'facilities-wrapper' ? 'Fasilitas' : 'Program'}">
+        newField.innerHTML = `<input type="text" class="form-control" placeholder="Masukkan ${wrapperId === 'facilities-wrapper' ? 'Fasilitas' : 'Program'}">
                               <button type="button" class="add-field-btn" onclick="removeField(this)">-</button>`;
         wrapper.appendChild(newField);
     }
@@ -184,41 +196,5 @@
     function removeField(button) {
         button.parentNode.remove();
     }
-
-    // Concatenate facilities, programs, and alumni into strings before submission
-    document.getElementById('hub-form').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const facilitiesFields = document.querySelectorAll('input[name="facilities[]"]');
-        const programsFields = document.querySelectorAll('input[name="programs[]"]');
-        const alumniSelect = document.getElementById('alumni');
-
-        const facilities = Array.from(facilitiesFields).map(input => input.value).join(',');
-        const programs = Array.from(programsFields).map(input => input.value).join(',');
-
-        const alumni = Array.from(alumniSelect.selectedOptions).map(option => option.value).join(',');
-
-        // Set values as hidden fields for the server
-        const facilitiesInput = document.createElement('input');
-        facilitiesInput.type = 'hidden';
-        facilitiesInput.name = 'facilities';
-        facilitiesInput.value = facilities;
-
-        const programsInput = document.createElement('input');
-        programsInput.type = 'hidden';
-        programsInput.name = 'programs';
-        programsInput.value = programs;
-
-        const alumniInput = document.createElement('input');
-        alumniInput.type = 'hidden';
-        alumniInput.name = 'alumni';
-        alumniInput.value = alumni;
-
-        this.appendChild(facilitiesInput);
-        this.appendChild(programsInput);
-        this.appendChild(alumniInput);
-
-        this.submit(); // Submit the form
-    });
 </script>
 @endsection

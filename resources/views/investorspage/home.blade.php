@@ -112,7 +112,7 @@
     /* Chart Card Styles */
     .chart-card {
         margin-top:90px;
-        width: 420px;
+        width: 450px;
         height: 340px;
         border: 1px solid #702DFF;
         background-color: white;
@@ -189,6 +189,7 @@
     }
 
     .carousel-card {
+        width: 300px;
         border: none;
         border-radius: 15px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -226,6 +227,13 @@
         border-radius: 50%;
         padding: 10px;
     }
+    .company-logo {
+    width: 40px; /* Adjust width to preferred size */
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 </style>
 @endsection
 
@@ -272,7 +280,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Chart and Carousel Side by Side -->
     <div class="row mt-5">
         <!-- Chart Column -->
@@ -342,11 +350,19 @@
                             @foreach ($recentTransactions as $transaction)
                             <tr>
                                 <td>{{ $transaction->investment_date->format('d/m/Y') }}</td>
-                                <td>{{ $transaction->company->nama }}</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img src="{{ $transaction->company->logo_url ?? 'images/landingpage/bitcoin.png' }}"
+                                             alt="Logo of {{ $transaction->company->nama }}"
+                                             class="company-logo me-2" />
+                                        {{ $transaction->company->nama }}
+                                    </div>
+                                </td>
                                 <td>Rp{{ number_format($transaction->amount) }}</td>
                             </tr>
                             @endforeach
                         </tbody>
+
                     </table>
                 </div>
                 <div class="investor-show-all">
@@ -370,12 +386,20 @@
                         <tbody>
                             @foreach ($investedCompanies as $investment)
                             <tr>
-                                <td>{{ $investment->company->nama }}</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img src="{{ $investment->company->logo_url ?? 'images/landingpage/bitcoin.png' }}"
+                                             alt="Logo of {{ $investment->company->nama }}"
+                                             class="company-logo me-2" />
+                                        {{ $investment->company->nama }}
+                                    </div>
+                                </td>
                                 <td>{{ $investment->company->funding_stage }}</td>
                                 <td><a class="investor-btn-link" href="{{ route('companies.show', $investment->company->id) }}">View Details</a></td>
                             </tr>
                             @endforeach
                         </tbody>
+
                     </table>
                 </div>
                 <div class="investor-show-all">
