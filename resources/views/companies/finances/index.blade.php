@@ -34,8 +34,30 @@
         padding: 0.375rem 1.5rem; /* Increase padding for wider button */
         border-radius: 0.25rem;
         white-space: nowrap; /* Prevent text from wrapping */
-        text-decoration: none; /* Remove underline */
+        text-decoration: none !important; /* Remove underline with !important */
         display: inline-block; /* Make it behave like a button */
+        cursor: pointer; /* Change cursor on hover */
+    }
+
+    .add-new-link:hover{
+        color: #ffffff;
+    }
+
+    th:nth-child(2),
+    td:nth-child(2) {
+        width: 10%; /* Organization Name */
+    }
+
+    th:nth-child(7),
+    td:nth-child(7) {
+        width: 10%; /* Industries */
+        text-align: center;
+    }
+
+    th:nth-child(8),
+    td:nth-child(8) {
+        width: 20%; /* Industries */
+        text-align: center;
     }
 </style>
 @endsection
@@ -70,13 +92,15 @@
                     <input type="hidden" name="rows" value="{{ request('rows', 10) }}">
                 </form>
             </div>
-            <a href="{{ route('company_finances.create',['companyId' => $companyId]) }}" class="add-new-link">Add New</a>
+            @if ($isUserRole)
+                <a href="{{ route('company_finances.create',['companyId' => $companyId]) }}" class="add-new-link" style="text-decoration: none;">Add New</a>
+            @endif
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive" style="margin-bottom: 0px;">
-                <table id="finance-table" class="table table-hover table-striped mt-3" style="margin-bottom: 0px;">
+                <table id="finance-table" class="table table-hover table-strip mt-3" style="margin-bottom: 0px;">
                     <thead>
                         <tr>
                             <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle;">No.</th>

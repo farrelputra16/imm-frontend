@@ -1113,6 +1113,7 @@
             document.getElementById('end_year').addEventListener('change', () => updateDays('end_day', 'end_month', 'end_year'));
         </script>
 
+        {{-- Bagian melakukan Input klik dan dropodown dari pitch_deck, video_dropzone, roadmap --}}
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 function handleFileUpload(input, previewContainer) {
@@ -1490,8 +1491,6 @@
                 $(document).on('click', '.btn-remove-pelanggan', function() {
                     $(this).closest('tr').remove();
                 });
-
-
 
                 // Fungsi untuk menghapus format Rupiah
                 function removeFormatRupiah(angka) {
