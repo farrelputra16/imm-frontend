@@ -33,23 +33,24 @@ class HubsController extends Controller
         return view('hubs.index', compact('hubs'));
     }
 
-    // Show method to display specific hub details
-    public function show($id)
+    // Show method to display specific hub details// Show method to display specific hub details
+public function show($id)
 {
     // Fetch the specific hub using the ID
     $hub = Hubs::findOrFail($id);
 
-    // Pastikan hub sudah disetujui sebelum ditampilkan
+    // Ensure the hub is approved before displaying it
     if ($hub->status != 'approved') {
         abort(404);
     }
 
-    // Memisahkan string facilities dan programs menjadi array
+    // Parse comma-separated strings into arrays
     $facilities = $hub->facilities ? explode(',', $hub->facilities) : [];
     $programs = $hub->programs ? explode(',', $hub->programs) : [];
+    $alumni = $hub->alumni ? explode(',', $hub->alumni) : [];
 
-    // Return the hub detail view with facilities and programs
-    return view('hubs.show', compact('hub', 'facilities', 'programs'));
+    // Return the hub detail view with facilities, programs, and alumni
+    return view('hubs.show', compact('hub', 'facilities', 'programs', 'alumni'));
 }
 
 

@@ -62,12 +62,12 @@
     .stats {
         margin-top: 40px;
         display: flex;
-        gap: 2px;
+        gap: 40px;
         flex-wrap: wrap;
     }
 
-    .stats .col-md-3,
-    .stats .col-sm-4 {
+    .stats .col-md-2,
+    .stats .col-sm-3 {
         padding-left: 0;
         padding-right: 0;
     }
@@ -78,7 +78,7 @@
         padding: 15px;
         text-align: left;
         box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-        width: 220px;
+        width: 216px;
         height: 80px;
         display: flex;
         align-items: center;
@@ -109,15 +109,22 @@
         color: #6c757d;
     }
 
+    /* Chart Card Styles */
     .chart-card {
+        margin-top:90px;
+        width: 450px;
+        height: 340px;
         border: 1px solid #702DFF;
-        margin-top: 80px;
         background-color: white;
         border-radius: 20px;
-        padding: 20px;
+        padding: 10px;
         text-align: center;
-        color: white;
-        margin-bottom: 90px;
+        margin-bottom: 10px;
+    }
+
+    .chart-container {
+        width: 100%;
+        height: 90%;
     }
 
     .investor-card {
@@ -135,7 +142,7 @@
         font-size: 1.7rem;
         font-weight: bold;
         text-align: left;
-        margin-bottom: 8px;
+        margin-bottom: 15px;
     }
 
     .investor-table th, .investor-table td {
@@ -143,11 +150,13 @@
     }
 
     .investor-table th {
-        font-weight: normal;
+        font-weight: bold;
+        text-align: center;
     }
 
     .investor-table td {
         color: #5F5F5F;
+        text-align: center;
     }
 
     .investor-btn-link {
@@ -176,10 +185,11 @@
 
     /* Carousel Styles */
     .custom-carousel-container {
-        margin-top: 70px;
+        margin-top: 80px;
     }
 
     .carousel-card {
+        width: 300px;
         border: none;
         border-radius: 15px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -189,7 +199,7 @@
     /* Adjusted height for a taller carousel */
     .carousel-card img {
         width: 100%;
-        height: 380px; /* Increase height for taller carousel */
+        height: 240px; /* Increase height for taller carousel */
         object-fit: cover;
     }
 
@@ -217,6 +227,13 @@
         border-radius: 50%;
         padding: 10px;
     }
+    .company-logo {
+    width: 40px; /* Adjust width to preferred size */
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 </style>
 @endsection
 
@@ -225,7 +242,7 @@
     <div class="profile-header">
         <div class="info">
             <p>INVESTOR</p>
-            <h1>{{ Auth::user()->nama_depan }}👋 <i class="fas fa-hand-wave"></i></h1>
+            <h1>{{ Auth::user()->nama_depan }} {{ Auth::user()->nama_belakang }} 👋 <i class="fas fa-hand-wave"></i></h1>
         </div>
         <div class="profile-image">
             <img src="images/investorpage/obama.jpg" alt="Profile image of Agraditya Putra smiling, wearing glasses and a white shirt" />
@@ -235,30 +252,30 @@
 
 <div class="container mt-5">
     <div class="row stats">
-        <div class="col-md-3 col-sm-4">
+        <div class="col-md-2 col-sm-3">
             <div class="stat">
                 <img src="images/investorpage/icon1.svg" alt="Project Icon" />
                 <div class="stat-content">
-                    <h3>{{ $companyFunded }}</h3>
                     <p>Companies Funded</p>
+                    <h3>{{ $companyFunded }}</h3>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-sm-4">
+        <div class="col-md-2 col-sm-3">
             <div class="stat">
                 <img src="images/investorpage/icon2.svg" alt="Company Icon" />
                 <div class="stat-content">
-                    <h3>{{ $transactionCount }}</h3>
                     <p>Transactions</p>
+                    <h3>{{ $transactionCount }}</h3>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-sm-4">
+        <div class="col-md-2 col-sm-3">
             <div class="stat">
                 <img src="images/investorpage/icon3.svg" alt="Investment Icon" />
                 <div class="stat-content">
-                    <h3>Rp{{ number_format($totalInvested) }}</h3>
                     <p>Total Invested</p>
+                    <h3>Rp{{ number_format($totalInvested) }}</h3>
                 </div>
             </div>
         </div>
@@ -267,10 +284,12 @@
     <!-- Chart and Carousel Side by Side -->
     <div class="row mt-5">
         <!-- Chart Column -->
-        <div class="col-md-6">
+        <div class="col-md-5">
             <div class="chart-card">
                 <h3>Investment Trends</h3>
-                <div>{!! $chart2->container() !!}</div>
+                <div class="chart-container">
+                    {!! $chart2->container() !!}
+                </div>
                 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                 {!! $chart2->script() !!}
             </div>
@@ -290,20 +309,27 @@
             </button>
         </div>
         <div class="carousel-inner">
-            @foreach ($companies as $index => $company)
+            @foreach ($companies->chunk(2) as $index => $companyPair) <!-- Group companies in pairs of two -->
                 <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                    <div class="carousel-card">
-                        <img src="https://storage.googleapis.com/a1aa/image/xsDrvMl6olZBGd3phCL7krIDHG174HxZSa5oobictMu9s46E.jpg" alt="Company Image {{ $index + 1 }}">
-                        <div class="carousel-card-body">
-                            <h5 class="carousel-card-title">{{ $company->nama }}</h5>
-                            <p>{{ $company->startup_summary }}</p>
-                        </div>
+                    <div class="row">
+                        @foreach ($companyPair as $company)
+                            <div class="col-6"> <!-- Two items per slide -->
+                                <div class="carousel-card">
+                                    <img src="https://storage.googleapis.com/a1aa/image/xsDrvMl6olZBGd3phCL7krIDHG174HxZSa5oobictMu9s46E.jpg" alt="Company Image {{ $loop->index + 1 }}">
+                                    <div class="carousel-card-body">
+                                        <h5 class="carousel-card-title">{{ $company->nama }}</h5>
+                                        <p>{{ $company->startup_summary }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             @endforeach
         </div>
     </div>
 </div>
+
 
 
     <!-- Tables Below Chart and Carousel -->
@@ -324,11 +350,19 @@
                             @foreach ($recentTransactions as $transaction)
                             <tr>
                                 <td>{{ $transaction->investment_date->format('d/m/Y') }}</td>
-                                <td>{{ $transaction->company->nama }}</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img src="{{ $transaction->company->logo_url ?? 'images/landingpage/bitcoin.png' }}"
+                                             alt="Logo of {{ $transaction->company->nama }}"
+                                             class="company-logo me-2" />
+                                        {{ $transaction->company->nama }}
+                                    </div>
+                                </td>
                                 <td>Rp{{ number_format($transaction->amount) }}</td>
                             </tr>
                             @endforeach
                         </tbody>
+
                     </table>
                 </div>
                 <div class="investor-show-all">
@@ -352,12 +386,20 @@
                         <tbody>
                             @foreach ($investedCompanies as $investment)
                             <tr>
-                                <td>{{ $investment->company->nama }}</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img src="{{ $investment->company->logo_url ?? 'images/landingpage/bitcoin.png' }}"
+                                             alt="Logo of {{ $investment->company->nama }}"
+                                             class="company-logo me-2" />
+                                        {{ $investment->company->nama }}
+                                    </div>
+                                </td>
                                 <td>{{ $investment->company->funding_stage }}</td>
                                 <td><a class="investor-btn-link" href="{{ route('companies.show', $investment->company->id) }}">View Details</a></td>
                             </tr>
                             @endforeach
                         </tbody>
+
                     </table>
                 </div>
                 <div class="investor-show-all">

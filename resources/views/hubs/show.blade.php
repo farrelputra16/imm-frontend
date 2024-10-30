@@ -85,91 +85,48 @@
     </div>
    </div>
    <div class="row text-center">
+    <!-- Our Facilities Section -->
     <div class="col-md-4 mb-4">
-     <div class="card">
-      <div class="card-header">
-       Our Facilities
-      </div>
-      <div class="card-body">
-       <ul class="list-unstyled">
-        <li>
-         • Coworking Space
-        </li>
-        <li>
-         • Private Offices
-        </li>
-        <li>
-         • Meeting Rooms
-        </li>
-        <li>
-         • Event Space
-        </li>
-        <li>
-         • Maker Space
-        </li>
-        <li>
-         • Lounge &amp; Networking Area
-        </li>
-        <li>
-         • Cafeteria
-        </li>
-       </ul>
-      </div>
-     </div>
+        <div class="card">
+            <div class="card-header">Our Facilities</div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    @foreach($facilities as $facility)
+                        <li>• {{ $facility }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
     </div>
+
+    <!-- Mentoring Programs Section -->
     <div class="col-md-4 mb-4">
-     <div class="card">
-      <div class="card-header">
-       Mentoring Programs
-      </div>
-      <div class="card-body">
-       <ul class="list-unstyled">
-        <li>
-         • One-on-One Mentorship
-        </li>
-        <li>
-         • Group Mentoring Sessions
-        </li>
-        <li>
-         • Workshops &amp; Seminars
-        </li>
-        <li>
-         • Office Hours with Experts
-        </li>
-        <li>
-         • Access to Investor Networks
-        </li>
-       </ul>
-      </div>
-     </div>
+        <div class="card">
+            <div class="card-header">Mentoring Programs</div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    @foreach($programs as $program)
+                        <li>• {{ $program }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
     </div>
+
+    <!-- Alumni StartUps Section -->
     <div class="col-md-4 mb-4">
-     <div class="card">
-      <div class="card-header">
-       Alumni StartUps
-      </div>
-      <div class="card-body">
-       <ul class="list-unstyled">
-        <li>
-         • TechNova
-        </li>
-        <li>
-         • GreenFuture
-        </li>
-        <li>
-         • EduLearn
-        </li>
-        <li>
-         • FinTechID
-        </li>
-        <li>
-         • AgroTech
-        </li>
-       </ul>
-      </div>
-     </div>
+        <div class="card">
+            <div class="card-header">Alumni StartUps</div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    @foreach($alumni as $alum)
+                        <li>• {{ $alum }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
     </div>
-   </div>
+</div>
    <div class="text-center mb-4">
     <button class="btn btn-primary">
      Event submission
