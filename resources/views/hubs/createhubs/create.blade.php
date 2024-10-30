@@ -3,39 +3,47 @@
 @section('title', 'Ajukan Innovation Hub Baru')
 
 @section('css')
-    <style>
-        /* Styling sederhana untuk dropdown */
-        select {
-            background-color: #343a40; /* Abu-abu gelap */
-            color: white;
-            border: 1px solid #ccc;
-            padding: 10px;
-            border-radius: 5px;
-            width: 100%;
-            box-sizing: border-box;
-        }
+<style>
+    select {
+        background-color: #343a40;
+        color: white;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 5px;
+        width: 100%;
+        box-sizing: border-box;
+    }
 
-        /* Styling untuk opsi dropdown */
-        option {
-            background-color: #343a40; /* Warna sama dengan dropdown */
-            color: white;
-        }
+    option {
+        background-color: #343a40;
+        color: white;
+    }
 
-        /* Styling untuk form dan tombol */
-        .form-control {
-            margin-bottom: 20px;
-        }
+    .form-control {
+        margin-bottom: 20px;
+    }
 
-        .btn-primary {
-            background-color: #343a40;
-            border-color: #343a40;
-        }
+    .btn-primary {
+        background-color: #343a40;
+        border-color: #343a40;
+    }
 
-        .btn-primary:hover {
-            background-color: #495057;
-            border-color: #495057;
-        }
-    </style>
+    .btn-primary:hover {
+        background-color: #495057;
+        border-color: #495057;
+    }
+
+    /* Dynamic fields button styling */
+    .add-field-btn {
+        background-color: #343a40;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 10px;
+    }
+</style>
 @endsection
 
 @section('content')
@@ -43,12 +51,9 @@
     <h1 class="mb-4">Ajukan Innovation Hub Baru</h1>
 
     @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+        <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <!-- Menampilkan error validasi -->
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul class="mb-0">
@@ -59,53 +64,54 @@
         </div>
     @endif
 
-    <form action="{{ route('hubs.store') }}" method="POST">
+    <form id="hub-form" action="{{ route('hubs.store') }}" method="POST">
         @csrf
         <div class="form-group">
-            <!-- Nama Hub -->
             <label for="name">Nama Hub:</label>
             <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
 
-            <!-- Provinsi -->
             <label for="provinsi">Provinsi:</label>
             <select class="form-control" id="provinsi" name="provinsi" required>
                 <option value="" disabled selected>Pilih Provinsi</option>
-                <!-- Provinsi akan dimuat secara dinamis dari API -->
             </select>
 
-            <!-- Kota/Kabupaten -->
             <label for="kota">Kota/Kabupaten:</label>
             <select class="form-control" id="kota" name="kota" required>
                 <option value="" disabled selected>Pilih Kota/Kabupaten</option>
-                <!-- Kota/Kabupaten akan dimuat secara dinamis dari API -->
             </select>
 
-            <!-- Rank -->
             <label for="rank">Rank:</label>
             <input type="number" class="form-control" id="rank" name="rank" value="{{ old('rank') }}">
 
-            <!-- Top Investor Types -->
             <label for="top_investor_types">Top Investor Types:</label>
             <input type="text" class="form-control" id="top_investor_types" name="top_investor_types" value="{{ old('top_investor_types') }}">
 
-            <!-- Top Funding Types -->
             <label for="top_funding_types">Top Funding Types:</label>
             <input type="text" class="form-control" id="top_funding_types" name="top_funding_types" value="{{ old('top_funding_types') }}">
 
-            <!-- Description -->
             <label for="description">Deskripsi:</label>
             <textarea class="form-control" id="description" name="description" rows="4">{{ old('description') }}</textarea>
 
-            <!-- Facilities -->
-            <label for="facilities">Fasilitas (Pisahkan dengan koma):</label>
-            <input type="text" class="form-control" id="facilities" name="facilities" value="{{ old('facilities') }}" placeholder="Contoh: Wi-Fi, Lab, Kantin">
+            <!-- Dynamic Facilities Field -->
+            <label>Fasilitas:</label>
+            <div id="facilities-wrapper">
+                <div class="d-flex align-items-center mb-2">
+                    <input type="text" class="form-control" name="facilities[]" placeholder="Contoh: Wi-Fi, Lab, Kantin">
+                    <button type="button" class="add-field-btn" onclick="addField('facilities-wrapper', 'facilities[]')">+</button>
+                </div>
+            </div>
 
-            <!-- Programs -->
-            <label for="programs">Program (Pisahkan dengan koma):</label>
-            <input type="text" class="form-control" id="programs" name="programs" value="{{ old('programs') }}" placeholder="Contoh: Startup Accelerator, Community Development">
+            <!-- Dynamic Programs Field -->
+            <label>Program:</label>
+            <div id="programs-wrapper">
+                <div class="d-flex align-items-center mb-2">
+                    <input type="text" class="form-control" name="programs[]" placeholder="Contoh: Startup Accelerator, Community Development">
+                    <button type="button" class="add-field-btn" onclick="addField('programs-wrapper', 'programs[]')">+</button>
+                </div>
+            </div>
 
-            <!-- Alumni (Multiple Dropdown) -->
-            <label for="alumni">Alumni (Pilih dari perusahaan):</label>
+            <!-- Alumni Field with Tagging Feature -->
+            <label for="alumni">Alumni:</label>
             <select class="form-control" id="alumni" name="alumni[]" multiple>
                 @foreach($companies as $company)
                     <option value="{{ $company->id }}">{{ $company->nama }}</option>
@@ -118,44 +124,38 @@
 </div>
 
 <script>
-    // Ambil elemen select untuk provinsi dan kota/kabupaten
     const provinsiSelect = document.getElementById('provinsi');
     const kotaSelect = document.getElementById('kota');
-    let provincesData = []; // Simpan data provinsi yang di-fetch
+    let provincesData = [];
 
-    // Fetch data provinsi saat halaman dimuat
+    // Fetch Provinsi
     fetch('https://kanglerian.github.io/api-wilayah-indonesia/api/provinces.json')
         .then(response => response.json())
         .then(provinces => {
-            provincesData = provinces; // Simpan data provinsi
-            // Iterasi setiap provinsi dan tambahkan sebagai option ke select provinsi
+            provincesData = provinces;
             provinces.forEach(provinsi => {
                 const option = document.createElement('option');
-                option.value = provinsi.name; // Menggunakan nama sebagai nilai
+                option.value = provinsi.name;
                 option.textContent = provinsi.name;
-                option.dataset.id = provinsi.id; // Simpan ID provinsi di dataset
+                option.dataset.id = provinsi.id;
                 provinsiSelect.appendChild(option);
             });
         })
         .catch(error => console.error('Error fetching provinces:', error));
 
-    // Fungsi untuk memanggil API kota/kabupaten berdasarkan ID provinsi
+    // Populate Cities
     function populateCities() {
         const selectedProvinsiName = provinsiSelect.value;
         const selectedProvinsiId = getProvinsiIdByName(selectedProvinsiName);
         const regenciesUrl = `https://kanglerian.github.io/api-wilayah-indonesia/api/regencies/${selectedProvinsiId}.json`;
 
-        // Kosongkan dropdown kota/kabupaten saat memilih provinsi baru
         kotaSelect.innerHTML = '<option value="" disabled selected>Pilih Kota/Kabupaten</option>';
-
-        // Fetch data kota/kabupaten berdasarkan ID provinsi yang dipilih
         fetch(regenciesUrl)
             .then(response => response.json())
             .then(regencies => {
-                // Iterasi setiap kota/kabupaten dan tambahkan sebagai option ke select kota/kabupaten
                 regencies.forEach(regency => {
                     const option = document.createElement('option');
-                    option.value = regency.name; // Menggunakan nama sebagai nilai
+                    option.value = regency.name;
                     option.textContent = regency.name;
                     kotaSelect.appendChild(option);
                 });
@@ -163,14 +163,62 @@
             .catch(error => console.error(`Error fetching regencies for provinsi ${selectedProvinsiId}:`, error));
     }
 
-    // Fungsi untuk mendapatkan ID provinsi berdasarkan nama
     function getProvinsiIdByName(name) {
         const provinsi = provincesData.find(provinsi => provinsi.name === name);
         return provinsi ? provinsi.id : null;
     }
 
-    // Tambahkan event listener untuk dropdown provinsi
     provinsiSelect.addEventListener('change', populateCities);
-</script>
 
+    // Add Dynamic Field
+    function addField(wrapperId, fieldName) {
+        const wrapper = document.getElementById(wrapperId);
+        const newField = document.createElement('div');
+        newField.classList.add('d-flex', 'align-items-center', 'mb-2');
+        newField.innerHTML = `<input type="text" class="form-control" name="${fieldName}" placeholder="Masukkan ${wrapperId === 'facilities-wrapper' ? 'Fasilitas' : 'Program'}">
+                              <button type="button" class="add-field-btn" onclick="removeField(this)">-</button>`;
+        wrapper.appendChild(newField);
+    }
+
+    // Remove Dynamic Field
+    function removeField(button) {
+        button.parentNode.remove();
+    }
+
+    // Concatenate facilities, programs, and alumni into strings before submission
+    document.getElementById('hub-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const facilitiesFields = document.querySelectorAll('input[name="facilities[]"]');
+        const programsFields = document.querySelectorAll('input[name="programs[]"]');
+        const alumniSelect = document.getElementById('alumni');
+
+        const facilities = Array.from(facilitiesFields).map(input => input.value).join(',');
+        const programs = Array.from(programsFields).map(input => input.value).join(',');
+
+        const alumni = Array.from(alumniSelect.selectedOptions).map(option => option.value).join(',');
+
+        // Set values as hidden fields for the server
+        const facilitiesInput = document.createElement('input');
+        facilitiesInput.type = 'hidden';
+        facilitiesInput.name = 'facilities';
+        facilitiesInput.value = facilities;
+
+        const programsInput = document.createElement('input');
+        programsInput.type = 'hidden';
+        programsInput.name = 'programs';
+        programsInput.value = programs;
+
+        const alumniInput = document.createElement('input');
+        alumniInput.type = 'hidden';
+        alumniInput.name = 'alumni';
+        alumniInput.value = alumni;
+
+        this.appendChild(facilitiesInput);
+        this.appendChild(programsInput);
+        this.appendChild(alumniInput);
+
+        this.submit(); // Submit the form
+    });
+</script>
 @endsection
