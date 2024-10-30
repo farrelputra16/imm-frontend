@@ -1,3 +1,18 @@
+/* Mengatur font family untuk seluruh halaman */
+body {
+    font-family: 'Inter', sans-serif; /* Menggunakan Inter untuk isi/content */
+}
+
+/* Mengatur font family untuk heading */
+h1, h2, h3, h4 {
+    font-family: 'Work Sans', sans-serif; /* Menggunakan Work Sans untuk heading */
+}
+
+/* Mengatur font family untuk sub-heading dan body */
+.sub-heading-1, .sub-heading-2, .body-1, .body-2 {
+    font-family: 'Inter', sans-serif; /* Menggunakan Inter untuk sub-heading dan body */
+}
+
 h1 {
     font-size: 4rem; /* 64px */
     font-weight: 700;

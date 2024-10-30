@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Company;
-use App\Models\Department;
 use App\Models\User;
+use App\Models\Company;
+use App\Models\Project;
+use App\Models\Department;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class CompanyController extends Controller
@@ -101,17 +102,31 @@ class CompanyController extends Controller
      * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        // Find the company by ID, or fail if not found
-        $company = Company::with('fundingRounds')->findOrFail($id);
+        $company = Company::findOrFail($id);
 
-        // Load related and incomes for the company
-        $company->load('incomes');
+        // Ambil parameter untuk funding rounds
+        $fundingRowsPerPage = $request->get('funding_rows', 10); // Default 10
+        $fundingRounds = $company->fundingRounds()->paginate($fundingRowsPerPage);
 
-        // Return view to display the company details and projects
-        return view('companies.view', compact('company'));
+        // Ambil parameter untuk project list
+        $projectRowsPerPage = $request->get('project_rows', 10); // Default 10
+        $allProjectsQuery = Project::with('tags', 'sdgs', 'indicators', 'metrics', 'targetPelanggan', 'dana')
+            ->whereHas('company', fn($query) => $query->where('id', $id))
+            ->paginate($projectRowsPerPage);
+
+        // Load team members and assign departments
+        $team = $company->teamMembers;
+        foreach ($team as $person) {
+            $position_id = $person->pivot->position;
+            $department = Department::find($position_id);
+            $person->department = $department ? $department->name : 'No department assigned';
+        }
+
+        return view('companies.view', compact('company', 'fundingRounds', 'team', 'allProjectsQuery'));
     }
+
 
     public function index()
     {

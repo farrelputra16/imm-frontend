@@ -326,6 +326,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/projects/filter-metrics', [ProjectController::class, 'filterMetrics'])->name('projects.filterMetrics');
     Route::get('/myproject', [ProjectController::class, 'index'])->name('myproject.myproject');
     Route::get('/detail/{id}', [ProjectController::class, 'view'])->name('projects.view');
+    Route::get('/companies/projects/{id}', [ProjectController::class, 'view'])->name('projects_company.view');
     Route::put('/projects/{id}', [ProjectController::class, 'update'])->name('projects.update');
     Route::post('projects/{project}/complete', [ProjectController::class, 'complete'])->name('projects.complete');
 

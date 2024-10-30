@@ -430,7 +430,7 @@
                                     <tr>
                                         <td style="vertical-align: middle; border-left: 1px solid #BBBEC5;">{{ $loop->iteration }}</td>
                                         <td style="vertical-align: middle;">{{ $project->nama }}</td>
-                                        <td style="vertical-align: middle;">Rp{{ number_format($project->budget_plan, 0, ',', '.') }}</td>
+                                        <td style="vertical-align: middle;">Rp{{ number_format($project->jumlah_pendanaan, 0, ',', '.') }}</td>
                                         <td style="vertical-align: middle;">{{ $project->start_date ? \Carbon\Carbon::parse($project->start_date)->format('j M, Y') : 'N/A' }}</td>
                                         <td style="vertical-align: middle;">{{ $project->end_date ? \Carbon\Carbon::parse($project->end_date)->format('j M, Y') : 'N/A' }}</td>
                                         <td style="vertical-align: middle; border-right: 1px solid #BBBEC5; text-align: center;">
@@ -484,7 +484,7 @@
                                         <td style="vertical-align: middle; border-left: 1px solid #BBBEC5;">{{ $loop->iteration }}</td>
                                         <td style="vertical-align: middle;">{{ $project->nama }}</td>
                                         <td style="vertical-align: middle;">{{ $project->status }}</td>
-                                        <td style="vertical-align: middle;">Rp{{ number_format($project->budget_plan, 0, ',', '.') }}</td>
+                                        <td style="vertical-align: middle;">Rp{{ number_format($project->jumlah_pendanaan, 0, ',', '.') }}</td>
                                         <td style="vertical-align: middle;">{{ $project->start_date ? \Carbon\Carbon::parse($project->start_date)->format('j M, Y') : 'N/A' }}</td>
                                         <td style="vertical-align: middle;">{{ $project->end_date ? \Carbon\Carbon::parse($project->end_date)->format('j M, Y') : 'N/A' }}</td>
                                         <td style="vertical-align: middle; border-right: 1px solid #BBBEC5; text-align: center;">

@@ -140,7 +140,7 @@
                 <form method="GET" action="{{ route('company_finances.index', ['companyId' => $companyId]) }}" class="mb-0">
                     <div class="d-flex align-items-center">
                         <label for="rowsPerPage" class="me-2">Rows per page:</label>
-                        <select name="rows" id="rowsPerPage" class="form-select me-2" onchange="this.form.submit()" style="width: 50%px; margin-left: 5px; margin-right: 5px;">
+                        <select name="rows" id="rowsPerPage" class="form-select me-2" onchange="this.form.submit()" style="width: 50px; margin-left: 5px; margin-right: 5px;">
                             <option value="10" {{ request('rows') == 10 ? 'selected' : '' }}>10</option>
                             <option value="50" {{ request('rows') == 50 ? 'selected' : '' }}>50</option>
                             <option value="100" {{ request('rows') == 100 ? 'selected' : '' }}>100</option>

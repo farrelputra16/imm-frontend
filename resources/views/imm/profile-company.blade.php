@@ -153,12 +153,13 @@
     }
 
     .team-card {
-        width: 250px;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        padding: 15px;
-        text-align: center;
-        box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
+        flex: 1 1 calc(33.33% - 20px); /* Mengatur lebar kolom menjadi maksimal 33.33% */
+        box-sizing: border-box; /* Memastikan padding dan margin tidak mempengaruhi lebar */
+        text-align: center; /* Menyusun konten di tengah */
+        margin-bottom: 20px; /* Ruang di bawah setiap kartu */
+        padding: 10px; /* Ruang di dalam kartu */
+        border: 1px solid #ddd; /* Tambahkan border untuk memperjelas batas kartu */
+        border-radius: 8px; /* Sudut yang lebih halus */
     }
 
     .team-photo {
@@ -609,19 +610,21 @@
                                     <div class="team-name">{{ $person->name }}</div>
                                     <span class="selected-tag">{{ $person->departmentName }}</span>
                                     <div class="action-buttons">
-                                        <button class="btn-edit" data-id="{{ $person->id }}" data-name="{{ $person->name }}" data-role="{{ $person->pivot->position }}" data-photo="{{ isset($person->image) ? asset('images/' . $person->image) : asset('images/1720765715.web') }}" data-toggle="modal" data-target="#editTeamModal">Edit</button>
+                                        <button class="btn-edit" data-id="{{ $person->id }}" data-name="{{ $person->name }}" data-role="{{ $person->pivot->position }}" data-photo="{{ isset($person->image) ? asset('images/' . $person->image) : asset('images/1720765715.webp') }}" data-toggle="modal" data-target="#editTeamModal">Edit</button>
                                         <button class="btn-delete" data-id="{{ $person->id }}" data-company-id="{{ $company->id }}" id="team-member-{{ $person->id }}">
                                             Delete
                                         </button>
-                                    </ div>
+                                    </div>
                                 </div>
                             @endforeach
                         @else
                             <p>No team members available. Please add new members.</p>
                         @endif
                     </div>
+                    <button type="button" class="btn-add" data-toggle="modal" data-target="#addTeamModal">Add New Team Member</button>
                 </div>
-                <button type="button" class="btn-add" data-toggle="modal" data-target="#addTeamModal">Add New Team Member</button>
+
+
                 <!-- Add Team Member Modal -->
                 <div class="modal fade" id="addTeamModal" tabindex="-1" aria-labelledby="addTeamModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">

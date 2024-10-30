@@ -3,9 +3,9 @@ body {
 }
 
 h1 {
-    font-size: 2.5rem; /* Tetap rem */
+    font-size: 40px; /* 2.5rem */
     color: #6f42c1;
-    margin-bottom: 1.875rem; /* 30px */
+    margin-bottom: 30px; /* 1.875rem */
     text-align: center;
 }
 
@@ -14,26 +14,26 @@ h1 {
     align-items: center;
     width: 100%;
     max-width: 800px;
-    margin: 3.125rem auto; /* 50px */
+    margin: 50px auto; /* 3.125rem */
     margin-top: 0px;
-    margin-bottom: 1.25rem; /* 20px */
+    margin-bottom: 20px; /* 1.25rem */
     border: 1px solid #ddd;
-    border-radius: 0.3125rem; /* 5px */
+    border-radius: 5px; /* 0.3125rem */
     overflow: hidden;
 }
 .search-container input {
     border: none;
     outline: none;
-    padding: 0.625rem 0.9375rem; /* 10px 15px */
+    padding: 10px 15px; /* 0.625rem 0.9375rem */
     flex-grow: 1;
-    border-top-left-radius: 0.625rem; /* 10px */
-    border-bottom-left-radius: 0.625rem; /* 10px */
+    border-top-left-radius: 10px; /* 0.625rem */
+    border-bottom-left-radius: 10px; /* 0.625rem */
 }
 .search-container button {
     background-color: #6257CB;
     color: white;
     border: none;
-    padding: 0.625rem 1.25rem; /* 10px 20px */
+    padding: 10px 20px; /* 0.625rem 1.25rem */
     cursor: pointer;
     border-top-left-radius: 0; /* 0 */
     border-bottom-left-radius: 0; /* 0 */
@@ -42,7 +42,7 @@ h1 {
     background-color: #5146a6;
 }
 .search-container i {
-    margin-left: 0.625rem; /* 10px */
+    margin-left: 10px; /* 0.625rem */
     color: #aaa;
 }
 .search-container input:focus {
@@ -51,9 +51,9 @@ h1 {
 }
 
 .header {
-    margin-top: 1.25rem; /* 20px */
-    margin-bottom: 0.625rem; /* 10px */
-    margin-left: 0.3125rem; /* 5px */
+    margin-top: 20px; /* 1.25rem */
+    margin-bottom: 10px; /* 0.625rem */
+    margin-left: 5px; /* 0.3125rem */
     text-align: start;
     font-weight: 400; /* Tidak ada unit */
 }
@@ -70,8 +70,8 @@ h1 {
 
 .filter-section {
     border: 1px solid #ddd;
-    padding: 1.25rem; /* 20px */
-    border-radius: 1.25rem; /* 20px */
+    padding: 20px; /* 1.25rem */
+    border-radius: 20px; /* 1.25rem */
 }
 
 .filter-section h5 {
@@ -79,7 +79,7 @@ h1 {
 }
 
 .filter-section .form-check-label {
-    margin-left: 0.625rem; /* 10px */
+    margin-left: 10px; /* 0.625rem */
 }
 
 .filter-section .btn-link {
@@ -95,9 +95,9 @@ h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.625rem; /* 10px */
-    margin-top: 0.625rem !important; /* 10px */
-    margin-left: 0.625rem; /* 10px */
+    margin-bottom: 10px; /* 0.625rem */
+    margin-top: 10px !important; /* 0.625rem */
+    margin-left: 10px; /* 0.625rem */
 }
 
 th, td {
@@ -108,6 +108,7 @@ th, td {
 /* Add a max-width to the table */
 .table-responsive {
     max-width: 100%;
+    overflow-x: auto; /* Pastikan scrollbar horizontal muncul saat diperlukan */
 }
 
 .table-responsive table {
@@ -125,6 +126,24 @@ th, td {
     border: none;
 }
 
+/* Gaya untuk scrollbar */
+.table-responsive::-webkit-scrollbar {
+    height: 8px; /* Tinggi scrollbar horizontal */
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background-color: #888; /* Warna scrollbar */
+    border-radius: 10px; /* Membuat sudut scrollbar lebih halus */
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* Warna scrollbar saat hover */
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Warna latar belakang scrollbar */
+}
+
 td {
     vertical-align: middle; /* Ensures cell content is vertically centered */
 }
@@ -135,7 +154,7 @@ td div {
 }
 
 td img {
-    margin-right: 0.625rem; /* 10px */
+    margin-right: 10px; /* 0.625rem */
 }
 
 td span {
@@ -160,7 +179,7 @@ td:nth-child(3) {
     width: 15%; /* Founded Date */
 }
 
-th:nth-child( 4),
+th:nth-child(4),
 td:nth-child(4) {
     width: 15%; /* Last Funding Date */
 }
@@ -202,7 +221,7 @@ td:nth-child(9)  /* Job Departments */ {
 .pagination {
     display: flex;
     justify-content: center;
-    padding: 0.625rem 0; /* 10px */
+    padding: 10px 0; /* 0.625rem */
 }
 
 .pagination .page-item {
@@ -211,7 +230,7 @@ td:nth-child(9)  /* Job Departments */ {
 
 .pagination .page-link {
     color: #000000; /* Warna teks pagination */
-    padding: 0.625rem 0.9375rem; /* 10px 15px */
+    padding: 10px 15px; /* 0.625rem 0.9375rem */
     border-top: 1px solid black; /* Border atas hitam */
     border-bottom: 1px solid black; /* Border bawah hitam */
     border-left: none; /* Hilangkan border kiri */
@@ -225,7 +244,7 @@ td:nth-child(9)  /* Job Departments */ {
 .pagination .page-item:not(:last-child)::after {
     content: '|'; /* Tambahkan simbol garis pemisah */
     position: absolute; /* Posisi absolut */
-    right: 0.125rem; /* 2px */
+    right: 2px; /* 0.125rem */
     top: 52%; /* Jarak dari atas (posisi vertikal disesuaikan) */
     transform: translateY(-50%); /* Pusatkan secara vertikal */
     color: #000000; /* Warna garis pemisah */
@@ -261,9 +280,9 @@ td:nth-child(9)  /* Job Departments */ {
 }
 
 .pagination .page-item:first-child .page-link {
-    padding: 0.625rem 1.25rem; /* 10px 20px */
-    border-top-left-radius: 0.3125rem; /* 5px */
-    border-bottom-left-radius: 0.3125rem; /* 5px */
+    padding: 10px 20px; /* 0.625rem 1.25rem */
+    border-top-left-radius: 5px; /* 0.3125rem */
+    border-bottom-left-radius: 5px; /* 0.3125rem */
     border-right: none; /* Hilangkan border kanan */
     border-left: solid 1px #2b2b2c; /* Tambahkan border kiri */
     background-color: transparent; /* Hilangkan background putih */
@@ -272,9 +291,9 @@ td:nth-child(9)  /* Job Departments */ {
 }
 
 .pagination .page-item:last-child .page-link {
-    padding: 0.625rem 1.25rem; /* 10px 20px */
-    border-top-right-radius: 0.3125rem; /* 5px */
-    border-bottom-right-radius: 0.3125rem; /* 5px */
+    padding: 10px 20px; /* 0.625rem 1.25rem */
+    border-top-right-radius: 5px; /* 0.3125rem */
+    border-bottom-right-radius: 5px; /* 0.3125rem */
     border-left: none; /* Hilangkan border kiri */
     border-right: solid 1px #2b2b2c; /* Tambahkan border kanan */
     background-color: transparent; /* Hilangkan background putih */
@@ -297,21 +316,21 @@ td:nth-child(9)  /* Job Departments */ {
 
 .wishlist-button {
     border: 2px solid #9edba9;
-    border-radius: 0.3125rem; /* 5px */
-    padding: 0.625rem 1.25rem; /* 10px 20px */
+    border-radius: 5px; /* 0.3125rem */
+    padding: 10px 20px; /* 0.625rem 1.25rem */
     display: inline-flex;
     align-items: center;
     color: #4A4A4A;
-    font-size: 1.125rem; /* 18px */
+    font-size: 18px; /* 1.125rem */
     font-family: Arial, sans-serif;
     background-color: white;
-    margin-top: 0.625rem; /* 10px */
-    margin-bottom: 0.625rem; /* 10px */
+    margin-top: 10px; /* 0.625rem */
+    margin-bottom: 10px; /* 0.625rem */
     cursor: pointer;
     transition: all 0.3s;
 }
 .wishlist-button img {
-    margin-right: 0.625rem; /* 10px */
+    margin-right: 10px; /* 0.625rem */
 }
 
 @media (max-width: 48.62em) {
@@ -364,22 +383,22 @@ td:nth-child(9)  /* Job Departments */ {
 
     /* Adjust font sizes for smaller screens */
     body {
-        font-size: 0.875em; /* 14px */
+        font-size: 14px; /* 0.875em */
     }
 
     h1 {
-        font-size: 2rem; /* 32px */
+        font-size: 32px; /* 2rem */
     }
 
     .header {
-        font-size: 1em; /* 16px */
+        font-size: 16px; /* 1em */
     }
 
     .filter-section h5 {
-        font-size: 1.125em; /* 18px */
+        font-size: 18px; /* 1.125em */
     }
 
     .wishlist-button {
-        font-size: 1em; /* 16px */
+        font-size: 16px; /* 1em */
     }
 }
