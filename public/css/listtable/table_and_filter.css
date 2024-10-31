@@ -1,12 +1,7 @@
 body {
-    font-family: 'Poppins', sans-serif;
-}
-
-h1 {
-    font-size: 40px; /* 2.5rem */
-    color: #6f42c1;
-    margin-bottom: 30px; /* 1.875rem */
-    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400; /* 400 adalah berat untuk regular */
 }
 
 .search-container {
@@ -69,22 +64,55 @@ h1 {
 }
 
 .filter-section {
-    border: 1px solid #ddd;
-    padding: 20px; /* 1.25rem */
-    border-radius: 20px; /* 1.25rem */
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    padding-top: 0px;
+    width: 250px;
 }
 
-.filter-section h5 {
+.filter-section h6 {
     font-weight: bold;
+    margin-top: 20px;
 }
 
 .filter-section .form-check-label {
     margin-left: 10px; /* 0.625rem */
 }
 
-.filter-section .btn-link {
-    color: #6c757d;
-    text-decoration: none;
+.filter-section label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.filter-section label input {
+    margin-right: 10px;
+}
+
+.filter-section .tag {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 5px 5px 0 0;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+}
+
+.filter-section .others-label {
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.filter-section .others-label i {
+    transition: transform 0.3s;
+}
+
+.filter-section .others-label i.rotate {
+    transform: rotate(180deg);
+}
+
+.filter-section .extra-locations {
+    display: none;
 }
 
 .filter-section .btn-link:hover {
@@ -171,7 +199,7 @@ td:nth-child(1) {
 
 th:nth-child(2),
 td:nth-child(2) {
-    width: 20%; /* Organization Name */
+    width: 10%; /* Organization Name */
 }
 
 th:nth-child(3),
@@ -186,7 +214,7 @@ td:nth-child(4) {
 
 th:nth-child(5),
 td:nth-child(5) {
-    width: 15%; /* Last Funding Type */
+    width: 20%; /* Last Funding Type */
 }
 
 th:nth-child(6),

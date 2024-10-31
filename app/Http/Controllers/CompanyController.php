@@ -166,10 +166,19 @@ class CompanyController extends Controller
     {
         $rowsPerPage = $request->input('rows', 10);
         $companies = Company::getFilteredCompaniesPaginated($request, $rowsPerPage);
-        $companies->appends($request->only(['location', 'industry', 'departments', 'funding_type']));
 
-        // Pass the $request to the view
-        return view('companies.company-list', compact('companies', 'request'));
+        // Append semua parameter yang digunakan untuk filter
+        $companies->appends($request->only([
+            'location',
+            'departments',
+            'business_model',
+            'funding_stage',
+            'search',
+        ]));
+
+        $department = Department::all();
+
+        return view('companies.company-list', compact('companies', 'request', 'department'));
     }
 
     /**

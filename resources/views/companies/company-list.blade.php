@@ -7,16 +7,49 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
 <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
+<style>
+    .breadcrumb {
+        background-color: white;
+        padding: 0;
+    }
 
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: ">";
+        margin-right: 14px;
+        color: #9CA3AF;
+    }
+    .tag {
+        cursor: pointer; /* Menampilkan cursor pointer saat hover */
+        border: 2px solid transparent; /* Border default tidak terlihat */
+        padding: 5px 10px; /* Padding untuk memberikan ruang di dalam tag */
+        border-radius: 5px; /* Sudut border yang melengkung */
+        transition: border-color 0.3s; /* Transisi halus untuk perubahan border */
+    }
 
-<div class="container-fluid">
-    <div class="header d-flex justify-content-between align-items-center">
-        <div>
-            <a href="{{ route('landingpage') }}">Home</a> &gt; <a href="#">Find StartUp</a>
-        </div>
-    </div>
+    .tag:hover {
+        border-color: #6256CA; /* Warna border saat hover */
+    }
 
-    <h1 class="header"><b>Find StartUp</b></h1>
+    .tag.selected {
+        border-color: #6256CA; /* Warna border saat tag aktif */
+        color: #6256CA; /* Mengubah warna teks saat tag aktif */
+        font-weight: bold; /* Menebalkan teks saat tag aktif */
+    }
+</style>
+<div class="container">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" style="margin-bottom: 32px;">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                <a href="{{ route('landingpage') }}" style="text-decoration: none; color: #212B36;">Home</a>
+            </li>
+            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                <a href="#" style="text-decoration: none; color: #212B36;">Find StartUp</a>
+            </li>
+        </ol>
+    </nav>
+
+    <h2 style="margin-bottom: 32px; color: #6256CA;">Find StartUp</h2>
 
     <div class="row">
         <!-- Filter Section -->
@@ -27,69 +60,95 @@
                 <img src="{{ asset('images/filter.svg') }}" alt="Search Icon" style="width: 20px; height: 20px; margin-left: 10px;">
             </div>
             <div class="filter-section">
-                <form method="GET" action="{{ route('companies.list') }}" class="mb-4" id="companySearchForm">
+                <form method="GET" action="{{ route('companies.list') }}" id="companyFilterForm">
                     @csrf
+                    <!-- LOCATION Filter -->
                     <div class="mb-3">
                         <h6>LOCATION</h6>
-                        <input type="text" name="location" class="form-control" placeholder="Location" value="{{ request()->location }}">
+                        <label><input type="checkbox" name="location[]" value="Jakarta" onchange="autoFilter()"> Jakarta</label>
+                        <label><input type="checkbox" name="location[]" value="Bali" onchange="autoFilter()"> Bali</label>
+                        <label><input type="checkbox" name="location[]" value="Yogyakarta" onchange="autoFilter()"> Yogyakarta</label>
+                        <label><input type="checkbox" name="location[]" value="Sumatera Timur" onchange="autoFilter()"> Sumatera Timur</label>
+
+                        <!-- Dropdown Provinsi -->
+                        <div style="display: none;" id="extra-locations">
+                            <h6>PROVINCE</h6>
+                            <select id="province-select" onchange="fetchCitiesByProvince()" style="width: 100%;">
+                                <option value="">Pilih Provinsi</option>
+                                <!-- Provinsi akan diisi oleh JavaScript -->
+                            </select>
+
+                            <!-- Daftar Kota -->
+                            <h6>CITIES</h6>
+                            <div id="cities-checkboxes">
+                                <!-- Checkbox kota akan diisi oleh JavaScript -->
+                            </div>
+                        </div>
+
+                        <label class="others-label" onclick="toggleLocations()">Others <i class="fas fa-chevron-down"></i></label>
                     </div>
 
+                    <!-- DEVELOPMENT STAGE Filter -->
                     <div class="mb-3">
-                        <h6>INDUSTRY</h6>
-                        <input type="text" name="industry" class="form-control" placeholder="Industry" value="{{ request()->industry }}">
+                        <h6>DEVELOPMENT STAGE</h6>
+                        @foreach (['pre_seed', 'seed', 'series_a', 'series_b'] as $stage)
+                            <label><input type="checkbox" name="funding_stage[]" value="{{ $stage }}" onchange="autoFilter()" class="funding-stage"> {{ ucfirst(str_replace('_', ' ', $stage)) }}</label>
+                        @endforeach
+                        <div class="extra-funding" style="display: none;">
+                            @foreach (['series_c', 'series_d', 'series_e', 'series_f', 'series_g', 'series_h', 'series_i', 'series_j', 'venture_series_unknown', 'angel', 'private_equity', 'debt', 'convertible_debt', 'grants', 'revenue_based', 'ipo', 'crowdfunding', 'initial_coin_offering', 'undisclosed'] as $stage)
+                                <label>
+                                    <input type="checkbox" name="funding_stage[]" value="{{ $stage }}" onchange="autoFilter()" class="funding-stage"> {{ ucfirst(str_replace('_', ' ', $stage)) }}
+                                </label>
+                            @endforeach
+                        </div>
+                        <label class="others-funding" onclick="togglefunding()" style="justify-content: space-between"><div>Others</div> <i class="fas fa-chevron-down"></i></label>
                     </div>
 
-                    <div class="mb-3">
-                        <h6>DEPARTMENTS</h6>
-                        <input type="text" name="departments" class="form-control" placeholder="Departments" value="{{ request()->departments }}">
+                  <!-- INDUSTRIES Filter -->
+                    <h6>INDUSTRIES</h6>
+                    <div class="tags-container">
+                        @foreach ($department as $dept)
+                            <div class="tag"
+                                data-filter="departments"
+                                data-value="{{ $dept->name }}">
+                                {{ $dept->name }}
+                            </div>
+                        @endforeach
                     </div>
 
-                    <div class="mb-3">
-                        <h6>FUNDING TYPE</h6>
-                        <select name="funding_type" id="funding_type" class="form-control" onchange="filterByFundingType(this.value)">
-                            <option value="" {{ request()->get('investment_stage') === null ? 'selected' : '' }}>Pilih Tahap Investasi</option>
-                            <option value="pre_seed" {{ request()->get('investment_stage') === 'pre_seed' ? 'selected' : '' }}>Pendanaan Pre-Seed</option>
-                            <option value="seed" {{ request()->get('investment_stage') === 'seed' ? 'selected' : '' }}>Pendanaan Seed</option>
-                            <option value="series_a" {{ request()->get('investment_stage') === 'series_a' ? 'selected' : '' }}>Pendanaan Series A</option>
-                            <option value="series_b" {{ request()->get('investment_stage') === 'series_b' ? 'selected' : '' }}>Pendanaan Series B</option>
-                            <option value="series_c" {{ request()->get('investment_stage') === 'series_c' ? 'selected' : '' }}>Pendanaan Series C</option>
-                            <option value="series_d" {{ request()->get('investment_stage') === 'series_d' ? 'selected' : '' }}>Pendanaan Series D</option>
-                            <option value="series_e" {{ request()->get('investment_stage') === 'series_e' ? 'selected' : '' }}>Pendanaan Series E</option>
-                            <option value="series_f" {{ request()->get('investment_stage') === 'series_f' ? 'selected' : '' }}>Pendanaan Series F</option>
-                            <option value="series_g" {{ request()->get('investment_stage') === 'series_g' ? 'selected' : '' }}>Pendanaan Series G</option>
-                            <option value="series_h" {{ request()->get('investment_stage') === 'series_h' ? 'selected' : '' }}>Pendanaan Series H</option>
-                            <option value="series_i" {{ request()->get('investment_stage') === 'series_i' ? 'selected' : '' }}>Pendanaan Series I</option>
-                            <option value="series_j" {{ request()->get('investment_stage') === 'series_j' ? 'selected' : '' }}>Pendanaan Series J</option>
-                            <option value="venture_series_unknown" {{ request()->get('investment_stage') === 'venture_series_unknown' ? 'selected' : '' }}>Venture - Seri Tidak Diketahui</option>
-                            <option value="angel" {{ request()->get('investment_stage') === 'angel' ? 'selected' : '' }}>Pendanaan Angel</option>
-                            <option value="private_equity" {{ request()->get('investment_stage') === 'private_equity' ? 'selected' : '' }}>Ekuitas Swasta</option>
-                            <option value="debt_financing" {{ request()->get('investment_stage') === 'debt_financing' ? 'selected' : '' }}>Pendanaan Utang</option>
-                            <option value="convertible_note" {{ request()->get('investment_stage') === 'convertible_note' ? 'selected' : '' }}>Nota Konversi</option>
-                            <option value="grant" {{ request()->get('investment_stage') === 'grant' ? 'selected' : '' }}>Hibah</option>
-                            <option value="corporate_round" {{ request()->get('investment_stage') === 'corporate_round' ? 'selected' : '' }}>Putaran Korporat</option>
-                            <option value="equity_crowdfunding" {{ request()->get('investment_stage') === 'equity_crowdfunding' ? 'selected' : '' }}>Crowdfunding Ekuitas</option>
-                            <option value="product_crowdfunding" {{ request()->get('investment_stage') === 'product_crowdfunding' ? 'selected' : '' }}>Crowdfunding Produk</option>
-                            <option value="secondary_market" {{ request()->get('investment_stage') === 'secondary_market' ? 'selected' : '' }}>Pasar Sekunder</option>
-                            <option value="post_ipo_equity" {{ request()->get('investment_stage') === 'post_ipo_equity' ? 'selected' : '' }}>Ekuitas Pasca-IPO</option>
-                            <option value="post_ipo_debt" {{ request()->get('investment_stage') === 'post_ipo_debt' ? 'selected' : '' }}>Utang Pasca-IPO</option>
-                            <option value="post_ipo_secondary" {{ request()->get('investment_stage') === 'post_ipo_secondary' ? 'selected' : '' }}>Sekunder Pasca-IPO</option>
-                            <option value="non_equity_assistance" {{ request()->get('investment_stage') === 'non_equity_assistance' ? 'selected' : '' }}>Bantuan Non-Ekuitas</option>
-                            <option value="initial_coin_offering" {{ request()->get('investment_stage') === 'initial_coin_offering' ? 'selected' : '' }}>Penawaran Koin Awal</option>
-                            <option value="undisclosed" {{ request()->get('investment_stage') === ' undisclosed' ? 'selected' : '' }}>Tidak Diketahui</option>
-                        </select>
+                    <!-- BUSINESS MODEL Filter -->
+                    <h6>BUSINESS MODEL</h6>
+                    <div class="tags-container">
+                        @foreach (['P2P', 'D2C', 'C2C', 'B2B', 'B2B2C', 'B2C'] as $model)
+                            <div class="tag"
+                                data-filter="business_model"
+                                data-value="{{ $model }}">
+                                {{ $model }}
+                            </div>
+                        @endforeach
                     </div>
-                    <button type="submit" class="btn btn-primary">Search</button>
+
+                    <!-- Clear Filters Button -->
+                    <button type="button" onclick="clearFilters()" style="margin-top: 10px;">Clear Filters</button>
+
+                    <!-- Form untuk filter -->
+
+                    <!-- Hidden inputs container -->
+                    <div id="hidden-inputs"></div>
                 </form>
             </div>
         </div>
 
         <!-- Table Section -->
         <div class="col-md-9 table-section">
-            <div class="search-container">
-                <i class="fas fa-search" style="margin-left: 10px;"></i>
-                <input class="form-control" placeholder="Search Data" type="text" style="border: none;">
-                <button class="btn">Search</button>
-            </div>
+            <form method="GET" action="{{ route('companies.list') }}"  id="companySearchForm">
+                @csrf
+                <div class="search-container">
+                    <i class="fas fa-search" style="margin-left: 10px;"></i>
+                    <input class="form-control" placeholder="Search Investors" type="text" name="search" value="{{ request('search') }}" />
+                    <button class="btn" type="submit">Search</button>
+                </div>
+            </form>
 
             {{-- Tempat menaruh tombol wishlist --}}
             <div style="margin: 0px; padding: 0px;  display: flex; justify-content: flex-end;">
@@ -111,14 +170,14 @@
                     <thead>
                         <tr>
                             <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle;"><input type="checkbox" value="all_check" id="select_all"></th>
-                            <th scope="col" class="sub-heading-2" style="vertical-align: middle;">Organization <br> Name</th>
-                            <th scope="col" class="sub-heading-2" style="vertical-align: middle;">Founded <br> Date</th>
-                            <th scope="col" class="sub-heading-2" style="vertical-align: middle;">Last Funding <br> Date</th>
-                            <th scope="col" class="sub-heading-2" style="vertical-align: middle;">Last Funding <br> Type</th>
-                            <th scope="col" class="sub-heading-2" style="vertical-align: middle;">Number of <br> Employees</th>
-                            <th scope="col" class="sub-heading-2" style="vertical-align: middle;">Business Model</th>
-                            <th scope="col" class="sub-heading-2" style="vertical-align: middle;">Description</th>
-                            <th scope="col" class="sub-heading-2" style="border-top-right-radius: 20px; vertical-align: middle;">Job Departments</th>
+                            <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left;">Organization <br> Name</th>
+                            <th scope="col" class="sub-heading-2" style="vertical-align: top;">Founded <br> Date</th>
+                            <th scope="col" class="sub-heading-2" style="vertical-align: top;">Last Funding <br> Date</th>
+                            <th scope="col" class="sub-heading-2" style="vertical-align: top;">Last Funding <br> Type</th>
+                            <th scope="col" class="sub-heading-2" style="vertical-align: top;">Number of <br> Employees</th>
+                            <th scope="col" class="sub-heading-2" style="vertical-align: top;">Business Model</th>
+                            <th scope="col" class="sub-heading-2" style="vertical-align: top;">Description</th>
+                            <th scope="col" class="sub-heading-2" style="border-top-right-radius: 20px; vertical-align: top;">Job Departments</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -127,35 +186,37 @@
                                 <td style="vertical-align: middle;"><input type="checkbox" class="select_company" data-id="{{ $company->id }}"></td>
                                 <td style="vertical-align: middle;">
                                     <div style="display: flex; align-items: center;">
-                                        <div style="margin-right: 5px;">
-                                            <img src="{{ !empty($company->image) ? asset($company->image) : asset('images/logo-maxy.png') }}" alt="" width="50" height="50" style="border-radius: 8px; object-fit:cover;">
+                                        <div style="margin-right: 2px;">
+                                            <img src="{{ !empty($company->image) ? asset($company->image) : asset('images/logo-maxy.png') }}" alt="" width="30" height="30" style="border-radius: 8px; object-fit:cover;">
                                         </div>
                                         <div style="flex-grow: 1; margin-left: 0px; margin-right: 0px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
-                                            @if (strlen($company->nama) > 20)
+                                            @if (strlen($company->nama) > 10)
                                                 title="{{ $company->nama }}"
                                                 style="cursor: pointer;"
                                             @endif
                                         >
-                                            <span>{{ $company->nama }}</span>
+                                            <span class="body-2">{{ $company->nama }}</span>
                                         </div>
-                                        <div style="margin-left: 10px;, margin-right: 0px;">
+                                        <div style="margin-left: 0px; margin-right: 0px;">
                                             <i class="fas fa-search" style="color: #aee1b7;"></i>
                                         </div>
                                     </div>
                                 </td>
-                                <td style="vertical-align: middle;">{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('j M, Y') : 'N/A' }}</td>
-                                <td style="vertical-align: middle;">{{ $company->latest_income_date ? \Carbon\Carbon::parse($company->latest_income_date)->format('j M, Y') : 'N/A' }}</td>
-                                <td style="vertical-align: middle;">
-                                    @if ($company->latest_funding_type)
-                                        <div>{{ $company->latest_funding_type }}</div>
-                                    @else
-                                        No funding data available
-                                    @endif
+                                <td style="vertical-align: middle;" class="body-2">{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('j M, Y') : 'N/A' }}</td>
+                                <td style="vertical-align: middle;" class="body-2">{{ $company->latest_funding_date ? \Carbon\Carbon::parse($company->latest_funding_date)->format('j M, Y') : 'N/A' }}</td>
+                                <td style="vertical-align: middle;" class="body-2">
+                                    <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+                                        @if ($company->funding_stage)
+                                            <div class="funding-stage">{{ $company->funding_stage }}</div>
+                                        @else
+                                            <div>No funding data available</div>
+                                        @endif
+                                    </div>
                                 </td>
-                                <td style="vertical-align: middle;">{{ $company->jumlah_karyawan }}</td>
-                                <td style="vertical-align: middle;">{{ $company->business_model }}</td>
-                                <td style="vertical-align: middle;">{{ Str::limit($company->startup_summary, 20, '...') }}</td>
-                                <td style="vertical-align: middle; cursor: pointer;" title={{ $company->all_departments }}>
+                                <td style="vertical-align: middle;" class="body-2">{{ $company->jumlah_karyawan }}</td>
+                                <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $company->business_model }}</td>
+                                <td style="vertical-align: middle;" class="body-2">{{ Str::limit($company->startup_summary, 20, '...') }}</td>
+                                <td style="vertical-align: middle; cursor: pointer;" title={{ $company->all_departments }} class="body-2">
                                     {{ $company->departments->join(', ') }}
                                 </td>
                             </tr>
@@ -179,8 +240,8 @@
                         </div>
                     </div>
                 </form>
-                <div>
-                    {{ $companies->appends($request->only(['location', 'industry', 'departments', 'funding_type']))->links('pagination::bootstrap-4') }}
+                <div style="margin-top: 10px;">
+                    {{ $companies->appends($request->only(['location', 'industry', 'departments', 'funding_stage','search']))->links('pagination::bootstrap-4') }}
                 </div>
             </div>
         </div>
@@ -189,10 +250,6 @@
 
 <!-- Handle form submission -->
 <script>
-    document.getElementById('funding_type').addEventListener('change', function() {
-        document.getElementById('companySearchForm').submit();
-    });
-
     // Handle row click event and checkbox logic
     document.querySelectorAll('tr[data-href]').forEach(tr => {
         tr.addEventListener('click', function(e) {
@@ -247,11 +304,287 @@
         document.getElementById('wishlist-form').submit();
     });
 </script>
+
+{{-- script untuk ngeformat funding_stage --}}
 <script>
-    function filterByFundingType(fundingType) {
-        var form = document.getElementById('companySearchForm');
-        form.action = '{{ route('companies.list') }}';
-        form.submit();
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.funding-stage').forEach(function(element) {
+            // Mengambil teks dari label yang bersangkutan
+            const labelText = element.textContent.trim();
+            element.textContent = formatFundingStage(labelText);
+        });
+    });
+
+    // Fungsi untuk format tampilan funding stage
+    function formatFundingStage(text) {
+        // Mengganti underscore dengan spasi
+        let formatted = text.replace(/_/g, ' ');
+
+        // Mengubah huruf pertama menjadi kapital dan sisanya menjadi huruf kecil
+        if (formatted.length > 0) {
+            formatted = formatted.charAt(0).toUpperCase() + formatted.slice(1).toLowerCase();
+        }
+
+        return formatted;
     }
 </script>
+
+{{-- script untuk memunculkan lebih banyak pilihan --}}
+<script>
+    function toggleLocations() {
+        const extraLocations = document.querySelector('.extra-locations');
+        const othersLabel = document.querySelector('.others-label');
+
+        if (extraLocations.style.display === "none" || extraLocations.style.display === "") {
+            extraLocations.style.display = "block";
+            othersLabel.innerHTML = 'Others <i class="fas fa-chevron-up"></i>';
+        } else {
+            extraLocations.style.display = "none";
+            othersLabel.innerHTML = 'Others <i class="fas fa-chevron-down"></i>';
+        }
+    }
+
+    function togglefunding() {
+        const extraFunding = document.querySelector('.extra-funding');
+        const othersFunding = document.querySelector('.others-funding');
+
+        if (extraFunding.style.display === "none" || extraFunding.style.display === "") {
+            extraFunding.style.display = "block";
+            othersFunding.innerHTML = 'Others <i class="fas fa-chevron-up"></i>';
+        } else {
+            extraFunding.style.display = "none";
+            othersFunding.innerHTML = 'Others <i class="fas fa-chevron-down"></i>';
+        }
+    }
+</script>
+
+{{-- Filter untuk search --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Menyimpan nilai pencarian ke localStorage saat form di-submit
+        document.getElementById('companySearchForm').addEventListener('submit', function() {
+            localStorage.setItem('companySearch', document.querySelector('input[name="search"]').value);
+        });
+
+        // Mengisi input pencarian dengan nilai dari localStorage saat halaman dimuat
+        var savedSearch = localStorage.getItem('companySearch');
+        if (savedSearch) {
+            document.querySelector('input[name="search"]').value = savedSearch;
+        }
+    });
+</script>
+
+<script>
+    // Fungsi untuk menyimpan status checkbox
+    function saveCheckboxState() {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            localStorage.setItem(checkbox.value, checkbox.checked);
+        });
+    }
+
+    // Fungsi untuk memuat status checkbox
+    function loadCheckboxState() {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            const checked = localStorage.getItem(checkbox.value) === 'true';
+            checkbox.checked = checked;
+        });
+    }
+
+    // Fungsi untuk mengirimkan form ketika checkbox berubah
+    function autoFilterCheckbox() {
+        saveCheckboxState();
+        document.getElementById('companyFilterForm').submit();
+    }
+
+    // Initialize checkbox functionality
+    document.addEventListener('DOMContentLoaded', () => {
+        loadCheckboxState();
+
+        // Setup checkbox change listeners
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', autoFilterCheckbox);
+        });
+    });
+</script>
+
+{{-- bagian khusus tag  --}}
+<script>
+    // Fungsi untuk toggle filter
+    function toggleFilter(tagElement) {
+        tagElement.classList.toggle('selected');
+        autoFilter();
+    }
+
+    // Fungsi untuk mengirimkan form secara otomatis
+    function autoFilter() {
+        const form = document.getElementById('companyFilterForm');
+        const hiddenInputsContainer = document.getElementById('hidden-inputs');
+
+        // Bersihkan hidden inputs yang ada
+        hiddenInputsContainer.innerHTML = '';
+
+        // Proses departments tags
+        const selectedDepartments = document.querySelectorAll('.tag[data-filter="departments"].selected');
+        selectedDepartments.forEach(tag => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'departments[]';
+            input.value = tag.getAttribute('data-value');
+            hiddenInputsContainer.appendChild(input);
+        });
+
+        // Proses business model tags
+        const selectedBusinessModels = document.querySelectorAll('.tag[data-filter="business_model"].selected');
+        selectedBusinessModels.forEach(tag => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'business_model[]';
+            input.value = tag.getAttribute('data-value');
+            hiddenInputsContainer.appendChild(input);
+        });
+
+        // Debug: Log selected values
+        console.log('Selected Departments:', Array.from(selectedDepartments).map(tag => tag.getAttribute('data-value')));
+        console.log('Selected Business Models:', Array.from(selectedBusinessModels).map(tag => tag.getAttribute('data-value')));
+
+        // Simpan status ke localStorage
+        saveFilterState();
+
+        // Submit form
+        form.submit();
+    }
+
+    // Fungsi untuk menyimpan status filter ke localStorage
+    function saveFilterState() {
+        const selectedTags = {
+            departments: Array.from(document.querySelectorAll('.tag[data-filter="departments"].selected'))
+                .map(tag => tag.getAttribute('data-value')),
+            business_model: Array.from(document.querySelectorAll('.tag[data-filter="business_model"].selected'))
+                .map(tag => tag.getAttribute('data-value'))
+        };
+        localStorage.setItem('selectedTags', JSON.stringify(selectedTags));
+    }
+
+    // Fungsi untuk memuat status filter dari localStorage
+    function loadFilterState() {
+        const savedTags = JSON.parse(localStorage.getItem('selectedTags'));
+        if (savedTags) {
+            // Restore departments
+            if (savedTags.departments) {
+                savedTags.departments.forEach(value => {
+                    const tag = document.querySelector(`.tag[data-filter="departments"][data-value="${value}"]`);
+                    if (tag) tag.classList.add('selected');
+                });
+            }
+
+            // Restore business models
+            if (savedTags.business_model) {
+                savedTags.business_model.forEach(value => {
+                    const tag = document.querySelector(`.tag[data-filter="business_model"][data-value="${value}"]`);
+                    if (tag) tag.classList.add('selected');
+                });
+            }
+        }
+    }
+
+    // Fungsi untuk membersihkan semua filter tag
+    function clearFilters() {
+        document.querySelectorAll('.tag').forEach(tag => {
+            tag.classList.remove('selected');
+        });
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.checked = false;
+            localStorage.removeItem(checkbox.value);
+        });
+        document.getElementById('companyFilterForm').submit();
+        localStorage.removeItem('selectedTags');
+        document.getElementById('companyFilterForm').submit();
+    }
+
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        loadFilterState();
+
+        // Tambahkan event listener untuk setiap tag
+        document.querySelectorAll('.tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                toggleFilter(this);
+            });
+        });
+    });
+</script>
+
+{{-- script untuk mengambil data kota dari API --}}
+<script>
+    // URL untuk API provinsi dan kota
+    const provinceApiUrl = 'https://xenodrom31.github.io/api-wilayah-indonesia/api/provinces.json';
+    const cityApiUrlBase = 'https://xenodrom31.github.io/api-wilayah-indonesia/api/regencies/';
+
+    // Fungsi untuk menampilkan atau menyembunyikan extra locations
+    function toggleLocations() {
+        const extraLocationsDiv = document.getElementById('extra-locations');
+        extraLocationsDiv.style.display = extraLocationsDiv.style.display === 'none' ? 'block' : 'none';
+        if (extraLocationsDiv.style.display === 'block') {
+            fetchProvinces(); // Muat provinsi saat "Others" diklik
+        }
+    }
+
+    // Fungsi untuk mengambil dan menampilkan daftar provinsi
+    function fetchProvinces() {
+        fetch(provinceApiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const provinceSelect = document.getElementById('province-select');
+                provinceSelect.innerHTML = '<option value="">Pilih Provinsi</option>'; // Clear dan isi ulang
+                data.forEach(province => {
+                    const option = document.createElement('option');
+                    option.value = province.id; // Menyimpan ID provinsi
+                    option.textContent = province.name; // Menampilkan nama provinsi
+                    provinceSelect.appendChild(option);
+                });
+                provinceSelect.onchange = fetchCitiesByProvince; // Panggil fungsi untuk mengambil kota saat provinsi dipilih
+            })
+            .catch(error => console.error('Error fetching provinces:', error));
+    }
+
+    // Fungsi untuk mengambil daftar kota berdasarkan provinsi yang dipilih
+    function fetchCitiesByProvince() {
+        const provinceId = document.getElementById('province-select').value; // Ambil ID provinsi terpilih
+        if (!provinceId) {
+            document.getElementById('cities-checkboxes').innerHTML = ''; // Kosongkan kota jika tidak ada provinsi terpilih
+            return;
+        }
+
+        const cityApiUrl = `${cityApiUrlBase}${provinceId}.json`; // Buat URL API kota
+        fetch(cityApiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const citiesCheckboxes = document.getElementById('cities-checkboxes');
+                citiesCheckboxes.innerHTML = ''; // Kosongkan kota sebelumnya
+                data.forEach(city => {
+                    const label = document.createElement('label');
+                    label.innerHTML = `<input type="checkbox" name="location[]" value="${city.name}" onchange="autoFilter()"> ${city.name}`;
+                    citiesCheckboxes.appendChild(label);
+                });
+            })
+            .catch(error => console.error('Error fetching cities:', error));
+    }
+
+    // Memanggil fetchProvinces saat dokumen dimuat
+    document.addEventListener('DOMContentLoaded', fetchProvinces);
+</script>
+
+
 @endsection

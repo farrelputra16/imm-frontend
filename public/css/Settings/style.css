@@ -16,16 +16,19 @@ h1, h2, h3, h4 {
 h1 {
     font-size: 4rem; /* 64px */
     font-weight: 700;
+    color: #6256CA;
 }
 
 h2 {
     font-size: 3rem; /* 48px */
     font-weight: 700;
+    color: #6256CA;
 }
 
 h3 {
     font-size: 2rem; /* 32px */
     font-weight: 700;
+    color: #6256CA;
 }
 
 h4 {
