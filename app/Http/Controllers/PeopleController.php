@@ -86,7 +86,7 @@ class PeopleController extends Controller
         $people->update($validatedData);
 
         // Redirect kembali ke halaman profil dengan pesan sukses
-        return redirect()->route('people.home')->with('success', 'Profile updated successfully.');
+        return redirect()->route('peoplepage.profile')->with('success', 'Profile updated successfully.');
     }
 
 }
