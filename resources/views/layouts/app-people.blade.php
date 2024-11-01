@@ -332,6 +332,8 @@
         <div class="wrapper">
             <div style="padding: 20px;">
         @yield('content')
+        @yield('js')
+
         </div>
         </div>
 
