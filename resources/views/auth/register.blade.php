@@ -325,7 +325,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="people_gmail">Gmail</label>
+                            <label for="people_gmail">Email</label>
                             <input type="email" id="people_gmail" name="people_gmail" placeholder="Masukkan Gmail" value="{{ old('people_gmail') }}" required />
                         </div>
                         <div class="form-group">
