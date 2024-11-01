@@ -3,6 +3,7 @@
 
 @section('css')
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 
 <style>
     body {
@@ -170,14 +171,18 @@
                     </div>
 
                     {{-- Field Umum --}}
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="nama_depan">Nama Depan</label>
-                            <input type="text" id="nama_depan" name="nama_depan" placeholder="Masukkan nama depan anda" value="{{ old('nama_depan') }}" required />
+                    <div class="form-row" style="display: none;" id="field-umum">
+                        <div class="col-md-6">
+                            <div class="form-group" style="width: 100%;">
+                                <label for="nama_depan">Nama Depan</label>
+                                <input type="text" id="nama_depan" name="nama_depan" class="form-control full-width" placeholder="Masukkan nama depan anda" value="{{ old('nama_depan') }}" required />
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="nama_belakang">Nama Belakang</label>
-                            <input type="text" id="nama_belakang" name="nama_belakang" placeholder="Masukkan nama belakang anda" value="{{ old('nama_belakang') }}" required />
+                        <div class="col-md-6">
+                            <div class="form-group" style="width: 100%; margin-right: 0px;">
+                                <label for="nama_belakang">Nama Belakang</label>
+                                <input type="text" id="nama_belakang" name="nama_belakang" class="form-control full-width" placeholder="Masukkan nama belakang anda" value="{{ old('nama_belakang') }}" required />
+                            </div>
                         </div>
                     </div>
 
@@ -333,18 +338,22 @@
                         </div>
                     </div>
 
-                    {{-- Field Umum untuk Semua Role --}}
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" placeholder="Masukkan email anda" value="{{ old('email') }}" required />
+                    {{-- Field Umum untuk Email dan Password --}}
+                    <div class="form-row" style="display: none width: 100%;" id="field-umum-email">
+                        <div class="col-md-6">
+                            <div class="form-group" style="width: 100%;">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" class="form-control full-width" placeholder="Masukkan email anda" value="{{ old('email') }}" required />
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="password">Kata Sandi</label>
-                            <input type="password" id="password" name="password" placeholder="Masukkan kata sandi anda" required minlength="8" />
+                        <div class="col-md-6">
+                            <div class="form-group" style="width: 100%;">
+                                <label for="password">Kata Sandi</label>
+                                <input type="password" id="password" name="password" class="form-control full-width" placeholder="Masukkan kata sandi anda" required minlength="8" />
+                            </div>
                         </div>
                     </div>
-                    <div class="form-row">
+                    <div class="form-row" style="display: hidden;" id="field-validasi-password">
                         <div class="form-group">
                             <label for="confirmPassword">Konfirmasi Kata Sandi</label>
                             <input type="password" id="confirmPassword" name="password_confirmation" placeholder="Konfirmasi kata sandi anda" required />
@@ -367,6 +376,9 @@
             const userFields = document.getElementById('userFields');
             const investorFields = document.getElementById('investorFields');
             const peopleFields = document.getElementById('peopleFields');
+            const fieldUmum = document.getElementById('field-umum');
+            const fieldUmumEmail = document.getElementById('field-umum-email');
+            const fieldValidasiPassword = document.getElementById('field-validasi-password');
 
             function removeRequiredAttributes(section) {
                 const inputs = section.querySelectorAll('input, select, textarea');
@@ -384,14 +396,36 @@
 
             function toggleFields() {
                 const selectedRole = roleSelect.value;
+
+                // Sembunyikan semua field spesifik role
                 userFields.style.display = 'none';
                 investorFields.style.display = 'none';
                 peopleFields.style.display = 'none';
 
+                // Hapus required attributes dari semua field
                 removeRequiredAttributes(userFields);
                 removeRequiredAttributes(investorFields);
                 removeRequiredAttributes(peopleFields);
+                removeRequiredAttributes(fieldUmum);
+                removeRequiredAttributes(fieldUmumEmail);
 
+                // Jika role belum dipilih, kembalikan ke tampilan default
+                if (!selectedRole) {
+                    fieldUmum.style.display = 'none';
+                    fieldUmumEmail.style.display = 'none';
+                    fieldValidasiPassword.style.display = 'none';
+                    return;
+                }
+
+                // Tampilkan field umum dan tambahkan required attributes
+                fieldUmum.style.display = 'flex';
+                fieldUmumEmail.style.display = 'flex';
+                fieldValidasiPassword.style.display = 'flex';
+                addRequiredAttributes(fieldUmum);
+                addRequiredAttributes(fieldUmumEmail);
+                addRequiredAttributes(fieldValidasiPassword);
+
+                // Tampilkan field sesuai role yang dipilih
                 if (selectedRole === 'USER') {
                     userFields.style.display = 'block';
                     addRequiredAttributes(userFields);
@@ -403,9 +437,10 @@
                     addRequiredAttributes(peopleFields);
                 }
             }
-
+            // Jalankan toggleFields saat halaman dimuat
             toggleFields();
 
+            // Tambahkan event listener untuk perubahan role
             roleSelect.addEventListener('change', toggleFields);
         });
 
