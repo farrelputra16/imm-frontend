@@ -69,24 +69,20 @@ class PeopleController extends Controller
 
         // Validasi input dari form
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
             'role' => 'required|in:Mentor,Pekerja,Konsultan',
             'primary_job_title' => 'nullable|string|max:255',
             'primary_organization' => 'nullable|string|max:255',
             'location' => 'nullable|string|max:255',
             'regions' => 'nullable|string|max:255',
-            'gender' => 'required|in:Laki-laki,Perempuan',
             'linkedin_link' => 'nullable|url',
             'description' => 'nullable|string',
-            'phone_number' => 'required|string|max:15',
-            'gmail' => 'required|email|max:255',
         ]);
 
         // Update data people berdasarkan input
         $people->update($validatedData);
 
         // Redirect kembali ke halaman profil dengan pesan sukses
-        return redirect()->route('peoplepage.profile')->with('success', 'Profile updated successfully.');
+        return redirect()->route('people.profile')->with('success', 'Profile updated successfully.');
     }
 
 }

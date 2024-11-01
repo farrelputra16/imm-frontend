@@ -246,12 +246,36 @@
         const saveButton = section.querySelector(".save-btn");
         const editButton = section.querySelector(".edit-btn");
 
-        // Toggle disabled attribute and display states
+        // Toggle disabled state of input fields
         editElements.forEach(editEl => {
             editEl.disabled = !editEl.disabled;
         });
-        saveButton.style.display = saveButton.style.display === "none" ? "inline-block" : "none";
-        editButton.style.display = editButton.style.display === "none" ? "inline-block" : "none";
+
+        // Toggle visibility of save and edit buttons
+        if (saveButton.style.display === "none") {
+            saveButton.style.display = "inline-block";
+            editButton.style.display = "none";
+        } else {
+            saveButton.style.display = "none";
+            editButton.style.display = "inline-block";
+        }
     }
+
+    // Enable all fields in the form before submitting
+    document.querySelectorAll('.save-btn').forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default submission to enable fields first
+
+            // Enable all form fields before submitting the form
+            document.querySelectorAll('input, select, textarea').forEach(editEl => {
+                editEl.disabled = false;
+            });
+
+            // Submit the form after enabling fields
+            button.closest('form').submit();
+        });
+    });
 </script>
+
+
 @endsection
