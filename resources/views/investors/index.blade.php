@@ -99,11 +99,11 @@
                     <!-- DEVELOPMENT STAGE Filter -->
                     <div class="mb-3">
                         <h6>INVESTMENT STAGE</h6>
-                        @foreach (['pre_seed', 'seed', 'series_a', 'series_b'] as $stage)
+                        @foreach (['Pre Seed', 'seed', 'Series A', 'Series B'] as $stage)
                             <label><input type="checkbox" name="investment_stage[]" value="{{ $stage }}" onchange="autoFilter()" class="investment-stage"> {{ ucfirst(str_replace('_', ' ', $stage)) }}</label>
                         @endforeach
                         <div class="extra-funding" style="display: none;">
-                            @foreach (['series_c', 'series_d', 'series_e', 'series_f', 'series_g', 'series_h', 'series_i', 'series_j', 'venture_series_unknown', 'angel', 'private_equity', 'debt', 'convertible_debt', 'grants', 'revenue_based', 'ipo', 'crowdfunding', 'initial_coin_offering', 'undisclosed'] as $stage)
+                            @foreach (['Series C', 'Series D', 'Series E', 'Series F', 'Series G', 'Series H', 'Series I', 'Series J', 'venture_series_unknown', 'angel', 'private_equity', 'debt', 'convertible_debt', 'grants', 'revenue_based', 'ipo', 'crowdfunding', 'initial_coin_offering', 'undisclosed'] as $stage)
                                 <label>
                                     <input type="checkbox" name="investment_stage[]" value="{{ $stage }}" onchange="autoFilter()" class="investment-stage"> {{ ucfirst(str_replace('_', ' ', $stage)) }}
                                 </label>

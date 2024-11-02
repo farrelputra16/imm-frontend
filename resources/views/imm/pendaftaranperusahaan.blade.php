@@ -130,18 +130,18 @@
                         <label for="funding_stage">Funding Stage</label>
                         <select name="funding_stage" id="funding_stage" class="form-control" required>
                             <option value="" disabled selected>Pilih Funding Stage</option>
-                            <option value="pre_seed">Pre-Seed</option>
+                            <option value="Pre Seed">Pre-Seed</option>
                             <option value="seed">Seed</option>
-                            <option value="series_a">Series A</option>
-                            <option value="series_b">Series B</option>
-                            <option value="series_c">Series C</option>
-                            <option value="series_d">Series D</option>
-                            <option value="series_e">Series E</option>
-                            <option value="series_f">Series F</option>
-                            <option value="series_g">Series G</option>
-                            <option value="series_h">Series H</option>
-                            <option value="series_i">Series I</option>
-                            <option value="series_j">Series J</option>
+                            <option value="Series A">Series A</option>
+                            <option value="Series B">Series B</option>
+                            <option value="Series C">Series C</option>
+                            <option value="Series D">Series D</option>
+                            <option value="Series E">Series E</option>
+                            <option value="Series F">Series F</option>
+                            <option value="Series G">Series G</option>
+                            <option value="Series H">Series H</option>
+                            <option value="Series I">Series I</option>
+                            <option value="Series J">Series J</option>
                             <option value="venture_series_unknown">Venture - Series Unknown</option>
                             <option value="angel">Angel</option>
                             <option value="private_equity">Private Equity</option>
@@ -196,6 +196,7 @@
                             Please select a company type.
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label for="impactTags">Tag untuk department apa saja yang ada di perusahaan anda</label>
                         <button class="tag-button" data-toggle="modal" data-target="#tagModal">

@@ -41,18 +41,18 @@
                         <h6>FUNDING TYPE</h6>
                         <select name="funding_type" id="funding_type" class="form-control">
                             <option value="" {{ request()->get('funding_type') === null ? 'selected' : '' }}>Tipe Pendanaan</option>
-                            <option value="pre_seed" {{ request()->get('funding_type') === 'pre_seed' ? 'selected' : '' }}>Pendanaan Pre-Seed</option>
+                            <option value="Pre Seed" {{ request()->get('funding_type') === 'Pre Seed' ? 'selected' : '' }}>Pendanaan Pre-Seed</option>
                             <option value="seed" {{ request()->get('funding_type') === 'seed' ? 'selected' : '' }}>Pendanaan Seed</option>
-                            <option value="series_a" {{ request()->get('funding_type') === 'series_a' ? 'selected' : '' }}>Pendanaan Series A</option>
-                            <option value="series_b" {{ request()->get('funding_type') === 'series_b' ? 'selected' : '' }}>Pendanaan Series B</option>
-                            <option value="series_c" {{ request()->get('funding_type') === 'series_c' ? 'selected' : '' }}>Pendanaan Series C</option>
-                            <option value="series_d" {{ request()->get('funding_type') === 'series_d' ? 'selected' : '' }}>Pendanaan Series D</option>
-                            <option value="series_e" {{ request()->get('funding_type') === 'series_e' ? 'selected' : '' }}>Pendanaan Series E</option>
-                            <option value="series_f" {{ request()->get('funding_type') === 'series_f' ? 'selected' : '' }}>Pendanaan Series F</option>
-                            <option value="series_g" {{ request()->get('funding_type') === 'series_g' ? 'selected' : '' }}>Pendanaan Series G</option>
-                            <option value="series_h" {{ request()->get('funding_type') === 'series_h' ? 'selected' : '' }}>Pendanaan Series H</option>
-                            <option value="series_i" {{ request()->get('funding_type') === 'series_i' ? 'selected' : '' }}>Pendanaan Series I</option>
-                            <option value="series_j" {{ request()->get('funding_type') === 'series_j' ? 'selected' : '' }}>Pendanaan Series J</option>
+                            <option value="Series A" {{ request()->get('funding_type') === 'Series A' ? 'selected' : '' }}>Pendanaan Series A</option>
+                            <option value="Series B" {{ request()->get('funding_type') === 'Series B' ? 'selected' : '' }}>Pendanaan Series B</option>
+                            <option value="Series C" {{ request()->get('funding_type') === 'Series C' ? 'selected' : '' }}>Pendanaan Series C</option>
+                            <option value="Series D" {{ request()->get('funding_type') === 'Series D' ? 'selected' : '' }}>Pendanaan Series D</option>
+                            <option value="Series E" {{ request()->get('funding_type') === 'Series E' ? 'selected' : '' }}>Pendanaan Series E</option>
+                            <option value="Series F" {{ request()->get('funding_type') === 'Series F' ? 'selected' : '' }}>Pendanaan Series F</option>
+                            <option value="Series G" {{ request()->get('funding_type') === 'Series G' ? 'selected' : '' }}>Pendanaan Series G</option>
+                            <option value="Series H" {{ request()->get('funding_type') === 'Series H' ? 'selected' : '' }}>Pendanaan Series H</option>
+                            <option value="Series I" {{ request()->get('funding_type') === 'Series I' ? 'selected' : '' }}>Pendanaan Series I</option>
+                            <option value="Series J" {{ request()->get('funding_type') === 'Series J' ? 'selected' : '' }}>Pendanaan Series J</option>
                             <option value="venture_series_unknown" {{ request()->get('funding_type') === 'venture_series_unknown' ? 'selected' : '' }}>Venture - Seri Tidak Diketahui</option>
                             <option value="angel" {{ request()->get('funding_type') === 'angel' ? 'selected' : '' }}>Pendanaan Angel</option>
                             <option value="private_equity" {{ request()->get('funding_type') === 'private_equity' ? 'selected' : '' }}>Ekuitas Swasta</option>

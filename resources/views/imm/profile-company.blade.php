@@ -486,18 +486,18 @@
                             <label for="funding_stage">Funding Stage Perusahaan</label>
                             <select name="funding_stage" id="funding_stage" class="form-control" required readonly>
                                 <option value="" disabled>Pilih Funding Stage Perusahaan</option>
-                                <option value="pre_seed" @if($company->funding_stage == 'pre_seed') selected @endif>Pre-Seed</option>
+                                <option value="Pre Seed" @if($company->funding_stage == 'Pre Seed') selected @endif>Pre-Seed</option>
                                 <option value="seed" @if($company->funding_stage == 'seed') selected @endif>Seed</option>
-                                <option value="series_a" @if($company->funding_stage == 'series_a') selected @endif>Series A</option>
-                                <option value="series_b" @if($company->funding_stage == 'series_b') selected @endif>Series B</option>
-                                <option value="series_c" @if($company->funding_stage == 'series_c') selected @endif>Series C</option>
-                                <option value="series_d" @if($company->funding_stage == 'series_d') selected @endif>Series D</option>
-                                <option value="series_e" @if($company->funding_stage == 'series_e') selected @endif>Series E</option>
-                                <option value="series_f" @if($company->funding_stage == 'series_f') selected @endif>Series F</option>
-                                <option value="series_g" @if($company->funding_stage == 'series_g') selected @endif>Series G</option>
-                                <option value="series_h" @if($company->funding_stage == 'series_h') selected @endif>Series H</option>
-                                <option value="series_i" @if($company->funding_stage == 'series_i') selected @endif>Series I</option>
-                                <option value="series_j" @if($company->funding_stage == 'series_j') selected @endif>Series J</option>
+                                <option value="Series A" @if($company->funding_stage == 'Series A') selected @endif>Series A</option>
+                                <option value="Series B" @if($company->funding_stage == 'Series B') selected @endif>Series B</option>
+                                <option value="Series C" @if($company->funding_stage == 'Series C') selected @endif>Series C</option>
+                                <option value="Series D" @if($company->funding_stage == 'Series D') selected @endif>Series D</option>
+                                <option value="Series E" @if($company->funding_stage == 'Series E') selected @endif>Series E</option>
+                                <option value="Series F" @if($company->funding_stage == 'Series F') selected @endif>Series F</option>
+                                <option value="Series G" @if($company->funding_stage == 'Series G') selected @endif>Series G</option>
+                                <option value="Series H" @if($company->funding_stage == 'Series H') selected @endif>Series H</option>
+                                <option value="Series I" @if($company->funding_stage == 'Series I') selected @endif>Series I</option>
+                                <option value="Series J" @if($company->funding_stage == 'Series J') selected @endif>Series J</option>
                                 <option value="venture_series_unknown" @if($company->funding_stage == 'venture_series_unknown') selected @endif>Venture - Series Unknown</option>
                                 <option value="angel" @if($company->funding_stage == 'angel') selected @endif>Angel</option>
                                 <option value="private_equity" @if($company->funding_stage == 'private_equity') selected @endif>Private Equity</option>

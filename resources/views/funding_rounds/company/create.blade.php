@@ -42,18 +42,18 @@
             <label for="funding_stage" class="form-label">Funding Stage</label>
             <select class="form-control" id="funding_stage" name="funding_stage">
                 <option value="" {{ old('funding_stage') === null ? 'selected' : '' }}>Tipe Pendanaan</option>
-                <option value="pre_seed" {{ old('funding_stage') === 'pre_seed' ? 'selected' : '' }}>Pendanaan Pre-Seed</option>
+                <option value="Pre Seed" {{ old('funding_stage') === 'Pre Seed' ? 'selected' : '' }}>Pendanaan Pre-Seed</option>
                 <option value="seed" {{ old('funding_stage') === 'seed' ? 'selected' : '' }}>Pendanaan Seed</option>
-                <option value="series_a" {{ old('funding_stage') === 'series_a' ? 'selected' : '' }}>Pendanaan Series A</option>
-                <option value="series_b" {{ old('funding_stage') === 'series_b' ? 'selected' : '' }}>Pendanaan Series B</option>
-                <option value="series_c" {{ old('funding_stage') === 'series_c' ? 'selected' : '' }}>Pendanaan Series C</option>
-                <option value="series_d" {{ old('funding_stage') === 'series_d' ? 'selected' : '' }}>Pendanaan Series D</option>
-                <option value="series_e" {{ old('funding_stage') === 'series_e' ? 'selected' : '' }}>Pendanaan Series E</option>
-                <option value="series_f" {{ old('funding_stage') === 'series_f' ? 'selected' : '' }}>Pendanaan Series F</option>
-                <option value="series_g" {{ old('funding_stage') === 'series_g' ? 'selected' : '' }}>Pendanaan Series G</option>
-                <option value="series_h" {{ old('funding_stage') === 'series_h' ? 'selected' : '' }}>Pendanaan Series H</option>
-                <option value="series_i" {{ old('funding_stage') === 'series_i' ? 'selected' : '' }}>Pendanaan Series I</option>
-                <option value="series_j" {{ old('funding_stage') === 'series_j' ? 'selected' : '' }}>Pendanaan Series J</option>
+                <option value="Series A" {{ old('funding_stage') === 'Series A' ? 'selected' : '' }}>Pendanaan Series A</option>
+                <option value="Series B" {{ old('funding_stage') === 'Series B' ? 'selected' : '' }}>Pendanaan Series B</option>
+                <option value="Series C" {{ old('funding_stage') === 'Series C' ? 'selected' : '' }}>Pendanaan Series C</option>
+                <option value="Series D" {{ old('funding_stage') === 'Series D' ? 'selected' : '' }}>Pendanaan Series D</option>
+                <option value="Series E" {{ old('funding_stage') === 'Series E' ? 'selected' : '' }}>Pendanaan Series E</option>
+                <option value="Series F" {{ old('funding_stage') === 'Series F' ? 'selected' : '' }}>Pendanaan Series F</option>
+                <option value="Series G" {{ old('funding_stage') === 'Series G' ? 'selected' : '' }}>Pendanaan Series G</option>
+                <option value="Series H" {{ old('funding_stage') === 'Series H' ? 'selected' : '' }}>Pendanaan Series H</option>
+                <option value="Series I" {{ old('funding_stage') === 'Series I' ? 'selected' : '' }}>Pendanaan Series I</option>
+                <option value="Series J" {{ old('funding_stage') === 'Series J' ? 'selected' : '' }}>Pendanaan Series J</option>
                 <option value="venture_series_unknown" {{ old('funding_stage') === 'venture_series_unknown' ? 'selected' : '' }}>Venture - Seri Tidak Diketahui</option>
                 <option value="angel" {{ old('funding_stage') === 'angel' ? 'selected' : '' }}>Pendanaan Angel</option>
                 <option value="private_equity" {{ old('funding_stage') === 'private_equity' ? 'selected' : '' }}>Ekuitas Swasta</option>

@@ -26,18 +26,18 @@
     @php
         // Mapping antara funding type dan label yang ingin ditampilkan
         $fundingTypes = [
-           'pre_seed' => 'Pre-Seed',
+           'Pre Seed' => 'Pre-Seed',
             'seed' => 'Seed',
-            'series_a' => 'Series A',
-            'series_b' => 'Series B',
-            'series_c' => 'Series C',
-            'series_d' => 'Series D',
-            'series_e' => 'Series E',
-            'series_f' => 'Series F', // Jika Anda ingin menambahkan ini
-            'series_g' => 'Series G', // Jika Anda ingin menambahkan ini
-            'series_h' => 'Series H', // Jika Anda ingin menambahkan ini
-            'series_i' => 'Series I', // Jika Anda ingin menambahkan ini
-            'series_j' => 'Series J', // Jika Anda ingin menambahkan ini
+            'Series A' => 'Series A',
+            'Series B' => 'Series B',
+            'Series C' => 'Series C',
+            'Series D' => 'Series D',
+            'Series E' => 'Series E',
+            'Series F' => 'Series F', // Jika Anda ingin menambahkan ini
+            'Series G' => 'Series G', // Jika Anda ingin menambahkan ini
+            'Series H' => 'Series H', // Jika Anda ingin menambahkan ini
+            'Series I' => 'Series I', // Jika Anda ingin menambahkan ini
+            'Series J' => 'Series J', // Jika Anda ingin menambahkan ini
             'venture_series_unknown' => 'Venture - Seri Tidak Diketahui',
             'angel' => 'Angel',
             'private_equity' => 'Ekuitas Swasta',

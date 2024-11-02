@@ -21,4 +21,8 @@ class Department extends Model
     {
         return $this->hasMany(Team::class);
     }
+    public function investor()
+    {
+        return $this->belongsToMany(InvestorDepartment::class, 'investor_departments');
+    }
 }

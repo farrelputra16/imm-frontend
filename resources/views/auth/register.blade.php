@@ -125,6 +125,74 @@
         width: 100%;
     }
 
+    .search-container {
+        padding: 10px 20px;
+        border-bottom: 1px solid transparent;
+        z-index: 1;
+    }
+
+    .search-bar::placeholder {
+        color: #ffffff;
+    }
+
+    .search-icon {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #ffffff;
+        pointer-events: none;
+    }
+
+    .modal-body-scrollable {
+        max-height: 350px;
+        overflow-y: auto;
+        padding: 20px;
+    }
+
+    .tag-cloud {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .tag-button {
+        display: inline-block;
+        padding: 8px 15px;
+        margin: 5px;
+        font-size: 14px;
+        border: 1px solid #6256ca;
+        border-radius: 20px;
+        background-color: #f8f9fa;
+        color: #6256ca;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .tag-button:hover {
+        background-color: #6256ca;
+        color: #ffffff;
+    }
+
+    .tag-button.selected {
+        background-color: #6256ca;
+        color: #ffffff;
+    }
+
+    /* Styles for selected tags */
+    .selected-tag {
+        display: inline-block;
+        background-color: #6256ca; /* Use the theme color */
+        color: #ffffff;
+        padding: 5px 10px;
+        border-radius: 15px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        font-size: 14px;
+    }
+
     /* Media query for responsiveness */
     @media (max-width: 768px) {
         .register-container {
@@ -172,14 +240,14 @@
 
                     {{-- Field Umum --}}
                     <div class="form-row" style="display: none;" id="field-umum">
-                        <div class="col-md-6">
-                            <div class="form-group" style="width: 100%;">
+                        <div class="col-md-6" style="margin: 0; padding: 0;">
+                            <div class="form-group" style="width: 100%; margin: 0; padding-right: 20px;">
                                 <label for="nama_depan">Nama Depan</label>
                                 <input type="text" id="nama_depan" name="nama_depan" class="form-control full-width" placeholder="Masukkan nama depan anda" value="{{ old('nama_depan') }}" required />
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group" style="width: 100%; margin-right: 0px;">
+                        <div class="col-md-6" style="margin: 0;">
+                            <div class="form-group" style="width: 100%; margin: 0;">
                                 <label for="nama_belakang">Nama Belakang</label>
                                 <input type="text" id="nama_belakang" name="nama_belakang" class="form-control full-width" placeholder="Masukkan nama belakang anda" value="{{ old('nama_belakang') }}" required />
                             </div>
@@ -202,7 +270,9 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="provinsi">Provinsi</label>
-                                <input type="text" id="provinsi" name="provinsi" placeholder="Masukkan provinsi anda" value="{{ old('provinsi') }}" required />
+                                <select name="provinsi" id="provinsi" required>
+                                    {{-- isi secara dinamis akan dimasukkan di sini --}}
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="telepon">Nomor Telepon</label>
@@ -245,18 +315,18 @@
                             <label for="investment_stage">Tahap Investasi</label>
                             <select id="investment_stage" name="investment_stage" class="form-control" required>
                                 <option value="">Pilih Tahap Investasi</option>
-                                <option value="pre_seed">Pre-Seed</option>
+                                <option value="Pre Seed">Pre-Seed</option>
                                 <option value="seed">Seed</option>
-                                <option value="series_a">Series A</option>
-                                <option value="series_b">Series B</option>
-                                <option value="series_c">Series C</option>
-                                <option value="series_d">Series D</option>
-                                <option value="series_e">Series E</option>
-                                <option value="series_f">Series F</option>
-                                <option value="series_g">Series G</option>
-                                <option value="series_h">Series H</option>
-                                <option value="series_i">Series I</option>
-                                <option value="series_j">Series J</option>
+                                <option value="Series A">Series A</option>
+                                <option value="Series B">Series B</option>
+                                <option value="Series C">Series C</option>
+                                <option value="Series D">Series D</option>
+                                <option value="Series E">Series E</option>
+                                <option value="Series F">Series F</option>
+                                <option value="Series G">Series G</option>
+                                <option value="Series H">Series H</option>
+                                <option value="Series I">Series I</option>
+                                <option value="Series J">Series J</option>
                                 <option value="venture_series_unknown">Venture - Series Unknown</option>
                                 <option value="angel">Angel</option>
                                 <option value="private_equity">Private Equity</option>
@@ -282,7 +352,7 @@
                         <textarea id="description" name="description" placeholder="Masukkan deskripsi" rows="3" required>{{ old('description') }}</textarea>
                     </div>
 
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="departments">Departemen</label>
                         <select id="departments" name="departments" class="form-control" required>
                             <option value="">Pilih Departemen</option>
@@ -297,6 +367,56 @@
                             <option value="IT" {{ old('departments') == 'IT' ? 'selected' : '' }}>IT</option>
                             <option value="Legal" {{ old('departments') == 'Legal' ? 'selected' : '' }}>Legal</option>
                         </select>
+                    </div> --}}
+
+                    <div class="form-group">
+                        <label for="impactTags">Tag untuk department</label>
+                        <button type="button" class="tag-button" data-toggle="modal" data-target="#tagModal">
+                            Pilih Department Anda
+                        </button>
+                        <div id="selectedTags" class="mt-2">
+                        </div>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="tagModal" tabindex="-1" aria-labelledby="tagModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="tagModalLabel">Pilih Departemen Perusahaan Anda</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="search-container sticky-top bg-white">
+                                        <div class="form-group position-relative mb-0" style="padding: 10px 20px; border-bottom: 1px solid transparent; z-index: 1;">
+                                            <input type="text" style="background-color: #6256ca; border: none; color: #ffffff; padding: 15px; border-radius: 10px; width: 700px; padding-right: 50px; position: relative;" placeholder="Search..."  class="form-control search-bar" id="searchInput"/>
+                                            <span style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: #ffffff; pointer-events: none;"></span>
+                                        </div>
+                                    </div>
+                                    <div class="tag-cloud-container modal-body-scrollable">
+                                        <div class="tag-cloud" id="tagCloud">
+                                            @foreach ($departments as $tag)
+                                                <!-- Tambahkan type="button" pada button -->
+                                                <button class="tag-button
+                                                    @if(in_array($tag->id, $investor->tag_ids ?? [])) selected @endif"
+                                                    data-tag-id="{{ $tag->id }}"
+                                                    type="button">
+                                                    {{ $tag->name }}
+                                                </button>
+                                                <input type="checkbox"
+                                                       value="{{ $tag->id }}"
+                                                       id="tag{{ $tag->id }}"
+                                                       name="tag_ids[]"
+                                                       @if(in_array($tag->id, $investor->tag_ids ?? [])) checked @endif
+                                                       style="display: none;">
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -341,7 +461,7 @@
                     {{-- Field Umum untuk Email dan Password --}}
                     <div class="form-row" style="display: none width: 100%;" id="field-umum-email">
                         <div class="col-md-6">
-                            <div class="form-group" style="width: 100%;">
+                            <div class="form-group" style="width: 100%; padding-right: 10px;">
                                 <label for="email">Email</label>
                                 <input type="email" id="email" name="email" class="form-control full-width" placeholder="Masukkan email anda" value="{{ old('email') }}" required />
                             </div>
@@ -389,9 +509,14 @@
 
             function addRequiredAttributes(section) {
                 const inputs = section.querySelectorAll('input, select, textarea');
+                const search_input = document.getElementById('searchInput');
                 inputs.forEach(input => {
-                    input.setAttribute('required', 'required');
+                    // Mengecualikan checkbox dari penambahan atribut required
+                    if (input.type !== 'checkbox') {
+                        input.setAttribute('required', 'required');
+                    }
                 });
+                search_input.removeAttribute('required');
             }
 
             function toggleFields() {
@@ -545,6 +670,117 @@
                 text: errorMessage,
             });
         @endif
+    </script>
+
+    {{-- Bagian tempat untuk api wilayah bagian startup founder --}}
+    <script>
+        const provinsi = document.getElementById('provinsi');
+        // URL untuk API provinsi
+        const provinceApiUrl = 'https://xenodrom31.github.io/api-wilayah-indonesia/api/provinces.json';
+        // Fungsi untuk mengambil dan menampilkan daftar provinsi
+        function fetchProvinces() {
+            fetch(provinceApiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const provinceSelect = provinsi;
+                    provinceSelect.innerHTML = '<option value="">Pilih Provinsi</option>'; // Clear dan isi ulang
+                    data.forEach(province => {
+                        const option = document.createElement('option');
+                        option.value = province.id; // Menyimpan ID provinsi
+                        option.textContent = province.name; // Menampilkan nama provinsi
+                        provinceSelect.appendChild(option);
+                    });
+                    provinceSelect.onchange = fetchCitiesByProvince; // Panggil fungsi untuk mengambil kota saat provinsi dipilih
+                })
+                .catch(error => console.error('Error fetching provinces:', error));
+        }
+        // Panggil fungsi untuk mengambil provinsi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', fetchProvinces);
+    </script>
+
+     <!-- Your custom scripts -->
+     <script>
+        $(document).ready(function() {
+            // Filter tags based on search input
+            $('#searchInput').on('input', function() {
+                var searchTerm = $(this).val().toLowerCase();
+                $('#tagCloud .tag-button').each(function() {
+                    var tagName = $(this).text().toLowerCase();
+                    if (tagName.includes(searchTerm)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+
+            // Toggle tag selection
+            $('.tag-button').click(function() {
+                var $button = $(this);
+                var tagId = $button.data('tag-id');
+                var $checkbox = $('#tag' + tagId);
+
+                // Toggle the selected state
+                $button.toggleClass('selected');
+
+                // Sync the checkbox with the button state
+                $checkbox.prop('checked', $button.hasClass('selected'));
+
+                // Update the selected tags display
+                updateSelectedTags();
+            });
+
+            // Initialize button states based on checkboxes
+            $('input[name="tag_ids[]"]').each(function() {
+                var $checkbox = $(this);
+                var tagId = $checkbox.val();
+                var $button = $('button[data-tag-id="' + tagId + '"]');
+
+                if ($checkbox.prop('checked')) {
+                    $button.addClass('selected');
+                }
+            });
+
+            // Function to update the display of selected tags
+            function updateSelectedTags() {
+                var selectedTags = [];
+                $('#tagCloud .tag-button.selected').each(function() {
+                    selectedTags.push($(this).text());
+                });
+                $('#selectedTags').html(selectedTags.map(tag => `<span class="selected-tag">${tag}</span>`).join(''));
+            }
+
+            // Initial update of selected tags
+            updateSelectedTags();
+
+            // Form submission handler
+            $('#registerForm').on('submit', function(e) {
+                // Check if the role is INVESTOR and no tags are selected
+                if ($('#role').val() === 'INVESTOR' && $('input[name="tag_ids[]"]:checked').length === 0) {
+                    e.preventDefault();
+                    alert('Pilih minimal satu department untuk Investor');
+                    return false;
+                }
+            });
+
+            // Role change handler
+            $('#role').on('change', function() {
+                if ($(this).val() === 'INVESTOR') {
+                    $('#investorFields').show();
+                } else {
+                    $('#investorFields').hide();
+                    // Uncheck all tags when role is not INVESTOR
+                    $('input[name="tag_ids[]"]').prop('checked', false);
+                    $('.tag-button').removeClass('selected');
+                    updateSelectedTags();
+                }
+            });
+        });
     </script>
 </body>
 @endsection

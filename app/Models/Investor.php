@@ -66,8 +66,13 @@ class Investor extends Model
     }
 
     public function getDisplayNameAttribute()
-{
-    return $this->org_name; // Pastikan ini menggunakan 'org_name' jika itu yang digunakan di database
-}
+    {
+        return $this->org_name; // Pastikan ini menggunakan 'org_name' jika itu yang digunakan di database
+    }
+
+    public function departments()
+    {
+        return $this->belongsToMany(Department::class, 'investor_departments');
+    }
 
 }

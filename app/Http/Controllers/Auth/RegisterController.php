@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Investor;
 use App\Models\People;
-use App\Models\Company; // Tambahkan model Company
-use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Models\Investor;
+use App\Models\Department;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Models\Company; // Tambahkan model Company
 
 class RegisterController extends Controller
 {
@@ -29,7 +30,9 @@ class RegisterController extends Controller
     {
         Log::info('Menampilkan form registrasi.');
         $companies = Company::all();
-        return view('auth.register', compact('companies'));
+        // Mengambil data departments untuk digunakan pada view
+        $departments = Department::all();
+        return view('auth.register', compact('companies', 'departments'));
     }
 
     // Proses registrasi
@@ -98,7 +101,7 @@ class RegisterController extends Controller
                 'number_of_contacts' => 'nullable|integer|min:0',
                 'location' => 'required|string|max:255',
                 'description' => 'required|string',
-                'departments' => 'required|string|max:255',
+                'tag_ids' => 'array',
                 'investment_stage' => 'required|string|max:255', // Validasi untuk investment_stage
             ]);
         } elseif ($role === 'PEOPLE') {
@@ -155,15 +158,19 @@ class RegisterController extends Controller
         $companyName = $company ? $company->nama : null;
     }
 
-    Investor::create([
+    $investor = Investor::create([
         'org_name' => $companyName, // Simpan nama perusahaan, bukan ID
         'number_of_contacts' => $data['number_of_contacts'] ?? null, // Bisa nullable
         'location' => $data['location'],
         'description' => $data['description'],
-        'departments' => $data['departments'],
         'investment_stage' => $data['investment_stage'], // Simpan investment_stage
         'user_id' => $user->id, // Link ke user yang baru dibuat
     ]);
+
+    // Attach departments to the company
+    if (isset($data['tag_ids'])) {
+        $investor->departments()->attach($data['tag_ids']);
+    }
 
     Log::info('Investor berhasil dibuat untuk user ID: ' . $user->id);
 }
