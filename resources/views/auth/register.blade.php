@@ -500,10 +500,7 @@
                                 <input type="text" id="people_phone" name="people_phone" placeholder="Masukkan nomor telepon" value="{{ old('people_phone') }}" required />
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="people_gmail">Email</label>
-                            <input type="email" id="people_gmail" name="people_gmail" placeholder="Masukkan Gmail" value="{{ old('people_gmail') }}" required />
-                        </div>
+
                         <div class="form-group">
                             <label for="gender">Jenis Kelamin</label>
                             <select id="gender" name="gender" required>

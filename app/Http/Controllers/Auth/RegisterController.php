@@ -111,7 +111,7 @@ class RegisterController extends Controller
                 'name' => 'required|string|max:255',
                 'people_role' => 'required|in:Mentor,Pekerja,Konsultan',
                 'people_phone' => 'required|string|max:15',
-                'people_gmail' => 'required|email|max:255',
+                'email' => 'required|email|max:255',
                 'gender' => 'required|in:Laki-laki,Perempuan',
             ]);
         }
@@ -188,7 +188,7 @@ class RegisterController extends Controller
             'name' => $data['nama_depan'] . ' ' . $data['nama_belakang'], // Gabungan nama depan dan belakang
             'role' => $data['people_role'], // Sub-role seperti Mentor, Pekerja, atau Konsultan
             'phone_number' => $data['people_phone'], // Nomor telepon
-            'gmail' => $data['people_gmail'], // Gmail
+            'gmail' => $data['email'], // Gmail
             'gender' => $data['gender'], // Jenis kelamin
         ]);
 

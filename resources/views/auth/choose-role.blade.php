@@ -53,39 +53,89 @@
             border-radius: 10px;
             padding: 20px;
             margin-top: 30px;
+            margin-left: 0px;
+            margin-right: 0px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             transition: transform 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 150px; /* Tentukan ketinggian yang tetap */
+            height: 183px; /* Tentukan ketinggian yang tetap */
             position: relative;
             overflow: visible; /* Allow icon to exceed the box */
+            width: 306px; /* Lebar tetap untuk setiap card */
         }
         .role-card:hover {
             color: white;
             transform: translateY(-5px);
         }
         .role-card img.main-icon {
-            width: 190px; /* Icon besar */
-            height: 180px;
+            width: 220px; /* Icon besar */
+            height: 210px;
             position: absolute;
-            left: 160px; /* Menonjol keluar dari kotak */
+            left: 150px; /* Menonjol keluar dari kotak */
+            top: -28px; /* Menonjol keluar dari kotak */
         }
-        .role-card img.small-icon {
-            width: 40px;
-            height: 40px;
+
+        .small-icon-extra-roket{
+            width: 47px;
+            height: 77px;
             position: absolute;
-        }
-        .icon-left {
+            top: 30px;
             left: 170px;
-            top: 50px;
         }
-        .icon-right {
-            right: 190px;
-            top: 50px;
+        .small-icon-extra-statistik{
+            right: -50px;
+            top: 40px;
+            position: absolute;
+            width: 54px;
+            height: 54px;
         }
+        .small-icon-extra-money{
+            width: 56px;
+            height: 47px;
+            position: absolute;
+            top: 65px;
+            left: 165px;
+        }
+        .small-icon-extra-thunder{
+            width: 44px;
+            height: 47px;
+            position: absolute;
+            top: 53px;
+            right: -25px;
+        }
+        .small-icon-extra-toa{
+            width: 81px;
+            height: 81px;
+            position: absolute;
+            top: 60px;
+            left: 145px;
+            transform: scaleX(-1);
+        }
+        .small-icon-extra-book{
+            width: 58px;
+            height: 52px;
+            position: absolute;
+            top: 70px;
+            right: -52px;
+        }
+        .small-icon-extra-folder{
+            width: 66px;
+            height: 58px;
+            position: absolute;
+            top: 65px;
+            left: 160px;
+        }
+        .small-icon-extra-calender{
+            width: 76px;
+            height: 71px;
+            position: absolute;
+            top: 55px;
+            right: -60px;
+        }
+
         .role-title {
             font-size: 1.5rem;
         }
@@ -97,8 +147,12 @@
             text-decoration: none;
             color: #512da8;
         }
-        .col-md-5 {
-            margin-left: 20px; /* Menambahkan jarak antar kotak */
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0px; /* Jarak antar card, diubah menjadi lebih kecil */
         }
 
         /* Tombol Choose Role akan muncul saat hover */
@@ -118,6 +172,64 @@
         .role-card:hover .choose-role-btn {
             display: block;
         }
+
+        /* Tambahkan keyframes untuk animasi melayang */
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        @keyframes floatReverse {
+            0% {
+                transform: translateY(0px) scaleX(-1);
+            }
+            50% {
+                transform: translateY(-10px) scaleX(-1);
+            }
+            100% {
+                transform: translateY(0px) scaleX(-1);
+            }
+        }
+
+        /* Terapkan animasi ke masing-masing icon */
+        .small-icon-extra-roket {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .small-icon-extra-statistik {
+            animation: float 3.5s ease-in-out infinite;
+        }
+
+        .small-icon-extra-money {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .small-icon-extra-thunder {
+            animation: float 3.2s ease-in-out infinite;
+        }
+
+        .small-icon-extra-toa {
+            animation: floatReverse 3.8s ease-in-out infinite;
+        }
+
+        .small-icon-extra-book {
+            animation: float 3.3s ease-in-out infinite;
+        }
+
+        .small-icon-extra-folder {
+            animation: float 3.6s ease-in-out infinite;
+        }
+
+        .small-icon-extra-calender {
+            animation: float 4.2s ease-in-out infinite;
+        }
     </style>
 </head>
 <body>
@@ -125,56 +237,63 @@
         <p>Welcome to IMM Impact Mate</p>
         <h2><b>Choose Your Role:</b></h2>
         <div class="row justify-content-center">
-            <!-- Investor Role -->
-            <div class="col-md-5">
+            <div class="col-md-6 d-flex flex-column align-items-end" style="padding-right: 30px;">
+                <!-- Investor Role -->
                 <a href="/login" class="role-card">
                     <div class="role-info">
                         <h3 class="role-title"><b>Investor</b></h3>
                     </div>
-                    <img src="images/register/investor.png" class="main-icon" alt="Investor Icon">
-                    <img src="images/register/mini-investor.png" class="small-icon icon-left" alt="Small Left Icon">
-                    <img src="images/register/mini-investor2.png" class="small-icon icon-right" alt="Small Right Icon">
+                    <img src="images/register/investor.png" class="main-icon main-icon-extra" alt="Investor Icon">
+                    <img src="images/register/mini-investor.png" class="small-icon-extra-money" alt="Small Left Icon">
+                    <img src="images/register/mini-investor2.png" class="small-icon-extra-thunder" alt="Small Right Icon">
                     <span class="choose-role-btn">CHOOSE ROLE</span> <!-- Tombol muncul saat hover -->
                 </a>
-            </div>
-
-            <!-- StartUp Founder Role -->
-            <div class="col-md-5">
-                <a href="/login" class="role-card">
-                    <div class="role-info">
-                        <h3 class="role-title"><b>StartUp<br>Founder</b></h3> <!-- Teks menjadi dua baris -->
-                    </div>
-                    <img src="images/register/startup-founder.png" class="main-icon" alt="Founder Icon">
-                    <img src="images/register/startup-founder-left.png" class="small-icon icon-left" alt="Small Left Icon">
-                    <img src="images/register/startup-founder-right.png" class="small-icon icon-right" alt="Small Right Icon">
-                    <span class="choose-role-btn">CHOOSE ROLE</span>
-                </a>
-            </div>
-
-            <!-- Mentor Role -->
-            <div class="col-md-5">
                 <a href="/login" class="role-card">
                     <div class="role-info">
                         <h3 class="role-title"><b>Peoples</b></h3>
                     </div>
                     <img src="images/register/people.png" class="main-icon" alt="Mentor Icon">
-                    <img src="images/register/mentor-left.png" class="small-icon icon-left" alt="Small Left Icon">
-                    <img src="images/register/mentor-right.png" class="small-icon icon-right" alt="Small Right Icon">
+                    <img src="images/register/mentor-left.png" class="small-icon-extra-toa" alt="Small Left Icon">
+                    <img src="images/register/mentor-right.png" class="small-icon-extra-book" alt="Small Right Icon">
                     <span class="choose-role-btn">CHOOSE ROLE</span>
                 </a>
             </div>
 
-            <!-- Event Organizer Role -->
-            <div class="col-md-5">
+            <div class="col-md-6 d-flex flex-column align-items-start" style="padding-left: 30px;">
+                <a href="/login" class="role-card">
+                    <div class="role-info">
+                        <h3 class="role-title"><b>StartUp<br>Founder</b></h3> <!-- Teks menjadi dua baris -->
+                    </div>
+                    <img src="images/register/startup-founder.png" class="main-icon" alt="Founder Icon">
+                    <img src="images/register/startup-founder-left.svg" class="small-icon-extra-roket" alt="Small Left Icon">
+                    <img src="images/register/startup-founder-right.png" class="small-icon-extra-statistik" alt="Small Right Icon">
+                    <span class="choose-role-btn">CHOOSE ROLE</span>
+                </a>
+
                 <a href="/login" class="role-card">
                     <div class="role-info">
                         <h3 class="role-title"><b>Event<br>Organizer</b></h3> <!-- Teks menjadi dua baris -->
                     </div>
                     <img src="images/register/event-organizer.png" class="main-icon" alt="Event Organizer Icon">
-                    <img src="images/register/event-left.png" class="small-icon icon-left" alt="Small Left Icon">
-                    <img src="images/register/event-right.png" class="small-icon icon-right" alt="Small Right Icon">
+                    <img src="images/register/event-left.png" class="small-icon-extra-folder" alt="Small Left Icon">
+                    <img src="images/register/event-right.png" class="small-icon-extra-calender" alt="Small Right Icon">
                     <span class="choose-role-btn">CHOOSE ROLE</span>
                 </a>
+            </div>
+
+            <!-- StartUp Founder Role -->
+            <div class="col-md-5">
+
+            </div>
+
+            <!-- Mentor Role -->
+            <div class="col-md-5">
+
+            </div>
+
+            <!-- Event Organizer Role -->
+            <div class="col-md-5">
+
             </div>
         </div>
         <p class="sign-up">Don't have an account? <a href="register">Sign Up</a></p>

@@ -479,11 +479,12 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border: 2px solid #ccc;
-        border-radius: 10px; /* Mengurangi radius border */
-        padding: 10px; /* Mengurangi padding */
-        width: 120px; /* Mengurangi lebar */
-        margin: 20px auto; /* Mengurangi margin */
+        border: 1px solid #ccc; /* Mengurangi ketebalan border */
+        border-radius: 5px; /* Mengurangi radius border */
+        padding: 5px; /* Mengurangi padding */
+        width: 57.3px; /* Sesuai dengan ukuran yang diminta */
+        height: 18.79px; /* Sesuai dengan ukuran yang diminta */
+        margin: 10px auto; /* Mengurangi margin */
         background-color: #f9f9f9;
     }
 
@@ -496,11 +497,11 @@
     }
 
     .icon-container button:not(:last-child) {
-        border-right: 2px solid #ccc;
+        border-right: 1px solid #ccc; /* Mengurangi ketebalan border pemisah */
     }
 
     .icon-container i {
-        font-size: 16px; /* Mengurangi ukuran font icon */
+        font-size: 12px; /* Mengurangi ukuran font icon */
     }
 
     .icon-edit {
@@ -509,6 +510,18 @@
 
     .icon-delete {
         color: #f00;
+    }
+
+    /* Add a max-width to the table */
+    .table-responsive {
+        max-width: 80%;
+        margin: 0 auto;
+        overflow-x: auto; /* Pastikan scrollbar horizontal muncul saat diperlukan */
+    }
+
+    .table-responsive table {
+        width: 100%;
+        margin-bottom: 0px;
     }
 
     /* Custom width for columns */
@@ -834,7 +847,7 @@
                                     <thead class="sub-heading-2">
                                         <tr>
                                             <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle; border-bottom: none;">Full Name</th>
-                                            <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: center; border-bottom: none;">Primary Job Title</th>
+                                            <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: center; border-bottom: none;">Email</th>
                                             <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: center; border-bottom: none;">Departement</th>
                                             <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: center; border-bottom: none;">Location</th>
                                             <th scope="col" class="sub-heading-2" style="border-top-right-radius: 20px; vertical-align: top; text-align: center; border-bottom: none;">Action</th>
@@ -850,12 +863,12 @@
                                         @else
                                             @foreach($team as $person)
                                                 <tr>
-                                                    <td style="vertical-align: middle; border-left: 1px solid #ddd;">
+                                                    <td style="vertical-align: middle; border-left: 1px solid #ddd; text-align: center;">
                                                         <div style="display: flex; align-items: center;">
-                                                            <div style="margin-right: 2px;">
+                                                            <div style="margin-right: 0px; margin-left: 20px;">
                                                                 <img src="{{ $person->image ? env('APP_URL') . $person->image : asset('images/1720765715.webp') }}" alt="{{ $person->name }}" width="30" height="30" style="border-radius: 8px; object-fit:cover;">
                                                             </div>
-                                                            <div style="flex-grow: 1; margin-left: 0px; margin-right: 10px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
+                                                            <div style="flex-grow: 1; margin-left: 5px; margin-right: 0px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
                                                                 @if (strlen($person->name) > 10)
                                                                     title="{{ $person->name }}"
                                                                     style="cursor: pointer;"
@@ -865,10 +878,10 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td  style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->pivot->position }}</td>
-                                                    <td  style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->departmentName }}</td>
-                                                    <td  style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->location }}</td>
-                                                    <td  style="vertical-align: middle; text-align: center;" class="body-2">
+                                                    <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->pivot->position }}</td>
+                                                    <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->departmentName }}</td>
+                                                    <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->location }}</td>
+                                                    <td style="vertical-align: middle; text-align: center; border-right: 1px solid #ddd;" class="body-2">
                                                         <div class="icon-container">
                                                             <button class="btn-edit" data-id="{{ $person->id }}" data-name="{{ $person->name }}" data-role="{{ $person->pivot->position }}" data-photo="{{ isset($person->image) ? asset('images/' . $person->image) : asset('images/1720765715.webp') }}" data-toggle="modal" data-target="#editTeamModal">
                                                                 <i class="fas fa-edit icon-edit"></i>
@@ -894,8 +907,10 @@
                                 border-right: 1px solid #ddd;
                                 border-top: 1px solid #ddd;
                                 margin-top:0px;
+                                margin: 0 auto;
                                 border-end-end-radius: 20px;
                                 border-end-start-radius: 20px;
+                                width: 80%;
                                 height: 60px;">
                                 <form method="GET" action="{{ route('investors.index') }}" class="mb-0">
                                     <div class="d-flex align-items-center">
