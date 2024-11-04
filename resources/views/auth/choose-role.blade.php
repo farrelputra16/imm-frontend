@@ -230,6 +230,47 @@
         .small-icon-extra-calender {
             animation: float 4.2s ease-in-out infinite;
         }
+
+        @media (max-width: 768px) {
+            .col-md-6.d-flex.flex-column {
+                align-items: center !important;
+                padding-right: 0 !important;
+                padding-left: 0 !important;
+            }
+
+            .row.justify-content-center {
+                margin-right: 0;
+                margin-left: 0;
+            }
+
+            .role-card {
+                width: 90%; /* Mengatur lebar card menjadi 90% dari lebar container */
+                max-width: 306px; /* Memastikan lebar maksimum tetap 306px */
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .role-card img.main-icon {
+                left: auto;
+                right: -30px; /* Menyesuaikan posisi icon utama */
+            }
+
+            /* Menyesuaikan posisi icon-icon kecil */
+            .small-icon-extra-roket,
+            .small-icon-extra-money,
+            .small-icon-extra-toa,
+            .small-icon-extra-folder {
+                left: auto;
+                right: 120px;
+            }
+
+            .small-icon-extra-statistik,
+            .small-icon-extra-thunder,
+            .small-icon-extra-book,
+            .small-icon-extra-calender {
+                right: -30px;
+            }
+        }
     </style>
 </head>
 <body>
