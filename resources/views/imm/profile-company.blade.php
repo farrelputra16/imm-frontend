@@ -44,7 +44,7 @@
 
     .modal-content {
         width: 100%;
-        max-width: 700px;
+        max-width: 1000px;
         border-radius: 10px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     }
@@ -184,16 +184,18 @@
     }
 
     .btn-add {
-        background-color: #5940cb;
+        background-color: transparent;
         color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
+        border: 2px solid #5940cb;
+        border-radius: 12px;
         margin-top: 30px;
+        color: #333;
+        padding: 10px 30px;
     }
-
-    .btn-add:hover {
-        background-color: #5e41de;
+    .btn-add:active,
+    .btn-add:focus {
+        outline: none; /* Menghilangkan outline default */
+        border: 2px solid #5940cb; /* Tetap mempertahankan border yang sama */
     }
 
     .people-results {
@@ -212,6 +214,7 @@
         padding: 10px;
         cursor: pointer;
         transition: background-color 0.3s;
+        width: 100%;
     }
 
     .person-result:hover {
@@ -474,6 +477,11 @@
         width: 100%;
     }
 
+    .upload-container .file-name {
+        font-size: 14px;
+        color: #333;
+    }
+
     /* Bagian Icon untuk edit dan delete */
     .icon-container {
         display: flex;
@@ -548,6 +556,12 @@
     th:nth-child(5),
     td:nth-child(5) {
         width: 20%; /* Last Funding Type */
+    }
+
+    @media (min-width: 1200px) {
+        .custom-wide-modal {
+            max-width: 1000px;
+        }
     }
 </style>
 @endsection
@@ -742,14 +756,14 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="tagModalLabel">Pilih Departemen Perusahaan Anda</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        {{-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
-                                        </button>
+                                        </button> --}}
                                     </div>
                                     <div class="modal-body">
                                         <div class="search-container sticky-top bg-white">
-                                            <div class="form-group position-relative mb-0">
-                                                <input type="text" class="form-control search-bar" id="searchInput" placeholder="Cari departemen" aria-label="Cari departemen">
+                                            <div class="position-relative mb-0" style="width: 100%; background-color: transparent;">
+                                                <input type="text" class="search-bar" id="searchInput" placeholder="Cari departemen" aria-label="Cari departemen" style="width: 95%;">
                                                 <i class="fas fa-search search-icon"></i>
                                             </div>
                                         </div>
@@ -848,6 +862,7 @@
                                         <tr>
                                             <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle; border-bottom: none;">Full Name</th>
                                             <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: center; border-bottom: none;">Email</th>
+                                            <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: center; border-bottom: none;">Primary Job Title</th>
                                             <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: center; border-bottom: none;">Departement</th>
                                             <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: center; border-bottom: none;">Location</th>
                                             <th scope="col" class="sub-heading-2" style="border-top-right-radius: 20px; vertical-align: top; text-align: center; border-bottom: none;">Action</th>
@@ -856,7 +871,7 @@
                                     <tbody>
                                         @if ($team->isEmpty())
                                             <tr>
-                                                <td colspan="5" style="text-align: center; padding: 20px;">
+                                                <td colspan="6" style="text-align: center; padding: 20px;">
                                                     <p>No team members available. Please add new members.</p>
                                                 </td>
                                             </tr>
@@ -878,7 +893,8 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->pivot->position }}</td>
+                                                    <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->gmail }}</td>
+                                                    <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->primary_job_title }}</td>
                                                     <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->departmentName }}</td>
                                                     <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->location }}</td>
                                                     <td style="vertical-align: middle; text-align: center; border-right: 1px solid #ddd;" class="body-2">
@@ -934,7 +950,10 @@
                                 </div>
                             </div>
 
-                            <button type="button" class="btn-add" data-toggle="modal" data-target="#addTeamModal">Add New Team Member</button>
+                            {{-- <button type="button" class="btn-add" data-toggle="modal" data-target="#addTeamModal">Add New Team Member</button> --}}
+                            <button type="button" class="btn-add sub-heading-1" data-toggle="modal" data-target="#addTeamModal">
+                                + Add Members
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -942,31 +961,54 @@
 
             <!-- Add Team Member Modal -->
             <div class="modal fade" id="addTeamModal" tabindex="-1" aria-labelledby="addTeamModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-dialog modal-dialog-centered modal-xl custom-wide-modal">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="addTeamModalLabel">Add Team Member</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
                         </div>
                         <div class="modal-body">
                             <form id="addTeamForm">
-                                <div class="form-group">
-                                    <label for="searchPeople">Search People</label>
-                                    <input type="text" class="form-control" id="searchPeople" placeholder="Name or email">
-                                    <div id="peopleResults" class="people-results"></div>
-                                    <input type="hidden" id="selectedPersonId">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="searchPeople">Search People</label>
+                                            <input type="text" class="form-control" id="searchPeople" placeholder="Name or email">
+                                            <div id="peopleResults" class="people-results" style="width: 416px;"></div>
+                                            <input type="hidden" id="selectedPersonId">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="companyId">Company ID</label>
+                                            <input type="text" class="form-control" id="companyId" value="{{ $company->id }}" readonly>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="companyId">Company ID</label>
-                                    <input type="text" class="form-control" id="companyId" value="{{ $company->id }}" readonly>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="position">Position Department</label>
+                                            <select id="position" class="form-control">
+                                                <option value="">Pilih Departemen</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="positionTitle">Position/Title</label>
+                                            <input type="text" class="form-control" id="positionTitle" placeholder="Input position or title">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="position">Position Department</label>
-                                    <select id="position" class="form-control">
-                                        <option value="">Pilih Departemen</option>
-                                    </select>
+                                <div class="mb-3">
+                                    <label for="proof" class="form-label">Proof of Purchase</label>
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" id="profilePicture" name="bukti" onchange="updateFileName()" style="display: none;">
+                                        <input type="text" class="form-control file-name" style="background-color: white; border-right: none;" readonly>
+                                        <span class="input-group-text" onclick="document.getElementById('profilePicture').click()" type="button" style="background-color: white; border-left: none; border-color: #888; border-top-left-radius: 0px; border-bottom-left-radius: 0px;">
+                                            <i class="fas fa-upload" style="cursor: pointer" id="editButton" width="20" alt="Upload"></i>
+                                        </span>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -1244,6 +1286,25 @@
         provinsiSelect.addEventListener('change', populateCities);
     </script>
 
+    {{-- ! bagian untuk merubah nama file --}}
+    <script>
+        function updateFileName() {
+            var input = document.getElementById('profilePicture');
+            var fileName = input.files.length > 0 ? input.files[0].name : 'Tidak ada file yang dipilih';
+            document.querySelector('.file-name').value = fileName; // Ganti textContent dengan value
+        }
+
+        document.getElementById('confirmUpdate').addEventListener('click', function() {
+            // Pastikan modal tidak mengganggu pengiriman form
+            var fileName = document.getElementById('profilePicture').files.length > 0;
+            if (!fileName) {
+                alert('Silakan pilih file yang akan diunggah!');
+                return;
+            }
+            document.getElementById('addOutcomeForm').submit();
+        });
+    </script>
+
     {{-- ! Javascript untuk menangani handle terkait team baik untuk menambahkan menghapus dan mencari orang --}}
     <script>
       $(document).ready(function() {
@@ -1314,6 +1375,7 @@
 
             // Menangani tombol edit team member
             $(document).on('click', '.btn-edit', function() {
+                event.preventDefault();
                 var personId = $(this).data('id');
 
                 $.ajax({
@@ -1373,6 +1435,7 @@
 
             // Menangani tombol hapus team member
             $(document).on('click', '.btn-delete', function() {
+                event.preventDefault();
                 var personId = $(this).data('id');
                 var companyId = $(this).data('company-id');
                 $.ajax({

@@ -156,7 +156,6 @@
                 <div class="input-group">
                     <span class="input-group-text" onclick="document.getElementById('file-input').click()" type="button" style="background-color: white; border-right: none;">
                         <i class="fas fa-file-alt"  style="font-size: 18px; background-color: white;"></i>
-
                     </span>
                     <input type="file" class="form-control" id="file-input" name="bukti" onchange="updateFileName()" style="display: none;">
                     <input type="text" class="form-control file-name" style="background-color: white; border-left: none;" readonly>

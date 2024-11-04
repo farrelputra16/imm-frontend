@@ -21,14 +21,14 @@
         </div>
 
         <div class="container mt-5">
-          
+
             <div class="row mt-4">
                 <div class="col-3">
                     <h5>Jumlah Biaya</h5>
                 </div>
                 <div class="col-8"> <input type="text" name="" placeholder="namafile"></div>
             </div>
-            
+
             <div class="row mt-4">
                 <div class="col-3">
                     <h5>Upload Bukti</h5>
@@ -45,18 +45,15 @@
         <div class="modal fade" id="confirmationModal" tabindex="" aria-labelledby="confirmationModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content shadow ">
-                   
                     <div class="modal-body">
                         <h5 class="modal-title" id="confirmationModalLabel">Apakah data sudah benar?</h5>
                         <span>
                             <strong>Note.</strong> Data yang anda tambahkan tidak bisa diubah kembali, pastikan sudah semua input data sudah benar</span>
                         <div class=" btnn">   <button type="button" class="btn btn-keluar" data-dismiss="modal">Belum, cek kembali</button>
-                           <a href="/unggahdokumen"><button type="submit"   class="btn btn-masuk"  id="confirmUpdate">Ya, sudah benar</button></a> 
-                         
-                    
+                           <a href="/unggahdokumen"><button type="submit"   class="btn btn-masuk"  id="confirmUpdate">Ya, sudah benar</button></a>
                         </div>
                     </div>
-                   
+
                 </div>
             </div>
         </div>
@@ -75,9 +72,7 @@
                 document.querySelector('.file-name').textContent = fileName;
             }
         </script>
-        <script>
 
-            
-            </body>
+    </body>
 
-        @endsection
+@endsection
