@@ -56,17 +56,18 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function editCompanyProfile()
+    public function editCompanyProfile(Request $request)
     {
         $user = Auth::user();
         $company = $user->companies; // Ambil perusahaan yang relevan
+        $rowsPerPage = $request->input('rows', 10);
 
         if (!$company) {
             return redirect('/imm');
         }
 
-        // Ambil anggota tim dari company, lalu ambil department melalui position
-        $team = $company->teamMembers()->get();
+        // Ambil anggota tim dari company dengan paginasi
+        $team = $company->teamMembers()->paginate($rowsPerPage);
 
         // Ambil semua departemen
         $departments = Department::all();

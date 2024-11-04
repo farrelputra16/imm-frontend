@@ -4,6 +4,7 @@
 @section('css')
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
+<link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
 
 <style>
     @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Quicksand:wght@300..700&display=swap");
@@ -182,18 +183,6 @@
         gap: 10px;
     }
 
-    .btn-edit, .btn-delete {
-        background-color: #5940cb;
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 5px;
-    }
-
-    .btn-edit:hover, .btn-delete:hover {
-        background-color: #5e41de;
-    }
-
     .btn-add {
         background-color: #5940cb;
         color: white;
@@ -328,36 +317,6 @@
         background-color: #5e41de;
     }
 
-    /* Tag Button Section */
-    .search-container {
-        padding: 10px 20px;
-        border-bottom: 1px solid transparent;
-        z-index: 1;
-    }
-
-    .search-bar {
-        background-color: #6256ca;
-        border: none;
-        color: #ffffff;
-        padding: 15px;
-        border-radius: 10px;
-        width: 100%;
-        padding-right: 50px;
-        position: relative;
-    }
-
-    .search-bar::placeholder {
-        color: #ffffff;
-    }
-
-    .search-icon {
-        position: absolute;
-        right: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #ffffff;
-        pointer-events: none;
-    }
 
     .modal-body-scrollable {
         max-height: 350px;
@@ -513,6 +472,69 @@
         display: flex;
         justify-content: center;
         width: 100%;
+    }
+
+    /* Bagian Icon untuk edit dan delete */
+    .icon-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 2px solid #ccc;
+        border-radius: 10px; /* Mengurangi radius border */
+        padding: 10px; /* Mengurangi padding */
+        width: 120px; /* Mengurangi lebar */
+        margin: 20px auto; /* Mengurangi margin */
+        background-color: #f9f9f9;
+    }
+
+    .icon-container button {
+        flex: 1;
+        background: none;
+        border: none;
+        text-align: center;
+        padding: 0;
+    }
+
+    .icon-container button:not(:last-child) {
+        border-right: 2px solid #ccc;
+    }
+
+    .icon-container i {
+        font-size: 16px; /* Mengurangi ukuran font icon */
+    }
+
+    .icon-edit {
+        color: #555;
+    }
+
+    .icon-delete {
+        color: #f00;
+    }
+
+    /* Custom width for columns */
+    th:nth-child(1),
+    td:nth-child(1) {
+        width: 20%; /* Checkbox column */
+    }
+
+    th:nth-child(2),
+    td:nth-child(2) {
+        width: 20%; /* Organization Name */
+    }
+
+    th:nth-child(3),
+    td:nth-child(3) {
+        width: 20%; /* Founded Date */
+    }
+
+    th:nth-child(4),
+    td:nth-child(4) {
+        width: 20%; /* Last Funding Date */
+    }
+
+    th:nth-child(5),
+    td:nth-child(5) {
+        width: 20%; /* Last Funding Type */
     }
 </style>
 @endsection
@@ -754,21 +776,10 @@
                 </div>
             </section>
 
-            {{-- <section>
-                <div class="row my-3 d-flex justify-content-center align-items-center">
-                    <button type="button" id="saveButton" class="btn-masukkk" style="display: none;" data-toggle="modal" data-target="#confirmModal">
-                        <div class="out d-flex justify-content-center align-items-center" style="gap: 10px">
-                            <span>Simpan Perubahan Data Perusahaan</span>
-                            <img src="{{ asset('images/icon-save.svg') }}" width="20" alt="">
-                        </div>
-                    </button>
-                </div>
-            </section> --}}
-
             {{-- Ini merupakan bagian untuk anggota team dari suatu company tersebut --}}
             <section id="people-section" class="toggle-section" style="display: none;">
                 <div class="content-box">
-                    <div class="tab-content-box">
+                    <div class="tab-content-box" style="margin-bottom: 36px;">
                         <ul class="nav nav-tabs">
                             <div>
                                 <li class="nav-item">
@@ -788,8 +799,16 @@
                         </ul>
                     </div>
                     <div class="row justify-content-center">
+                        <form method="GET" action="{{ route('companies.list') }}"  id="companySearchForm">
+                            @csrf
+                            <div class="search-container">
+                                <i class="fas fa-search" style="margin-left: 10px;"></i>
+                                <input  placeholder="Search Investors" type="text" name="search" id="search_input" value="{{ request('search') }}" />
+                                <button class="btn" type="submit">Search</button>
+                            </div>
+                        </form>
                         <div class="container team-section">
-                            <h2 class="team-title">Our Team</h2>
+                            {{-- <h2 class="team-title">Our Team</h2>
                             <div class="team-container">
                                 @if (!$team->isEmpty())
                                     @foreach ($team as $person)
@@ -808,7 +827,98 @@
                                 @else
                                     <p>No team members available. Please add new members.</p>
                                 @endif
+                            </div> --}}
+
+                            <div class="table-responsive">
+                                <table class="table table-hover table-strip" style="margin-bottom: 0px;">
+                                    <thead class="sub-heading-2">
+                                        <tr>
+                                            <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle; border-bottom: none;">Full Name</th>
+                                            <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: center; border-bottom: none;">Primary Job Title</th>
+                                            <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: center; border-bottom: none;">Departement</th>
+                                            <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: center; border-bottom: none;">Location</th>
+                                            <th scope="col" class="sub-heading-2" style="border-top-right-radius: 20px; vertical-align: top; text-align: center; border-bottom: none;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if ($team->isEmpty())
+                                            <tr>
+                                                <td colspan="5" style="text-align: center; padding: 20px;">
+                                                    <p>No team members available. Please add new members.</p>
+                                                </td>
+                                            </tr>
+                                        @else
+                                            @foreach($team as $person)
+                                                <tr>
+                                                    <td style="vertical-align: middle; border-left: 1px solid #ddd;">
+                                                        <div style="display: flex; align-items: center;">
+                                                            <div style="margin-right: 2px;">
+                                                                <img src="{{ $person->image ? env('APP_URL') . $person->image : asset('images/1720765715.webp') }}" alt="{{ $person->name }}" width="30" height="30" style="border-radius: 8px; object-fit:cover;">
+                                                            </div>
+                                                            <div style="flex-grow: 1; margin-left: 0px; margin-right: 10px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
+                                                                @if (strlen($person->name) > 10)
+                                                                    title="{{ $person->name }}"
+                                                                    style="cursor: pointer;"
+                                                                @endif
+                                                            >
+                                                                <span class="body-2">{{ $person->name }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td  style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->pivot->position }}</td>
+                                                    <td  style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->departmentName }}</td>
+                                                    <td  style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->location }}</td>
+                                                    <td  style="vertical-align: middle; text-align: center;" class="body-2">
+                                                        <div class="icon-container">
+                                                            <button class="btn-edit" data-id="{{ $person->id }}" data-name="{{ $person->name }}" data-role="{{ $person->pivot->position }}" data-photo="{{ isset($person->image) ? asset('images/' . $person->image) : asset('images/1720765715.webp') }}" data-toggle="modal" data-target="#editTeamModal">
+                                                                <i class="fas fa-edit icon-edit"></i>
+                                                            </button>
+                                                            <button class="btn-delete" data-id="{{ $person->id }}" data-company-id="{{ $company->id }}" id="team-member-{{ $person->id }}">
+                                                                <i class="fas fa-trash-alt icon-delete"></i>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
+                                    </tbody>
+                                </table>
                             </div>
+
+                           <!-- Footer sebagai bagian dari tabel -->
+                            <div class="d-flex justify-content-between align-items-center mb-3 align-self-center"
+                            style="padding: 20px;
+                                background-color: #ffffff;
+                                border-bottom: 1px solid #ddd;
+                                border-left: 1px solid #ddd;
+                                border-right: 1px solid #ddd;
+                                border-top: 1px solid #ddd;
+                                margin-top:0px;
+                                border-end-end-radius: 20px;
+                                border-end-start-radius: 20px;
+                                height: 60px;">
+                                <form method="GET" action="{{ route('investors.index') }}" class="mb-0">
+                                    <div class="d-flex align-items-center">
+                                        <label for="rowsPerPage" class="me-2">Rows per page:</label>
+                                        <select name="rows"
+                                                id="rowsPerPage"
+                                                class="form-select me-2"
+                                                onchange="this.form.submit()"
+                                                style="width: 50%px; margin-left: 5px; margin-right: 5px;">
+                                            <option value="10" {{ request('rows') == 10 ? 'selected' : '' }}>10</option>
+                                            <option value="50" {{ request('rows') == 50 ? 'selected' : '' }}>50</option>
+                                            <option value="100" {{ request('rows') == 100 ? 'selected' : '' }}>100</option>
+                                        </select>
+                                        <div>
+                                            <span>Total {{ $team->firstItem() }} - {{ $team->lastItem() }} of {{ $team->total() }}</span>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div style="margin-top: 10px;">
+                                    {{ $team->appends(request()->query())->links('pagination::bootstrap-4') }}
+                                </div>
+                            </div>
+
                             <button type="button" class="btn-add" data-toggle="modal" data-target="#addTeamModal">Add New Team Member</button>
                         </div>
                     </div>
