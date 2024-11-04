@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -126,6 +127,7 @@ class ProfileController extends Controller
     public function updateCompanyProfile(Request $request, $id)
     {
         $request->validate([
+            'image' => 'image|mimes:jpeg,png,jpg,webp|max:10000',
             'nama' => 'required|string|max:255',
             'profile' => 'required|string|max:255',
             'founded_date' => 'required|date',
@@ -159,6 +161,14 @@ class ProfileController extends Controller
             'business_model' => $request->input('business_model'),
             'startup_summary' => $request->input('startup_summary'),
         ]);
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->extension();
+            $path = $image->storeAs('public/company', $imageName);
+            $company->image = Storage::url($path); // Simpan URL gambar
+            $company->save();
+        }
 
         if ($request->has('department_ids')) {
             $company->departments()->sync($request->input('department_ids'));
