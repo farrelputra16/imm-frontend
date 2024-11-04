@@ -21,7 +21,8 @@ class People extends Model
         'description',
         'phone_number',
         'gmail', // harus unik
-        'user_id'
+        'user_id',
+        'skills'
     ];
 
     // Relasi dengan User
@@ -58,5 +59,13 @@ class People extends Model
     public function wishlist()
     {
         return $this->hasMany(Wishlist::class);
+    }
+    public function experiences()
+    {
+        return $this->hasMany(Experience::class);
+    }
+    public function education()
+    {
+        return $this->hasMany(Education::class);
     }
 }

@@ -205,4 +205,8 @@ class Company extends Model
     {
         return $this->hasMany(Investment::class, 'company_id');
     }
+    public function experiences()
+    {
+        return $this->hasMany(Experience::class);
+    }
 }
