@@ -561,7 +561,7 @@
                         </ul>
                     </div>
                     <div class="profile-header">
-                        <img id="profileImage" alt="Profile picture" src="{{ $company->image ?? asset('images/logo-maxy.png') }}"/>
+                        <img id="profileImage" alt="Profile picture" src="{{ $company->image ? env('APP_URL') . $company->image : asset('images/logo-maxy.png') }}"/>
                         <h3>{{ $company->nama }}</h3>
                         <input type="file" id="photoUpload" accept="image/*" style="display: none;" name="image" />
                         <button id="button-img-add" style="visibility: hidden;"><em class="sub-heading-1">Upload Photo</em></button>
@@ -618,13 +618,17 @@
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label for="formGroupExampleInput9" class="form-label">Provinsi</label>
-                                <input type="text" name="provinsi" class="form-control" id="formGroupExampleInput9" placeholder="Provinsi" value="{{ $company->provinsi }}" readonly>
+                                <select name="provinsi" class="form-control" id="formGroupExampleInput9" required readonly>
+                                    <option value="" disabled selected>Pilih Provinsi</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label for="formGroupExampleInput10" class="form-label">Kota/Kabupaten</label>
-                                <input type="text" name="kabupaten" class="form-control" id="formGroupExampleInput10" placeholder="Kabupaten" value="{{ $company->kabupaten }}" readonly>
+                                <select name="kabupaten" class="form-control" id="formGroupExampleInput10" required readonly>
+                                    <option value="" disabled selected>Pilih Kota/Kabupaten</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-5">
@@ -750,7 +754,7 @@
                 </div>
             </section>
 
-            <section>
+            {{-- <section>
                 <div class="row my-3 d-flex justify-content-center align-items-center">
                     <button type="button" id="saveButton" class="btn-masukkk" style="display: none;" data-toggle="modal" data-target="#confirmModal">
                         <div class="out d-flex justify-content-center align-items-center" style="gap: 10px">
@@ -759,32 +763,55 @@
                         </div>
                     </button>
                 </div>
-            </section>
+            </section> --}}
 
             {{-- Ini merupakan bagian untuk anggota team dari suatu company tersebut --}}
             <section id="people-section" class="toggle-section" style="display: none;">
-                <div class="container team-section">
-                    <h2 class="team-title">Our Team</h2>
-                    <div class="team-container">
-                        @if (!$team->isEmpty())
-                            @foreach ($team as $person)
-                                <div class="team-card">
-                                    <img src="{{ isset($person->image) ? asset('images/' . $person->image) : asset('images/1720765715.webp') }}" alt="{{ $person->name }}" class="rounded-circle mb-3" width="100" height="100">
-                                    <div class="team-name">{{ $person->name }}</div>
-                                    <span class="selected-tag">{{ $person->departmentName }}</span>
-                                    <div class="action-buttons">
-                                        <button class="btn-edit" data-id="{{ $person->id }}" data-name="{{ $person->name }}" data-role="{{ $person->pivot->position }}" data-photo="{{ isset($person->image) ? asset('images/' . $person->image) : asset('images/1720765715.webp') }}" data-toggle="modal" data-target="#editTeamModal">Edit</button>
-                                        <button class="btn-delete" data-id="{{ $person->id }}" data-company-id="{{ $company->id }}" id="team-member-{{ $person->id }}">
-                                            Delete
-                                        </button>
-                                    </div>
-                                </div>
-                            @endforeach
-                        @else
-                            <p>No team members available. Please add new members.</p>
-                        @endif
+                <div class="content-box">
+                    <div class="tab-content-box">
+                        <ul class="nav nav-tabs">
+                            <div>
+                                <li class="nav-item">
+                                    <button class="nav-link btn-toggle" data-target="#profile-section">
+                                        Profile
+                                    </button>
+                                </li>
+                            </div>
+                            <span class="nav-item-separator">|</span>
+                            <div>
+                                <li class="nav-item">
+                                    <button class="nav-link btn-toggle" data-target="#people-section">
+                                        <div class="active-nav">People</div>
+                                    </button>
+                                </li>
+                            </div>
+                        </ul>
                     </div>
-                    <button type="button" class="btn-add" data-toggle="modal" data-target="#addTeamModal">Add New Team Member</button>
+                    <div class="row justify-content-center">
+                        <div class="container team-section">
+                            <h2 class="team-title">Our Team</h2>
+                            <div class="team-container">
+                                @if (!$team->isEmpty())
+                                    @foreach ($team as $person)
+                                        <div class="team-card">
+                                            <img src="{{ isset($person->image) ? asset('images/' . $person->image) : asset('images/1720765715.webp') }}" alt="{{ $person->name }}" class="rounded-circle mb-3" width="100" height="100">
+                                            <div class="team-name">{{ $person->name }}</div>
+                                            <span class="selected-tag">{{ $person->departmentName }}</span>
+                                            <div class="action-buttons">
+                                                <button class="btn-edit" data-id="{{ $person->id }}" data-name="{{ $person->name }}" data-role="{{ $person->pivot->position }}" data-photo="{{ isset($person->image) ? asset('images/' . $person->image) : asset('images/1720765715.webp') }}" data-toggle="modal" data-target="#editTeamModal">Edit</button>
+                                                <button class="btn-delete" data-id="{{ $person->id }}" data-company-id="{{ $company->id }}" id="team-member-{{ $person->id }}">
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <p>No team members available. Please add new members.</p>
+                                @endif
+                            </div>
+                            <button type="button" class="btn-add" data-toggle="modal" data-target="#addTeamModal">Add New Team Member</button>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -1006,6 +1033,9 @@
                     if (targetId === '#people-section') {
                         arrow.style.display = 'block';
                         text.style.display = 'block';
+                    }else{
+                        arrow.style.display = 'none';
+                        text.style.display = 'none';
                     }
                 }
             });
@@ -1030,6 +1060,63 @@
                 reader.readAsDataURL(file);
             }
         });
+    </script>
+
+    {{-- ! Bagian untuk menangani provinsi dan kabupaten --}}
+    <script>
+        const provinsiSelect = document.getElementById('formGroupExampleInput9');
+        const kotaSelect = document.getElementById('formGroupExampleInput10');
+        let provincesData = [];
+
+        // Fetch provinces data
+        fetch('https://kanglerian.github.io/api-wilayah-indonesia/api/provinces.json')
+            .then(response => response.json())
+            .then(provinces => {
+                provincesData = provinces;
+                provinces.forEach(provinsi => {
+                    const option = document.createElement('option');
+                    option.value = provinsi.name;
+                    option.textContent = provinsi.name;
+                    option.setAttribute('data-id', provinsi.id);
+                    provinsiSelect.appendChild(option);
+                });
+
+                // Set the selected province if it exists
+                if ("{{ $company->provinsi }}") {
+                    provinsiSelect.value = "{{ $company->provinsi }}";
+                    populateCities();
+                }
+            })
+            .catch(error => console.error('Error fetching provinces:', error));
+
+        // Populate cities based on selected province
+        function populateCities() {
+            const selectedProvinsiId = provinsiSelect.selectedOptions[0].getAttribute('data-id');
+            const regenciesUrl = `https://kanglerian.github.io/api-wilayah-indonesia/api/regencies/${selectedProvinsiId}.json`;
+
+            // Clear previous city options
+            kotaSelect.innerHTML = '<option value="" disabled selected>Pilih Kota/Kabupaten</option>';
+
+            fetch(regenciesUrl)
+                .then(response => response.json())
+                .then(regencies => {
+                    regencies.forEach(regency => {
+                        const option = document.createElement('option');
+                        option.value = regency.name;
+                        option.textContent = regency.name;
+                        kotaSelect.appendChild(option);
+                    });
+
+                    // Set the selected kabupaten if it exists
+                    if ("{{ $company->kabupaten }}") {
+                        kotaSelect.value = "{{ $company->kabupaten }}";
+                    }
+                })
+                .catch(error => console.error(`Error fetching regencies for provinsi ${selectedProvinsiId}:`, error));
+        }
+
+        // Add event listener for province selection
+        provinsiSelect.addEventListener('change', populateCities);
     </script>
 
     {{-- ! Javascript untuk menangani handle terkait team baik untuk menambahkan menghapus dan mencari orang --}}

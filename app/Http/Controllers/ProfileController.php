@@ -59,7 +59,7 @@ class ProfileController extends Controller
     public function editCompanyProfile()
     {
         $user = Auth::user();
-        $company = $user->companies->first(); // Ambil perusahaan yang relevan
+        $company = $user->companies; // Ambil perusahaan yang relevan
 
         if (!$company) {
             return redirect('/imm');

@@ -204,7 +204,8 @@
                                 <td style="vertical-align: middle;">
                                     <div style="display: flex; align-items: center;">
                                         <div style="margin-right: 2px;">
-                                            <img src="{{ !empty($company->image) ? asset($company->image) : asset('images/logo-maxy.png') }}" alt="" width="30" height="30" style="border-radius: 8px; object-fit:cover;">
+                                            <img src="{{ !empty($company->image) ? env('APP_URL') . $company->image : asset('images/logo-maxy.png') }}" alt="" width="30" height="30"
+                                            style="border-radius: 8px; object-fit:cover;">
                                         </div>
                                         <div style="flex-grow: 1; margin-left: 0px; margin-right: 0px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
                                             @if (strlen($company->nama) > 10)
