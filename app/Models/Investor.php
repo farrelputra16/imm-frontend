@@ -21,6 +21,7 @@ class Investor extends Model
         'description',
         'departments',
         'investment_stage',
+        'investor_type',
         'user_id'
     ];
 
@@ -73,6 +74,11 @@ class Investor extends Model
     public function departments()
     {
         return $this->belongsToMany(Department::class, 'investor_departments');
+    }
+
+    public function wishlist()
+    {
+        return $this->hasMany(Wishlist::class);
     }
 
 }

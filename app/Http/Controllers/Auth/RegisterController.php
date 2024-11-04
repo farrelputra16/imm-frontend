@@ -103,6 +103,7 @@ class RegisterController extends Controller
                 'description' => 'required|string',
                 'tag_ids' => 'array',
                 'investment_stage' => 'required|string|max:255', // Validasi untuk investment_stage
+                'investor_type' => 'nullable|string|max:255',
             ]);
         } elseif ($role === 'PEOPLE') {
             // Hanya validasi kolom yang diperlukan, sisanya dibiarkan kosong
@@ -164,6 +165,7 @@ class RegisterController extends Controller
         'location' => $data['location'],
         'description' => $data['description'],
         'investment_stage' => $data['investment_stage'], // Simpan investment_stage
+        'investor_type' => $data['investor_type'] ?? null, // Bisa nullable
         'user_id' => $user->id, // Link ke user yang baru dibuat
     ]);
 

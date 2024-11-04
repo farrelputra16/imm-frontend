@@ -2,12 +2,8 @@
 @section('title', 'Create your account')
 
 @section('css')
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
-
 <style>
     body {
-        font-family: "Roboto", sans-serif;
         background-color: #f5f5f5;
     }
 
@@ -193,6 +189,50 @@
         font-size: 14px;
     }
 
+    /* Select 2  styles */
+    .select2-container--default .select2-selection--single {
+        height: 45px;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 36px;
+        padding-left: 12px;
+        padding-top: 5px;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 45px;
+        padding-top: 5px;
+        padding-right: 10px;
+    }
+
+    .select2-container--default .select2-search--dropdown .select2-search__field {
+        padding: 8px;
+        border: 1px solid #ced4da;
+    }
+
+    .select2-selection__clear {
+        height: 45px;
+        padding-top: 12px;
+        padding-right: 10px;
+    }
+
+    .select2-results__option {
+        padding: 8px 12px;
+    }
+
+    .select2-results__option strong {
+        background-color: #fff9ffcd;
+        padding: 2px;
+        color: black;
+    }
+
+    .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        background-color: #6256ca;
+    }
+
     /* Media query for responsiveness */
     @media (max-width: 768px) {
         .register-container {
@@ -290,8 +330,8 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="org_name">Nama Organisasi</label>
-                            <select id="org_name" name="org_name" class="form-control">
-                                <option value="">Tidak Ada Organisasi</option> <!-- Nilai kosong untuk tidak memilih -->
+                            <select id="org_name" name="org_name" class="form-control select2-search" style="height: 200px;">
+                                <option value="">Tidak Ada Organisasi</option>
                                 @foreach($companies as $company)
                                     <option value="{{ $company->id }}" {{ old('org_name') == $company->id ? 'selected' : '' }}>
                                         {{ $company->nama }}
@@ -313,7 +353,7 @@
 
                         <div class="form-group">
                             <label for="investment_stage">Tahap Investasi</label>
-                            <select id="investment_stage" name="investment_stage" class="form-control" required>
+                            <select id="investment_stage" name="investment_stage" class="form-control" style="height: 100%" required>
                                 <option value="">Pilih Tahap Investasi</option>
                                 <option value="Pre Seed">Pre-Seed</option>
                                 <option value="seed">Seed</option>
@@ -349,34 +389,50 @@
 
                     <div class="form-group">
                         <label for="description">Deskripsi</label>
-                        <textarea id="description" name="description" placeholder="Masukkan deskripsi" rows="3" required>{{ old('description') }}</textarea>
+                        <textarea id="description" name="description" placeholder="Masukkan deskripsi" rows="3" style="padding-left: 10px;" required>{{ old('description') }}</textarea>
                     </div>
 
-                    {{-- <div class="form-group">
-                        <label for="departments">Departemen</label>
-                        <select id="departments" name="departments" class="form-control" required>
-                            <option value="">Pilih Departemen</option>
-                            <option value="Marketing" {{ old('departments') == 'Marketing' ? 'selected' : '' }}>Marketing</option>
-                            <option value="Finance" {{ old('departments') == 'Finance' ? 'selected' : '' }}>Finance</option>
-                            <option value="Human Resources" {{ old('departments') == 'Human Resources' ? 'selected' : '' }}>Human Resources</option>
-                            <option value="Engineering" {{ old('departments') == 'Engineering' ? 'selected' : '' }}>Engineering</option>
-                            <option value="Sales" {{ old('departments') == 'Sales' ? 'selected' : '' }}>Sales</option>
-                            <option value="Operations" {{ old('departments') == 'Operations' ? 'selected' : '' }}>Operations</option>
-                            <option value="Product Development" {{ old('departments') == 'Product Development' ? 'selected' : '' }}>Product Development</option>
-                            <option value="Customer Support" {{ old('departments') == 'Customer Support' ? 'selected' : '' }}>Customer Support</option>
-                            <option value="IT" {{ old('departments') == 'IT' ? 'selected' : '' }}>IT</option>
-                            <option value="Legal" {{ old('departments') == 'Legal' ? 'selected' : '' }}>Legal</option>
-                        </select>
-                    </div> --}}
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="impactTags">Tag untuk department</label>
+                            <button type="button" class="tag-button" data-toggle="modal" data-target="#tagModal">
+                                Pilih Department Anda
+                            </button>
+                            <div id="selectedTags" class="mt-2">
+                            </div>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="impactTags">Tag untuk department</label>
-                        <button type="button" class="tag-button" data-toggle="modal" data-target="#tagModal">
-                            Pilih Department Anda
-                        </button>
-                        <div id="selectedTags" class="mt-2">
+                        {{--  buatkan untuk investor type --}}
+                        <div class="form-group">
+                            <label for="investment_stage">Tipe Investor</label>
+                            <select id="investor_type" name="investor_type" class="form-control" style="height: 50px;" required>
+                                <option value="">Pilih Tipe Investor</option>
+                                <option value="venture_capital">Venture Capital</option>
+                                <option value="individual_angel">Individual Angel</option>
+                                <option value="private_equity_firm">Private Equity Firm</option>
+                                <option value="accelerator">Accelerator</option>
+                                <option value="investment_partner">Investment Partner</option>
+                                <option value="corporate_venture_capital">Corporate Venture Capital</option>
+                                <option value="micro_vc">Micro VC</option>
+                                <option value="angel_group">Angel Group</option>
+                                <option value="incubator">Incubator</option>
+                                <option value="investment_bank">Investment Bank</option>
+                                <option value="family_investment_office">Family Investment Office</option>
+                                <option value="venture_debt">Venture Debt</option>
+                                <option value="co_working_space">Co-Working Space</option>
+                                <option value="fund_of_funds">Fund of Funds</option>
+                                <option value="hedge_fund">Hedge Fund</option>
+                                <option value="government_office">Government Office</option>
+                                <option value="university_program">University Program</option>
+                                <option value="entrepreneurship_program">Entrepreneurship Program</option>
+                                <option value="secondary_purchaser">Secondary Purchaser</option>
+                                <option value="startup_competition">Startup Competition</option>
+                                <option value="syndicate">Syndicate</option>
+                                <option value="pension_funds">Pension Funds</option>
+                            </select>
                         </div>
                     </div>
+
 
                     <!-- Modal -->
                     <div class="modal fade" id="tagModal" tabindex="-1" aria-labelledby="tagModalLabel" aria-hidden="true">
@@ -691,7 +747,7 @@
                     provinceSelect.innerHTML = '<option value="">Pilih Provinsi</option>'; // Clear dan isi ulang
                     data.forEach(province => {
                         const option = document.createElement('option');
-                        option.value = province.id; // Menyimpan ID provinsi
+                        option.value = province.name; // Menyimpan ID provinsi
                         option.textContent = province.name; // Menampilkan nama provinsi
                         provinceSelect.appendChild(option);
                     });
@@ -782,5 +838,80 @@
             });
         });
     </script>
+
+    {{-- Bagian untuk menambahkan search  --}}
+    <script>
+        $(document).ready(function() {
+            // Inisialisasi Select2
+            $('.select2-search').select2({
+                placeholder: 'Cari organisasi jika ada...',
+                allowClear: true,
+                width: '100%',
+                language: {
+                    noResults: function() {
+                        return "Tidak ada hasil yang ditemukan";
+                    }
+                },
+                // Kustomisasi pencarian
+                matcher: function(params, data) {
+                    // Jika tidak ada term pencarian, tampilkan semua
+                    if ($.trim(params.term) === '') {
+                        return data;
+                    }
+
+                    // Skip jika data kosong
+                    if (typeof data.text === 'undefined') {
+                        return null;
+                    }
+
+                    // Konversi ke lowercase untuk pencarian case-insensitive
+                    var term = params.term.toLowerCase();
+                    var text = data.text.toLowerCase();
+
+                    // Cek apakah text mengandung term pencarian
+                    if (text.indexOf(term) > -1) {
+                        return data;
+                    }
+
+                    // Jika tidak cocok, return null untuk skip
+                    return null;
+                },
+                // Kustomisasi tampilan dropdown
+                templateResult: function(data) {
+                    if (!data.id) {
+                        return data.text;
+                    }
+
+                    var $result = $('<span></span>');
+                    var searchTerm = $('.select2-search__field').val().toLowerCase();
+                    var text = data.text;
+
+                    if (searchTerm) {
+                        var startIndex = text.toLowerCase().indexOf(searchTerm);
+                        if (startIndex > -1) {
+                            var endIndex = startIndex + searchTerm.length;
+                            var highlightedText =
+                                text.substring(0, startIndex) +
+                                '<strong>' + text.substring(startIndex, endIndex) + '</strong>' +
+                                text.substring(endIndex);
+                            $result.html(highlightedText);
+                        } else {
+                            $result.text(text);
+                        }
+                    } else {
+                        $result.text(text);
+                    }
+
+                    return $result;
+                }
+            });
+
+            // Optional: Tambahkan event handler untuk perubahan nilai
+            $('#org_name').on('select2:select', function(e) {
+                console.log('Selected value:', e.params.data.id);
+                console.log('Selected text:', e.params.data.text);
+            });
+        });
+        </script>
 </body>
 @endsection

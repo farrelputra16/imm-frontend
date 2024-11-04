@@ -54,4 +54,9 @@ class People extends Model
     {
         return $this->belongsTo(Company::class, 'primary_organization');
     }
+
+    public function wishlist()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
 }

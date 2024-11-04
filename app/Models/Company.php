@@ -74,6 +74,14 @@ class Company extends Model
     }
 
     /**
+     * Relasi one-to-many dengan Wishlist
+    */
+    public function wishlist()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+
+    /**
      * Method untuk mendapatkan perusahaan berdasarkan filter lokasi, industri, atau funding type.
      */
     public static function getFilteredCompanies($request = null)
@@ -148,7 +156,11 @@ class Company extends Model
 
         // Kondisi pencarian berdasarkan lokasi
         if ($request->input('location') && !empty($request->input('location'))) {
-            $query->whereIn('kabupaten', $request->input('location'));
+            $query->where(function($q) use ($request) {
+                foreach ($request->input('location') as $location) {
+                    $q->orWhere('kabupaten', 'like', "%{$location}%");
+                }
+            });
         }
 
        // Kondisi pencarian berdasarkan industri
@@ -165,7 +177,11 @@ class Company extends Model
 
         // Kondisi pencarian berdasarkan funding_stage
         if ($request->input('funding_stage') && !empty($request->input('funding_stage'))) {
-            $query->whereIn('funding_stage', $request->input('funding_stage'));
+            $query->where(function($q) use ($request) {
+                foreach ($request->input('funding_stage') as $stage) {
+                    $q->orWhere('funding_stage', 'like', "%{$stage}%");
+                }
+            });
         }
 
         // Ambil perusahaan dengan data yang diperlukan

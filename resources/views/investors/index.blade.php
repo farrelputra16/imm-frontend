@@ -73,10 +73,10 @@
                     <!-- Location Filter -->
                     <div class="mb-3">
                         <h6>LOCATION</h6>
-                        <label><input type="checkbox" name="location[]" value="Jakarta" onchange="autoFilter()"> Jakarta</label>
-                        <label><input type="checkbox" name="location[]" value="Bali" onchange="autoFilter()"> Bali</label>
-                        <label><input type="checkbox" name="location[]" value="Yogyakarta" onchange="autoFilter()"> Yogyakarta</label>
-                        <label><input type="checkbox" name="location[]" value="Sumatera Timur" onchange="autoFilter()"> Sumatera Timur</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="location[]" value="Jakarta" onchange="autoFilter()"> Jakarta</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="location[]" value="Bali" onchange="autoFilter()"> Bali</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="location[]" value="Yogyakarta" onchange="autoFilter()"> Yogyakarta</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="location[]" value="Sumatera Timur" onchange="autoFilter()"> Sumatera Timur</label>
 
                         <!-- Dropdown Provinsi -->
                         <div style="display: none;" id="extra-locations">
@@ -100,12 +100,12 @@
                     <div class="mb-3">
                         <h6>INVESTMENT STAGE</h6>
                         @foreach (['Pre Seed', 'seed', 'Series A', 'Series B'] as $stage)
-                            <label><input type="checkbox" name="investment_stage[]" value="{{ $stage }}" onchange="autoFilter()" class="investment-stage"> {{ ucfirst(str_replace('_', ' ', $stage)) }}</label>
+                            <label><input type="checkbox" name="investment_stage[]" value="{{ $stage }}" onchange="autoFilter()" class="investment-stage filter-checkbox"> {{ ucfirst(str_replace('_', ' ', $stage)) }}</label>
                         @endforeach
                         <div class="extra-funding" style="display: none;">
                             @foreach (['Series C', 'Series D', 'Series E', 'Series F', 'Series G', 'Series H', 'Series I', 'Series J', 'venture_series_unknown', 'angel', 'private_equity', 'debt', 'convertible_debt', 'grants', 'revenue_based', 'ipo', 'crowdfunding', 'initial_coin_offering', 'undisclosed'] as $stage)
                                 <label>
-                                    <input type="checkbox" name="investment_stage[]" value="{{ $stage }}" onchange="autoFilter()" class="investment-stage"> {{ ucfirst(str_replace('_', ' ', $stage)) }}
+                                    <input type="checkbox" name="investment_stage[]" value="{{ $stage }}" onchange="autoFilter()" class="investment-stage filter-checkbox"> {{ ucfirst(str_replace('_', ' ', $stage)) }}
                                 </label>
                             @endforeach
                         </div>
@@ -125,7 +125,7 @@
                                        name="investor_type[]"
                                        value="{{ $type }}"
                                        onchange="autoFilter()"
-                                       class="investor-type">
+                                       class="investor-type filter-checkbox">
                                 {{ ucfirst(str_replace('_', ' ', $type)) }}
                             </label>
                         @endforeach
@@ -155,7 +155,7 @@
                                            name="investor_type[]"
                                            value="{{ $type }}"
                                            onchange="autoFilter()"
-                                           class="investor-type">
+                                           class="investor-type filter-checkbox">
                                     {{ ucfirst(str_replace('_', ' ', $type)) }}
                                 </label>
                             @endforeach
@@ -202,12 +202,17 @@
                 </div>
             </form>
 
-            {{-- Tempat menaruh tombol wishlist --}}
-            <div style="margin: 0px; padding: 0px;  display: flex; justify-content: flex-end;">
-                <button class="wishlist-button" style="display: none;">
-                    <img alt="Icon representing a list" height="20" src="{{ asset('images/WishlistIcon.svg') }}" width="20"/>
-                    Add to Wishlist
-                </button>
+            <div style="margin: 0px; padding: 0px;">
+                <div id="wishlist-info" style="margin-bottom: 10px;"></div>
+                <div style="display: flex; justify-content: flex-end;">
+                    <button class="wishlist-button" style="display: none; position: relative;">
+                        <img alt="Icon representing a list" height="20" src="{{ asset('images/WishlistIcon.svg') }}" width="20"/>
+                        Add to Wishlist
+                        <span id="wishlist-counter" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;">
+                            0
+                        </span>
+                    </button>
+                </div>
             </div>
 
             <form id="wishlist-form" method="POST" action="{{ route('wishlist.add') }}">
@@ -219,11 +224,12 @@
                 <table class="table table-hover table-strip" style="margin-bottom: 0px;">
                     <thead class="sub-heading-2">
                         <tr>
-                            <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle; border-bottom: none;"><input type="checkbox" value="all_check" id="select_all"></th>
+                            <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle; border-bottom: none;"><input type="checkbox" value="all_check" id="select_all" class="select_investor"></th>
                             <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Organization Name</th>
                             <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Number of Contacts</th>
                             <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Number of Investments</th>
                             <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Invesment Stage</th>
+                            <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Investor Type</th>
                             <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Location</th>
                             <th scope="col" class="sub-heading-2" style="border-top-right-radius: 20px; vertical-align: top; text-align: left; border-bottom: none;">Description</th>
                         </tr>
@@ -253,6 +259,7 @@
                             <td  style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->number_of_contacts }}</td>
                             <td  style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->number_of_investments }}</td>
                             <td  style="vertical-align: middle; text-align: center;" class="body-2 investment-stage">{{ $investor->investment_stage }}</td>
+                            <td  style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->investor_type }}</td>
                             <td  style="vertical-align: middle; text-align: start;" class="body-2">{{ $investor->location }}</td>
                             <td style="vertical-align: middle; text-align: start; border-right: 1px solid #ddd;" class="body-2">{{ Str::limit($investor->description, 20, '...') }}</td>
                         </tr>
@@ -344,7 +351,7 @@
     // Handle row click event and checkbox logic
     document.querySelectorAll('tr[data-href]').forEach(tr => {
         tr.addEventListener('click', function(e) {
-            if (e.target.type !== 'checkbox') {
+            if (e.target.type !== 'checkbox' && !e.target.closest('.wishlist-button')) {
                 window.location.href = this.dataset.href;
             }
         });
@@ -355,44 +362,125 @@
         const isChecked = this.checked;
         document.querySelectorAll('.select_investor').forEach(checkbox => {
             checkbox.checked = isChecked;
-            if (isChecked) {
-                document.querySelector('.wishlist-button').style.display = 'inline-block';
-                document.querySelector('.search-container').style.marginBottom = '0px';
-            } else {
-                document.querySelector('.wishlist-button').style.display = 'none';
-                document.querySelector('.search-container').style.marginBottom = '20px';
-            }
         });
+        updateWishlistButton();
+        updateWishlistCounter();
+        saveWishlistState();
     });
 
     // Handle checkboxes dynamically using event delegation
     document.querySelector('tbody').addEventListener('change', function(e) {
         if (e.target.classList.contains('select_investor')) {
+            e.preventDefault();
             updateWishlistButton();
+            updateWishlistCounter();
+            saveWishlistState();
+
+            const allCheckboxes = document.querySelectorAll('.select_investor');
+            const checkedCheckboxes = document.querySelectorAll('.select_investor:checked');
+            document.getElementById('select_all').checked = allCheckboxes.length === checkedCheckboxes.length;
         }
     });
 
-    function updateWishlistButton() {
-        const selectedInvestors = Array.from(document.querySelectorAll('.select_investor:checked')).map(cb => cb.dataset.id);
-        if (selectedInvestors.length > 0) {
-            document.querySelector('.wishlist-button').style.display = 'inline-block';
-            document.getElementById('investor_ids').value = selectedInvestors.join(',');
-            document.querySelector('.search-container').style.marginBottom = '0px';
-        } else {
-            document.querySelector('.wishlist-button').style.display = 'none';
-            document.getElementById('investor_ids').value = '';
-            document.querySelector('.search-container').style.marginBottom = '20px';
+    // Fungsi untuk update counter wishlist
+    function updateWishlistCounter() {
+        const selectedCount = document.querySelectorAll('.select_investor:checked').length;
+        const totalCount = document.querySelectorAll('.select_investor').length;
+
+        // Update counter di navbar jika ada
+        const wishlistCounter = document.getElementById('wishlist-counter');
+        if (wishlistCounter) {
+            wishlistCounter.textContent = selectedCount;
+            wishlistCounter.style.display = selectedCount > 0 ? 'inline-block' : 'none';
+        }
+
+        // Update counter info di atas tabel
+        const wishlistInfo = document.getElementById('wishlist-info');
+        if (!wishlistInfo) {
+            const infoDiv = document.createElement('div');
+            infoDiv.id = 'wishlist-info';
+            infoDiv.style.marginBottom = '10px';
+            document.querySelector('.wishlist-button').parentElement.insertBefore(infoDiv, document.querySelector('.wishlist-button'));
         }
     }
-    // Get the wishlist button
-    const wishlistButton = document.querySelector('.wishlist-button');
 
-    // Add an event listener to the wishlist button
-    wishlistButton.addEventListener('click', function() {
-        // Update nilai investor_ids sebelum mengirimkan form
+    // Fungsi untuk update tampilan tombol wishlist
+    function updateWishlistButton() {
+        const selectedInvestors = Array.from(document.querySelectorAll('.select_investor:checked')).map(cb => cb.dataset.id);
+        const wishlistButton = document.querySelector('.wishlist-button');
+        const searchContainer = document.querySelector('.search-container');
+
+        if (selectedInvestors.length > 0) {
+            wishlistButton.style.display = 'inline-block';
+            document.getElementById('investor_ids').value = selectedInvestors.join(',');
+            searchContainer.style.marginBottom = '0px';
+
+            wishlistButton.innerHTML = `
+                <img alt="Icon representing a list" height="20" src="${wishlistButton.querySelector('img').src}" width="20"/>
+                Add to Wishlist (${selectedInvestors.length})
+            `;
+        } else {
+            wishlistButton.style.display = 'none';
+            document.getElementById('investor_ids').value = '';
+            searchContainer.style.marginBottom = '20px';
+        }
+    }
+
+    // Fungsi untuk menyimpan state wishlist ke localStorage
+    function saveWishlistState() {
+        const selectedInvestors = Array.from(document.querySelectorAll('.select_investor:checked')).map(cb => cb.dataset.id);
+        localStorage.setItem('investorWishlistSelection', JSON.stringify(selectedInvestors));
+    }
+
+    // Fungsi untuk memuat state wishlist dari localStorage
+    function loadWishlistState() {
+        const savedSelection = JSON.parse(localStorage.getItem('investorWishlistSelection')) || [];
+        savedSelection.forEach(id => {
+            const checkbox = document.querySelector(`.select_investor[data-id="${id}"]`);
+            if (checkbox) {
+                checkbox.checked = true;
+            }
+        });
         updateWishlistButton();
-        // Submit the wishlist form
+        updateWishlistCounter();
+    }
+
+    // Handle wishlist button click
+    const wishlistButton = document.querySelector('.wishlist-button');
+    wishlistButton.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        const selectedInvestors = document.querySelectorAll('.select_investor:checked');
+        if (selectedInvestors.length === 0) {
+            alert('Please select at least one investor to add to wishlist');
+            return;
+        }
+
+        updateWishlistButton();
+
+        // Tambahkan animasi loading
+        wishlistButton.innerHTML = `
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Adding to Wishlist...
+        `;
+        wishlistButton.disabled = true;
+
+        // Submit form
         document.getElementById('wishlist-form').submit();
+        localStorage.removeItem('investorWishlistSelection');
+    });
+
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        loadWishlistState();
+
+        // Add initial counter display
+        const counterDiv = document.createElement('div');
+        counterDiv.id = 'wishlist-info';
+        counterDiv.style.marginBottom = '10px';
+        document.querySelector('.wishlist-button').parentElement.insertBefore(counterDiv, document.querySelector('.wishlist-button'));
+
+        updateWishlistCounter();
     });
 </script>
 
@@ -440,7 +528,7 @@
 <script>
     // Fungsi untuk menyimpan status checkbox
     function saveCheckboxState() {
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const checkboxes = document.querySelectorAll('.filter-checkbox');
         checkboxes.forEach(checkbox => {
             localStorage.setItem(checkbox.value, checkbox.checked);
         });
@@ -448,7 +536,7 @@
 
     // Fungsi untuk memuat status checkbox
     function loadCheckboxState() {
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const checkboxes = document.querySelectorAll('.filter-checkbox');
         checkboxes.forEach(checkbox => {
             const checked = localStorage.getItem(checkbox.value) === 'true';
             checkbox.checked = checked;
@@ -504,10 +592,36 @@
         loadCheckboxState();
 
         // Setup checkbox change listeners
-        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        document.querySelectorAll('.filter-checkbox').forEach(checkbox => {
             checkbox.addEventListener('change', autoFilterCheckbox);
         });
     });
+</script>
+
+<script>
+    function clearFilters() {
+        // Clear tags
+        document.querySelectorAll('.tag').forEach(tag => {
+            tag.classList.remove('selected');
+        });
+
+        // Clear filter checkboxes only
+        document.querySelectorAll('.filter-checkbox').forEach(checkbox => {
+            checkbox.checked = false;
+            localStorage.removeItem(checkbox.value);
+        });
+
+        // Clear hidden inputs dan search input
+        document.getElementById('hidden-inputs').innerHTML = '';
+        document.querySelector('input[name="search"]').value = '';
+
+        // Clear localStorage
+        localStorage.removeItem('selectedTags');
+        localStorage.removeItem('companySearch');
+
+        // Submit form
+        document.getElementById('companyFilterForm').submit();
+    }
 </script>
 
 {{-- script untuk mengambil data kota dari API --}}

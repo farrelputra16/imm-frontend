@@ -170,13 +170,21 @@
                         <input type="text" class="form-control" id="negara" name="negara" placeholder="Masukkan negara anda" required>
                     </div>
                     <div class="form-group">
-                        <label for="provinsi">Provinsi</label>
-                        <input type="text" class="form-control" id="provinsi" name="provinsi" placeholder="Masukkan provinsi anda" required>
+                        <label for="provinsi" class="sub-heading-1">Provinsi</label>
+                        <select class="form-control" name="provinsi" id="provinsi" required>
+                            <!-- Placeholder option -->
+                            <option value="" disabled selected>Pilih Provinsi</option>
+                        </select>
                     </div>
+
                     <div class="form-group">
-                        <label for="kabupaten">Kota/Kabupaten</label>
-                        <input type="text" class="form-control" id="kabupaten" name="kabupaten" placeholder="Masukkan kota/kabupaten anda" required>
+                        <label for="kota" class="sub-heading-1">Kota/Kabupaten</label>
+                        <select class="form-control" name="kabupaten" id="kabupaten" required>
+                            <!-- Placeholder option -->
+                            <option value="" disabled selected>Pilih Kota/Kabupaten</option>
+                        </select>
                     </div>
+
                     <div class="mb-3">
                         <label for="formGroupExampleInput6" class=" font-weight-bold">Jumlah Pekerja</label>
                         <input type="text" name="jumlah_karyawan" class="form-control" id="formGroupExampleInput6" placeholder="Masukkan Jumlah Pekerja" value=""  pattern="[0-9]*" inputmode="numeric">
@@ -328,6 +336,55 @@
         // Initial update of selected tags
         updateSelectedTags();
     });
+    </script>
+
+    {{-- script untuk memberikan isian provinsi dan kabupaten/kota --}}
+    <script>
+        const provinsiSelect = document.getElementById('provinsi');
+        const kotaSelect = document.getElementById('kabupaten');
+        let provincesData = [];
+
+        // Fetch provinces data
+        fetch('https://kanglerian.github.io/api-wilayah-indonesia/api/provinces.json')
+            .then(response => response.json())
+            .then(provinces => {
+                provincesData = provinces;
+                provinces.forEach(provinsi => {
+                    const option = document.createElement('option');
+                    option.value = provinsi.name; // Use ID as value
+                    option.textContent = provinsi.name;
+                    option.setAttribute('data-id', provinsi.id);
+                    provinsiSelect.appendChild(option);
+                    console.log(option);
+                });
+
+            })
+            .catch(error => console.error('Error fetching provinces:', error));
+
+        // Populate cities based on selected province
+        function populateCities() {
+            const selectedProvinsiId = provinsiSelect.selectedOptions[0].getAttribute('data-id');
+            const regenciesUrl = `https://kanglerian.github.io/api-wilayah-indonesia/api/regencies/${selectedProvinsiId}.json`;
+
+            // Clear previous city options
+            kotaSelect.innerHTML = '<option value="" disabled selected>Pilih Kota/Kabupaten</option>';
+
+            fetch(regenciesUrl)
+                .then(response => response.json())
+                .then(regencies => {
+                    regencies.forEach(regency => {
+                        const option = document.createElement('option');
+                        option.value = regency.name; // Use city name as value
+                        option.textContent = regency.name;
+                        kotaSelect.appendChild(option);
+                        console.log(option);
+                    });
+                })
+                .catch(error => console.error(`Error fetching regencies for provinsi ${selectedProvinsiId}:`, error));
+        }
+
+        // Add event listener for province selection
+        provinsiSelect.addEventListener('change', populateCities);
     </script>
 </body>
 @endsection

@@ -35,6 +35,15 @@
         color: #6256CA; /* Mengubah warna teks saat tag aktif */
         font-weight: bold; /* Menebalkan teks saat tag aktif */
     }
+    .btn-primary {
+        background-color: #6256CA;
+        border-color: #6256CA;
+    }
+
+    .btn-primary:hover {
+        background-color: #4c43b3;
+        border-color: #4c43b3;
+    }
 </style>
 <div class="container">
     <!-- Breadcrumb -->
@@ -65,10 +74,10 @@
                     <!-- LOCATION Filter -->
                     <div class="mb-3">
                         <h6>LOCATION</h6>
-                        <label><input type="checkbox" name="location[]" value="Jakarta" onchange="autoFilter()"> Jakarta</label>
-                        <label><input type="checkbox" name="location[]" value="Bali" onchange="autoFilter()"> Bali</label>
-                        <label><input type="checkbox" name="location[]" value="Yogyakarta" onchange="autoFilter()"> Yogyakarta</label>
-                        <label><input type="checkbox" name="location[]" value="Sumatera Timur" onchange="autoFilter()"> Sumatera Timur</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="location[]" value="Jakarta" onchange="autoFilter()"> Jakarta</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="location[]" value="Bali" onchange="autoFilter()"> Bali</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="location[]" value="Yogyakarta" onchange="autoFilter()"> Yogyakarta</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="location[]" value="Sumatera Timur" onchange="autoFilter()"> Sumatera Timur</label>
 
                         <!-- Dropdown Provinsi -->
                         <div style="display: none;" id="extra-locations">
@@ -92,12 +101,12 @@
                     <div class="mb-3">
                         <h6>DEVELOPMENT STAGE</h6>
                         @foreach (['Pre Seed', 'seed', 'Series A', 'Series B'] as $stage)
-                            <label><input type="checkbox" name="funding_stage[]" value="{{ $stage }}" onchange="autoFilter()" class="funding-stage"> {{ ucfirst(str_replace('_', ' ', $stage)) }}</label>
+                            <label><input type="checkbox" name="funding_stage[]" value="{{ $stage }}" onchange="autoFilter()" class="funding-stage filter-checkbox" > {{ ucfirst(str_replace('_', ' ', $stage)) }}</label>
                         @endforeach
                         <div class="extra-funding" style="display: none;">
                             @foreach (['Series C', 'Series D', 'Series E', 'Series F', 'Series G', 'Series H', 'Series I', 'Series J', 'venture_series_unknown', 'angel', 'private_equity', 'debt', 'convertible_debt', 'grants', 'revenue_based', 'ipo', 'crowdfunding', 'initial_coin_offering', 'undisclosed'] as $stage)
                                 <label>
-                                    <input type="checkbox" name="funding_stage[]" value="{{ $stage }}" onchange="autoFilter()" class="funding-stage"> {{ ucfirst(str_replace('_', ' ', $stage)) }}
+                                    <input type="checkbox" name="funding_stage[]" value="{{ $stage }}" onchange="autoFilter()" class="funding-stage filter-checkbox"> {{ ucfirst(str_replace('_', ' ', $stage)) }}
                                 </label>
                             @endforeach
                         </div>
@@ -129,7 +138,7 @@
                     </div>
 
                     <!-- Clear Filters Button -->
-                    <button type="button" onclick="clearFilters()" style="margin-top: 10px;">Clear Filters</button>
+                    <button type="button" onclick="clearFilters()" style="margin-top: 10px;"  class="btn btn-primary w-100">Clear Filters</button>
 
                     <!-- Form untuk filter -->
 
@@ -145,17 +154,23 @@
                 @csrf
                 <div class="search-container">
                     <i class="fas fa-search" style="margin-left: 10px;"></i>
-                    <input class="form-control" placeholder="Search Investors" type="text" name="search" value="{{ request('search') }}" />
+                    <input class="form-control" placeholder="Search Investors" type="text" name="search" id="search_input" value="{{ request('search') }}" />
                     <button class="btn" type="submit">Search</button>
                 </div>
             </form>
 
             {{-- Tempat menaruh tombol wishlist --}}
-            <div style="margin: 0px; padding: 0px;  display: flex; justify-content: flex-end;">
-                <button class="wishlist-button" style="display: none;">
-                    <img alt="Icon representing a list" height="20" src="{{ asset('images/WishlistIcon.svg') }}" width="20"/>
-                    Add to Wishlist
-                </button>
+            <div style="margin: 0px; padding: 0px;">
+                <div id="wishlist-info" style="margin-bottom: 10px;"></div>
+                <div style="display: flex; justify-content: flex-end;">
+                    <button class="wishlist-button" style="display: none; position: relative;">
+                        <img alt="Icon representing a list" height="20" src="{{ asset('images/WishlistIcon.svg') }}" width="20"/>
+                        Add to Wishlist
+                        <span id="wishlist-counter" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;">
+                            0
+                        </span>
+                    </button>
+                </div>
             </div>
 
             <form id="wishlist-form" method="POST" action="{{ route('wishlist.add') }}">
@@ -183,7 +198,9 @@
                     <tbody>
                         @foreach ($companies as $company)
                             <tr data-href="{{ route('companies.show', $company->id) }}">
-                                <td style="vertical-align: middle;"><input type="checkbox" class="select_company" data-id="{{ $company->id }}"></td>
+                                <td style="vertical-align: middle;">
+                                    <input type="checkbox" class="select_company" data-id="{{ $company->id }}">
+                                </td>
                                 <td style="vertical-align: middle;">
                                     <div style="display: flex; align-items: center;">
                                         <div style="margin-right: 2px;">
@@ -264,22 +281,39 @@
         const isChecked = this.checked;
         document.querySelectorAll('.select_company').forEach(checkbox => {
             checkbox.checked = isChecked;
-            if (isChecked) {
-                document.querySelector('.wishlist-button').style.display = 'inline-block';
-                document.querySelector('.search-container').style.marginBottom = '0px';
-            } else {
-                document.querySelector('.wishlist-button').style.display = 'none';
-                document.querySelector('.search-container').style.marginBottom = '20px';
-            }
         });
+        updateWishlistButton();
+        updateWishlistCounter();
     });
 
     // Handle checkboxes dynamically using event delegation
     document.querySelector('tbody').addEventListener('change', function(e) {
         if (e.target.classList.contains('select_company')) {
+            e.preventDefault();
             updateWishlistButton();
+            updateWishlistCounter();
+
+            // Update "select all" checkbox
+            const allCheckboxes = document.querySelectorAll('.select_company');
+            const checkedCheckboxes = document.querySelectorAll('.select_company:checked');
+            document.getElementById('select_all').checked = allCheckboxes.length === checkedCheckboxes.length;
         }
     });
+
+    // Fungsi untuk update counter wishlist
+    function updateWishlistCounter() {
+        const selectedCount = document.querySelectorAll('.select_company:checked').length;
+        const totalCount = document.querySelectorAll('.select_company').length;
+
+        // Update counter info di atas tabel
+        const wishlistInfo = document.getElementById('wishlist-info');
+        if (!wishlistInfo) {
+            const infoDiv = document.createElement('div');
+            infoDiv.id = 'wishlist-info';
+            infoDiv.style.marginBottom = '10px';
+            document.querySelector('.wishlist-button').parentElement.insertBefore(infoDiv, document.querySelector('.wishlist-button'));
+        }
+    }
 
     function updateWishlistButton() {
         const selectedCompanies = Array.from(document.querySelectorAll('.select_company:checked')).map(cb => cb.dataset.id);
@@ -287,21 +321,52 @@
             document.querySelector('.wishlist-button').style.display = 'inline-block';
             document.getElementById('company_ids').value = selectedCompanies.join(',');
             document.querySelector('.search-container').style.marginBottom = '0px';
+
+            // Update text tombol dengan jumlah item yang dipilih
+            document.querySelector('.wishlist-button').innerHTML = `
+                <img alt="Icon representing a list" height="20" src="${document.querySelector('.wishlist-button img').src}" width="20"/>
+                Add to Wishlist (${selectedCompanies.length})
+            `;
         } else {
             document.querySelector('.wishlist-button').style.display = 'none';
             document.getElementById('company_ids').value = '';
             document.querySelector('.search-container').style.marginBottom = '20px';
         }
     }
+
     // Get the wishlist button
     const wishlistButton = document.querySelector('.wishlist-button');
 
     // Add an event listener to the wishlist button
-    wishlistButton.addEventListener('click', function() {
-        // Update nilai company_ids sebelum mengirimkan form
+    wishlistButton.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        const selectedCompanies = document.querySelectorAll('.select_company:checked');
+        if (selectedCompanies.length === 0) {
+            alert('Please select at least one company to add to wishlist');
+            return;
+        }
+
+        // Tambahkan animasi loading
+        this.innerHTML = `
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Adding to Wishlist...
+        `;
+        this.disabled = true;
+
+        // Update nilai company_ids dan submit form
         updateWishlistButton();
-        // Submit the wishlist form
         document.getElementById('wishlist-form').submit();
+    });
+
+    // Initialize counter when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        const counterDiv = document.createElement('div');
+        counterDiv.id = 'wishlist-info';
+        counterDiv.style.marginBottom = '10px';
+        document.querySelector('.wishlist-button').parentElement.insertBefore(counterDiv, document.querySelector('.wishlist-button'));
+
+        updateWishlistCounter();
     });
 </script>
 
@@ -374,42 +439,46 @@
     });
 </script>
 
+{{-- Script untuk checkbox filter --}}
 <script>
-    // Fungsi untuk menyimpan status checkbox
+    // Fungsi untuk menyimpan status checkbox filter
     function saveCheckboxState() {
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(checkbox => {
+        const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
+        filterCheckboxes.forEach(checkbox => {
             localStorage.setItem(checkbox.value, checkbox.checked);
         });
     }
 
-    // Fungsi untuk memuat status checkbox
+    // Fungsi untuk memuat status checkbox filter
     function loadCheckboxState() {
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(checkbox => {
+        const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
+        filterCheckboxes.forEach(checkbox => {
             const checked = localStorage.getItem(checkbox.value) === 'true';
             checkbox.checked = checked;
         });
     }
 
-    // Fungsi untuk mengirimkan form ketika checkbox berubah
-    function autoFilterCheckbox() {
-        saveCheckboxState();
-        document.getElementById('companyFilterForm').submit();
+    // Fungsi untuk mengirimkan form ketika checkbox filter berubah
+    function autoFilterCheckbox(event) {
+        // Pastikan ini bukan checkbox wishlist
+        if (event.target.classList.contains('filter-checkbox')) {
+            saveCheckboxState();
+            document.getElementById('companyFilterForm').submit();
+        }
     }
 
-    // Initialize checkbox functionality
+    // Initialize checkbox filter functionality
     document.addEventListener('DOMContentLoaded', () => {
         loadCheckboxState();
 
-        // Setup checkbox change listeners
-        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        // Setup checkbox change listeners khusus untuk filter
+        document.querySelectorAll('.filter-checkbox').forEach(checkbox => {
             checkbox.addEventListener('change', autoFilterCheckbox);
         });
     });
 </script>
 
-{{-- bagian khusus tag  --}}
+// Script untuk tag filter
 <script>
     // Fungsi untuk toggle filter
     function toggleFilter(tagElement) {
@@ -489,17 +558,28 @@
         }
     }
 
-    // Fungsi untuk membersihkan semua filter tag
+    // Fungsi untuk membersihkan semua filter
     function clearFilters() {
+        // Clear tags
         document.querySelectorAll('.tag').forEach(tag => {
             tag.classList.remove('selected');
         });
-        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+
+        // Clear filter checkboxes only
+        document.querySelectorAll('.filter-checkbox').forEach(checkbox => {
             checkbox.checked = false;
             localStorage.removeItem(checkbox.value);
         });
-        document.getElementById('companyFilterForm').submit();
+
+        // Clear hidden inputs dan search input
+        document.getElementById('hidden-inputs').innerHTML = '';
+        document.querySelector('input[name="search"]').value = '';
+
+        // Clear localStorage
         localStorage.removeItem('selectedTags');
+        localStorage.removeItem('companySearch');
+
+        // Submit form
         document.getElementById('companyFilterForm').submit();
     }
 
@@ -575,7 +655,7 @@
                 citiesCheckboxes.innerHTML = ''; // Kosongkan kota sebelumnya
                 data.forEach(city => {
                     const label = document.createElement('label');
-                    label.innerHTML = `<input type="checkbox" name="location[]" value="${city.name}" onchange="autoFilter()"> ${city.name}`;
+                    label.innerHTML = `<input type="checkbox" name="location[]" value="${city.name}" onchange="autoFilter()" class="filter-checkbox"> ${city.name}`;
                     citiesCheckboxes.appendChild(label);
                 });
             })
