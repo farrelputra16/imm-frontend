@@ -178,7 +178,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/people/add-education', [PeopleController::class, 'addEducation'])->name('people.addEducation');
         Route::post('/people/add-skills', [PeopleController::class, 'addSkills'])->name('people.addSkills');
         Route::post('/profile/update', [PeopleController::class, 'updateProfile'])->name('people.updateProfile');
-
     });
     Route::middleware(['auth'])->group(function () {
         // Menampilkan daftar funding rounds yang dimiliki oleh perusahaan yang login
