@@ -84,7 +84,6 @@ class ProfileController extends Controller
             // Jika departemen ditemukan, set nama departemennya
             $member->departmentName = $department ? $department->name : 'No department assigned';
         }
-
         return view('imm.profile-company', compact('company', 'user', 'team', 'departments', 'selectedDepartments'));
     }
 
@@ -128,7 +127,7 @@ class ProfileController extends Controller
     public function updateCompanyProfile(Request $request, $id)
     {
         $request->validate([
-            'image' => 'image|mimes:jpeg,png,jpg,webp|max:10000',
+            'image' => 'image|mimes:jpeg,png,jpg,webp|max:102400',
             'nama' => 'required|string|max:255',
             'profile' => 'required|string|max:255',
             'founded_date' => 'required|date',
@@ -165,8 +164,9 @@ class ProfileController extends Controller
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = time() . '.' . $image->extension();
-            $path = $image->storeAs('public/company', $imageName);
+            $imageName = $image->getClientOriginalName(); // Mengambil nama asli file
+            $folderName = strtolower(str_replace(' ', '_', $company->nama)); // Membuat nama folder dari nama perusahaan
+            $path = $image->storeAs("public/$folderName", $imageName); // Menyimpan dengan nama asli di folder baru
             $company->image = Storage::url($path); // Simpan URL gambar
             $company->save();
         }

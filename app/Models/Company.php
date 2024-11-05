@@ -62,7 +62,9 @@ class Company extends Model
      */
     public function teamMembers()
     {
-        return $this->belongsToMany(People::class, 'team')->withPivot('position')->withTimestamps();
+        return $this->belongsToMany(People::class, 'team', 'company_id', 'people_id')
+                    ->withPivot(['position', 'primary_job_title', 'image'])
+                    ->withTimestamps();
     }
 
     /**

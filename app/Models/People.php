@@ -34,7 +34,9 @@ class People extends Model
     // Relasi many-to-many dengan Company melalui tabel team
     public function companies()
     {
-        return $this->belongsToMany(Company::class, 'team')->withPivot('position')->withTimestamps();
+        return $this->belongsToMany(Company::class, 'team', 'people_id', 'company_id')
+                    ->withPivot(['position', 'primary_job_title', 'image'])
+                    ->withTimestamps();
     }
 
     // Relasi many-to-many dengan Hubs melalui tabel hubs_people

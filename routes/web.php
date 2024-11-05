@@ -358,7 +358,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/team/store', [TeamController::class, 'store']);
     Route::get('/team/{id}/edit', [TeamController::class, 'editTeam'])->name('team.edit');
     Route::put('/team/{id}', [TeamController::class, 'updateTeam'])->name('team.update');
-    Route::delete('/team/{id}/{companies_id}/delete', [TeamController::class, 'destroyTeam']);
+    Route::delete('/team/{id}/{companies_id}/delete', [TeamController::class, 'destroyTeam'])->name('team.destroy');
 
     /*
         Berikut ini merupakan rute untuk project dari company
