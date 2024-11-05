@@ -177,6 +177,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/people/add-experience', [PeopleController::class, 'addExperience'])->name('people.addExperience');
         Route::post('/people/add-education', [PeopleController::class, 'addEducation'])->name('people.addEducation');
         Route::post('/people/add-skills', [PeopleController::class, 'addSkills'])->name('people.addSkills');
+        Route::post('/profile/update', [PeopleController::class, 'updateProfile'])->name('people.updateProfile');
 
     });
     Route::middleware(['auth'])->group(function () {
