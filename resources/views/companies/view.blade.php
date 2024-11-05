@@ -152,7 +152,7 @@
                         alt="Lion Bird logo with a lion's face and bird's body"
                         class="img-fluid"
                         height="200"
-                        src="https://storage.googleapis.com/a1aa/image/NhtefF1BucpNJUWGOM1nobuJdj5uDCcX5F5pbHK7JOGr90rTA.jpg"
+                        src="{{ env('APP_URL') . $company->image ? env('APP_URL') . $company->image : asset('images/1720765715.webp') }}"
                         width="200"
                     />
                 </div>
@@ -215,12 +215,12 @@
                             alt="Person wearing glasses and a beanie, smiling while looking away, with an urban background"
                             class="card-img-top card-img-top-profile"
                             height="227"
-                            src="https://storage.googleapis.com/a1aa/image/6PxrpQG5SQLnOFeok7VFKqWauvfnWjcN56vSnJmwiRBLA2rTA.jpg"
+                            src="{{  env('APP_URL') . $person->pivot->image ? env('APP_URL') . $person->pivot->image : asset('images/1720765715.webp') }}"
                             width="286"
                         />
                         <div class="card-body">
                             <h3 class="card-title-profile" style="margin-bottom: 5px; padding:0px;">{{ $person->name }}</h3>
-                            <p class="card-text-profile sub-heading-1">{{ $person->department }}</p>
+                            <p class="card-text-profile sub-heading-1">{{$person->pivot->primary_job_title}} {{ $person->department }}</p>
                         </div>
                     </div>
                 </div>

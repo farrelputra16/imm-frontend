@@ -315,16 +315,17 @@ margin-top: 20px;
                     <div class="modal-body">
                         @if ($outcome->bukti)
                             @php
-                                $filePath = public_path('laporan_pengeluaran/' . $outcome->bukti);
-                                $fileExtension = pathinfo($outcome->bukti, PATHINFO_EXTENSION);
+                                $folderName = $companyName; // Ganti dengan nama folder yang sesuai
+                                $filePath = $outcome->bukti; // Menggunakan path yang sudah disimpan
+                                $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
                             @endphp
 
                             @if (in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
-                                <img src="{{ Storage::url('laporan_pengeluaran/' . $outcome->bukti) }}" alt="Bukti Pengeluaran" class="img-fluid my-4">
+                                <img src="{{ env('APP_URL') . '/' . $filePath }}" alt="Bukti Pengeluaran" class="img-fluid my-4">
                             @elseif ($fileExtension === 'pdf')
-                                <iframe src="{{ Storage::url('laporan_pengeluaran/' . $outcome->bukti) }}" width="100%" height="400px"></iframe>
+                                <iframe src="{{ env('APP_URL') . '/' . $filePath }}" width="100%" height="400px"></iframe>
                             @else
-                                <p>File format tidak didukung.</p>
+                                <p>Format file tidak didukung.</p>
                             @endif
                         @else
                             <p>Tidak ada bukti pengeluaran yang tersedia.</p>

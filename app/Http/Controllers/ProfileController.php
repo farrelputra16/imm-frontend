@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Company;
+use App\Models\Investor;
 use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -24,24 +25,44 @@ class ProfileController extends Controller
         $rowsPerPage = $request->input('rows', 10);
 
         // Ambil pengguna yang sedang login beserta wishlists mereka
-        $user = User::with('wishlists.company.incomes')->find(Auth::id());
+        $user = User::with('wishlists')->find(Auth::id());
 
-        // Ambil ID perusahaan dari wishlists pengguna
-        $companyIds = $user->wishlists->pluck('company_id');
+        $userRole = $user->role;
 
-        // Ambil perusahaan dengan pendapatan berdasarkan ID perusahaan yang diambil dan paginate hasilnya
-        $companiesWithWishlist = Company::with('incomes')
-            ->whereIn('id', $companyIds)
-            ->paginate($rowsPerPage); // Gunakan jumlah yang dipilih untuk pagination
+        if($userRole === 'USER') {
+            // Ambil ID investor dari wishlists pengguna
+            $investorIds = $user->wishlists->pluck('investor_id');
 
-        // Atur field tambahan untuk perusahaan
-        $companiesWithWishlist->each(function ($company) {
-            $latestIncome = $company->incomes->first();
-            $company->latest_income_date = $latestIncome ? $latestIncome->date : null;
-            $company->latest_funding_type = $latestIncome ? $latestIncome->funding_type : null;
-        });
+            // Buat query untuk mengambil investor berdasarkan ID yang ada di wishlist
+            $query = Investor::whereIn('id', $investorIds);
 
-        return view('profile.profile', compact('user', 'companiesWithWishlist'));
+            // Paginate the results
+            $investors = $query->paginate($rowsPerPage);
+
+            return view('profile.profile', compact('user', 'investors', 'userRole'));
+        } else if ($userRole === 'PEOPLE') {
+
+        } else if ($userRole === 'INVESTOR') {
+            // Ambil ID perusahaan dari wishlists pengguna
+            $companyIds = $user->wishlists->pluck('company_id');
+
+            $investor = $user->investor;
+
+            // Ambil perusahaan dengan data yang diperlukan
+            $companies = Company::with('departments', 'fundingRounds')
+                ->whereIn('id', $companyIds)
+                ->paginate($rowsPerPage);
+
+            // Tambahkan informasi tambahan ke setiap perusahaan
+            foreach ($companies as $company) {
+                $company->all_departments = $company->departments->pluck('name');
+                $company->departments = $company->departments->take(2)->pluck('name');
+                $company->latest_funding_date = $company->fundingRounds->max('announced_date');
+            }
+
+            return view('profile.profile', compact('user', 'companies', 'userRole', 'investor'));
+        }
+
     }
 
 

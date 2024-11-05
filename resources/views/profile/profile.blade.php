@@ -2,10 +2,10 @@
 @section('title', 'Profil')
 
 @section('css')
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('css/profile/profile.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
 <style>
     body {
         font-family: 'Poppins', sans-serif;
@@ -46,91 +46,6 @@
         transform: scale(1.1);
     }
 
-    th, td {
-        text-align: center;
-        vertical-align: middle;
-    }
-
-    /* Add background color to the table header */
-    .table-responsive thead th {
-        background-color: #6f42c1 !important; /* Forcing the background color */
-        color: white !important; /* Forcing the text color */
-    }
-
-
-    td {
-        vertical-align: middle; /* Ensures cell content is vertically centered */
-    }
-
-    td div {
-        display: flex;
-        align-items: center; /* Vertically center for image and text */
-    }
-
-    td img {
-        margin-right: 10px; /* Space between image and company name */
-    }
-
-    td span {
-        white-space: nowrap; /* Prevents company name from wrapping */
-        overflow: hidden; /* Ensures no overflow */
-        text-overflow: ellipsis; /* Adds '...' for truncated text */
-    }
-
-    /* Custom width for columns */
-    th:nth-child(1),
-    td:nth-child(1) {
-        width: 5%; /* Checkbox column */
-    }
-
-    th:nth-child(2),
-    td:nth-child(2) {
-        width: 20%; /* Organization Name */
-    }
-
-    th:nth-child(3),
-    td:nth-child(3) {
-        width: 15%; /* Founded Date */
-    }
-
-    th:nth-child(4),
-    td:nth-child(4) {
-        width: 15%; /* Last Funding Date */
-    }
-
-    th:nth-child(5),
-    td:nth-child(5) {
-        width: 15%; /* Last Funding Type */
-    }
-
-    th:nth-child(6),
-    td:nth-child(6) {
-        width: 15%; /* Employee */
-    }
-
-    th:nth-child(7),
-    td:nth-child(7) {
-        width: 10%; /* Industries */
-    }
-
-    th:nth-child(8),
-    td:nth-child(8) {
-        width: 15%; /* Description */
-    }
-
-    th:nth-child(9),
-    td:nth-child(9) {
-        width: 15%; /* Job Departments */
-    }
-
-    /* Align text to the start (left-aligned) for specific columns */
-    td:nth-child(7), /* Industries */
-    td:nth-child(8), /* Description */
-    td:nth-child(9)  /* Job Departments */ {
-        text-align: start;
-        vertical-align: middle;
-    }
-
     .btn-primary-red {
         background-color: #be184a;
         color: white;
@@ -147,81 +62,6 @@
         border-radius: 9px;
 
     }
-
-    .pagination {
-        display: flex;
-        justify-content: center;
-        padding: 10px 0;
-    }
-
-    .pagination .page-item {
-        position: relative;
-    }
-
-    .pagination .page-link {
-        color: #6256CA; /* Warna teks pagination */
-        padding: 10px 15px; /* Padding biasa (tinggi sedikit ditambah) */
-        border-top: 1px solid black; /* Border atas hitam */
-        border-bottom: 1px solid black; /* Border bawah hitam */
-        border-left: none; /* Hilangkan border kiri */
-        border-right: none; /* Hilangkan border kanan */
-        height: auto; /* Mengatur tinggi secara otomatis */
-        line-height: 1; /* Menjaga elemen tidak terlalu tinggi */
-        border-radius: 0; /* Border tanpa radius (kotak) */
-        background-color: transparent; /* Latar belakang default */
-    }
-
-    .pagination .page-item:not(:last-child)::after {
-        content: '|'; /* Tambahkan simbol garis pemisah */
-        position: absolute; /* Posisi absolut */
-        right: 2px; /* Tempatkan di sisi kanan elemen */
-        top: 50%; /* Jarak dari atas (posisi vertikal disesuaikan) */
-        transform: translateY(-50%); /* Pusatkan secara vertikal */
-        color: #000000; /* Warna garis pemisah */
-        height: 60%; /* Sesuaikan tinggi agar tidak menyentuh border atas dan bawah */
-        width: 0px; /* Lebar garis vertikal */
-        background-color: #000000; /* Warna garis pemisah */
-        z-index: 2; /* Pastikan garis berada di atas border elemen */
-    }
-
-    .pagination .page-item.active .page-link {
-        color: white; /* Warna teks untuk elemen aktif */
-    }
-
-    .pagination .page-item.active .page-link::before {
-        content: ''; /* Pseudo-element kosong untuk background */
-        position: absolute; /* Posisi absolut */
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%); /* Pusatkan di tengah */
-        width: 70%; /* Ukuran penuh */
-        height: 70%;
-        background-color: #6256CA; /* Warna background aktif */
-        border-radius: 100%; /* Membuat background berbentuk lingkaran */
-        z-index: -1; /* Pseudo-element di belakang teks */
-    }
-
-    .pagination .page-item.disabled .page-link {
-        color: #aaa; /* Warna untuk item disabled */
-        pointer-events: none; /* Nonaktifkan klik pada item disabled */
-    }
-
-    .pagination .page-item:first-child .page-link {
-        padding: 10px 20px; /* Sesuaikan padding untuk Previous */
-        border-top-left-radius: 5px; /* Radius sudut kiri atas */
-        border-bottom-left-radius: 5px; /* Radius sudut kiri bawah */
-        border-right: none; /* Hilangkan border kanan */
-        border-left: solid 1px #2b2b2c; /* Tambahkan border kiri */
-    }
-
-    .pagination .page-item:last-child .page-link {
-        padding: 10px 20px; /* Sesuaikan padding untuk Next */
-        border-top-right-radius: 5px; /* Radius sudut kanan atas */
-        border-bottom-right-radius: 5px; /* Radius sudut kanan bawah */
-        border-left: none; /* Hilangkan border kiri */
-        border-right: solid 1px #2b2b2c; /* Tambahkan border kanan */
-    }
-
 
     @media (max-width: 768px) {
         .section {
@@ -256,197 +96,316 @@
 @endsection
 
 @section('content')
-<div class="container pt-2 row-gap-2">
+{{-- <div class="container pt-2 gap-2" style="max-width: 1200px; padding: 15px; margin: auto;"> --}}
+<div class="container pt-2 gap-2">
     <div class="row section" style="margin-bottom: 30px;">
         <div class="col-md-4 text-center">
             <img src="{{ $user->img ? asset('images/' . $user->img) : asset('images/default_user.webp') }}" class="rounded-circle img-fluid" alt="Profile Picture">
         </div>
         <div class="col-md-4 bio">
             <div class="biodata">
-                <h2 class="mb-3"> {{$user->nama_depan}} </h2>
-                <p><i class="fas fa-phone"> {{$user->telepon}}</i></p>
-                <p><i class="fas fa-envelope"></i> {{$user->email}}</p>
-                <span><i class="fas fa-map-marker-alt"></i> {{$user->alamat}} </span> <br>
-                <a href="{{ route('profile.edit') }}" class="btn btn-outline-secondary mt-3">
-                    <i class="fas fa-edit"></i> Edit
-                </a>
+                @if ($userRole === 'INVESTOR')
+                    <h2 class="mb-3"> {{$user->nama_depan}} {{ $user->nama_belakang }}</h2>
+                    <p><i class="fas fa-phone" style="color: black"></i> {{$investor->investor_type}}</p>
+                    <p><i class="fas fa-envelope" style="color: black"></i> {{$user->email}}</p>
+                    <span><i class="fas fa-map-marker-alt" style="color: black"></i> {{$investor->location}} </span> <br>
+                    <a href="{{ route('profile.edit') }}" class="btn btn-outline-secondary mt-3">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                @else
+                    <h2 class="mb-3"> {{$user->nama_depan}} {{ $user->nama_belakang }}</h2>
+                    <p><i class="fas fa-phone" style="color: black; margin-right: 10px;"></i> {{$user->telepon}}</p>
+                    <p><i class="fas fa-envelope" style="color: black; margin-right: 10px;"></i> {{$user->email}}</p>
+                    <span><i class="fas fa-map-marker-alt" style="color: black; margin-right: 10px;"></i>{{ $user->provinsi }} {{$user->alamat}}</span> <br>
+                    <a href="{{ route('profile.edit') }}" class="btn btn-outline-secondary mt-3">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                @endif
             </div>
         </div>
         <div class="col-md-4"></div>
     </div>
-    <div class="container pt-2 row-gap-2">
-        <div class="row section" style="padding-left: 20px; padding-right: 20px;">
-            <h2>Your Wishlist</h2>
-            <div class="table-responsive">
-                <table class="table table-hover table-striped" style="margin-bottom:0px;">
-                    <thead>
-                        <tr>
-                            <th scope="col" style="border-top-left-radius: 20px;"><input type="checkbox" value="all_check" id="select_all"></th>
-                            <th scope="col">Organization <br> Name</th>
-                            <th scope="col">Founded <br> Date</th>
-                            <th scope="col">Last Funding <br> Date</th>
-                            <th scope="col">Last Funding <br> Type</th>
-                            <th scope="col">Number of <br> Employees</th>
-                            <th scope="col">Industries</th>
-                            <th scope="col">Description</th>
-                            <th scope="col" style="border-top-right-radius: 20px; text-align: start; vertical-align: middle;">Job <br> Departments</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($companiesWithWishlist as $company)
-                        <tr data-href="{{ route('companies.show' , $company->id) }}">
-                            <th scope="row">
+    <!-- Table Section -->
+    <h2>Your Wishlist</h2>
+    @if ($userRole === 'INVESTOR')
+        <div class="table-responsive">
+            <table class="table table-hover table-strip" style="margin-bottom: 0px;">
+                <thead>
+                    <tr>
+                        <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle;">
+                            <input type="checkbox" value="all_check" id="select_all" class="select_company">
+                        </th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left;">Organization <br> Name</th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top;">Founded <br> Date</th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top;">Last Funding <br> Date</th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top;">Last Funding <br> Type</th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top;">Number of <br> Employees</th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top;">Business Model</th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top;">Description</th>
+                        <th scope="col" class="sub-heading-2" style="border-top-right-radius: 20px; vertical-align: top;">Job Departments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($companies as $company)
+                        <tr data-href="{{ route('companies.show', $company->id) }}">
+                            <td style="vertical-align: middle;">
                                 <input type="checkbox" class="select_company" data-id="{{ $company->id }}">
-                            </th>
-                            <td>
+                            </td>
+                            <td style="vertical-align: middle;">
                                 <div style="display: flex; align-items: center;">
-                                    <img src="{{ !empty($company->image) ? asset($company->image) : asset('images/logo-maxy.png') }}" alt="" width="50" height="50" style="border-radius: 8px; object-fit:cover; margin-right: 20px;">
-                                    <span style="white-space: nowrap;">{{ $company->nama }}</span>
+                                    <div style="margin-right: 2px;">
+                                        <img src="{{ !empty($company->image) ? env('APP_URL') . $company->image : asset('images/logo-maxy.png') }}" alt="" width="30" height="30"
+                                        style="border-radius: 8px; object-fit:cover;">
+                                    </div>
+                                    <div style="flex-grow: 1; margin-left: 0px; margin-right: 0px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
+                                        @if (strlen($company->nama) > 10)
+                                            title="{{ $company->nama }}"
+                                            style="cursor: pointer;"
+                                        @endif
+                                    >
+                                        <span class="body-2">{{ $company->nama }}</span>
+                                    </div>
+                                    <div style="margin-left: 0px; margin-right: 0px;">
+                                        <i class="fas fa-search" style="color: #aee1b7;"></i>
+                                    </div>
                                 </div>
                             </td>
-                            <td>
-                                <i class="fas fa-search" style="color: #aee1b7; margin-right: 10px;"></i>
-                                {{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('j M, Y') : 'N/A' }}
+                            <td style="vertical-align: middle;" class="body-2">{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('j M, Y') : 'N/A' }}</td>
+                            <td style="vertical-align: middle;" class="body-2">{{ $company->latest_funding_date ? \Carbon\Carbon::parse($company->latest_funding_date)->format('j M, Y') : 'N/A' }}</td>
+                            <td style="vertical-align: middle;" class="body-2">
+                                <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+                                    @if ($company->funding_stage)
+                                        <div class="funding-stage">{{ $company->funding_stage }}</div>
+                                    @else
+                                        <div>No funding data available</div>
+                                    @endif
+                                </div>
                             </td>
-                            <td>
-                                {{ $company->latest_income_date ? \Carbon\Carbon::parse($company->latest_income_date)->format('j M, Y') : 'N/A' }}
+                            <td style="vertical-align: middle;" class="body-2">{{ $company->jumlah_karyawan }}</td>
+                            <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $company->business_model }}</td>
+                            <td style="vertical-align: middle;" class="body-2">{{ Str::limit($company->startup_summary, 20, '...') }}</td>
+                            <td style="vertical-align: middle; cursor: pointer;" title={{ $company->all_departments }} class="body-2">
+                                {{ $company->departments->join(', ') }}
                             </td>
-                            <td>
-                                @if ($company->latest_funding_type)
-                                    {{ $company->latest_funding_type }}
-                                @else
-                                    No funding data available
-                                @endif
-                            </td>
-                            <td>
-                                {{ $company->jumlah_karyawan }}
-                            </td>
-                            <td>{{ $company->tipe }}</td>
-                            <td>{{ Str::limit($company->startup_summary, 25 , '...') }}</td>
-                            <td>{{ $company->posisi_pic }}</td>
                         </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
-                <!-- Footer sebagai bagian dari tabel -->
-                <div class="d-flex justify-content-between align-items-center mb-3 align-self-center" style="padding: 20px; background-color: #ffffff;  border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; margin-top:0px; height:100px;">
-                    <form method="GET" action="{{ route('profile') }}" class="mb-0">
-                        <div class="d-flex align-items-center">
-                            <label for="rowsPerPage" class="me-2">Rows per page:</label>
-                            <select name="rows" id="rowsPerPage" class="form-select me-2" onchange="this.form.submit()" style="width: 75px;">
-                                <option value="10" {{ request('rows') == 10 ? 'selected' : '' }}>10</option>
-                                <option value="50" {{ request('rows') == 50 ? 'selected' : '' }}>50</option>
-                                <option value="100" {{ request('rows') == 100 ? 'selected' : '' }}>100</option>
-                            </select>
-                            <div>
-                                <span>Total {{ $companiesWithWishlist->firstItem() }} - {{ $companiesWithWishlist->lastItem() }} of {{ $companiesWithWishlist->total() }}</span>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @elseif ($userRole === 'USER')
+        <div class="table-responsive">
+            <table class="table table-hover table-strip" style="margin-bottom: 0px;">
+                <thead class="sub-heading-2">
+                    <tr>
+                        <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle; border-bottom: none;"><input type="checkbox" value="all_check" id="select_all_investor" class="select_investor"></th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Organization Name</th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Number of Contacts</th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Number of Investments</th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Invesment Stage</th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Investor Type</th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Location</th>
+                        <th scope="col" class="sub-heading-2" style="border-top-right-radius: 20px; vertical-align: top; text-align: left; border-bottom: none;">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($investors as $investor)
+                    <tr data-href="{{ route('investors.show', $investor->id) }}">
+                        <td style="vertical-align: middle; border-left: 1px solid #ddd;"><input type="checkbox" class="select_investor" data-id="{{ $investor->id }}"></td>
+                        <td style="vertical-align: middle;">
+                            <div style="display: flex; align-items: center;">
+                                <div style="margin-right: 2px;">
+                                    <img src="{{ !empty($investor->image) ? asset($investor->image) : asset('images/logo-maxy.png') }}" alt="" width="30" height="30" style="border-radius: 8px; object-fit:cover;">
+                                </div>
+                                <div style="flex-grow: 1; margin-left: 0px; margin-right: 10px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
+                                    @if (strlen($investor->org_name) > 10)
+                                        title="{{ $investor->org_name }}"
+                                        style="cursor: pointer;"
+                                    @endif
+                                >
+                                    <span class="body-2">{{ $investor->org_name }}</span>
+                                </div>
+                                <div style="margin-left: 0px; margin-right: 0px;">
+                                    <i class="fas fa-search" style="color: #aee1b7;"></i>
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                    <div>
-                        {{ $companiesWithWishlist->links('pagination::bootstrap-4') }} <!-- Gunakan link pagination default -->
-                    </div>
-                </div>
-                <div class="align-self-center ">
-                    <form action="{{ route('wishlist.remove') }}" method="POST" id="wishlistForm">
-                        @csrf
-                        @method('DELETE') <!-- This line is crucial to simulate the DELETE method -->
-                        <input type="hidden" name="company_ids" id="company_ids" value="">
-                        <button type="submit" class="btn btn-primary-red wishlist-button" style="display: none;">Remove from Wishlist</button>
-                    </form>
+                        </td>
+                        <td  style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->number_of_contacts }}</td>
+                        <td  style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->number_of_investments }}</td>
+                        <td  style="vertical-align: middle; text-align: center;" class="body-2 investment-stage">{{ $investor->investment_stage }}</td>
+                        <td  style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->investor_type }}</td>
+                        <td  style="vertical-align: middle; text-align: start;" class="body-2">{{ $investor->location }}</td>
+                        <td style="vertical-align: middle; text-align: start; border-right: 1px solid #ddd;" class="body-2">{{ Str::limit($investor->description, 20, '...') }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @endif
+
+    <!-- Footer sebagai bagian dari tabel -->
+    <div class="d-flex justify-content-between align-items-center mb-3 align-self-center" style="padding: 20px; background-color: #ffffff; border-bottom: 1px solid #ddd; border-left: 1px solid #ddd; border-right: 1px solid #ddd; border-top: 0px solid #ffffff; margin-top:0px; height:100px; border-end-end-radius: 20px; border-end-start-radius: 20px; height: 60px;">
+        <form method="GET" action="{{ route('profile') }}" class="mb-0">
+            <div class="d-flex align-items-center">
+                <label for="rowsPerPage" class="me-2">Rows per page:</label>
+                <select name="rows" id="rowsPerPage" class="form-select me-2" onchange="this.form.submit()" style="width: 50%px; margin-left: 5px; margin-right: 5px;">
+                    <option value="10" {{ request('rows') == 10 ? 'selected' : '' }}>10</option>
+                    <option value="50" {{ request('rows') == 50 ? 'selected' : '' }}>50</option>
+                    <option value="100" {{ request('rows') == 100 ? 'selected' : '' }}>100</option>
+                </select>
+                <div>
+                    @if ($userRole === 'INVESTOR')
+                        @if ($companies->total() > 0)
+                            <span>Total {{ $companies->firstItem() }} - {{ $companies->lastItem() }} of {{ $companies->total() }}</span>
+                        @else
+                            <span>No companies found</span>
+                        @endif
+
+                    @elseif ($userRole === 'USER')
+                        @if ($investors->total() > 0)
+                            <span>Total {{ $investors->firstItem() }} - {{ $investors->lastItem() }} of {{ $investors->total() }}</span>
+                        @else
+                            <span>No investors found</span>
+                        @endif
+
+                    @endif
                 </div>
             </div>
+        </form>
+        <div style="margin-top: 10px;">
+            @if ($userRole === 'INVESTOR')
+                @if ($companies->total() > 0)
+                    {{ $companies->appends(request()->query())->links('pagination::bootstrap-4') }}
+                @else
+                    <div class="d-flex justify-content-center">
+                        <span>No companies found</span>
+                    </div>
+                @endif
+            @elseif ($userRole === 'USER')
+                @if ($investors->total() > 0)
+                    {{ $investors->appends(request()->query())->links('pagination::bootstrap-4') }}
+                @else
+                    <div class="d-flex justify-content-center">
+                        <span>No investors found</span>
+                    </div>
+                @endif
+            @endif
         </div>
+    </div>
+
+    <div class="align-self-center">
+        @if ($userRole === 'INVESTOR')
+            <form action="{{ route('wishlist.remove') }}" method="POST" id="wishlistForm">
+                @csrf
+                @method('DELETE') <!-- Ini penting untuk mensimulasikan metode DELETE -->
+                <input type="hidden" name="company_ids" id="company_ids" value="">
+                <button type="submit" id="remove_wishlist_button" class="btn btn-primary-red wishlist-button" style="display: none;">Remove from Wishlist</button>
+            </form>
+        @elseif ($userRole === 'USER')
+            <form action="{{ route('wishlist.remove') }}" method="POST" id="wishlistFormUser ">
+                @csrf
+                @method('DELETE')
+                <input type="hidden" name="investor_ids" id="investor_ids" value="">
+                <button type="submit" id="remove_wishlist_button_user" class="btn btn-primary-red wishlist-button" style="display: none;">Remove from Wishlist</button>
+            </form>
+        @endif
     </div>
 </div>
 <script>
-    document.querySelectorAll('tr[data-href]').forEach(tr => {
+    // Asumsikan kita memiliki variabel global untuk menyimpan role pengguna
+    const userRole = "{{ $userRole }}"; // Ambil role pengguna dari server-side
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Event listener untuk baris tabel yang dapat diklik
+        document.querySelectorAll('tr[data-href]').forEach(tr => {
             tr.addEventListener('click', function(e) {
-                // Check if the click was on the checkbox, if so, do nothing
                 if (e.target.type !== 'checkbox') {
                     window.location.href = this.dataset.href;
                 }
             });
         });
 
-    document.getElementById('select_all').addEventListener('change', function() {
-        let checkboxes = document.querySelectorAll('.select_company');
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = this.checked;
-            checkbox.addEventListener('change', function() {
-                if (this.checked) {
-                    document.querySelector('.wishlist-button').style.display = 'flex';
-                } else {
-                    document.querySelector('.wishlist-button').style.display = 'none';
-                    checkbox.checked = false;
-                }
+        // Event listener untuk select_all (company)
+        document.getElementById('select_all')?.addEventListener('change', function() {
+            let checkboxes = document.querySelectorAll('.select_company');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
             });
+            toggleWishlistButton();
+        });
 
-            if (this.checked) {
-                document.querySelector('.wishlist-button').style.display = 'flex';
-            } else {
-                document.querySelector('.wishlist-button').style.display = 'none';
+        // Event listener untuk select_all (investor)
+        document.getElementById('select_all_investor')?.addEventListener('change', function() {
+            let checkboxes = document.querySelectorAll('.select_investor');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+            toggleWishlistButton();
+        });
+
+        // Function to show/hide the wishlist button
+        function toggleWishlistButton() {
+            let checkedInvestorCheckboxes = document.querySelectorAll('.select_investor:checked');
+            let checkedCompanyCheckboxes = document.querySelectorAll('.select_company:checked');
+
+            let wishlistButtonInvestor = document.getElementById('remove_wishlist_button_user');
+            let wishlistButtonCompany = document.getElementById('remove_wishlist_button');
+
+            // Tambahkan pengecekan sebelum mengakses style
+            if (wishlistButtonCompany) {
+                wishlistButtonCompany.style.display = checkedCompanyCheckboxes.length > 0 ? 'block' : 'none';
             }
-        });
-    });// Select all checkbox event listener
-// Select all checkbox event listener
-    document.getElementById('select_all').addEventListener('change', function() {
-        let checkboxes = document.querySelectorAll('.select_company');
-        let selectAll = this;
 
-        // Loop through all checkboxes and set them to the same state as "select all"
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = selectAll.checked;
-        });
+            if (wishlistButtonInvestor) {
+                wishlistButtonInvestor.style.display = checkedInvestorCheckboxes.length > 0 ? 'block' : 'none';
+            }
 
-        // Toggle wishlist button visibility based on select all checkbox
-        toggleWishlistButton();
+            // Perbarui nilai input tersembunyi jika ada
+            let companyIds = Array.from(checkedCompanyCheckboxes).map(checkbox => checkbox.dataset.id).join(',');
+            let investorIds = Array.from(checkedInvestorCheckboxes).map(checkbox => checkbox.dataset.id).join(',');
 
-        // Add event listeners to individual checkboxes to handle changes after "Select All" is clicked
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                // If any checkbox is unchecked, uncheck the "Select All" box
-                if (!checkbox.checked) {
-                    selectAll.checked = false;
+            if (userRole === 'INVESTOR') {
+                let companyIdsInput = document.getElementById('company_ids');
+                if (companyIdsInput) {
+                    companyIdsInput.value = companyIds;
                 }
-                // If all checkboxes are checked, check the "Select All" box
-                if (document.querySelectorAll('.select_company:checked').length === checkboxes.length) {
-                    selectAll.checked = true;
+            } else if (userRole === 'USER') {
+                let investorIdsInput = document.getElementById('investor_ids');
+                if (investorIdsInput) {
+                    investorIdsInput.value = investorIds;
                 }
-
-                // Toggle wishlist button visibility based on individual checkbox changes
-                toggleWishlistButton();
-            });
-        });
-    });
-
-    // Function to show/hide the wishlist button
-    function toggleWishlistButton() {
-        let checkedCheckboxes = document.querySelectorAll('.select_company:checked');
-        let wishlistButton = document.querySelector('.wishlist-button');
-        if (checkedCheckboxes.length > 0) {
-            wishlistButton.style.display = 'flex';
-        } else {
-            wishlistButton.style.display = 'none';
+            }
         }
-    }
 
-    let checkboxes = document.querySelectorAll('.select_company');
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
+        // Event listeners untuk setiap checkbox
+        document.querySelectorAll('.select_company, .select_investor').forEach(checkbox => {
+            checkbox.addEventListener('change', toggleWishlistButton);
+        });
+
+        // Event listener for company wishlist removal
+        document.getElementById('remove_wishlist_button')?.addEventListener('click', function(event) {
+            event.preventDefault(); // Mencegah form dari submit otomatis
             let checkedCheckboxes = document.querySelectorAll('.select_company:checked');
-            let wishlistButton = document.querySelector('.wishlist-button');
-            let companyIds = Array.from(checkedCheckboxes).map(checkbox => checkbox.dataset.id).join(',');
-            document.getElementById('company_ids').value = companyIds;
-
-            if (checkedCheckboxes.length > 0) {
-                wishlistButton.style.display = 'flex';
+            let idsToRemove = Array.from(checkedCheckboxes).map(checkbox => checkbox.dataset.id).join(',');
+            if (idsToRemove) {
+                document.getElementById('company_ids').value = idsToRemove; // Set nilai input tersembunyi
+                document.getElementById('wishlistForm').submit(); // Submit form
             } else {
-                wishlistButton.style.display = 'none';
+                alert('Please select at least one company to remove.');
+            }
+        });
+
+        // Event listener for investor wishlist removal
+        document.getElementById('remove_wishlist_button_user')?.addEventListener('click', function(event) {
+            event.preventDefault(); // Mencegah form dari submit otomatis
+            let checkedCheckboxes = document.querySelectorAll('.select_investor:checked');
+            let idsToRemove = Array.from(checkedCheckboxes).map(checkbox => checkbox.dataset.id).join(',');
+            if (idsToRemove) {
+                document.getElementById('investor_ids').value = idsToRemove; // Set nilai input tersembunyi
+                document.getElementById('wishlistFormUser ').submit(); // Submit form
+            } else {
+                alert('Please select at least one investor to remove.');
             }
         });
     });
-
 </script>
 @endsection

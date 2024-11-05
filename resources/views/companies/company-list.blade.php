@@ -178,13 +178,14 @@
                 <input type="hidden" name="company_ids" id="company_ids" value="">
             </form>
 
-
             <!-- Companies Table -->
             <div class="table-responsive">
                 <table class="table table-hover table-strip" style="margin-bottom: 0px;">
                     <thead>
                         <tr>
-                            <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle;"><input type="checkbox" value="all_check" id="select_all"></th>
+                            <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle;">
+                                <input type="checkbox" value="all_check" id="select_all" class="select_company">
+                            </th>
                             <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left;">Organization <br> Name</th>
                             <th scope="col" class="sub-heading-2" style="vertical-align: top;">Founded <br> Date</th>
                             <th scope="col" class="sub-heading-2" style="vertical-align: top;">Last Funding <br> Date</th>
@@ -271,7 +272,7 @@
     // Handle row click event and checkbox logic
     document.querySelectorAll('tr[data-href]').forEach(tr => {
         tr.addEventListener('click', function(e) {
-            if (e.target.type !== 'checkbox') {
+            if (e.target.type !== 'checkbox' && !e.target.closest('.wishlist-button')) {
                 window.location.href = this.dataset.href;
             }
         });
@@ -285,6 +286,7 @@
         });
         updateWishlistButton();
         updateWishlistCounter();
+        saveWishlistState();
     });
 
     // Handle checkboxes dynamically using event delegation
@@ -293,8 +295,8 @@
             e.preventDefault();
             updateWishlistButton();
             updateWishlistCounter();
+            saveWishlistState();
 
-            // Update "select all" checkbox
             const allCheckboxes = document.querySelectorAll('.select_company');
             const checkedCheckboxes = document.querySelectorAll('.select_company:checked');
             document.getElementById('select_all').checked = allCheckboxes.length === checkedCheckboxes.length;
@@ -306,6 +308,13 @@
         const selectedCount = document.querySelectorAll('.select_company:checked').length;
         const totalCount = document.querySelectorAll('.select_company').length;
 
+        // Update counter di navbar jika ada
+        const wishlistCounter = document.getElementById('wishlist-counter');
+        if (wishlistCounter) {
+            wishlistCounter.textContent = selectedCount;
+            wishlistCounter.style.display = selectedCount > 0 ? 'inline-block' : 'none';
+        }
+
         // Update counter info di atas tabel
         const wishlistInfo = document.getElementById('wishlist-info');
         if (!wishlistInfo) {
@@ -316,52 +325,84 @@
         }
     }
 
+    // Fungsi untuk update tampilan tombol wishlist
     function updateWishlistButton() {
-        const selectedCompanies = Array.from(document.querySelectorAll('.select_company:checked')).map(cb => cb.dataset.id);
-        if (selectedCompanies.length > 0) {
-            document.querySelector('.wishlist-button').style.display = 'inline-block';
-            document.getElementById('company_ids').value = selectedCompanies.join(',');
-            document.querySelector('.search-container').style.marginBottom = '0px';
+        const selectedCompany = Array.from(document.querySelectorAll('.select_company:checked')).map(cb => cb.dataset.id);
+        const wishlistButton = document.querySelector('.wishlist-button');
+        const searchContainer = document.querySelector('.search-container');
 
-            // Update text tombol dengan jumlah item yang dipilih
-            document.querySelector('.wishlist-button').innerHTML = `
-                <img alt="Icon representing a list" height="20" src="${document.querySelector('.wishlist-button img').src}" width="20"/>
-                Add to Wishlist (${selectedCompanies.length})
+        if (selectedCompany.length > 0) {
+            wishlistButton.style.display = 'inline-block';
+            document.getElementById('company_ids').value = selectedCompany.join(',');
+            searchContainer.style.marginBottom = '0px';
+
+            wishlistButton.innerHTML = `
+                <img alt="Icon representing a list" height="20" src="${wishlistButton.querySelector('img').src}" width="20"/>
+                Add to Wishlist (${selectedCompany.length})
             `;
         } else {
-            document.querySelector('.wishlist-button').style.display = 'none';
+            wishlistButton.style.display = 'none';
             document.getElementById('company_ids').value = '';
-            document.querySelector('.search-container').style.marginBottom = '20px';
+            searchContainer.style.marginBottom = '20px';
         }
     }
 
-    // Get the wishlist button
-    const wishlistButton = document.querySelector('.wishlist-button');
+    // Fungsi untuk menyimpan state wishlist ke localStorage
+    function saveWishlistState() {
+        const selectedCompany = Array.from(document.querySelectorAll('.select_company:checked')).map(cb => cb.dataset.id);
+        localStorage.setItem('investorWishlistSelection', JSON.stringify(selectedCompany));
+    }
 
-    // Add an event listener to the wishlist button
+    // Fungsi untuk memuat state wishlist dari localStorage
+    function loadWishlistState() {
+        const savedSelection = JSON.parse(localStorage.getItem('investorWishlistSelection')) || [];
+        savedSelection.forEach(id => {
+            const checkbox = document.querySelector(`.select_company[data-id="${id}"]`);
+            if (checkbox) {
+                checkbox.checked = true;
+            }
+        });
+        updateWishlistButton();
+        updateWishlistCounter();
+    }
+
+    // Handle wishlist button click
+    const wishlistButton = document.querySelector('.wishlist-button');
     wishlistButton.addEventListener('click', function(e) {
         e.preventDefault();
 
-        const selectedCompanies = document.querySelectorAll('.select_company:checked');
-        if (selectedCompanies.length === 0) {
-            alert('Please select at least one company to add to wishlist');
+        // Ambil semua checkbox yang tercentang
+        const selectedCompany = document.querySelectorAll('.select_company:checked');
+        const selectedIds = Array.from(selectedCompany).map(cb => cb.dataset.id); // Ambil ID dari data-id
+
+        // Hapus nilai kosong
+        const filteredIds = selectedIds.filter(id => id !== "0" && id !== "");
+
+        if (filteredIds.length === 0) {
+            alert('Please select at least one investor to add to wishlist');
             return;
         }
 
+        // Update hidden input dengan selected IDs
+        document.getElementById('company_ids').value = filteredIds.join(',');
+
         // Tambahkan animasi loading
-        this.innerHTML = `
+        wishlistButton.innerHTML = `
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             Adding to Wishlist...
         `;
-        this.disabled = true;
+        wishlistButton.disabled = true;
 
-        // Update nilai company_ids dan submit form
-        updateWishlistButton();
+        // Submit form
         document.getElementById('wishlist-form').submit();
+        localStorage.removeItem('investorWishlistSelection');
     });
 
-    // Initialize counter when page loads
+    // Initialize when page loads
     document.addEventListener('DOMContentLoaded', () => {
+        loadWishlistState();
+
+        // Add initial counter display
         const counterDiv = document.createElement('div');
         counterDiv.id = 'wishlist-info';
         counterDiv.style.marginBottom = '10px';

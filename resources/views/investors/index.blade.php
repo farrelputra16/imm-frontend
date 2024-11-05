@@ -268,7 +268,7 @@
                 </table>
             </div>
 
-           <!-- Footer sebagai bagian dari tabel -->
+            <!-- Footer sebagai bagian dari tabel -->
             <div class="d-flex justify-content-between align-items-center mb-3 align-self-center"
             style="padding: 20px;
                 background-color: #ffffff;

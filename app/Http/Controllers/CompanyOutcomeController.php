@@ -12,6 +12,7 @@ use App\Mail\ProjectOutcomeUpdated;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class CompanyOutcomeController extends Controller
 {
@@ -47,8 +48,11 @@ class CompanyOutcomeController extends Controller
         $project = Project::findOrFail($project_id);
         $user = auth()->user();
         $isCompany = $user->role === 'USER';
+        $company = $user->companies; // Mengambil company terkait dengan user
+        $companyName = strtolower(str_replace(' ', '_', $company->nama));
 
-        return view('homepageimm.detailbiaya', compact('outcomes', 'project_id', 'project', 'isCompany'));
+
+        return view('homepageimm.detailbiaya', compact('outcomes', 'project_id', 'project', 'isCompany', 'companyName'));
     }
 
     public function create($project_id)
@@ -72,21 +76,26 @@ class CompanyOutcomeController extends Controller
 
         if ($request->hasFile('bukti')) {
             $buktiFile = $request->file('bukti');
-            $buktiFileName = time() . '.' . $buktiFile->getClientOriginalExtension();
+            $buktiFileName = $buktiFile->getClientOriginalName(); // Mengambil nama asli file
 
-            // Simpan file ke direktori 'public/laporan_pengeluaran'
-            $buktiFile->storeAs('public/laporan_pengeluaran', $buktiFileName);
+            // Mengambil nama perusahaan untuk digunakan dalam path
+            $company = Company::find($validatedData['company_id']);
+            $folderName = strtolower(str_replace(' ', '_', $company->nama)); // Membuat nama folder dari nama perusahaan
+            $path = $buktiFile->storeAs("public/{$folderName}/laporan_pengeluaran", $buktiFileName); // Menyimpan di folder sesuai nama perusahaan
+
+            // Mengambil URL untuk disimpan
+            $buktiUrl = Storage::url($path); // Mendapatkan URL dari file yang disimpan
         }
 
         $outcome = CompanyOutcome::create([
             'date' => $validatedData['date'],
             'jumlah_biaya' => $validatedData['jumlah_biaya'],
-            'bukti' => $buktiFileName,
+            'bukti' => $buktiUrl, // Menyimpan URL bukti
             'pelaporan_dana' => $validatedData['pelaporan_dana'],
             'project_id' => $validatedData['project_id'],
         ]);
 
-        // AMbil semua investor yang berinvestasi di perusahaan ini
+        // Ambil semua investor yang berinvestasi di perusahaan ini
         $investments = Investment::where('company_id', $validatedData['company_id'])->get();
 
         foreach ($investments as $investment) {
