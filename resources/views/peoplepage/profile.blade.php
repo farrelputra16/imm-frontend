@@ -160,7 +160,7 @@
         .edit-icon {
             position: absolute;
             bottom: 270px;
-            right: 40px;
+            right: 20px;
             border-radius:5px;
             border: 1px solid #ced4da;
             display: flex;

@@ -138,18 +138,26 @@ public function addSkills(Request $request)
         'skills.*' => 'required|string|max:255',
     ]);
 
-    // Menggabungkan semua skills menjadi satu string yang dipisahkan dengan koma
-    $skills = implode(',', $request->input('skills'));
+    // Menggabungkan skill baru yang diinput oleh pengguna
+    $newSkills = implode(',', $request->input('skills'));
 
     // Mendapatkan people_id dari pengguna yang sedang login
     $people = People::where('user_id', Auth::id())->firstOrFail();
 
-    // Menyimpan skills ke database
-    $people->skills = $skills;
+    // Jika ada skills sebelumnya, tambahkan koma sebagai pemisah sebelum skill baru
+    if (!empty($people->skills)) {
+        $updatedSkills = $people->skills . ',' . $newSkills;
+    } else {
+        $updatedSkills = $newSkills;
+    }
+
+    // Simpan skills yang diperbarui ke database
+    $people->skills = $updatedSkills;
     $people->save();
 
     return redirect()->back()->with('success', 'Skills added successfully!');
 }
+
 public function updateProfile(Request $request)
 {
     $request->validate([
@@ -173,5 +181,6 @@ public function updateProfile(Request $request)
     return redirect()->back()->with('success', 'Profile updated successfully!');
 }
 
+    
 }
 
