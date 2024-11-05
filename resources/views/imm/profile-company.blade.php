@@ -94,13 +94,30 @@
     .btn-secondary {
         background-color: transparent;
         color: #6f42c1;
+        border-radius: 8px;
         border: 1px solid #6f42c1;
     }
 
-    .btn-primary {
+    .btn-secondary:hover {
         background-color: #6f42c1;
         color: white;
+    }
+    .btn-secondary:active,
+    .btn-secondary:focus {
+        outline: none; /* Menghilangkan outline default */
+        border: 2px solid #5940cb; /* Tetap mempertahankan border yang sama */
+    }
+
+
+    .btn-primary {
+        background-color: #6f42c1;
+        border-radius:8px;
+        color: white;
         border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #7b52c2;
     }
 
     .btnn {
@@ -196,6 +213,18 @@
     .btn-add:focus {
         outline: none; /* Menghilangkan outline default */
         border: 2px solid #5940cb; /* Tetap mempertahankan border yang sama */
+    }
+
+    .btn-edit:active,
+    .btn-edit:focus {
+        outline: none; /* Menghilangkan outline default */
+        border: none;
+    }
+
+    .btn-delete:active,
+    .btn-delete:focus {
+        outline: none; /* Menghilangkan outline default */
+        border: none;
     }
 
     .people-results {
@@ -413,6 +442,11 @@
         cursor: pointer;
         padding: 10px 15px;
         font-size: 16px;
+    }
+    .btn-toggle:active,
+    .btn-toggle:focus {
+        outline: none; /* Menghilangkan outline default */
+        border: none;
     }
 
     .profile-header {
@@ -756,9 +790,6 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="tagModalLabel">Pilih Departemen Perusahaan Anda</h5>
-                                        {{-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button> --}}
                                     </div>
                                     <div class="modal-body">
                                         <div class="search-container sticky-top bg-white">
@@ -835,27 +866,6 @@
                             </div>
                         </form>
                         <div class="container team-section">
-                            {{-- <h2 class="team-title">Our Team</h2>
-                            <div class="team-container">
-                                @if (!$team->isEmpty())
-                                    @foreach ($team as $person)
-                                        <div class="team-card">
-                                            <img src="{{ isset($person->image) ? asset('images/' . $person->image) : asset('images/1720765715.webp') }}" alt="{{ $person->name }}" class="rounded-circle mb-3" width="100" height="100">
-                                            <div class="team-name">{{ $person->name }}</div>
-                                            <span class="selected-tag">{{ $person->departmentName }}</span>
-                                            <div class="action-buttons">
-                                                <button class="btn-edit" data-id="{{ $person->id }}" data-name="{{ $person->name }}" data-role="{{ $person->pivot->position }}" data-photo="{{ isset($person->image) ? asset('images/' . $person->image) : asset('images/1720765715.webp') }}" data-toggle="modal" data-target="#editTeamModal">Edit</button>
-                                                <button class="btn-delete" data-id="{{ $person->id }}" data-company-id="{{ $company->id }}" id="team-member-{{ $person->id }}">
-                                                    Delete
-                                                </button>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                @else
-                                    <p>No team members available. Please add new members.</p>
-                                @endif
-                            </div> --}}
-
                             <div class="table-responsive">
                                 <table class="table table-hover table-strip" style="margin-bottom: 0px;">
                                     <thead class="sub-heading-2">
@@ -864,7 +874,6 @@
                                             <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: center; border-bottom: none;">Email</th>
                                             <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: center; border-bottom: none;">Primary Job Title</th>
                                             <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: center; border-bottom: none;">Departement</th>
-                                            <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: center; border-bottom: none;">Location</th>
                                             <th scope="col" class="sub-heading-2" style="border-top-right-radius: 20px; vertical-align: top; text-align: center; border-bottom: none;">Action</th>
                                         </tr>
                                     </thead>
@@ -881,7 +890,7 @@
                                                     <td style="vertical-align: middle; border-left: 1px solid #ddd; text-align: center;">
                                                         <div style="display: flex; align-items: center;">
                                                             <div style="margin-right: 0px; margin-left: 20px;">
-                                                                <img src="{{ $person->image ? env('APP_URL') . $person->image : asset('images/1720765715.webp') }}" alt="{{ $person->name }}" width="30" height="30" style="border-radius: 8px; object-fit:cover;">
+                                                                <img src="{{ env('APP_URL') . $person->pivot->image ? env('APP_URL') . $person->pivot->image : asset('images/1720765715.webp') }}" alt="{{ $person->name }}" width="30" height="30" style="border-radius: 8px; object-fit:cover;">
                                                             </div>
                                                             <div style="flex-grow: 1; margin-left: 5px; margin-right: 0px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
                                                                 @if (strlen($person->name) > 10)
@@ -894,12 +903,19 @@
                                                         </div>
                                                     </td>
                                                     <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->gmail }}</td>
-                                                    <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->primary_job_title }}</td>
+                                                    <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->pivot->primary_job_title }}</td>
                                                     <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->departmentName }}</td>
-                                                    <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->location }}</td>
                                                     <td style="vertical-align: middle; text-align: center; border-right: 1px solid #ddd;" class="body-2">
                                                         <div class="icon-container">
-                                                            <button class="btn-edit" data-id="{{ $person->id }}" data-name="{{ $person->name }}" data-role="{{ $person->pivot->position }}" data-photo="{{ isset($person->image) ? asset('images/' . $person->image) : asset('images/1720765715.webp') }}" data-toggle="modal" data-target="#editTeamModal">
+                                                            <button class="btn-edit"
+                                                                data-id="{{ $person->id }}"
+                                                                data-name="{{ $person->name }}"
+                                                                data-position="{{ $person->pivot->position }}"
+                                                                data-position-title="{{ $person->pivot->primary_job_title }}"
+                                                                data-company-id="{{ $company->id }}"
+                                                                data-photo="{{ isset($person->image) ? env('APP_URL') . $person->pivot->image : asset('images/1720765715.webp') }}"
+                                                                data-toggle="modal"
+                                                                data-target="#editTeamModal">
                                                                 <i class="fas fa-edit icon-edit"></i>
                                                             </button>
                                                             <button class="btn-delete" data-id="{{ $person->id }}" data-company-id="{{ $company->id }}" id="team-member-{{ $person->id }}">
@@ -969,52 +985,52 @@
                         <div class="modal-body">
                             <form id="addTeamForm">
                                 <div class="row mb-3">
-                                    <div class="col-md-6">
+                                    <div class="col-md-6" style="margin-left: 20px;">
                                         <div class="form-group">
-                                            <label for="searchPeople">Search People</label>
-                                            <input type="text" class="form-control" id="searchPeople" placeholder="Name or email">
+                                            <label for="searchPeople" class="sub-heading-1">Search People</label>
+                                            <input type="text" class="form-control" id="searchPeople" placeholder="Name or email" style="border-color: #6256CA">
                                             <div id="peopleResults" class="people-results" style="width: 416px;"></div>
                                             <input type="hidden" id="selectedPersonId">
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <div class="form-group">
-                                            <label for="companyId">Company ID</label>
-                                            <input type="text" class="form-control" id="companyId" value="{{ $company->id }}" readonly>
+                                            <label for="companyId" class="sub-heading-1">Company ID</label>
+                                            <input type="text" class="form-control" id="companyId" value="{{ $company->id }}" style="border-color: #6256CA" readonly>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <div class="col-md-6">
+                                    <div class="col-md-6" style="margin-left: 20px;">
                                         <div class="form-group">
-                                            <label for="position">Position Department</label>
-                                            <select id="position" class="form-control">
+                                            <label for="position" class="sub-heading-1">Position Department</label>
+                                            <select id="position" class="form-control" style="border-color: #6256CA">
                                                 <option value="">Pilih Departemen</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <div class="form-group">
-                                            <label for="positionTitle">Position/Title</label>
-                                            <input type="text" class="form-control" id="positionTitle" placeholder="Input position or title">
+                                            <label for="positionTitle" class="sub-heading-1">Position/Title</label>
+                                            <input type="text" class="form-control" id="positionTitle" placeholder="Input position or title" style="border-color: #6256CA">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="proof" class="form-label">Proof of Purchase</label>
+                                <div class="mb-3" style="margin-left: 20px; margin-right: 40px;">
+                                    <label for="proof" class="sub-heading-1">Upload Profile Picture</label>
                                     <div class="input-group">
-                                        <input type="file" class="form-control" id="profilePicture" name="bukti" onchange="updateFileName()" style="display: none;">
-                                        <input type="text" class="form-control file-name" style="background-color: white; border-right: none;" readonly>
-                                        <span class="input-group-text" onclick="document.getElementById('profilePicture').click()" type="button" style="background-color: white; border-left: none; border-color: #888; border-top-left-radius: 0px; border-bottom-left-radius: 0px;">
+                                        <input type="file" class="form-control" id="profilePicture" name="bukti" accept=".png, .jpg, .jpeg, .gif" onchange="updateFileName()" style="display: none;">
+                                        <input type="text" class="form-control file-name" style="background-color: white; border-right: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px; cursor: pointer; border-color: #6256CA" readonly onclick="document.getElementById('profilePicture').click();">
+                                        <span class="input-group-text" onclick="document.getElementById('profilePicture').click()" type="button" style="background-color: white; border-left: none; border-color: #6256CA; border-top-left-radius: 0px; border-bottom-left-radius: 0px; border-top-right-radius: 6px; border-bottom-right-radius: 6px;">
                                             <i class="fas fa-upload" style="cursor: pointer" id="editButton" width="20" alt="Upload"></i>
                                         </span>
                                     </div>
                                 </div>
                             </form>
                         </div>
-                        <div class="modal-footer">
+                        <div class="modal-footer" style="justify-content: center; border: none;">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="addTeamButton">Add Team Member</button>
+                            <button type="button" class="btn btn-primary" id="addTeamButton">Save</button>
                         </div>
                     </div>
                 </div>
@@ -1022,35 +1038,57 @@
 
             <!-- Edit Team Member Modal -->
             <div class="modal fade" id="editTeamModal" tabindex="-1" aria-labelledby="editTeamModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content" style="height: 500px;">
+                <div class="modal-dialog modal-dialog-centered modal-xl custom-wide-modal">
+                    <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="editTeamModalLabel">Edit Team Member</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
                         </div>
                         <div class="modal-body">
                             <form id="editTeamForm">
-                                <div class="form-group">
-                                    <label for="editName">Name</label>
-                                    <input type="text" class="form-control" id="editName" placeholder="Name">
+                                <div class="row mb-3">
+                                    <div class="col-md-6" style="margin-left: 20px;">
+                                        <div class="form-group">
+                                            <label for="editName" class="sub-heading-1">Name</label>
+                                            <input type="text" class="form-control" id="editName" placeholder="Name" style="border-color: #6256CA" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="editCompanyId" class="sub-heading-1">Company ID</label>
+                                            <input type="text" class="form-control" id="editCompanyId" style="border-color: #6256CA" readonly>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="editPosition">Position</label>
-                                    <select class="form-control" id="editPosition" disabled>
-                                        <option value="">Pilih Departemen</option>
-                                    </select>
+                                <div class="row mb-3">
+                                    <div class="col-md-6" style="margin-left: 20px;">
+                                        <div class="form-group">
+                                            <label for="editPosition" class="sub-heading-1">Position Department</label>
+                                            <select id="editPosition" class="form-control" style="border-color: #6256CA">
+                                                <option value="">Pilih Departemen</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="editPositionTitle" class="sub-heading-1">Position/Title</label>
+                                            <input type="text" class="form-control" id="editPositionTitle" placeholder="Input position or title" style="border-color: #6256CA">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="editPhoto">Photo</label>
-                                    <input type="file" class="form-control" id="editPhoto">
+                                <div class="mb-3" style="margin-left: 20px; margin-right: 40px;">
+                                    <label for="editProfilePicture" class="sub-heading-1">Upload Profile Picture</label>
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" id="editProfilePicture" name="editBukti" accept=".png, .jpg, .jpeg, .gif" onchange="updateEditFileName()" style="display: none;">
+                                        <input type="text" class="form-control file-name" style="background-color: white; border-right: none; border-top-left-radius: 6px; border-bottom-left-radius: 6px; cursor: pointer; border-color: #6256CA" readonly onclick="document.getElementById('editProfilePicture').click();">
+                                        <span class="input-group-text" onclick="document.getElementById('editProfilePicture').click()" type="button" style="background-color: white; border-left: none; border-color: #6256CA; border-top-left-radius: 0px; border-bottom-left-radius: 0px; border-top-right-radius: 6px; border-bottom-right-radius: 6px;">
+                                            <i class="fas fa-upload" style="cursor: pointer" id="editUploadButton" width="20" alt="Upload"></i>
+                                        </span>
+                                    </div>
                                 </div>
-                                <!-- Hidden input untuk menyimpan ID orang -->
                                 <input type="hidden" id="editPersonId">
                             </form>
                         </div>
-                        <div class="modal-footer">
+                        <div class="modal-footer" style="justify-content: center; border: none;">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-primary" id="editTeamButton">Save Changes</button>
                         </div>
@@ -1348,33 +1386,102 @@
             });
 
             // Handle add team member button click
-            $(document).ready(function() {
-                // Handle add team member button click
-                $('#addTeamButton').on('click', function() {
-                    var personId = $('#selectedPersonId').val();
-                    var companyId = $('#companyId').val();
-                    var position = $('#position').val();
+            $('#addTeamButton').on('click', function(event) {
+                event.preventDefault();
+                var personId = $('#selectedPersonId').val();
+                var companyId = $('#companyId').val();
+                var position = $('#position').val();
+                var primary_job_title = $('#positionTitle').val();
+                var image = $('#profilePicture')[0].files[0];
 
-                    if (position) {
-                        $.ajax({
-                            url: '/team/store',
-                            method: 'POST',
-                            data: { person_id: personId, company_id: companyId, position: position },
-                            success: function(data) {
-                                location.reload(); // Reload halaman setelah berhasil
-                            },
-                            error: function(xhr, status, error) {
-                                console.error('Error adding team member:', error);
-                            }
-                        });
-                    } else {
-                        alert("Silakan pilih posisi departemen.");
+                if (position) {
+                    var formData = new FormData();
+                    formData.append('person_id', personId);
+                    formData.append('company_id', companyId);
+                    formData.append('position', position);
+                    formData.append('primary_job_title', primary_job_title);
+                    if (image) {
+                        formData.append('image', image);
                     }
-                });
+
+                    $.ajax({
+                        url: '/team/store',
+                        method: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function(response) {
+                            if (response.success) {
+                                var data = response.data;
+                                // Tambahkan baris baru ke tabel
+                                var newRow = `
+                                    <tr>
+                                        <td style="vertical-align: middle; border-left: 1px solid #ddd; text-align: center;">
+                                            <div style="display: flex; align-items: center;">
+                                                <div style="margin-right: 0px; margin-left: 20px;">
+                                                    <img src="${data.image_url || '/images/1720765715.webp'}" alt="${data.name}" width="30" height="30" style="border-radius: 8px; object-fit:cover;">
+                                                </div>
+                                                <div style="flex-grow: 1; margin-left: 5px; margin-right: 0px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
+                                                    ${data.name.length > 10 ? `title="${data.name}" style="cursor: pointer;"` : ''}>
+                                                    <span class="body-2">${data.name}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="vertical-align: middle; text-align: center;" class="body-2">${data.email}</td>
+                                        <td style="vertical-align: middle; text-align: center;" class="body-2">${data.position_title}</td>
+                                        <td style="vertical-align: middle; text-align: center;" class="body-2">${data.department_name}</td>
+                                        <td style="vertical-align: middle; text-align: center; border-right: 1px solid #ddd;" class="body-2">
+                                            <div class="icon-container">
+                                                <button class="btn-edit"
+                                                    data-id="${data.id}"
+                                                    data-name="${data.name}"
+                                                    data-position="${data.position}"
+                                                    data-position-title="${data.position_title}"
+                                                    data-company-id="${companyId}"
+                                                    data-photo="${data.image_url || '/images/1720765715.webp'}"
+                                                    data-toggle="modal"
+                                                    data-target="#editTeamModal">
+                                                    <i class="fas fa-edit icon-edit"></i>
+                                                </button>
+                                                <button class="btn-delete" data-id="${data.id}" data-company-id="${companyId}" id="team-member-${data.id}">
+                                                    <i class="fas fa-trash-alt icon-delete"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                `;
+
+                                // Tambahkan baris baru ke tabel
+                                if ($('table tbody tr').length === 1 && $('table tbody tr td').length === 1) {
+                                    // Jika tabel kosong, ganti pesan "No team members available" dengan baris baru
+                                    $('table tbody').html(newRow);
+                                } else {
+                                    // Jika tabel sudah ada isinya, tambahkan baris baru
+                                    $('table tbody').append(newRow);
+                                }
+
+                                // Reset form
+                                $('#addTeamModal').modal('hide');
+                                $('#addTeamForm')[0].reset();
+
+                                // Tampilkan pesan sukses
+                                alert('Team member added successfully');
+                            } else {
+                                alert(response.message || "An error occurred while adding the team member.");
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error adding team member:', error);
+                            alert("An error occurred while adding the team member.");
+                        }
+                    });
+                } else {
+                    alert("Please select a department position.");
+                }
             });
 
             // Menangani tombol edit team member
-            $(document).on('click', '.btn-edit', function() {
+            $(document).on('click', '.btn-edit', function(event) {
                 event.preventDefault();
                 var personId = $(this).data('id');
 
@@ -1384,10 +1491,23 @@
                     success: function(data) {
                         // Pastikan data yang diterima valid
                         if (data) {
-                            $('#editName').val(data.name);
-                            $('#editPosition').val(data.position); // Pastikan posisi sudah ada di dropdown
-                            $('#editPhoto').val(data.photo); // Jika Anda ingin menampilkan foto yang ada
+                            // Mengisi form dengan data yang diterima
                             $('#editPersonId').val(data.id);
+                            $('#editName').val(data.name);
+                            $('#editPosition').val(data.position);
+                            $('#editPositionTitle').val(data.primary_job_title);
+                            $('#editCompanyId').val(data.company_id);
+
+                            // Menangani tampilan nama file foto
+                            if (data.image) {
+                                var fileName = data.image.split('/').pop();
+                                $('#editTeamModal .file-name').val(fileName);
+                            } else {
+                                $('#editTeamModal .file-name').val('No file chosen');
+                            }
+
+                            // Tampilkan modal
+                            $('#editTeamModal').modal('show');
                         } else {
                             alert("Data anggota tim tidak ditemukan.");
                         }
@@ -1403,25 +1523,73 @@
             $('#editTeamButton').on('click', function() {
                 var personId = $('#editPersonId').val();
                 var name = $('#editName').val();
-                var role = $('#editPosition').val();
-                var photo = $('#editPhoto')[0].files[0]; // Ambil file foto
+                var position = $('#editPosition').val();
+                var positionTitle = $('#editPositionTitle').val();
+                var companyId = $('#editCompanyId').val();
+                var photo = $('#editProfilePicture')[0].files[0];
 
-                if (role) {
+                if (position) {
                     var formData = new FormData();
                     formData.append('name', name);
-                    formData.append('position', role);
+                    formData.append('position', position);
+                    formData.append('position_title', positionTitle);
+                    formData.append('company_id', companyId);
                     if (photo) {
-                        formData.append('photo', photo);
+                        formData.append('image', photo);
                     }
 
                     $.ajax({
                         url: '/team/' + personId,
-                        method: 'PUT',
+                        method: 'POST',
                         data: formData,
                         contentType: false,
                         processData: false,
-                        success: function(data) {
-                            location.reload(); // Reload halaman setelah berhasil
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            'X-HTTP-Method-Override': 'PUT'
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                var data = response.data;
+                                console.log("Data received:", data);
+
+                                // Cari baris tabel berdasarkan ID
+                                var $row = $('button[data-id="' + data.id + '"]').closest('tr');
+                                console.log("Row found:", $row.length > 0);
+
+                                if ($row.length > 0) {
+                                    // Update nama
+                                    $row.find('td:first-child .body-2').text(data.name);
+
+                                    // Update primary job title
+                                    $row.find('td:nth-child(3)').text(data.position_title);
+
+                                    // Update departemen (nama departemen)
+                                    $row.find('td:nth-child(4)').text(data.department_name);
+
+                                    // Update gambar profil jika ada
+                                    if (data.image_url) {
+                                        $row.find('td:first-child img').attr('src', data.image_url);
+                                    }
+
+                                    // Update data atribut pada tombol edit
+                                    var $editButton = $row.find('.btn-edit');
+                                    $editButton.attr('data-name', data.name);
+                                    $editButton.attr('data-position', data.position); // ID departemen
+                                    $editButton.attr('data-position-title', data.position_title);
+                                    if (data.image_url) {
+                                        $editButton.attr('data-photo', data.image_url);
+                                    }
+
+                                    console.log("Row updated");
+                                } else {
+                                    console.log("Row not found for ID:", data.id);
+                                }
+
+                                $('#editTeamModal').modal('hide');
+                            } else {
+                                alert(response.message || "Terjadi kesalahan saat memperbarui anggota tim.");
+                            }
                         },
                         error: function(xhr, status, error) {
                             console.error('Error updating team member:', error);
@@ -1434,16 +1602,43 @@
             });
 
             // Menangani tombol hapus team member
-            $(document).on('click', '.btn-delete', function() {
+            $(document).on('click', '.btn-delete', function(event) {
                 event.preventDefault();
                 var personId = $(this).data('id');
                 var companyId = $(this).data('company-id');
+
+                // Simpan ID untuk digunakan nanti
+                $('#deleteTeamButton').data('person-id', personId);
+                $('#deleteTeamButton').data('company-id', companyId);
+
+                // Tampilkan modal konfirmasi
+                $('#confirmDeleteModal').modal('show');
+            });
+
+            // Menangani konfirmasi penghapusan
+            $('#deleteTeamButton').on('click', function() {
+                var personId = $(this).data('person-id');
+                var companyId = $(this).data('company-id');
+
                 $.ajax({
-                    url: '/delete-team-member',
-                    method: 'POST',
-                    data: { person_id: personId, company_id: companyId },
-                    success: function(data) {
-                        location.reload();
+                    url: '/team/' + personId + '/' + companyId + '/delete',
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            $('#confirmDeleteModal').modal('hide');
+                            // Hapus baris dari tabel atau reload halaman
+                            $('#team-member-' + personId).closest('tr').remove();
+                            // Atau gunakan: location.reload();
+                        } else {
+                            alert(response.message || "Terjadi kesalahan saat menghapus anggota tim.");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error deleting team member:', error);
+                        alert("Terjadi kesalahan saat menghapus anggota tim.");
                     }
                 });
             });
@@ -1514,9 +1709,28 @@
 
                 $positionSelect.prop('disabled', $positionSelect.find('option').length <= 1);
             }
+
+            function updatePositionDepartementEdit() {
+                var $positionSelect = $('#editPosition');
+                var $previousSelectPosition = $('#editPosition').val();
+                $positionSelect.empty().append('<option value="">Pilih Departemen</option>');
+
+                $('#tagCloud .tag-button.selected').each(function () {
+                    var $tagId = $(this).data('tag-id');
+                    var $tagName = $(this).text();
+                    $positionSelect.append(`<option value="${$tagId}">${$tagName}</option>`);
+                })
+
+                $positionSelect.prop('disabled', $positionSelect.find('option').length <= 1);
+
+                if ($previousSelectPosition) {
+                    $positionSelect.val($previousSelectPosition);
+                }
+            }
             // Initial update of selected tags
             updateSelectedTags();
             updatePositionDepartment();
+            updatePositionDepartementEdit();
         });
     </script>
 </div>

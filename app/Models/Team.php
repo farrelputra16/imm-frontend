@@ -9,7 +9,7 @@ class Team extends Model
 {
     use HasFactory;
     protected $table = 'team'; // Explicitly define the table if needed
-    protected $fillable = ['company_id', 'people_id', 'position'];
+    protected $fillable = ['company_id', 'people_id', 'position', 'primary_job_title', 'image'];
     // Relasi dengan Company
     public function company()
     {
