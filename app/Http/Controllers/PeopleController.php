@@ -150,6 +150,28 @@ public function addSkills(Request $request)
 
     return redirect()->back()->with('success', 'Skills added successfully!');
 }
+public function updateProfile(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'primary_job_title' => 'required|string|max:255',
+        'location' => 'required|string|max:255',
+        'linkedin_link' => 'required|url',
+    ]);
+
+    // Ambil people_id dari pengguna yang sedang login
+    $people = People::where('user_id', Auth::id())->firstOrFail();
+
+    // Update profil dengan data dari form
+    $people->update([
+        'name' => $request->input('name'),
+        'primary_job_title' => $request->input('primary_job_title'),
+        'location' => $request->input('location'),
+        'linkedin_link' => $request->input('linkedin_link'),
+    ]);
+
+    return redirect()->back()->with('success', 'Profile updated successfully!');
+}
 
 }
 

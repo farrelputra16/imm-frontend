@@ -111,13 +111,14 @@
             border-radius: 50%;
         }
         .profile-info {
-            margin-right: 700px;
+            text-align: left; /* Mengatur rata kiri */
+            width: 94%; /* Lebar penuh */
             margin-top: 50px;
         }
         .about-section, .education-section, .skills-section, .experience-section{
             background-color: #fff;
             border-radius: 10px;
-            padding: 20px;
+            padding: 30px 40px; /* Espaçamento interno maior */
             margin-top: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
@@ -154,13 +155,27 @@
             color: gray;
         }
         .linkedin-icon {
-            position: absolute;
-            bottom: 100px;
-            right: 60px;
+            margin-top: 10px;
         }
+        .edit-icon {
+            position: absolute;
+            bottom: 270px;
+            right: 40px;
+            border-radius:5px;
+            border: 1px solid #ced4da;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .btn-edit-profile i {
+            font-size: 18px;
+        }
+
         .linkedin-icon a {
             color: #0077B5;
-            font-size: 50px;
+            font-size: 24px; /* Smaller LinkedIn icon */
         }
     </style>
 @endsection
@@ -176,14 +191,59 @@
                 <h1>{{ $people->name }}</h1>
                 <h2>{{ $people->primary_job_title ?? 'Your Title Here' }}</h2>
                 <p>{{ $people->location ?? 'Your Location Here' }}</p>
+
+                <!-- LinkedIn Icon -->
+                <div class="linkedin-icon">
+                    <a href="{{ $people->linkedin_link }}" target="_blank" aria-label="LinkedIn Profile">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
             </div>
-            <div class="linkedin-icon">
-                <a href="{{ $people->linkedin_link }}" target="_blank" aria-label="LinkedIn Profile">
-                    <i class="fab fa-linkedin"></i>
-                </a>
+
+            <!-- Tombol Edit -->
+            <div class="edit-icon">
+                <button class="btn btn-edit-profile" data-bs-toggle="modal" data-bs-target="#editProfileModal" aria-label="Edit Profile">
+                    <i class="fas fa-edit"></i> Edit Profile
+                </button>
             </div>
         </div>
     </div>
+<!-- Modal Pop-up untuk Mengedit Profil -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 1305px; height: 823px;">
+        <div class="modal-content" style="height: 100%;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('people.updateProfile') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" name="name" class="form-control" value="{{ $people->name }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="primary_job_title" class="form-label">Job Title</label>
+                        <input type="text" name="primary_job_title" class="form-control" value="{{ $people->primary_job_title }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="location" class="form-label">Location</label>
+                        <input type="text" name="location" class="form-control" value="{{ $people->location }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="linkedin_link" class="form-label">LinkedIn Link</label>
+                        <input type="url" name="linkedin_link" class="form-control" value="{{ $people->linkedin_link }}" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn" style="background-color: #6256CA; color: white;">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
     <!-- Alert for Successful Update -->
     @if (session('success'))
@@ -313,7 +373,8 @@
         <div class="section-header">
             <h2>Education</h2>
             <button class="btn" data-bs-toggle="modal" data-bs-target="#addEducationModal">
-                <i class="fas fa-plus"></i> Add Education
+                <i class="fas fa-plus"></i>
+                <i class="fas fa-edit"></i> Edit
             </button>
         </div>
         <ul>
@@ -394,7 +455,8 @@
         <div class="section-header">
             <h2>Skills</h2>
             <button class="btn" data-bs-toggle="modal" data-bs-target="#addSkillsModal">
-                <i class="fas fa-plus"></i> Add Skills
+                <i class="fas fa-plus"></i>
+                <i class="fas fa-edit"></i> Edit
             </button>
         </div>
 
