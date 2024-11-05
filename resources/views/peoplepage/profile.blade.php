@@ -313,7 +313,8 @@
         <div class="section-header">
             <h2>Education</h2>
             <button class="btn" data-bs-toggle="modal" data-bs-target="#addEducationModal">
-                <i class="fas fa-plus"></i> Add Education
+                <i class="fas fa-plus"></i>
+                <i class="fas fa-edit"></i> Edit
             </button>
         </div>
         <ul>
@@ -394,7 +395,8 @@
         <div class="section-header">
             <h2>Skills</h2>
             <button class="btn" data-bs-toggle="modal" data-bs-target="#addSkillsModal">
-                <i class="fas fa-plus"></i> Add Skills
+                <i class="fas fa-plus"></i>
+                <i class="fas fa-edit"></i> Edit
             </button>
         </div>
 
