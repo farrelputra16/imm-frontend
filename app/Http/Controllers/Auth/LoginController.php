@@ -93,7 +93,7 @@ class LoginController extends Controller
             Log::info('Redirecting to investor home');
             return redirect()->route('investor.home');
         } elseif ($user->role === 'PEOPLE') {
-            return redirect()->route('people.home');
+            return redirect()->route('people.profile');
         }
 
         return redirect()->route('home'); // Redirect default

@@ -6,6 +6,7 @@ use App\Models\People;
 use App\Models\Company;
 use App\Models\Experience;
 use App\Models\Education;
+use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -180,7 +181,14 @@ public function updateProfile(Request $request)
 
     return redirect()->back()->with('success', 'Profile updated successfully!');
 }
+public function showUpcomingEvents()
+{
+    // Ambil data event yang akan datang dari tabel 'events'
+    $upcomingEvents = Event::orderBy('start', 'asc')->take(4)->get();
 
-    
+    return view('peoplepage.home', compact('upcomingEvents'));
+}
+
+
 }
 
