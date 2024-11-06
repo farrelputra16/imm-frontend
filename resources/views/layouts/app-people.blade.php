@@ -42,7 +42,7 @@
             right: 0;
             left: 0;
             z-index: 1000;
-            border-bottom: 3px solid #5940cb;
+            border-bottom: 1px solid #5940cb;
         }
 
         .nav-item {
@@ -50,12 +50,43 @@
             /* Adjust margin between nav items */
         }
 
+        /* Animasi underline pada nav-link */
+.nav-link {
+    color: #000000;
+    text-decoration: none;
+    padding: 10px 15px;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-link::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background: #5940CB; /* Warna underline */
+    transition: width 0.3s ease;
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.nav-link:hover {
+    color: #5940CB;
+}
+
         .navbar-brand {
             font-size: 20px;
             /* Adjust navbar brand font size */
             font-weight: bold;
             /* Make navbar brand text bold */
         }
+
+
 
         .navbar .dropdown-menu {
             background-color: #5940cb;
@@ -259,17 +290,11 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link {{ Request::is('investor-home') ? 'active' : '' }}" href="{{ route('investor.home') }}">Beranda</a>
+                        <a class="nav-link {{ Request::is('people.profile') ? 'active' : '' }}" href="{{ route('people.profile') }}">Homepage</a>
                     </li>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ Request::is('event') ? 'active' : '' }}" href="/event">Event</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ Request::is('blog') ? 'active' : '' }}" href="/blog">Artikel</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ Request::is('company-list') ? 'active' : '' }}" href="{{ route('companies.list') }}">Cari Perusahaan</a>
+                        <a class="nav-link {{ Request::is('people.home') ? 'active' : '' }}" href="{{ route('people.home') }}">Job</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('hubs.create.hubsubmission') ? 'active' : '' }}" href="{{ route('hubs.create.hubsubmission') }}">Daftarkan Hubs</a>
@@ -301,14 +326,17 @@
                                                 <a class="btn btn-daftarr" href="{{ route('register') }}">Daftar</a>
                                             </li>
                                         @endguest
-                                        @auth
+                                        <!-- User is logged in -->
+                                            @auth
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link dropdown-toggle d-flex align-items-center" href="#"
                                                     id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
                                                     aria-haspopup="true" aria-expanded="false">
                                                     <img src="{{ Auth::user()->img ? asset('/images/' . Auth::user()->img) : asset('/images/default_user.webp') }}"
                                                         alt="Profile Picture" class="profile-img">
-                                                    <span class="ml-2">{{ Auth::user()->nama_depan }}</span>
+                                                    <span class="ml-2 text-uppercase font-weight-bold">
+                                                        {{ Auth::user()->nama_depan }} {{ Auth::user()->nama_belakang }}
+                                                    </span>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right"
                                                     aria-labelledby="navbarDropdownMenuLink">
@@ -316,11 +344,13 @@
                                                     <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                                         @csrf
                                                         <button type="submit" class="dropdown-item">
-                                                            <i class="fas fa-sign-out-alt"></i> Log Out</button>
+                                                            <i class="fas fa-sign-out-alt"></i> Log Out
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </li>
-                                        @endauth
+                                            @endauth
+
                                     </ul>
                                 </div>
                             </div>
