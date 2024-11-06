@@ -169,9 +169,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::group(['middleware' => ['auth', 'people']], function () {
-        Route::get('/people-home', function () {
-            return view('peoplepage.home'); // Return the view for investor homepage
-        })->name('people.home');
+        Route::get('/people-home', [PeopleController::class, 'showUpcomingEvents'])->name('people.home');
         Route::get('/people-profile', [PeopleController::class, 'profile'])->name('people.profile');
         Route::post('/people/update-description', [PeopleController::class, 'updateDescription'])->name('people.updateDescription');
         Route::post('/people/add-experience', [PeopleController::class, 'addExperience'])->name('people.addExperience');

@@ -1,16 +1,17 @@
 @extends('layouts.app-people')
+
 @section('title', 'Halaman IMM')
 
 @section('css')
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            background-color: #f4f3ff;
+            background-color: white;
             font-family: 'Arial', sans-serif;
         }
         .service-offers {
-            margin-top:80px;
-            background-color: #eae6ff;
+            margin-top: 80px;
+            background-color: white;
             padding: 50px 0;
         }
         .service-offers-content {
@@ -23,25 +24,24 @@
             color: #333;
             max-width: 50%;
         }
-        .service-offers h1 {
-            color: #5a4fcf;
+        .service-offers-title-1 {
             font-size: 2.5rem;
             font-weight: bold;
         }
-        .service-offers h2 {
-            color: #333;
-            font-size: 3rem;
+        .service-offers-title-2 {
+            font-size: 2.5rem;
             font-weight: bold;
         }
-        .service-offers p {
+        .text-black-custom {
+            color: #333 !important;
+        }
+        .text-purple-custom {
+            color: #5a4fcf !important;
+            font-style: italic; /* Menerapkan gaya miring pada teks berwarna ungu */
+        }
+        .service-offers-description {
             color: #666;
             font-size: 1rem;
-        }
-        .service-offers .btn {
-            background-color: #5a4fcf;
-            color: #fff;
-            border-radius: 25px;
-            padding: 10px 20px;
         }
         .service-offers img {
             max-width: 100%;
@@ -50,52 +50,52 @@
         .collaboration, .upcoming-events {
             padding: 50px 0;
         }
-        .collaboration h2, .upcoming-events h2 {
+        .collaboration-title, .upcoming-events-title {
             color: #5a4fcf;
             font-size: 2rem;
             font-weight: bold;
             text-align: center;
             margin-bottom: 30px;
         }
-        .card {
+        .custom-card {
             border: none;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        .card img {
+        .custom-card img {
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
         }
-        .card-body h5 {
+        .custom-card-title {
             font-size: 1.25rem;
             font-weight: bold;
         }
-        .card-body p {
+        .custom-card-text {
             color: #666;
         }
-        .card-body .btn {
+        .custom-btn {
             background-color: #5a4fcf;
             color: #fff;
             border-radius: 25px;
             padding: 5px 15px;
         }
-        .upcoming-events .event-card {
+        .upcoming-event-card {
             display: flex;
             margin-bottom: 20px;
         }
-        .upcoming-events .event-card img {
+        .upcoming-event-card img {
             border-radius: 10px;
             width: 100%;
             height: auto;
         }
-        .upcoming-events .event-card .event-details {
+        .event-details {
             padding: 20px;
         }
-        .upcoming-events .event-card .event-details h5 {
+        .event-details-title {
             font-size: 1.25rem;
             font-weight: bold;
         }
-        .upcoming-events .event-card .event-details p {
+        .event-details-text {
             color: #666;
         }
     </style>
@@ -106,10 +106,15 @@
     <div class="container">
         <div class="row service-offers-content">
             <div class="col-md-6 service-offers-text">
-                <h1>Service Offers</h1>
-                <h2>Web Development</h2>
-                <p>Building custom websites with high performance and responsive designs that captivate your audience.</p>
-                <button class="btn">View Details</button>
+                <h1 class="service-offers-title-1">
+                    <span class="text-black-custom">Powerful</span>
+                    <span class="text-purple-custom">Collaboration,</span>
+                </h1>
+                <h2 class="service-offers-title-2">
+                    <span class="text-black-custom">Unforgettable</span>
+                    <span class="text-purple-custom">Events!</span>
+                </h2>
+                <p class="service-offers-description">With us, your ideas come to life! From concept to execution, we’re here to create remarkable moments.</p>
             </div>
             <div class="col-md-6">
                 <img src="images/peoplepage/gambar1.png" alt="Service Offer Image">
@@ -119,36 +124,36 @@
 </div>
 
 <div class="collaboration">
-    <h2>Collaboration</h2>
+    <h2 class="collaboration-title">Collaboration</h2>
     <div class="container">
         <div class="row">
             <div class="col-md-4 mb-4">
-                <div class="card">
+                <div class="card custom-card">
                     <img src="https://storage.googleapis.com/a1aa/image/z8SOjsZDPsYCCBfPdLgied87uQbsRBCIxsDcnik3yrTw4fanA.jpg" class="card-img-top" alt="Tech Startup Partnership" height="400" width="600">
                     <div class="card-body">
-                        <h5 class="card-title">Tech Startup Partnership</h5>
-                        <p class="card-text">Looking for a technology partner to co-develop an AI-powered analytics tool for e-commerce businesses.</p>
-                        <button class="btn">Collaborate</button>
+                        <h5 class="custom-card-title">Tech Startup Partnership</h5>
+                        <p class="custom-card-text">Looking for a technology partner to co-develop an AI-powered analytics tool for e-commerce businesses.</p>
+                        <button class="btn custom-btn">Collaborate</button>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 mb-4">
-                <div class="card">
+                <div class="card custom-card">
                     <img src="https://storage.googleapis.com/a1aa/image/P4RPhsOwqYoiKVyZGSiVWMaD82XgsagcpoPfWrMmWWkV8v2JA.jpg" class="card-img-top" alt="Marketing Agency Collaboration" height="400" width="600">
                     <div class="card-body">
-                        <h5 class="card-title">Marketing Agency Collaboration</h5>
-                        <p class="card-text">Partnering to create comprehensive marketing solutions for tech startups.</p>
-                        <button class="btn">Collaborate</button>
+                        <h5 class="custom-card-title">Marketing Agency Collaboration</h5>
+                        <p class="custom-card-text">Partnering to create comprehensive marketing solutions for tech startups.</p>
+                        <button class="btn custom-btn">Collaborate</button>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 mb-4">
-                <div class="card">
+                <div class="card custom-card">
                     <img src="https://storage.googleapis.com/a1aa/image/bgDMkcIRMp6nBhfWqj8ot1f2eW3oFukpKrHpdush0Wmdxf1OB.jpg" class="card-img-top" alt="App Development Collaboration" height="400" width="600">
                     <div class="card-body">
-                        <h5 class="card-title">App Development Collaboration</h5>
-                        <p class="card-text">Co-developing innovative mobile applications for various business needs.</p>
-                        <button class="btn">Collaborate</button>
+                        <h5 class="custom-card-title">App Development Collaboration</h5>
+                        <p class="custom-card-text">Co-developing innovative mobile applications for various business needs.</p>
+                        <button class="btn custom-btn">Collaborate</button>
                     </div>
                 </div>
             </div>
@@ -159,43 +164,36 @@
 <div class="upcoming-events">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Upcoming Events</h2>
-            <button class="btn">See All</button>
+            <h2 class="upcoming-events-title">Upcoming Events</h2>
+            <button class="btn custom-btn">See All</button>
         </div>
         <div class="row">
-            <div class="col-md-8 mb-4">
-                <div class="card event-card">
-                    <img src="https://storage.googleapis.com/a1aa/image/fbT2Y7EkJt1DSao2pD7fsrUMWeM92zc1D41kNzOv8MrSxf1OB.jpg" alt="Eventchamps Conference" height="400" width="600">
-                    <div class="event-details">
-                        <h5>Eventchamps Conference</h5>
-                        <p><i class="fas fa-calendar-alt"></i> 04 September 2024 <i class="fas fa-map-marker-alt"></i> Jakarta Selatan</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                        <button class="btn">View Details</button>
+            <!-- Event pertama dengan layout utama -->
+            @if($upcomingEvents->isNotEmpty())
+                <div class="col-md-8 mb-4">
+                    <div class="card upcoming-event-card">
+                        <img src="https://storage.googleapis.com/a1aa/image/fbT2Y7EkJt1DSao2pD7fsrUMWeM92zc1D41kNzOv8MrSxf1OB.jpg" alt="{{ $upcomingEvents[0]->title }}" height="400" width="600">
+                        <div class="event-details">
+                            <h5 class="event-details-title">{{ $upcomingEvents[0]->title }}</h5>
+                            <p><i class="fas fa-calendar-alt"></i> {{ \Carbon\Carbon::parse($upcomingEvents[0]->start)->format('d F Y') }} <i class="fas fa-map-marker-alt"></i> {{ $upcomingEvents[0]->location }}</p>
+                            <p class="event-details-text">{{ Str::limit($upcomingEvents[0]->description, 100) }}</p>
+                            <button class="btn custom-btn">View Details</button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endif
+
+            <!-- Event selanjutnya dengan layout card kecil -->
             <div class="col-md-4">
-                <div class="card event-card mb-4">
-                    <img src="https://storage.googleapis.com/a1aa/image/9umlmk6uZWqDIxb1Nel9qo72lLGJV52QHe8ySycStyZy4fanA.jpg" alt="Towards a Sustainable Future" height="400" width="600">
-                    <div class="event-details">
-                        <h5>Towards a Sustainable Future</h5>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                @foreach($upcomingEvents->skip(1) as $event)
+                    <div class="card upcoming-event-card mb-4">
+                        <img src="https://storage.googleapis.com/a1aa/image/9umlmk6uZWqDIxb1Nel9qo72lLGJV52QHe8ySycStyZy4fanA.jpg" alt="{{ $event->title }}" height="400" width="600">
+                        <div class="event-details">
+                            <h5 class="event-details-title">{{ $event->title }}</h5>
+                            <p class="event-details-text">{{ Str::limit($event->description, 50) }}</p>
+                        </div>
                     </div>
-                </div>
-                <div class="card event-card mb-4">
-                    <img src="https://storage.googleapis.com/a1aa/image/9umlmk6uZWqDIxb1Nel9qo72lLGJV52QHe8ySycStyZy4fanA.jpg" alt="Towards a Sustainable Future" height="400" width="600">
-                    <div class="event-details">
-                        <h5>Towards a Sustainable Future</h5>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                    </div>
-                </div>
-                <div class="card event-card mb-4">
-                    <img src="https://storage.googleapis.com/a1aa/image/9umlmk6uZWqDIxb1Nel9qo72lLGJV52QHe8ySycStyZy4fanA.jpg" alt="Towards a Sustainable Future" height="400" width="600">
-                    <div class="event-details">
-                        <h5>Towards a Sustainable Future</h5>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
