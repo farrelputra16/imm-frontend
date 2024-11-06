@@ -2,16 +2,10 @@
 @section('title', 'Edit Profil')
 
 @section('css')
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="{{ asset('css/profile/profiledit.css') }}">
 <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-<!-- Di bagian head -->
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <style>
     body {
     font-family: Arial, sans-serif;
@@ -99,7 +93,7 @@ form {
 .form-group input {
     width: calc(102% - 9px);
     padding: 5px;
-    border: 1px solid #ccc;
+    width: 100%;
     border-radius: 4px;
     font-size: 14px;
 }
@@ -161,7 +155,7 @@ form {
  /* Select 2  styles */
  .select2-container--default .select2-selection--single {
     height: 45px;
-    border: 1px solid #ced4da;
+    border: 2px solid #6256CA;
     border-radius: 6px;
 }
 
@@ -201,6 +195,80 @@ form {
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
     background-color: #6256ca;
 }
+
+.role-section {
+    display: none;
+    width: 100%;
+}
+
+.search-container {
+    padding: 10px 20px;
+    border-bottom: 1px solid transparent;
+    z-index: 1;
+}
+
+.search-bar::placeholder {
+    color: #ffffff;
+}
+
+.search-icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ffffff;
+    pointer-events: none;
+}
+
+.modal-body-scrollable {
+    max-height: 350px;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.tag-button {
+    display: inline-block;
+    padding: 8px 15px;
+    margin: 5px;
+    font-size: 14px;
+    border: 1px solid #6256ca;
+    border-radius: 20px;
+    background-color: #f8f9fa;
+    color: #6256ca;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.tag-button:hover {
+    background-color: #6256ca;
+    color: #ffffff;
+}
+
+.tag-button.selected {
+    background-color: #6256ca;
+    color: #ffffff;
+}
+
+/* Styles for selected tags */
+.selected-tag {
+    display: inline-block;
+    background-color: #6256ca; /* Use the theme color */
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 15px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
 
 /* Navbar */
 
@@ -283,10 +351,10 @@ form {
 @endsection
 
 @section('content')
+
 <form action="{{ route('profile.update', $user->id) }}" method="POST" id="profileForm" enctype="multipart/form-data">
     @csrf
     @method('PUT')
-
     <div class="container d-flex flex-column" style="margin-top:120px;">
         <div class="profile-container-wrapper">
             <div class="profile-picture-container mb-4">
@@ -303,7 +371,6 @@ form {
         </div>
 
         <div class="row w-100"  style="margin-top: 67px;">
-
             <div class="col-md-6">
                 <div class="input-form">
                     <label for="nama_depan" class="sub-heading-1">Nama Lengkap</label>
@@ -318,16 +385,105 @@ form {
                     <input type="email" id="email" name="email" class="custom-input" value="{{ $user->email }}" readonly>
                 </div>
                 @if ($user->role == 'INVESTOR')
-                    <div class="form-group">
-                        <label for="org_name">Nama Organisasi</label>
-                        <select id="org_name" name="org_name" class="form-control select2-search custom-input" style="padding: 0px; padding-left: 5px;">
+                    <div class="input-form">
+                        <label for="org_name" class="sub-heading-1">Nama Organisasi</label>
+                        <select id="org_name" name="org_name" class="form-control select2-search" required>
                             <option value="">Tidak Ada Organisasi</option>
                             @foreach($companies as $company)
-                                <option value="{{ $company->id }}" {{ old('org_name') == $company->id ? 'selected' : '' }}>
+                                <option value="{{ $company->id }}" {{ old('org_name', $investor->org_name) == $company->nama ? 'selected' : '' }}>
                                     {{ $company->nama }}
                                 </option>
                             @endforeach
                         </select>
+                    </div>
+                    <div class="input-form">
+                        <label for="investment_stage" class="sub-heading-1">Tahap Investasi</label>
+                        <select id="investment_stage" name="investment_stage" class="form-control custom-input" style="height: 100%" required>
+                            <option value="">Pilih Tahap Investasi</option>
+                            <option value="Pre Seed" {{ $investor->investment_stage == 'Pre Seed' ? 'selected' : '' }}>Pre-Seed</option>
+                            <option value="seed" {{ $investor->investment_stage == 'seed' ? 'selected' : '' }}>Seed</option>
+                            <option value="Series A" {{ $investor->investment_stage == 'Series A' ? 'selected' : '' }}>Series A</option>
+                            <option value="Series B" {{ $investor->investment_stage == 'Series B' ? 'selected' : '' }}>Series B</option>
+                            <option value="Series C" {{ $investor->investment_stage == 'Series C' ? 'selected' : '' }}>Series C</option>
+                            <option value="Series D" {{ $investor->investment_stage == 'Series D' ? 'selected' : '' }}>Series D</option>
+                            <option value="Series E" {{ $investor->investment_stage == 'Series E' ? 'selected' : '' }}>Series E</option>
+                            <option value="Series F" {{ $investor->investment_stage == 'Series F' ? 'selected' : '' }}>Series F</option>
+                            <option value="Series G" {{ $investor->investment_stage == 'Series G' ? 'selected' : '' }}>Series G</option>
+                            <option value="Series H" {{ $investor->investment_stage == 'Series H' ? 'selected' : '' }}>Series H</option>
+                            <option value="Series I" {{ $investor->investment_stage == 'Series I' ? 'selected' : '' }}>Series I</option>
+                            <option value="Series J" {{ $investor->investment_stage == 'Series J' ? 'selected' : '' }}>Series J</option>
+                            <option value="venture_series_unknown" {{ $investor->investment_stage == 'venture_series_unknown' ? 'selected' : '' }}>Venture - Series Unknown</option>
+                            <option value="angel" {{ $investor->investment_stage == 'angel' ? 'selected' : '' }}>Angel</option>
+                            <option value="private_equity" {{ $investor->investment_stage == 'private_equity' ? 'selected' : '' }}>Private Equity</option>
+                            <option value="debt_financing" {{ $investor->investment_stage == 'debt_financing' ? 'selected' : '' }}>Debt Financing</option>
+                            <option value="convertible_note" {{ $investor->investment_stage == 'convertible_note' ? 'selected' : '' }}>Convertible Note</option>
+                            <option value="grant" {{ $investor->investment_stage == 'grant' ? 'selected' : '' }}>Grant</option>
+                            <option value="corporate_round" {{ $investor->investment_stage == 'corporate_round' ? 'selected' : '' }}>Corporate Round</option>
+                            <option value="equity_crowdfunding" {{ $investor->investment_stage == 'equity_crowdfunding' ? 'selected' : '' }}>Equity Crowdfunding</option>
+                            <option value="product_crowdfunding" {{ $investor->investment_stage == 'product_crowdfunding' ? 'selected' : '' }}>Product Crowdfunding</option>
+                            <option value="secondary_market" {{ $investor->investment_stage == 'secondary_market' ? 'selected' : '' }}>Secondary Market</option>
+                            <option value="post_ipo_equity" {{ $investor->investment_stage == 'post_ipo_equity' ? 'selected' : '' }}>Post-IPO Equity</option>
+                            <option value="post_ipo_debt" {{ $investor->investment_stage == 'post_ipo_debt' ? 'selected' : '' }}>Post-IPO Debt</option>
+                            <option value="post_ipo_secondary" {{ $investor->investment_stage == 'post_ipo_secondary' ? 'selected' : '' }}>Post-IPO Secondary</option>
+                            <option value="non_equity_assistance" {{ $investor->investment_stage == 'non_equity_assistance' ? 'selected' : '' }}>Non-equity Assistance</option>
+                            <option value="initial_coin_offering" {{ $investor->investment_stage == 'initial_coin_offering' ? 'selected' : '' }}>Initial Coin Offering</option>
+                            <option value="undisclosed" {{ $investor->investment_stage == 'undisclosed' ? 'selected' : '' }}>Undisclosed</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="sub-heading-1">Deskripsi</label>
+                        <textarea id="description" name="description" placeholder="Masukkan deskripsi" rows="3" style="padding-left: 10px; width: 100%;" class="custom-input" required>{{$investor->description}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="impactTags">Tag untuk department</label>
+                        <button type="button" class="tag-button" data-toggle="modal" data-target="#tagModal">
+                            Pilih Department Anda
+                        </button>
+                        <div id="selectedTags" class="mt-2">
+                            @foreach ($selectedDepartments as $department)
+                                <span class="selected-tag">{{ $department->name }}</span>
+                            @endforeach
+                        </div>
+                    </div>
+                     <!-- Modal -->
+                     <div class="modal fade" id="tagModal" tabindex="-1" aria-labelledby="tagModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="tagModalLabel">Pilih Departemen Perusahaan Anda</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="search-container sticky-top bg-white">
+                                        <div class="form-group position-relative mb-0" style="padding: 10px 20px; border-bottom: 1px solid transparent; z-index: 1;">
+                                            <input type="text" style="background-color: #6256ca; border: none; color: #ffffff; padding: 15px; border-radius: 10px; width: 700px; padding-right: 50px; position: relative;" placeholder="Search..."  class="form-control search-bar" id="searchInput"/>
+                                            <span style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: #ffffff; pointer-events: none;"></span>
+                                        </div>
+                                    </div>
+                                    <div class="tag-cloud-container modal-body-scrollable">
+                                        <div class="tag-cloud" id="tagCloud">
+                                            @foreach ($departments as $tag)
+                                                <!-- Tambahkan type="button" pada button -->
+                                                <button class="tag-button
+                                                    @if(in_array($tag->id, $investor->tag_ids ?? [])) selected @endif"
+                                                    data-tag-id="{{ $tag->id }}"
+                                                    type="button">
+                                                    {{ $tag->name }}
+                                                </button>
+                                                <input type="checkbox"
+                                                       value="{{ $tag->id }}"
+                                                       id="tag{{ $tag->id }}"
+                                                       name="tag_ids[]"
+                                                       @if(in_array($tag->id, $investor->tag_ids ?? [])) checked @endif
+                                                       style="display: none;">
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 @endif
             </div>
@@ -338,8 +494,10 @@ form {
                     <input type="text" id="negara" name="negara" class="custom-input" value="{{ $user->negara }}" required>
                 </div>
                 <div class="input-form" class="sub-heading-1">
-                    <label for="provinsi" class="sub-heading-1">Provinsi</label>
-                    <input type="text" id="provinsi" name="provinsi" class="custom-input" value="{{ $user->provinsi }}" required>
+                    <label for="provinsi">Provinsi</label>
+                    <select name="provinsi" id="provinsi" class="custom-input" required>
+                        {{-- isi secara dinamis akan dimasukkan di sini --}}
+                    </select>
                 </div>
                 <div class="input-form" class="sub-heading-1">
                     <label for="alamat" class="sub-heading-1">Alamat Lengkap</label>
@@ -349,6 +507,40 @@ form {
                     <label for="telepon" class="sub-heading-1">Nomor Handphone</label>
                     <input type="number" id="telepon" name="telepon" class="custom-input" value="{{ $user->telepon }}" required>
                 </div>
+                @if ($user->role == 'INVESTOR')
+                    <div class="input-form">
+                        <label for="investment_stage" class="sub-heading-1">Tipe Investor</label>
+                        <select id="investor_type" name="investor_type" class="form-control custom-input" style="height: 50px;" required>
+                            <option value="">Pilih Tipe Investor</option>
+                            <option value="venture_capital" {{ $investor->investor_type == 'venture_capital' ? 'selected' : '' }}>Venture Capital</option>
+                            <option value="individual_angel" {{ $investor->investor_type == 'individual_angel' ? 'selected' : '' }}>Individual Angel</option>
+                            <option value="private_equity_firm" {{ $investor->investor_type == 'private_equity_firm' ? 'selected' : '' }}>Private Equity Firm</option>
+                            <option value="accelerator" {{ $investor->investor_type == 'accelerator' ? 'selected' : '' }}>Accelerator</option>
+                            <option value="investment_partner" {{ $investor->investor_type == 'investment_partner' ? 'selected' : '' }}>Investment Partner</option>
+                            <option value="corporate_venture_capital" {{ $investor->investor_type == 'corporate_venture_capital' ? 'selected' : '' }}>Corporate Venture Capital</option>
+                            <option value="micro_vc" {{ $investor->investor_type == 'micro_vc' ? 'selected' : '' }}>Micro VC</option>
+                            <option value="angel_group" {{ $investor->investor_type == 'angel_group' ? 'selected' : '' }}>Angel Group</option>
+                            <option value="incubator" {{ $investor->investor_type == 'incubator' ? 'selected' : '' }}>Incubator</option>
+                            <option value="investment_bank" {{ $investor->investor_type == 'investment_bank' ? 'selected' : '' }}>Investment Bank</option>
+                            <option value="family_investment_office" {{ $investor->investor_type == 'family_investment_office' ? 'selected' : '' }}>Family Investment Office</option>
+                            <option value="venture_debt" {{ $investor->investor_type == 'venture_debt' ? 'selected' : '' }}>Venture Debt</option>
+                            <option value="co_working_space" {{ $investor->investor_type == 'co_working_space' ? 'selected' : '' }}>Co-Working Space</option>
+                            <option value="fund_of_funds" {{ $investor->investor_type == 'fund_of_funds' ? 'selected' : '' }}>Fund of Funds</option>
+                            <option value="hedge_fund" {{ $investor->investor_type == 'hedge_fund' ? 'selected' : '' }}>Hedge Fund</option>
+                            <option value="government_office" {{ $investor->investor_type == 'government_office' ? 'selected' : '' }}>Government Office</option>
+                            <option value="university_program" {{ $investor->investor_type == 'university_program' ? 'selected' : '' }}>University Program</option>
+                            <option value="entrepreneurship_program" {{ $investor->investor_type == 'entrepreneurship_program' ? 'selected' : '' }}>Entrepreneurship Program</option>
+                            <option value="secondary_purchaser" {{ $investor->investor_type == 'secondary_purchaser' ? 'selected' : '' }}>Secondary Purchaser</option>
+                            <option value="startup_competition" {{ $investor->investor_type == 'startup_competition' ? 'selected' : '' }}>Startup Competition</option>
+                            <option value="syndicate" {{ $investor->investor_type == 'syndicate' ? 'selected' : '' }}>Syndicate</option>
+                            <option value="pension_funds" {{ $investor->investor_type == 'pension_funds' ? 'selected' : '' }}>Pension Funds</option>
+                        </select>
+                    </div>
+                    <div class="input-form">
+                        <label for="number_of_contacts" class="sub-heading-1">Nomor Kontak</label>
+                        <input type="number" id="number_of_contacts" name="number_of_contacts" placeholder="Masukkan nomor kontak" value="{{ $investor->number_of_contacts }}" class="custom-input"/>
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -358,6 +550,8 @@ form {
         </div>
     </div>
 </form>
+
+
 
 {{-- Ngurusin upload dan hapus gambar --}}
 <script>
@@ -385,7 +579,7 @@ form {
 {{-- Bagian untuk menambahkan search  --}}
 <script>
     $(document).ready(function() {
-        // Inisialisasi Select2
+        // Initialize Select2 for the organization dropdown with custom search and display options
         $('.select2-search').select2({
             placeholder: 'Cari organisasi jika ada...',
             allowClear: true,
@@ -453,6 +647,178 @@ form {
         $('#org_name').on('select2:select', function(e) {
             console.log('Selected value:', e.params.data.id);
             console.log('Selected text:', e.params.data.text);
+        });
+    });
+</script>
+
+{{-- Bagian tempat untuk api wilayah bagian startup founder --}}
+<script>
+    const provinsi = document.getElementById('provinsi');
+    // URL untuk API provinsi
+    const provinceApiUrl = 'https://xenodrom31.github.io/api-wilayah-indonesia/api/provinces.json';
+    // Ambil nilai provinsi sebelumnya
+    const oldValue = '{{ $user->provinsi }}'; // Pastikan ini adalah nilai yang benar
+
+    // Fungsi untuk mengambil dan menampilkan daftar provinsi
+    function fetchProvinces() {
+        fetch(provinceApiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const provinceSelect = provinsi;
+                provinceSelect.innerHTML = '<option value="">Pilih Provinsi</option>'; // Clear dan isi ulang
+                data.forEach(province => {
+                    const option = document.createElement('option');
+                    option.value = province.name; // Menyimpan ID provinsi
+                    option.textContent = province.name; // Menampilkan nama provinsi
+
+                    // Periksa apakah ini adalah nilai yang sudah ada
+                    if (province.name === oldValue) {
+                        option.selected = true; // Tandai sebagai terpilih jika sesuai
+                    }
+
+                    provinceSelect.appendChild(option);
+                });
+                provinceSelect.onchange = fetchCitiesByProvince; // Panggil fungsi untuk mengambil kota saat provinsi dipilih
+            })
+            .catch(error => console.error('Error fetching provinces:', error));
+    }
+    // Panggil fungsi untuk mengambil provinsi saat halaman dimuat
+    document.addEventListener('DOMContentLoaded', fetchProvinces);
+</script>
+
+<script>
+
+    document.getElementById('profile.update').addEventListener('submit', validateForm);
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const nikInput = document.getElementById('nik');
+        const teleponInput = document.getElementById('telepon');
+        const peoplePhoneInput = document.getElementById('people_phone');
+
+        function restrictToNumbers(event) {
+            const char = String.fromCharCode(event.which);
+            if (!/[0-9]/.test(char)) {
+                event.preventDefault();
+            }
+        }
+
+        function enforceLength(input, min, max) {
+            input.addEventListener('blur', function () {
+                const errorMessage = document.getElementById('error-message');
+                if (this.value.length < min || this.value.length > max) {
+                    errorMessage.textContent = `Input harus antara ${min} dan ${max} digit.`;
+                } else {
+                    errorMessage.textContent = '';
+                }
+            });
+        }
+
+        if (nikInput) {
+            nikInput.addEventListener('keypress', restrictToNumbers);
+            enforceLength(nikInput, 16, 16);
+        }
+        if (teleponInput) {
+            teleponInput.addEventListener('keypress', restrictToNumbers);
+        }
+        if (peoplePhoneInput) {
+            peoplePhoneInput.addEventListener('keypress', restrictToNumbers);
+        }
+    });
+
+    @if ($errors->any())
+        let errorMessage = '';
+        @foreach ($errors->all() as $error)
+            errorMessage += '{{ $error }}\n';
+        @endforeach
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: errorMessage,
+        });
+    @endif
+</script>
+
+  <!-- Your custom scripts -->
+  <script>
+    $(document).ready(function() {
+        // Filter tags based on search input
+        $('#searchInput').on('input', function() {
+            var searchTerm = $(this).val().toLowerCase();
+            $('#tagCloud .tag-button').each(function() {
+                var tagName = $(this).text().toLowerCase();
+                if (tagName.includes(searchTerm)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+
+        // Toggle tag selection
+        $('.tag-button').click(function() {
+            var $button = $(this);
+            var tagId = $button.data('tag-id');
+            var $checkbox = $('#tag' + tagId);
+
+            // Toggle the selected state
+            $button.toggleClass('selected');
+
+            // Sync the checkbox with the button state
+            $checkbox.prop('checked', $button.hasClass('selected'));
+
+            // Update the selected tags display
+            updateSelectedTags();
+        });
+
+        // Initialize button states based on checkboxes
+        $('input[name="tag_ids[]"]').each(function() {
+            var $checkbox = $(this);
+            var tagId = $checkbox.val();
+            var $button = $('button[data-tag-id="' + tagId + '"]');
+
+            if ($checkbox.prop('checked')) {
+                $button.addClass('selected');
+            }
+        });
+
+        // Function to update the display of selected tags
+        function updateSelectedTags() {
+            var selectedTags = [];
+            $('#tagCloud .tag-button.selected').each(function() {
+                selectedTags.push($(this).text());
+            });
+            $('#selectedTags').html(selectedTags.map(tag => `<span class="selected-tag">${tag}</span>`).join(''));
+        }
+
+        // Initial update of selected tags
+        updateSelectedTags();
+
+        // Form submission handler
+        $('#registerForm').on('submit', function(e) {
+            // Check if the role is INVESTOR and no tags are selected
+            if ($('#role').val() === 'INVESTOR' && $('input[name="tag_ids[]"]:checked').length === 0) {
+                e.preventDefault();
+                alert('Pilih minimal satu department untuk Investor');
+                return false;
+            }
+        });
+
+        // Role change handler
+        $('#role').on('change', function() {
+            if ($(this).val() === 'INVESTOR') {
+                $('#investorFields').show();
+            } else {
+                $('#investorFields').hide();
+                // Uncheck all tags when role is not INVESTOR
+                $('input[name="tag_ids[]"]').prop('checked', false);
+                $('.tag-button').removeClass('selected');
+                updateSelectedTags();
+            }
         });
     });
 </script>

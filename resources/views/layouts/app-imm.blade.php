@@ -9,6 +9,9 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
     @yield('css')
@@ -454,7 +457,6 @@
         </script>
         {{-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> --}}
         {{-- Mengganti slim dengan yang normal untuk mendapatkan fitur ajax --}}
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </body>
 

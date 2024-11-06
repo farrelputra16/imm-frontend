@@ -115,7 +115,10 @@ class ProfileController extends Controller
         if ($userRole === 'INVESTOR') {
             $investor = $user->investor;
             $companies = Company::all();
-            return view('profile.edit', compact('user', 'investor', 'userRole', 'companies'));
+            // Mengambil data departments untuk digunakan pada view
+            $departments = Department::all();
+            $selectedDepartments = $investor->departments;
+            return view('profile.edit', compact('user', 'investor', 'userRole', 'companies', 'departments', 'selectedDepartments'));
         }
         return view('profile.edit', compact('user',  'userRole'));
 
@@ -130,7 +133,12 @@ class ProfileController extends Controller
         ]);
 
         $user = User::findOrFail(Auth::user()->id);
-        $user->nama_depan = $request->input('nama_depan');
+
+        // Split nama_depan menjadi nama depan dan nama belakang
+        $namaDepanBelakang = explode(' ', $request->input('nama_depan'), 2);
+        $user->nama_depan = $namaDepanBelakang[0]; // Nama depan
+        $user->nama_belakang = isset($namaDepanBelakang[1]) ? $namaDepanBelakang[1] : ''; // Nama belakang, jika ada
+
         $user->email = $request->input('email');
         $user->nik = $request->input('nik');
         $user->negara = $request->input('negara');
@@ -143,6 +151,46 @@ class ProfileController extends Controller
             $imageName = time() . '.' . $request->img->extension();
             $request->img->move(public_path('images'), $imageName);
             $user->img = $imageName;
+        }
+
+        if ($user->role === 'INVESTOR') {
+           // Validasi data yang diterima dari request
+            $validatedData = $request->validate([
+                'org_name' => 'nullable|exists:companies,id',
+                'number_of_contacts' => 'nullable|integer',
+                'location' => 'required|string|max:255',
+                'description' => 'required|string',
+                'investment_stage' => 'required|string',
+                'investor_type' => 'nullable|string',
+                'tag_ids' => 'array',
+                'tag_ids.*' => 'exists:departments,id', // Pastikan tag_ids valid
+            ]);
+
+            // Mencari investor berdasarkan ID
+            $investor = Investor::where('user_id', $user->id)->first();
+
+            // Mengupdate atribut investor
+            $companyName = null;
+            if ($validatedData['org_name']) {
+                $company = Company::find($validatedData['org_name']);
+                $companyName = $company ? $company->nama : null;
+            }
+
+            $investor->org_name = $companyName; // Simpan nama perusahaan, bukan ID
+            $investor->number_of_contacts = $validatedData['number_of_contacts'] ?? null; // Bisa nullable
+            $investor->location = $validatedData['location'];
+            $investor->description = $validatedData['description'];
+            $investor->investment_stage = $validatedData['investment_stage']; // Simpan investment_stage
+            $investor->investor_type = $validatedData['investor_type'] ?? null; // Bisa nullable
+            $investor->user_id = $user->id; // Pastikan user_id tetap sama
+
+            // Simpan perubahan
+            $investor->save();
+
+            // Mengupdate departments yang terhubung dengan investor
+            if (isset($validatedData['tag_ids'])) {
+                $investor->departments()->sync($validatedData['tag_ids']); // Mengupdate hubungan
+            }
         }
 
         $user->save();
