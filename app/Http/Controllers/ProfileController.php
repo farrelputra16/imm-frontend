@@ -111,7 +111,14 @@ class ProfileController extends Controller
     public function edit()
     {
         $user = Auth::user();
-        return view('profile.edit', compact('user'));
+        $userRole = $user->role;
+        if ($userRole === 'INVESTOR') {
+            $investor = $user->investor;
+            $companies = Company::all();
+            return view('profile.edit', compact('user', 'investor', 'userRole', 'companies'));
+        }
+        return view('profile.edit', compact('user',  'userRole'));
+
     }
 
     public function update(Request $request)
@@ -137,7 +144,6 @@ class ProfileController extends Controller
             $request->img->move(public_path('images'), $imageName);
             $user->img = $imageName;
         }
-
 
         $user->save();
 

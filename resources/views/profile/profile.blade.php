@@ -106,9 +106,12 @@
             <div class="biodata">
                 @if ($userRole === 'INVESTOR')
                     <h2 class="mb-3"> {{$user->nama_depan}} {{ $user->nama_belakang }}</h2>
-                    <p><i class="fas fa-phone" style="color: black"></i> {{$investor->investor_type}}</p>
-                    <p><i class="fas fa-envelope" style="color: black"></i> {{$user->email}}</p>
-                    <span><i class="fas fa-map-marker-alt" style="color: black"></i> {{$investor->location}} </span> <br>
+                    <p>
+                        <i class="fas fa-user" style="color: black; margin-right: 10px;"></i>
+                        {{ ucwords(str_replace('_', ' ', $investor->investor_type)) }}
+                    </p>
+                    <p><i class="fas fa-envelope" style="color: black; margin-right: 10px;"></i> {{$user->email}}</p>
+                    <span><i class="fas fa-map-marker-alt" style="color: black; margin-right: 10px;"></i> {{$investor->location}} </span> <br>
                     <a href="{{ route('profile.edit') }}" class="btn btn-outline-secondary mt-3">
                         <i class="fas fa-edit"></i> Edit
                     </a>

@@ -520,7 +520,7 @@
     });
 </script>
 
-// Script untuk tag filter
+{{-- Script untuk tag filter --}}
 <script>
     // Fungsi untuk toggle filter
     function toggleFilter(tagElement) {

@@ -4,17 +4,24 @@
 @section('css')
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="{{ asset('css/profile/profiledit.css') }}">
+<link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<!-- Di bagian head -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <style>
     body {
     font-family: Arial, sans-serif;
     list-style-type: none;
     text-decoration: none;
 }
-
+.profile-container-wrapper {
+    display: flex;
+    align-items: center;
+}
 .profile-container {
     background-color: white;
     padding: 17px;
@@ -36,23 +43,25 @@
 
 .profile-picture-container {
     position: relative;
-    display: inline-block;
+    display: flex; /* Ubah dari inline-block menjadi flex */
+    justify-content: flex-start; /* Pastikan konten berada di kiri */
+    align-items: center; /* Menjaga agar gambar tetap di tengah secara vertikal */
     margin: 20px 0;
 }
 
 .profile-picture-container img {
     border-radius: 50%;
-    border: 5px solid #ddd;
-    width: 150px;
-    height: 150px;
-    border: 7px solid #5940cb;
+    width: 313px;
+    height: 313px;
     background-size: cover;
 }
 
 .edit-icon {
     position: absolute;
     bottom: 10px;
-    right: 10px;
+    left: 240px;
+    width: 63px;
+    height: 63px;
     background-color: #fff;
     border-radius: 50%;
     padding: 5px;
@@ -61,7 +70,11 @@
 }
 
 .edit-icon i {
-    color: #5940cb;
+    font-size: 45px;
+    align-content: center;
+    vertical-align: middle;
+    margin-left: 4px;
+    margin-top: 2px;
 }
 
 #file-input {
@@ -111,18 +124,83 @@ form {
     margin-top: 20px;
 }
 
-.btn-save,
-.btn-back {
-    width: 154px;
-    height: 42px;
+.btn-save{
+    width: 144px;
+    height: 40px;
     background-color: #5940cb;
     color: white;
-    border-radius: 5px;
-    font-size: 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    margin-left: 35px;
+    margin-right: 12px;
+}
+.btn-back{
+    width: 144px;
+    height: 40px;
+    background-color: #EFEEFA;
+    color: black;
+    border-radius: 8px;
+    font-size: 16px;
     font-weight: 500;
     border: none;
 }
 
+.custom-input {
+    border: 2px solid #6256CA;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+}
+
+.input-form{
+    margin-bottom: 23px;
+}
+
+ /* Select 2  styles */
+ .select2-container--default .select2-selection--single {
+    height: 45px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 36px;
+    padding-left: 12px;
+    padding-top: 5px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 45px;
+    padding-top: 5px;
+    padding-right: 10px;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field {
+    padding: 8px;
+    border: 1px solid #ced4da;
+}
+
+.select2-selection__clear {
+    height: 45px;
+    padding-top: 12px;
+    padding-right: 10px;
+}
+
+.select2-results__option {
+    padding: 8px 12px;
+}
+
+.select2-results__option strong {
+    background-color: #fff9ffcd;
+    padding: 2px;
+    color: black;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #6256ca;
+}
 
 /* Navbar */
 
@@ -174,9 +252,6 @@ form {
     }
 }
 
-
-
-
 /* Menambahkan transisi pada navbar */
 
 .navbar {
@@ -211,68 +286,92 @@ form {
 <form action="{{ route('profile.update', $user->id) }}" method="POST" id="profileForm" enctype="multipart/form-data">
     @csrf
     @method('PUT')
-<div class="container d-flex justify-content-center">
-    <div class="profile-container" style="margin-top:130px">
-        <div class="text-left">
-            <h1>Profile</h1>
-            <p>Kelola pengaturan profil Anda</p>
-        </div>
-        <div class="profile-picture-container">
-            <img src="{{ $user->img ? asset('images/' . $user->img) : asset('images/default_user.webp') }}" alt="Profile Picture">
-            <div class="edit-icon">
-                <i class="fas fa-edit"></i>
-            </div>
-            <input type="file" id="file-input" name="img" accept="image/*" style="display: none;">
-        </div>
-            <div class="row">
-                <div class="col-6">
-                    <div class="form-group">
-                        <label for="nama_depan">Nama Lengkap</label>
-                        <input type="text" id="nama_depan" name="nama_depan" class="form-control" value="{{ $user->nama_depan }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="nik">NIK</label>
-                        <input type="text" id="nik" name="nik" class="form-control" value="{{ $user->nik }}" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" class="form-control" value="{{ $user->email }}" readonly>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="form-group">
-                        <label for="negara">Negara</label>
-                        <input type="text" id="negara" name="negara" class="form-control" value="{{ $user->negara }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="provinsi">Provinsi</label>
-                        <input type="text" id="provinsi" name="provinsi" class="form-control" value="{{ $user->provinsi }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="alamat">Alamat Lengkap</label>
-                        <input type="text" id="alamat" name="alamat" class="form-control" value="{{ $user->alamat }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="telepon">Nomor Handphone</label>
-                        <div class="phone-input">
-                            <img src="https://flagcdn.com/id.svg" alt="ID Flag">
-                            <span>(+62)</span>
-                            <input type="number" id="telepon" name="telepon" class="form-control" value="{{ $user->telepon }}">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="form-buttons">
-                <a href="{{ route('profile') }}"> <button type="button" class="btn-back">Kembali</button></a>
-                <button type="submit" class="btn-save">Simpan</button>
-            </div>
-        </form>
-    </div>
-</div>
 
+    <div class="container d-flex flex-column" style="margin-top:120px;">
+        <div class="profile-container-wrapper">
+            <div class="profile-picture-container mb-4">
+                <img src="{{ $user->img ? asset('images/' . $user->img) : asset('images/default_user.webp') }}" alt="Profile Picture" class="img-fluid">
+                <div class="edit-icon">
+                    <i class="fas fa-camera"></i>
+                </div>
+                <input type="file" id="file-input" name="img" accept="image/*" style="display: none;">
+            </div>
+            <div class="buttons">
+                <button type="button" class="btn-save">Upload New</button>
+                <button type="button" class="btn-back">Delete avatar</button>
+            </div>
+        </div>
+
+        <div class="row w-100"  style="margin-top: 67px;">
+
+            <div class="col-md-6">
+                <div class="input-form">
+                    <label for="nama_depan" class="sub-heading-1">Nama Lengkap</label>
+                    <input type="text" id="nama_depan" name="nama_depan" class="custom-input" value="{{ $user->nama_depan }}" required>
+                </div>
+                <div class="input-form">
+                    <label for="nik" class="sub-heading-1">NIK</label>
+                    <input type="text" id="nik" name="nik" class="custom-input" value="{{ $user->nik }}" readonly>
+                </div>
+                <div class="input-form" class="sub-heading-1">
+                    <label for="email" class="sub-heading-1">Email</label>
+                    <input type="email" id="email" name="email" class="custom-input" value="{{ $user->email }}" readonly>
+                </div>
+                @if ($user->role == 'INVESTOR')
+                    <div class="form-group">
+                        <label for="org_name">Nama Organisasi</label>
+                        <select id="org_name" name="org_name" class="form-control select2-search custom-input" style="padding: 0px; padding-left: 5px;">
+                            <option value="">Tidak Ada Organisasi</option>
+                            @foreach($companies as $company)
+                                <option value="{{ $company->id }}" {{ old('org_name') == $company->id ? 'selected' : '' }}>
+                                    {{ $company->nama }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
+            </div>
+
+            <div class="col-md-6">
+                <div class="input-form" class="sub-heading-1">
+                    <label for="negara" class="sub-heading-1">Negara</label>
+                    <input type="text" id="negara" name="negara" class="custom-input" value="{{ $user->negara }}" required>
+                </div>
+                <div class="input-form" class="sub-heading-1">
+                    <label for="provinsi" class="sub-heading-1">Provinsi</label>
+                    <input type="text" id="provinsi" name="provinsi" class="custom-input" value="{{ $user->provinsi }}" required>
+                </div>
+                <div class="input-form" class="sub-heading-1">
+                    <label for="alamat" class="sub-heading-1">Alamat Lengkap</label>
+                    <input type="text" id="alamat" name="alamat" class="custom-input" value="{{ $user->alamat }}" required>
+                </div>
+                <div class="input-form" class="sub-heading-1">
+                    <label for="telepon" class="sub-heading-1">Nomor Handphone</label>
+                    <input type="number" id="telepon" name="telepon" class="custom-input" value="{{ $user->telepon }}" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-buttons mt-4">
+            <a href="{{ route('profile') }}" class="btn btn-secondary">Kembali</a>
+            <button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
+    </div>
+</form>
+
+{{-- Ngurusin upload dan hapus gambar --}}
 <script>
     document.querySelector('.edit-icon').addEventListener('click', function() {
         document.getElementById('file-input').click();
+    });
+
+    document.querySelector('.btn-save').addEventListener('click', function() {
+        document.getElementById('file-input').click();
+    });
+
+    document.querySelector('.btn-back').addEventListener('click', function() {
+        var img = document.querySelector('.profile-picture-container img');
+        img.src = '{{ asset('images/1720765715.webp') }}';
     });
 
     document.getElementById('file-input').addEventListener('change', function() {
@@ -282,5 +381,79 @@ form {
         }
     });
 </script>
+
+{{-- Bagian untuk menambahkan search  --}}
+<script>
+    $(document).ready(function() {
+        // Inisialisasi Select2
+        $('.select2-search').select2({
+            placeholder: 'Cari organisasi jika ada...',
+            allowClear: true,
+            width: '100%',
+            language: {
+                noResults: function() {
+                    return "Tidak ada hasil yang ditemukan";
+                }
+            },
+            // Kustomisasi pencarian
+            matcher: function(params, data) {
+                // Jika tidak ada term pencarian, tampilkan semua
+                if ($.trim(params.term) === '') {
+                    return data;
+                }
+
+                // Skip jika data kosong
+                if (typeof data.text === 'undefined') {
+                    return null;
+                }
+
+                // Konversi ke lowercase untuk pencarian case-insensitive
+                var term = params.term.toLowerCase();
+                var text = data.text.toLowerCase();
+
+                // Cek apakah text mengandung term pencarian
+                if (text.indexOf(term) > -1) {
+                    return data;
+                }
+
+                // Jika tidak cocok, return null untuk skip
+                return null;
+            },
+            // Kustomisasi tampilan dropdown
+            templateResult: function(data) {
+                if (!data.id) {
+                    return data.text;
+                }
+
+                var $result = $('<span></span>');
+                var searchTerm = $('.select2-search__field').val().toLowerCase();
+                var text = data.text;
+
+                if (searchTerm) {
+                    var startIndex = text.toLowerCase().indexOf(searchTerm);
+                    if (startIndex > -1) {
+                        var endIndex = startIndex + searchTerm.length;
+                        var highlightedText =
+                            text.substring(0, startIndex) +
+                            '<strong>' + text.substring(startIndex, endIndex) + '</strong>' +
+                            text.substring(endIndex);
+                        $result.html(highlightedText);
+                    } else {
+                        $result.text(text);
+                    }
+                } else {
+                    $result.text(text);
+                }
+
+                return $result;
+            }
+        });
+
+        // Optional: Tambahkan event handler untuk perubahan nilai
+        $('#org_name').on('select2:select', function(e) {
+            console.log('Selected value:', e.params.data.id);
+            console.log('Selected text:', e.params.data.text);
+        });
+    });
+</script>
 @endsection
-    

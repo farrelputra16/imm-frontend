@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Investor;
+use App\Models\Department;
 use Illuminate\Http\Request;
 
 class InvestorController extends Controller
@@ -56,12 +57,9 @@ class InvestorController extends Controller
         }
 
         // Filter by departments if provided
-        if ($request->filled('departments')) {
-            $departments = is_array($request->departments) ? $request->departments : [$request->departments];
-            $query->where(function ($q) use ($departments) {
-                foreach ($departments as $department) {
-                    $q->orWhere('departments', 'like', '%' . $department . '%');
-                }
+        if ($request->input('departments') && !empty($request->input('departments'))) {
+            $query->whereHas('departments', function ($query) use ($request) {
+                $query->whereIn('name', $request->input('departments'));
             });
         }
 
@@ -87,8 +85,9 @@ class InvestorController extends Controller
 
         // Paginate the results
         $investors = $query->paginate($rowsPerPage);
+        $department = Department::all();
 
-        return view('investors.index', compact('investors'));
+        return view('investors.index', compact('investors', 'department'));
     }
 
     // New show method

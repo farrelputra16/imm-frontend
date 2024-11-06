@@ -169,17 +169,15 @@
                     </div>
 
                     <!-- Industries Filter -->
-                    <div class="mb-3">
-                        <h6>DEPARTMENTS</h6>
-                        <div>
-                            <button type="submit" name="departments" value="Software" class="tag">Software</button>
-                            <button type="submit" name="departments" value="Health Care" class="tag">Health Care</button>
-                            <button type="submit" name="departments" value="IT" class="tag">IT</button>
-                            <button type="submit" name="departments" value="Education" class="tag">Education</button>
-                            <button type="submit" name="departments" value="Manufacture" class="tag">Manufacture</button>
-                            <button type="submit" name="departments" value="Energy" class="tag">Energy</button>
-                            <button type="submit" name="departments" value="Engineering" class="tag">Engineering</button>
-                        </div>
+                    <h6>INDUSTRIES</h6>
+                    <div class="tags-container">
+                        @foreach ($department as $dept)
+                            <div class="tag"
+                                data-filter="departments"
+                                data-value="{{ $dept->name }}">
+                                {{ $dept->name }}
+                            </div>
+                        @endforeach
                     </div>
 
                     <!-- Clear Filters Button -->
@@ -193,7 +191,7 @@
 
         <!-- Table Section -->
         <div class="col-md-9 table-section">
-            <form method="GET" action="{{ route('investors.index') }}"  id="companySearchForm">
+            <form method="GET" action="{{ route('investors.index') }}"  id="investorSearchForm">
                 @csrf
                 <div class="search-container">
                     <i class="fas fa-search" style="margin-left: 10px;"></i>
@@ -512,7 +510,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Menyimpan nilai pencarian ke localStorage saat form di-submit
-        document.getElementById('companySearchForm').addEventListener('submit', function() {
+        document.getElementById('investorSearchForm').addEventListener('submit', function() {
             localStorage.setItem('investorSearch', document.querySelector('input[name="search"]').value);
         });
 
@@ -556,32 +554,21 @@
         // Bersihkan hidden inputs yang ada
         hiddenInputsContainer.innerHTML = '';
 
-        // // Proses departments tags
-        // const selectedDepartments = document.querySelectorAll('.tag[data-filter="departments"].selected');
-        // selectedDepartments.forEach(tag => {
-        //     const input = document.createElement('input');
-        //     input.type = 'hidden';
-        //     input.name = 'departments[]';
-        //     input.value = tag.getAttribute('data-value');
-        //     hiddenInputsContainer.appendChild(input);
-        // });
+        // Proses departments tags
+        const selectedDepartments = document.querySelectorAll('.tag[data-filter="departments"].selected');
+        selectedDepartments.forEach(tag => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'departments[]';
+            input.value = tag.getAttribute('data-value');
+            hiddenInputsContainer.appendChild(input);
+        });
 
-        // // Proses business model tags
-        // const selectedBusinessModels = document.querySelectorAll('.tag[data-filter="business_model"].selected');
-        // selectedBusinessModels.forEach(tag => {
-        //     const input = document.createElement('input');
-        //     input.type = 'hidden';
-        //     input.name = 'business_model[]';
-        //     input.value = tag.getAttribute('data-value');
-        //     hiddenInputsContainer.appendChild(input);
-        // });
+        // Debug: Log selected values
+        console.log('Selected Departments:', Array.from(selectedDepartments).map(tag => tag.getAttribute('data-value')));
 
-        // // Debug: Log selected values
-        // console.log('Selected Departments:', Array.from(selectedDepartments).map(tag => tag.getAttribute('data-value')));
-        // console.log('Selected Business Models:', Array.from(selectedBusinessModels).map(tag => tag.getAttribute('data-value')));
-
-        // // Simpan status ke localStorage
-        // saveFilterState();
+        // Simpan status ke localStorage
+        saveFilterState();
 
         // Submit form
         form.submit();
@@ -598,6 +585,37 @@
     });
 </script>
 
+{{-- Script untuk tag filter --}}
+<script>
+    // Fungsi untuk menyimpan status filter ke localStorage
+    function saveFilterState() {
+        const selectedTags = {
+            departments: Array.from(document.querySelectorAll('.tag[data-filter="departments"].selected')).map(tag => tag.getAttribute('data-value')),
+        };
+        localStorage.setItem('selectedTags', JSON.stringify(selectedTags));
+    }
+
+    // Fungsi untuk memuat status filter dari localStorage
+    function loadFilterState() {
+        const savedTags = JSON.parse(localStorage.getItem('selectedTags'));
+        if (savedTags) {
+            if (savedTags.departments) {
+                savedTags.departments.forEach(value => {
+                    const tag = document.querySelector(`.tag[data-filter="departments"][data-value="${value}"]`);
+                    if (tag) tag.classList.add('selected');
+                });
+            }
+        }
+    }
+
+    // Fungsi untuk toggle filter
+    function toggleFilter(tagElement) {
+        tagElement.classList.toggle('selected');
+        autoFilter();
+    }
+</script>
+
+{{-- Script clear filter --}}
 <script>
     function clearFilters() {
         // Clear tags
@@ -617,12 +635,26 @@
 
         // Clear localStorage
         localStorage.removeItem('selectedTags');
-        localStorage.removeItem('companySearch');
+        localStorage.removeItem('investorSearch');
 
         // Submit form
-        document.getElementById('companyFilterForm').submit();
+        document.getElementById('investorFilterForm').submit();
     }
+
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        loadFilterState();
+
+        // Tambahkan event listener untuk setiap tag
+        document.querySelectorAll('.tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                toggleFilter(this);
+            });
+        });
+    });
 </script>
+
+
 
 {{-- script untuk mengambil data kota dari API --}}
 <script>
