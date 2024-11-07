@@ -382,8 +382,8 @@
 
         <div class="wrapper">
             <div style="padding: 20px;">
-        @yield('content')
-        </div>
+                @yield('content')
+            </div>
         </div>
 
        <footer">
