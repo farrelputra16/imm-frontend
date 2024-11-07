@@ -158,7 +158,6 @@ class ProfileController extends Controller
             $validatedData = $request->validate([
                 'org_name' => 'nullable|exists:companies,id',
                 'number_of_contacts' => 'nullable|integer',
-                'location' => 'required|string|max:255',
                 'description' => 'required|string',
                 'investment_stage' => 'required|string',
                 'investor_type' => 'nullable|string',
@@ -178,7 +177,6 @@ class ProfileController extends Controller
 
             $investor->org_name = $companyName; // Simpan nama perusahaan, bukan ID
             $investor->number_of_contacts = $validatedData['number_of_contacts'] ?? null; // Bisa nullable
-            $investor->location = $validatedData['location'];
             $investor->description = $validatedData['description'];
             $investor->investment_stage = $validatedData['investment_stage']; // Simpan investment_stage
             $investor->investor_type = $validatedData['investor_type'] ?? null; // Bisa nullable

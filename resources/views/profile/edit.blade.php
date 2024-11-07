@@ -378,7 +378,7 @@ form {
                 </div>
                 <div class="input-form">
                     <label for="nik" class="sub-heading-1">NIK</label>
-                    <input type="text" id="nik" name="nik" class="custom-input" value="{{ $user->nik }}" readonly>
+                    <input type="text" id="nik" name="nik" class="custom-input" value="{{ $user->nik }}">
                 </div>
                 <div class="input-form" class="sub-heading-1">
                     <label for="email" class="sub-heading-1">Email</label>
@@ -435,49 +435,48 @@ form {
                         <textarea id="description" name="description" placeholder="Masukkan deskripsi" rows="3" style="padding-left: 10px; width: 100%;" class="custom-input" required>{{$investor->description}}</textarea>
                     </div>
                     <div class="form-group">
-                        <label for="impactTags">Tag untuk department</label>
-                        <button type="button" class="tag-button" data-toggle="modal" data-target="#tagModal">
-                            Pilih Department Anda
+                        <label for="impactTags">Tag untuk Departemen</label>
+                        <button type="button" class="tag-button" id="editTagsButton" data-toggle="modal" data-target="#tagModal">
+                            Pilih Departemen Anda
                         </button>
                         <div id="selectedTags" class="mt-2">
-                            @foreach ($selectedDepartments as $department)
-                                <span class="selected-tag">{{ $department->name }}</span>
-                            @endforeach
+                            @if($selectedDepartments->isNotEmpty())
+                                @foreach ($selectedDepartments as $department)
+                                    <span class="selected-tag">{{ $department->name }}</span>
+                                @endforeach
+                            @else
+                                <span class="text-muted">Belum ada departemen yang dipilih.</span>
+                            @endif
                         </div>
                     </div>
+
+
                      <!-- Modal -->
                      <div class="modal fade" id="tagModal" tabindex="-1" aria-labelledby="tagModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="tagModalLabel">Pilih Departemen Perusahaan Anda</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="search-container sticky-top bg-white">
-                                        <div class="form-group position-relative mb-0" style="padding: 10px 20px; border-bottom: 1px solid transparent; z-index: 1;">
-                                            <input type="text" style="background-color: #6256ca; border: none; color: #ffffff; padding: 15px; border-radius: 10px; width: 700px; padding-right: 50px; position: relative;" placeholder="Search..."  class="form-control search-bar" id="searchInput"/>
-                                            <span style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: #ffffff; pointer-events: none;"></span>
+                                        <div class="position-relative mb-0" style="width: 100%; background-color: transparent;">
+                                            <input type="text" class="search-bar" id="searchInput" placeholder="Cari departemen" aria-label="Cari departemen" style="width: 95%;">
+                                            <i class="fas fa-search search-icon"></i>
                                         </div>
                                     </div>
                                     <div class="tag-cloud-container modal-body-scrollable">
                                         <div class="tag-cloud" id="tagCloud">
                                             @foreach ($departments as $tag)
-                                                <!-- Tambahkan type="button" pada button -->
                                                 <button class="tag-button
-                                                    @if(in_array($tag->id, $investor->tag_ids ?? [])) selected @endif"
-                                                    data-tag-id="{{ $tag->id }}"
-                                                    type="button">
+                                                    @if(in_array($tag->id, $selectedDepartments->pluck('id')->toArray())) selected @endif"
+                                                    data-tag-id="{{ $tag->id }}" type="button">
                                                     {{ $tag->name }}
                                                 </button>
-                                                <input type="checkbox"
-                                                       value="{{ $tag->id }}"
-                                                       id="tag{{ $tag->id }}"
-                                                       name="tag_ids[]"
-                                                       @if(in_array($tag->id, $investor->tag_ids ?? [])) checked @endif
-                                                       style="display: none;">
+                                                <input type="checkbox" value="{{ $tag->id }}"
+                                                    id="tag{{ $tag->id }}" name="tag_ids[]"
+                                                    @if(in_array($tag->id, $selectedDepartments->pluck('id')->toArray())) checked @endif
+                                                    style="display: none;">
                                             @endforeach
                                         </div>
                                     </div>
@@ -744,6 +743,7 @@ form {
 </script>
 
   <!-- Your custom scripts -->
+  {{-- Bagian untuk fokus filter tag --}}
   <script>
     $(document).ready(function() {
         // Filter tags based on search input
@@ -776,7 +776,7 @@ form {
         });
 
         // Initialize button states based on checkboxes
-        $('input[name="tag_ids[]"]').each(function() {
+        $('input[type="checkbox"]').each(function() {
             var $checkbox = $(this);
             var tagId = $checkbox.val();
             var $button = $('button[data-tag-id="' + tagId + '"]');
@@ -795,31 +795,44 @@ form {
             $('#selectedTags').html(selectedTags.map(tag => `<span class="selected-tag">${tag}</span>`).join(''));
         }
 
-        // Initial update of selected tags
+        // Function to populate dropdown with selected tags
+        function updatePositionDepartment() {
+            var $positionSelect = $('#position');
+            $positionSelect.empty().append('<option value="">Pilih Departemen</option>');
+
+            $('#tagCloud .tag-button.selected').each(function () {
+                var tagId = $(this).data('tag-id');
+                var tagName = $(this).text();
+                $positionSelect.append(`<option value="${tagId}">${tagName}</option>`);
+            });
+
+            $positionSelect.prop('disabled', $positionSelect.find('option').length <= 1);
+        }
+
+        // Function to initialize the dropdown in edit mode, preserving previous selection
+        function updatePositionDepartementEdit() {
+            var $positionSelect = $('#editPosition');
+            var previousSelectedPosition = $positionSelect.val();
+            $positionSelect.empty().append('<option value="">Pilih Departemen</option>');
+
+            $('#tagCloud .tag-button.selected').each(function () {
+                var tagId = $(this).data('tag-id');
+                var tagName = $(this).text();
+                $positionSelect.append(`<option value="${tagId}">${tagName}</option>`);
+            });
+
+            $positionSelect.prop('disabled', $positionSelect.find('option').length <= 1);
+
+            // Restore the previously selected option if available
+            if (previousSelectedPosition) {
+                $positionSelect.val(previousSelectedPosition);
+            }
+        }
+
+        // Initial calls to update selected tags and dropdown options
         updateSelectedTags();
-
-        // Form submission handler
-        $('#registerForm').on('submit', function(e) {
-            // Check if the role is INVESTOR and no tags are selected
-            if ($('#role').val() === 'INVESTOR' && $('input[name="tag_ids[]"]:checked').length === 0) {
-                e.preventDefault();
-                alert('Pilih minimal satu department untuk Investor');
-                return false;
-            }
-        });
-
-        // Role change handler
-        $('#role').on('change', function() {
-            if ($(this).val() === 'INVESTOR') {
-                $('#investorFields').show();
-            } else {
-                $('#investorFields').hide();
-                // Uncheck all tags when role is not INVESTOR
-                $('input[name="tag_ids[]"]').prop('checked', false);
-                $('.tag-button').removeClass('selected');
-                updateSelectedTags();
-            }
-        });
+        updatePositionDepartment();
+        updatePositionDepartementEdit();
     });
-</script>
+    </script>
 @endsection
