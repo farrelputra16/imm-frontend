@@ -2,13 +2,18 @@
 
 @section('title', 'Profile Page')
 
-@section('css')
     <!-- External styles and custom fonts -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;700&display=swap">
     <style>
         /* Custom styling for the Profile page */
+
+        .profile-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px; /* Konsisten dengan Bootstrap */
+    }
         body {
             background-color: #f8f9fa;
             font-family: Arial, sans-serif;
@@ -178,8 +183,6 @@
             font-size: 24px; /* Smaller LinkedIn icon */
         }
     </style>
-@endsection
-
 @section('content')
 <div class="container">
     <!-- Profile Header Section -->
