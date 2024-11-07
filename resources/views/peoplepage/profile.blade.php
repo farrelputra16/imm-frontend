@@ -383,9 +383,9 @@
         <ul>
             <!-- Tampilkan data pendidikan -->
             @foreach($people->education as $education)
-                <li class="education-item d-flex align-items-start mt-3">
-                    <i class="fas fa-graduation-cap fa-lg me-3 text-primary"></i>
-                    <div>
+                <li class="education-item d-flex align-items-start mt-3" style="gap: 15px;">
+                    <i class="fas fa-graduation-cap text-primary" style="font-size: 40px; margin-top: 8px;"></i>
+                    <div style="margin-left: 10px;"> <!-- Jarak antara ikon dan teks -->
                         <h5 class="mb-1">{{ $education->university }}</h5>
                         <p class="mb-0 text-muted">{{ $education->title }} in {{ $education->field_of_study }}</p>
                         <p class="mb-0 text-muted">{{ $education->start_date }} - {{ $education->end_date ?? 'Present' }}</p>
@@ -395,6 +395,9 @@
             @endforeach
         </ul>
     </div>
+
+
+
 
     <!-- Modal Pop-up untuk Menambahkan Education -->
     <div class="modal fade" id="addEducationModal" tabindex="-1" aria-labelledby="addEducationModalLabel" aria-hidden="true">
