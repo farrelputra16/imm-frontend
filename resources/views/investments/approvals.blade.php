@@ -3,17 +3,24 @@
     /* Unique class prefix: .investment-page- */
 
     /* Body and Breadcrumb Styling */
-    .investment-page-body {
-        padding: 20px;
-        margin-top: 50px; /* Added margin to avoid sticking to navbar */
+    .investment-breadcrumb {
+        margin-top:-40px;
+        background-color: white;
+        padding: 10px 15px;
+        margin-bottom: 70px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        list-style-type: none; /* Remove default numbering */
+        padding-left: 0; /* Remove default padding for ordered list */
     }
-    .investment-page-breadcrumb {
-        background-color: transparent;
-        padding: 0;
-        margin-bottom: 20px;
+    .investment-breadcrumb-item {
+        margin-right: 8px;
     }
-    .investment-page-breadcrumb-item + .investment-page-breadcrumb-item::before {
+    .investment-breadcrumb-item + .investment-breadcrumb-item::before {
         content: ">";
+        margin-right: 8px;
+        color: #6c757d; /* Add a lighter color for the separator */
     }
 
     /* Table Styling */
@@ -45,14 +52,14 @@
 @section('content')
 <div class="container investment-page-body">
     <!-- Breadcrumb Navigation -->
-    <nav aria-label="breadcrumb" class="investment-page-breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item investment-page-breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item investment-page-breadcrumb-item active" aria-current="page">Investment</li>
+    <nav aria-label="investment-breadcrumb">
+        <ol class="investment-breadcrumb">
+            <li class="investment-breadcrumb-item"><a href="/">Home</a></li>
+            <li class="investment-breadcrumb-item active" aria-current="page">Investment</li>
         </ol>
     </nav>
 
-    <h1 class="fw-bold">Approve or Reject Investments</h1>
+    <h1 class="fw-bold" style="font-size: 2.5rem;">Approve or Reject Investments</h1>
 
     <!-- Status Filter -->
     <div class="mb-2">

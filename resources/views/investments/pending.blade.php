@@ -5,13 +5,26 @@
     body {
         font-family: Arial, sans-serif;
     }
-    .breadcrumb {
+
+    /* Unique Breadcrumb Styles */
+    .investment-breadcrumb {
+        margin-top:-40px;
         background-color: white;
-        padding: 0;
-        margin-bottom: 20px;
+        padding: 10px 15px;
+        margin-bottom: 70px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        list-style-type: none; /* Remove default numbering */
+        padding-left: 0; /* Remove default padding for ordered list */
     }
-    .breadcrumb-item + .breadcrumb-item::before {
+    .investment-breadcrumb-item {
+        margin-right: 8px;
+    }
+    .investment-breadcrumb-item + .investment-breadcrumb-item::before {
         content: ">";
+        margin-right: 8px;
+        color: #6c757d; /* Add a lighter color for the separator */
     }
 
     /* Table Styles */
@@ -52,10 +65,10 @@
 @section('content')
 <div class="container mt-5">
     <!-- Breadcrumb Navigation -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Investment</li>
+    <nav aria-label="investment-breadcrumb">
+        <ol class="investment-breadcrumb">
+            <li class="investment-breadcrumb-item"><a href="/">Home</a></li>
+            <li class="investment-breadcrumb-item active" aria-current="page">Investment</li>
         </ol>
     </nav>
 
@@ -111,4 +124,3 @@
     @endif
 </div>
 @endsection
-

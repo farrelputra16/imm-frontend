@@ -16,6 +16,16 @@
         z-index: 1030; /* Tambahkan z-index pada navbar */
     }
 
+    .navbar-landingpage .logo img {
+            height: 40px;
+            transition: transform 0.5s ease-in-out, filter 0.5s ease-in-out;
+        }
+
+        .navbar-landingpage .logo img:hover {
+            transform: scale(1.1) rotate(360deg);
+            filter: drop-shadow(0 0 10px #5940CB);
+        }
+
     .navbar-landingpage .navbar {
         display: flex;
         gap: 20px;
@@ -129,9 +139,9 @@
     <div class="container">
         <div class="row align-items-center">
             <!-- Logo Section -->
-            <div class="col-md-auto">
-                <a class="navbar-brand" href="/">
-                    <img src="{{ asset('images/imm.png') }}" width="100" height="55" alt="IMM Logo">
+            <div class="col-md-auto logo">
+                <a href="/">
+                    <img src="{{ asset('images/imm.png') }}"alt="IMM Logo">
                 </a>
             </div>
 

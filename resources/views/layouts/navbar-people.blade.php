@@ -14,7 +14,6 @@
         font-size: 20px;
         font-weight: bold;
     }
-
     .nav-item {
         margin-right: 10px;
     }
@@ -70,7 +69,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
         <a class="navbar-brand" href="/">
-            <img src="/images/imm.png" width="100" height="55" alt="IMM Logo">
+            <img src="/images/imm.png"height="40" alt="IMM Logo">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
