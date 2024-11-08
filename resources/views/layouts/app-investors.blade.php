@@ -11,9 +11,74 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     @yield('css')
     <style>
-        /* Styles seperti yang sudah ada di file original */
+        html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+        .footer {
+            background-color: #0F1F3E;
+            color: white;
+            padding: 20px 0; /* Adjust padding for better spacing */
+            border-radius: 50px 50px 0 0;
+            font-size: 0.9rem; /* Smaller font size */
+        }
+
+        /* Tambahkan CSS untuk footer */
+        footer {
+            margin-top: auto; /* Memastikan footer berada di bawah */
+        }
+
+        .footer-logo img {
+            height: 50px; /* Adjust logo size */
+        }
+
+        .footer-text {
+            font-size: 0.9rem; /* Reduce text size */
+            line-height: 1.4;
+            margin-top: 10px;
+        }
+
+        .footer-social {
+            text-align: center;
+            padding-top: 10px; /* Adjust padding */
+        }
+
+        .social-icon {
+            color: white;
+            font-size: 1.8rem; /* Reduce icon size */
+            margin: 0 10px; /* Equal spacing between icons */
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            color: #d9fa07; /* Hover effect */
+        }
+
+        @media (max-width: 768px) {
+            .footer-logo,
+            .footer-text,
+            .footer-social {
+                text-align: center; /* Center-align on smaller screens */
+            }
+
+            .footer-social {
+                padding-top: 15px; /* Adjust padding for smaller screens */
+            }
+        }/* Styles seperti yang sudah ada di file original */
     </style>
 </head>
 
