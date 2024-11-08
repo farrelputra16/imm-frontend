@@ -10,7 +10,7 @@ h1, h2, h3, h4 {
 
 /* Mengatur font family untuk sub-heading dan body */
 .sub-heading-1, .sub-heading-2, .body-1, .body-2 {
-    font-family: 'Inter', sans-serif; /* Menggunakan Inter untuk sub-heading dan body */
+    font-family: 'Inter'; /* Menggunakan Inter untuk sub-heading dan body */
 }
 
 h1 {
@@ -118,3 +118,15 @@ h4 {
 }
 
 /* landing page navbar  */
+
+/* bread */
+.breadcrumb {
+    background-color: white;
+    padding: 0;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+    margin-right: 14px;
+    color: #9CA3AF;
+}

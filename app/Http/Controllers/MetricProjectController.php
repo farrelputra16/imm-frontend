@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Project;
 use App\Models\Metric;
+use App\Models\Project;
+use App\Models\MatrixReport;
+use Illuminate\Http\Request;
 use App\Models\MetricProject;
 use App\Charts\MonthlyReportChart;
-use App\Models\MatrixReport;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use ConsoleTVs\Charts\Classes\Chartjs\Chart;
 
 
 class MetricProjectController extends Controller
@@ -131,20 +134,29 @@ class MetricProjectController extends Controller
             $project = Project::findOrFail($projectId);
             $metricProject = MetricProject::findOrFail($metricProjectId);
 
+            // Validasi input
             $validatedData = $request->validate([
                 'value' => 'required|string',
-                'report_month' => 'required|integer|min:1|max:12',
+                'report_month' => 'required|string', // Ubah menjadi string untuk menerima nama bulan
                 'report_year' => 'required|integer',
             ]);
 
+            // Konversi nama bulan menjadi angka
+            $reportMonth = $this->monthNameToNumber($validatedData['report_month']);
+            if ($reportMonth === null) {
+                return redirect()->back()->withErrors(['report_month' => 'Invalid month name.']);
+            }
+
+            // Simpan data ke dalam MetricProject
             $newMetricProject = MetricProject::create([
                 'project_id' => $project->id,
                 'metric_id' => $metricProject->metric_id,
                 'value' => $validatedData['value'],
-                'report_month' => $validatedData['report_month'],
+                'report_month' => $reportMonth, // Gunakan bulan yang telah dikonversi
                 'report_year' => $validatedData['report_year'],
                 'metric_project_id' => $metricProject->id,
             ]);
+
             return redirect()->route('myproject.detail', ['id' => $project->id])->with('success', 'Metric report added successfully.');
         } catch (\Exception $e) {
             // Return JSON response for debugging purposes
@@ -284,7 +296,7 @@ class MetricProjectController extends Controller
                                       ->where('metric_id', $metricId)
                                       ->where('id', $metricProjectId)
                                       ->firstOrFail();
- 
+
         $dataPoints = MetricProject::where('project_id', $projectId)
                                     ->where('metric_id', $metricId)
                                     ->where('metric_project_id', $metricProjectId)
@@ -312,7 +324,7 @@ class MetricProjectController extends Controller
 
         return view('myproject.creatproject.add_matrixreport', compact('project', 'metricProject', 'chart'));
     }
-    
+
     public function storeMatrixReport(Request $request, $projectId)
     {
         $validatedData = $request->validate([
@@ -330,30 +342,30 @@ class MetricProjectController extends Controller
 
         return redirect()->route('myproject.detail', $projectId)->with('success', 'Matrix report created successfully.');
     }
-    
+
     public function showReport($projectId, $metricId, $reportId, $metricProjectId)
     {
         $project = Project::findOrFail($projectId);
-    
+
         $metricProject = MetricProject::where('project_id', $projectId)
                                       ->where('metric_id', $metricId)
                                       ->where('id', $metricProjectId)
                                       ->firstOrFail();
-    
+
         $dataPoints = MetricProject::where('project_id', $projectId)
                                     ->where('metric_id', $metricId)
                                     ->where('metric_project_id', $metricProjectId)
                                     ->orderBy('report_year', 'asc')
                                     ->orderBy('report_month', 'asc')
                                     ->get();
-    
+
         $chart = new MonthlyReportChart();
         if ($dataPoints->isNotEmpty()) {
             $labels = $dataPoints->map(function ($data) {
                 return $this->formatMonth($data->report_month) . ' ' . $data->report_year;
             });
             $values = $dataPoints->pluck('value');
-    
+
             $chart->labels($labels);
             $chart->dataset('Metric Values', 'line', $values)
                   ->color('#007bff')
@@ -364,17 +376,17 @@ class MetricProjectController extends Controller
                   ->color('#007bff')
                   ->backgroundcolor('rgba(0, 123, 255, 0.5)');
         }
-    
+
         $matrixReport = MatrixReport::where('project_id', $projectId)
                                     ->where('metric_id', $metricId)
                                     ->where('id', $reportId)
                                     ->firstOrFail();
-    
+
         return view('myproject.creatproject.show_matrixreport', compact('project', 'metricProject', 'chart', 'matrixReport'));
     }
-    
-    
-    
+
+
+
     public function updateMatrixReport(Request $request, $projectId, $reportId)
     {
         $validatedData = $request->validate([
@@ -382,89 +394,121 @@ class MetricProjectController extends Controller
             'evaluation' => 'required|string',
             'analysis' => 'required|string',
         ]);
-    
+
         $matrixReport = MatrixReport::findOrFail($reportId);
         $matrixReport->update([
             'evaluation' => $validatedData['evaluation'],
             'analysis' => $validatedData['analysis'],
         ]);
-    
+
         return back()->with('success', 'Matrix report updated successfully.');
     }
-    
+
     public function impact($projectId)
     {
         $project = Project::findOrFail($projectId);
         $matrixReports = MatrixReport::where('project_id', $projectId)->get();
-    
+
         return view('myproject.impact', compact('project', 'matrixReports'));
     }
-    
 
-    public function showMetricImpact($projectId, $metricId, $metricProjectId)
+    public function showMetricImpact($projectId, $metricId, $metricProjectId, Request $request)
     {
-        $project = Project::findOrFail($projectId);
-        $metricProject = MetricProject::where('project_id', $projectId)
-                                    ->where('metric_id', $metricId)
-                                    ->where('id', $metricProjectId)
-                                    ->firstOrFail();
+        try {
+            $user = Auth::user();
+            $userRole = $user->role;
 
-        // Fetching data to plot the chart
-        $dataPoints = MetricProject::where('project_id', $projectId)
-                                ->where('metric_id', $metricId)
-                                ->where('metric_project_id', $metricProjectId)
-                                ->orderBy('report_year', 'asc')
-                                ->orderBy('report_month', 'asc')
-                                ->get();
+            // Find the project and metricProject based on the parameters
+            $project = Project::findOrFail($projectId);
+            $metricProject = MetricProject::where('project_id', $projectId)
+                                            ->where('metric_id', $metricId)
+                                            ->where('id', $metricProjectId)
+                                            ->firstOrFail();
 
-        $chart = new MonthlyReportChart();
-        if ($dataPoints->isNotEmpty()) {
-            $labels = $dataPoints->map(function ($data) {
-                return $this->formatMonth($data->report_month) . ' ' . $data->report_year;
-            });
-            $values = $dataPoints->pluck('value');
+            // Get the year filter from the request
+            $year = $request->input('year');  // Jika kosong, akan menjadi null
 
-            $chart->labels($labels);
-            $chart->dataset('Metric Values', 'line', $values)
-                ->color('#007bff')
-                ->backgroundcolor('rgba(0, 123, 255, 0.5)');
-        } else {
-            // Ensure chart container is initialized even without data
-            $chart->labels([]);
-            $chart->dataset('Metric Values', 'line', [])
-                ->color('#007bff')
-                ->backgroundcolor('rgba(0, 123, 255, 0.5)');
+            // Fetch data points filtered by the selected year (if available)
+            $dataPointsQuery = MetricProject::where('project_id', $projectId)
+                                            ->where('metric_id', $metricId)
+                                            ->where('metric_project_id', $metricProjectId)
+                                            ->orderBy('report_year', 'asc')
+                                            ->orderBy('report_month', 'asc');
+
+            // Jika tahun dipilih, filter berdasarkan tahun
+            if ($year) {
+                $dataPointsQuery->where('report_year', $year); // filter by year // Filter berdasarkan tahun
+            }
+
+            // Ambil data setelah filter
+            $dataPoints = $dataPointsQuery->get();
+
+            // Determine next month and year
+            $latestEntry = $dataPoints->last();
+            $nextMonth = $latestEntry ? $latestEntry->report_month + 1 : now()->month;
+            $nextYear = $latestEntry ? $latestEntry->report_year : now()->year;
+
+            if ($nextMonth > 12) {
+                $nextMonth = 1;
+                $nextYear += 1;
+            }
+
+            $nextMonthName = $this->formatMonth($nextMonth);
+            $calculation = $metricProject->metric->calculation;
+
+            // Get matrix reports (could be related to some financial metrics)
+            $matrixReports = MatrixReport::where('project_id', $projectId)
+                                          ->where('metric_id', $metricId)
+                                          ->get();
+
+            // Create the chart (adjust according to your charting library)
+            $chart = new Chart;
+            // Create label with both month and year in 'month/year' format
+            $chart->labels($dataPoints->map(function($dp) {
+                return $this->formatMonth($dp->report_month) . '/' . $dp->report_year;  // Format bulan/tahun
+            }));
+            $chart->dataset('Metric Progress', 'line', $dataPoints->pluck('value'))
+                  ->backgroundColor('rgba(0,123,255,0.5)')
+                  ->color('rgba(0,123,255,1)');
+
+            // Pass the year, next month, and other necessary data to the view
+            return view('myproject.impact', compact(
+                'project', 'metricProject', 'dataPoints', 'nextMonthName',
+                'nextYear', 'calculation', 'matrixReports', 'userRole', 'year', 'chart', 'projectId', 'metricId', 'metricProjectId'
+            ));
+        } catch (\Exception $e) {
+            // Handle errors
+            throw $e;
         }
-
-        // Determine the latest month and year
-        $latestEntry = $dataPoints->last();
-        $nextMonth = $latestEntry ? $latestEntry->report_month + 1 : now()->month;
-        $nextYear = $latestEntry ? $latestEntry->report_year : now()->year;
-
-        if ($nextMonth > 12) {
-            $nextMonth = 1;
-            $nextYear += 1;
-        }
-
-        // Pass the calculation method to the view
-        $calculation = $metricProject->metric->calculation;
-
-        $matrixReports = MatrixReport::where('project_id', $projectId)
-                                    ->where('metric_id', $metricId)
-                                    ->get();
-
-
-        return view('myproject.impact', compact('project', 'metricProject', 'chart', 'nextMonth', 'nextYear', 'calculation', 'matrixReports'));
     }
 
-    
     private function formatMonth($month)
     {
         $months = [1 => 'January', 2 => 'February', 3 => 'March', 4 => 'April',
                    5 => 'May', 6 => 'June', 7 => 'July', 8 => 'August',
                    9 => 'September', 10 => 'October', 11 => 'November', 12 => 'December'];
         return $months[$month] ?? 'Unknown';
-    }    
+    }
+
+    private function monthNameToNumber($monthName)
+    {
+        $months = [
+            'January' => 1,
+            'February' => 2,
+            'March' => 3,
+            'April' => 4,
+            'May' => 5,
+            'June' => 6,
+            'July' => 7,
+            'August' => 8,
+            'September' => 9,
+            'October' => 10,
+            'November' => 11,
+            'December' => 12,
+        ];
+
+        return $months[$monthName] ?? null; // Mengembalikan null jika bulan tidak ditemukan
+    }
 
     /**
      * Membuat penampilan khusus untuk menampilkan data impact dari suatu metric project yang dimana tanpa bisa diedit
