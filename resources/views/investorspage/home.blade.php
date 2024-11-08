@@ -13,7 +13,6 @@
     /* Profile Header Styles */
     .profile-header {
         height: 181px;
-        margin-top: 100px;
         background-color: #702DFF;
         color: white;
         padding: 20px;

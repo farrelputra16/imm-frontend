@@ -185,8 +185,9 @@
 
                 <!-- Authentication Links -->
                 @guest
-                    <a href="{{ route('auth.choose-role') }}" class="login-btn ml-2">Log In</a>
-                    <a href="{{ route('register') }}" class="register-btn">Register</a>
+                <a href="{{ route('auth.choose-role') }}" class="login-btn ml-2">Log In</a>
+                <a href="{{ route('register') }}" class="register-btn ml-3">Register</a>
+
                 @endguest
 
                 @auth

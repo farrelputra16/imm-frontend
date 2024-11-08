@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Investor Pagee</title>
+    <title>Investor Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
     .navbar-landingpage {
         background-color: #ffffff;
@@ -13,6 +15,16 @@
         font-family: 'Montserrat', sans-serif;
         z-index: 1030; /* Tambahkan z-index pada navbar */
     }
+
+    .navbar-landingpage .logo img {
+            height: 40px;
+            transition: transform 0.5s ease-in-out, filter 0.5s ease-in-out;
+        }
+
+        .navbar-landingpage .logo img:hover {
+            transform: scale(1.1) rotate(360deg);
+            filter: drop-shadow(0 0 10px #5940CB);
+        }
 
     .navbar-landingpage .navbar {
         display: flex;
@@ -117,7 +129,8 @@
         color: gray;
     }
 </style>
-</head><script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
@@ -126,9 +139,9 @@
     <div class="container">
         <div class="row align-items-center">
             <!-- Logo Section -->
-            <div class="col-md-auto">
-                <a class="navbar-brand" href="/">
-                    <img src="{{ asset('images/imm.png') }}" width="100" height="55" alt="IMM Logo">
+            <div class="col-md-auto logo">
+                <a href="/">
+                    <img src="{{ asset('images/imm.png') }}"alt="IMM Logo">
                 </a>
             </div>
 
@@ -210,4 +223,7 @@
 </nav>
 
 </body>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </html>

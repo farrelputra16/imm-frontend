@@ -1,8 +1,78 @@
-@extends('layouts.app-investments')
+@extends('layouts.app-investors')
+@section('css')
+<style>
+    /* Global Styles */
+    body {
+        font-family: Arial, sans-serif;
+    }
 
+    /* Unique Breadcrumb Styles */
+    .investment-breadcrumb {
+        margin-top:-40px;
+        background-color: white;
+        padding: 10px 15px;
+        margin-bottom: 70px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        list-style-type: none; /* Remove default numbering */
+        padding-left: 0; /* Remove default padding for ordered list */
+    }
+    .investment-breadcrumb-item {
+        margin-right: 8px;
+    }
+    .investment-breadcrumb-item + .investment-breadcrumb-item::before {
+        content: ">";
+        margin-right: 8px;
+        color: #6c757d; /* Add a lighter color for the separator */
+    }
+
+    /* Table Styles */
+    .table thead th {
+        background-color: #6f42c1;
+        color: white;
+    }
+    .table tbody tr:nth-child(odd) {
+        background-color: #f8f9fa;
+    }
+    .table tbody tr:nth-child(even) {
+        background-color: white;
+    }
+
+    /* Button Styles */
+    .btn-view-details {
+        color: #6f42c1;
+        text-decoration: underline;
+        background: none;
+        border: none;
+        padding: 0;
+    }
+    .btn-report {
+        background-color: #6f42c1;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+
+    /* Status Styles */
+    .status-approved {
+        color: #28a745;
+    }
+</style>
+@endsection
 @section('content')
-<div class="container">
-    <h1>Pending Investments</h1>
+<div class="container mt-5">
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="investment-breadcrumb">
+        <ol class="investment-breadcrumb">
+            <li class="investment-breadcrumb-item"><a href="/">Home</a></li>
+            <li class="investment-breadcrumb-item active" aria-current="page">Investment</li>
+        </ol>
+    </nav>
+
+    <h1 class="fw-bold">Pending Investments</h1>
 
     @if(session('success'))
         <div class="alert alert-success">
@@ -13,7 +83,7 @@
     @if($investments->isEmpty())
         <p>No pending investments at the moment.</p>
     @else
-        <table class="table">
+        <table class="table mt-4">
             <thead>
                 <tr>
                     <th>Company Name</th>
@@ -33,16 +103,18 @@
                         <td>Rp{{ number_format($investment->amount) }}</td>
                         <td>{{ $investment->investment_date->format('d-m-Y') }}</td>
                         <td>{{ $investment->investment_type_label }}</td>
-                        <td>{{ ucfirst($investment->status) }}</td>
-                        <td>
-                            <a href="{{ route('investments.status', $investment->id) }}" class="btn btn-info">View Details</a>
+                        <td class="{{ $investment->status == 'approved' ? 'status-approved' : '' }}">
+                            {{ ucfirst($investment->status) }}
                         </td>
                         <td>
-                            <a href="{{ route('company_finances.index', ['companyId' => $investment->company->id]) }}" class="btn btn-info">Report Financial</a>
+                            <a href="{{ route('investments.status', $investment->id) }}" class="btn-view-details">View Details</a>
                         </td>
                         <td>
-                            @if($investment->company) <!-- Pastikan company ada -->
-                                <a href="{{ route('myproject.myproject', ['company_id' => $investment->company->id]) }}" class="btn btn-info">Report Project</a>
+                            <a href="{{ route('company_finances.index', ['companyId' => $investment->company->id]) }}" class="btn-report">Report Financial</a>
+                        </td>
+                        <td>
+                            @if($investment->company)
+                                <a href="{{ route('myproject.myproject', ['company_id' => $investment->company->id]) }}" class="btn-report">Report Project</a>
                             @endif
                         </td>
                     </tr>
