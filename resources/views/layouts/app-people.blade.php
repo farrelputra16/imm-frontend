@@ -72,8 +72,11 @@ eperti yang sudah ada di file original */
         @yield('content')
     </div>
 
-    <!-- Include Footer -->
-    @include('layouts.footer-people')
+    <footer>
+        <div class="container">
+            @include('layouts.footer-landingpage')
+        </div>
+    </footer>
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

@@ -19,7 +19,7 @@
             font-family: Arial, sans-serif;
         }
         .profile-header {
-            margin-top: 70px;
+            margin-top: 50px;
             display: flex;
             flex-direction: column;
             height: 550px;
@@ -457,7 +457,7 @@
     </div>
 
 
-    <div class="skills-section">
+    <div class="skills-section" style="margin-bottom:50px;">
         <div class="section-header">
             <h2>Skills</h2>
             <button class="btn" data-bs-toggle="modal" data-bs-target="#addSkillsModal">

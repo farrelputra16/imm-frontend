@@ -7,7 +7,7 @@
         margin-top:-40px;
         background-color: white;
         padding: 10px 15px;
-        margin-bottom: 70px;
+        margin-bottom: 40px;
         border-radius: 5px;
         display: flex;
         align-items: center;
@@ -111,7 +111,7 @@
         ];
     @endphp
 
-        <table class="table mt-4 investment-page-table" id="investmentTable">
+        <table class="table mt-4 investment-page-table" id="investmentTable" style="margin-bottom:60px;">
             <thead>
                 <tr>
                     <th>Investor</th>

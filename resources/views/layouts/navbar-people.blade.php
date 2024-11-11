@@ -1,103 +1,165 @@
+<!-- Navbar with Updated Design -->
 <style>
-    .navbar {
+    .navbar-landingpage {
         background-color: #ffffff;
-        padding: 10px 0;
+        padding: 10px 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        font-family: 'Montserrat', sans-serif;
+        border-bottom: 1px solid #5940CB;
         position: fixed;
         top: 0;
         right: 0;
         left: 0;
         z-index: 1000;
-        border-bottom: 1px solid #5940cb;
     }
 
-    .navbar-brand {
+    .navbar-landingpage .navbar-brand {
         font-size: 20px;
         font-weight: bold;
-    }
-    .nav-item {
-        margin-right: 10px;
+        margin-right: 20px;
     }
 
-    .nav-link {
-        color: gray;
+    .navbar-landingpage .navbar {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        font-weight: 500;
+        font-size: 1rem;
+        color: #333;
+    }
+
+    .navbar-landingpage .logo img {
+        height: 40px;
+        transition: transform 0.5s ease-in-out, filter 0.5s ease-in-out;
+    }
+
+    .navbar-landingpage .logo img:hover {
+        transform: scale(1.1) rotate(360deg);
+        filter: drop-shadow(0 0 10px #5940CB);
+    }
+
+    .navbar-landingpage .navbar a {
+        color: #333;
         text-decoration: none;
         padding: 10px 15px;
         position: relative;
         transition: color 0.3s ease;
     }
 
-    .nav-link::after {
+    .navbar-landingpage .navbar a::after {
         content: '';
         display: block;
         width: 0;
         height: 2px;
-        background: #5940cb;
+        background: #5940CB;
         transition: width 0.3s ease;
         position: absolute;
         left: 0;
         bottom: -5px;
     }
 
-    .nav-link:hover::after {
+    .navbar-landingpage .navbar a:hover::after {
         width: 100%;
     }
 
-    .nav-link:hover {
-        color: #5940cb;
+    .navbar-landingpage .navbar a:hover {
+        color: #5940CB;
     }
 
-    .profile-img {
-        width: 30px;
-        height: 30px;
+    .navbar-landingpage .dropdown-menu {
+        background-color: #fff;
+        border-radius: 5px;
+        border: none;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-landingpage .dropdown-menu a:hover {
+        background-color: #f0f0f0;
+    }
+
+    .navbar-landingpage .login-btn,
+    .navbar-landingpage .register-btn {
+        background-color: transparent;
+        color: #5940CB;
+        border: 2px solid #5940CB;
+        padding: 8px 20px;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    .navbar-landingpage .register-btn {
+        background-color: #5940CB;
+        color: white;
+    }
+
+    .navbar-landingpage .login-btn:hover {
+        background-color: #f5f5f5;
+    }
+
+    .navbar-landingpage .register-btn:hover {
+        background-color: #4829a0;
+    }
+
+    .navbar-landingpage .profile-img {
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
     }
 
-    .dropdown-menu {
-        background-color: #5940cb;
-        border: none;
+    /* Notification Icon Styling */
+    .notification-icon {
+        font-size: 1.5rem;
+        color: #FFD700; /* Yellow color for notification icon */
+        cursor: pointer;
+        margin-right: 20px;
     }
 
-    .dropdown-menu .dropdown-item {
-        color: #fff;
-    }
-
-    .dropdown-menu .dropdown-item:hover {
-        background-color: #4b0082;
+    /* Gray color for Profile Name */
+    .ml-2 {
+        color: gray;
     }
 </style>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<div class="navbar-landingpage">
     <div class="container">
-        <a class="navbar-brand" href="/">
-            <img src="/images/imm.png"height="40" alt="IMM Logo">
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link {{ Request::is('people.profile') ? 'active' : '' }}" href="{{ route('people.profile') }}">Homepage</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ Request::is('people.home') ? 'active' : '' }}" href="{{ route('people.home') }}">Job</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ Request::is('hubs.create.hubsubmission') ? 'active' : '' }}" href="{{ route('hubs.create.hubsubmission') }}">Daftarkan Hubs</a>
-                </li>
-            </ul>
+        <div class="d-flex align-items-center">
+            <!-- Logo and Navbar Links Section -->
+            <a class="navbar-brand logo" href="/">
+                <img src="/images/imm.png" alt="IMM Logo">
+            </a>
 
-            <div class="d-flex align-items-center">
+            <!-- Navbar Links (aligned to the right of logo) -->
+            <div class="navbar d-flex align-items-center">
+                <a href="{{ route('people.profile') }}" class="{{ Request::is('people.profile') ? 'active' : '' }}">Homepage</a>
+                <a href="{{ route('people.home') }}" class="{{ Request::is('people.home') ? 'active' : '' }}">Job</a>
+                <a href="{{ route('hubs.create.hubsubmission') }}" class="{{ Request::is('hubs.create.hubsubmission') ? 'active' : '' }}">Daftarkan Hubs</a>
+            </div>
+
+            <!-- Auth and Notification Section -->
+            <div class="d-flex align-items-center ml-auto">
+                <!-- Notifications Icon -->
+                <div class="dropdown notification-dropdown">
+                    <i class="fas fa-bell notification-icon" id="notificationDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a href="#" class="dropdown-item">
+                            <strong>New Message</strong><br><span class="notification-time">2 minutes ago</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <strong>New Event Added</strong><br><span class="notification-time">1 hour ago</span>
+                        </a>
+                    </div>
+                </div>
+
                 @guest
-                    <a class="btn btn-masukk" href="{{ route('login') }}">Masuk</a>
-                    <a class="btn btn-daftarr" href="{{ route('register') }}">Daftar</a>
+                    <a href="{{ route('login') }}" class="login-btn ml-2">Masuk</a>
+                    <a href="{{ route('register') }}" class="register-btn ml-3">Daftar</a>
                 @else
+                    <!-- User Dropdown -->
                     <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdownMenuLink"
-                            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="{{ Auth::user()->img ? asset('/images/' . Auth::user()->img) : asset('/images/default_user.webp') }}"
-                                 alt="Profile Picture" class="profile-img">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="{{ Auth::user()->img ? asset('/images/' . Auth::user()->img) : asset('/images/default_user.webp') }}" alt="Profile Picture" class="profile-img">
                             <span class="ml-2 text-uppercase">{{ Auth::user()->nama_depan }} {{ Auth::user()->nama_belakang }}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
@@ -114,4 +176,4 @@
             </div>
         </div>
     </div>
-</nav>
+</div>
