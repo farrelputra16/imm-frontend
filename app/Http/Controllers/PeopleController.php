@@ -18,19 +18,29 @@ class PeopleController extends Controller
         $query = People::query()->with('company', 'experiences');
         $rowsPerPage = $request->input('rows', 10);
 
-        // Filter by location if provided
-        if ($request->filled('location')) {
-            $query->where('location', 'like', '%' . $request->location . '%');
+        // Filter by skills if provided
+        if ($request->filled('Skills')) {
+            $Skills = is_array($request->Skills) ? $request->Skills : [$request->Skills];
+            $query->where(function ($q) use ($Skills) {
+                foreach ($Skills as $Skills) {
+                    $q->orWhere('skills', 'like', "%{$Skills}%");
+                }
+            });
+        }
+
+       // Filter by organization if provided
+        if ($request->filled('experience')) {
+            $experiences = is_array($request->experience) ? $request->experience : [$request->experience];
+            $query->whereHas('experiences', function ($q) use ($experiences) {
+                foreach ($experiences as $experience) {
+                    $q->orWhere('position', 'like', "%{$experience}%"); // Change 'experiences' to 'experience'
+                }
+            });
         }
 
         // Filter by role if provided
         if ($request->filled('role')) {
             $query->where('role', 'like', '%' . $request->role . '%');
-        }
-
-        // Filter by organization if provided
-        if ($request->filled('organization')) {
-            $query->where('primary_organization', 'like', '%' . $request->organization . '%');
         }
 
         // Fetch the filtered people records

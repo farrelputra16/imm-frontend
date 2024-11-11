@@ -74,10 +74,10 @@
                     <!-- LOCATION Filter -->
                     <div class="mb-3">
                         <h6>LOCATION</h6>
-                        <label><input type="checkbox" class="filter-checkbox" name="location[]" value="Jakarta" onchange="autoFilter()"> Jakarta</label>
-                        <label><input type="checkbox" class="filter-checkbox" name="location[]" value="Bali" onchange="autoFilter()"> Bali</label>
-                        <label><input type="checkbox" class="filter-checkbox" name="location[]" value="Yogyakarta" onchange="autoFilter()"> Yogyakarta</label>
-                        <label><input type="checkbox" class="filter-checkbox" name="location[]" value="Sumatera Timur" onchange="autoFilter()"> Sumatera Timur</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="location[]" value="Jakarta"> Jakarta</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="location[]" value="Bali"> Bali</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="location[]" value="Yogyakarta"> Yogyakarta</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="location[]" value="Sumatera Timur"> Sumatera Timur</label>
 
                         <!-- Dropdown Provinsi -->
                         <div style="display: none;" id="extra-locations">
@@ -101,12 +101,12 @@
                     <div class="mb-3">
                         <h6>DEVELOPMENT STAGE</h6>
                         @foreach (['Pre Seed', 'seed', 'Series A', 'Series B'] as $stage)
-                            <label><input type="checkbox" name="funding_stage[]" value="{{ $stage }}" onchange="autoFilter()" class="funding-stage filter-checkbox" > {{ ucfirst(str_replace('_', ' ', $stage)) }}</label>
+                            <label><input type="checkbox" name="funding_stage[]" value="{{ $stage }}" class="funding-stage filter-checkbox" > {{ ucfirst(str_replace('_', ' ', $stage)) }}</label>
                         @endforeach
                         <div class="extra-funding" style="display: none;">
                             @foreach (['Series C', 'Series D', 'Series E', 'Series F', 'Series G', 'Series H', 'Series I', 'Series J', 'venture_series_unknown', 'angel', 'private_equity', 'debt', 'convertible_debt', 'grants', 'revenue_based', 'ipo', 'crowdfunding', 'initial_coin_offering', 'undisclosed'] as $stage)
                                 <label>
-                                    <input type="checkbox" name="funding_stage[]" value="{{ $stage }}" onchange="autoFilter()" class="funding-stage filter-checkbox"> {{ ucfirst(str_replace('_', ' ', $stage)) }}
+                                    <input type="checkbox" name="funding_stage[]" value="{{ $stage }}" class="funding-stage filter-checkbox"> {{ ucfirst(str_replace('_', ' ', $stage)) }}
                                 </label>
                             @endforeach
                         </div>

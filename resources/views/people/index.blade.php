@@ -41,17 +41,17 @@
                 <img src="{{ asset('images/filter.svg') }}" alt="Filter Icon" style="width: 20px; height: 20px; margin-left: 10px;">
             </div>
             <div class="filter-section">
-                <form method="GET" action="{{ route('people.index') }}" id="investorFilterForm">
+                <form method="GET" action="{{ route('people.index') }}" id="peopleFilterForm">
                     @csrf
 
                     {{-- Bagian buat filter skill --}}
                     <div class="mb-3">
                         <h6>Skill</h6>
 
-                        <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Frontend Development" onchange="autoFilter()"> Frontend Development</label>
-                        <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Backend Development" onchange="autoFilter()"> Backend Development</label>
-                        <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Full Stack Development" onchange="autoFilter()"> Full Stack Development</label>
-                        <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Mobile App Development" onchange="autoFilter()"> Mobile App Development</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Frontend Developer" onchange="autoFilter()"> Frontend Developer</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Backend Developer" onchange="autoFilter()"> Backend Developer</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Full Stack Developer" onchange="autoFilter()"> Full Stack Developer</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Mobile App Developer" onchange="autoFilter()"> Mobile App Developer</label>
 
                         <div style="display: none;" id="extra-Skill">
                             <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Public Relations" onchange="autoFilter()"> Public Relations</label>
@@ -78,7 +78,7 @@
                             <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Blockchain Technology" onchange="autoFilter()"> Blockchain Technology</label>
                             <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="DevOps" onchange="autoFilter()"> DevOps</label>
                             <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Artificial Intelligence" onchange="autoFilter()"> Artificial Intelligence</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Game Development" onchange="autoFilter()"> Game Development</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Game Developer" onchange="autoFilter()"> Game Developer</label>
                             <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="3D Modeling" onchange="autoFilter()"> 3D Modeling</label>
                             <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Animation" onchange="autoFilter()"> Animation</label>
                             <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Copywriting" onchange="autoFilter()"> Copywriting</label>
@@ -104,10 +104,10 @@
                     <div class="mb-3">
                         <h6>Experience</h6>
 
-                        <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Frontend Development" onchange="autoFilter()"> Frontend Development</label>
-                        <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Backend Development" onchange="autoFilter()"> Backend Development</label>
-                        <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Full Stack Development" onchange="autoFilter()"> Full Stack Development</label>
-                        <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Mobile App Development" onchange="autoFilter()"> Mobile App Development</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Frontend Developer" onchange="autoFilter()"> Frontend Developer</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Backend Developer" onchange="autoFilter()"> Backend Developer</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Full Stack Developer" onchange="autoFilter()"> Full Stack Developer</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Mobile App Developer" onchange="autoFilter()"> Mobile App Developer</label>
 
                         <div style="display: none;" id="extra-Experience">
                             <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Public Relations" onchange="autoFilter()"> Public Relations</label>
@@ -164,7 +164,7 @@
                     <!-- Role Dropdown -->
                     <div class="mb-3">
                         <h6>Role</h6>
-                        <select name="role" class="form-control">
+                        <select name="role" class="form-control" onchange="handleRoleChange(this)">
                             <option value="">Select Role</option>
                             <option value="mentor" {{ request()->role == 'mentor' ? 'selected' : '' }}>Mentor</option>
                             <option value="pekerja" {{ request()->role == 'pekerja' ? 'selected' : '' }}>Pekerja</option>
@@ -172,11 +172,13 @@
                         </select>
                     </div>
 
-                    <div class="mb-3">
-                        <h6>Organization</h6>
-                        <input type="text" name="primary_organization" class="form-control" placeholder="Organization" value="{{ request()->primary_organization }}">
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Search</button>
+                    <!-- Clear Filters Button -->
+                    <button type="button" onclick="clearFilters()" style="margin-top: 10px;"  class="btn btn-primary w-100">Clear Filters</button>
+
+                    <!-- Form untuk filter -->
+
+                    <!-- Hidden inputs container -->
+                    <div id="hidden-inputs"></div>
                 </form>
             </div>
         </div>
@@ -505,18 +507,112 @@
             othersExperience.innerHTML = 'Others <i class="fas fa-chevron-down"></i>';
         }
     }
+</script>
 
-    function toggleTipe() {
-        const extraTipe = document.querySelector('.extra-tipe');
-        const othersTipe = document.querySelector('.others-tipe');
+{{-- Script untuk checkbox filter --}}
+<script>
+    // Fungsi untuk menyimpan status checkbox filter
+    function saveCheckboxState() {
+        const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
+        filterCheckboxes.forEach(checkbox => {
+            localStorage.setItem(checkbox.value, checkbox.checked);
+        });
+    }
 
-        if (extraTipe.style.display === "none" || extraTipe.style.display === "") {
-            extraTipe.style.display = "block";
-            othersTipe.innerHTML = 'Others <i class="fas fa-chevron-up"></i>';
-        } else {
-            extraTipe.style.display = "none";
-            othersTipe.innerHTML = 'Others <i class="fas fa-chevron-down"></i>';
+    // Fungsi untuk memuat status checkbox filter
+    function loadCheckboxState() {
+        const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
+        filterCheckboxes.forEach(checkbox => {
+            const checked = localStorage.getItem(checkbox.value) === 'true';
+            checkbox.checked = checked;
+        });
+    }
+
+    // Fungsi untuk memeriksa duplikat dan mengatur checkbox
+    function checkForDuplicates(event) {
+        const checkboxes = document.querySelectorAll('.filter-checkbox');
+        const currentValue = event.target.value;
+
+        checkboxes.forEach(checkbox => {
+            if (checkbox !== event.target && checkbox.checked && checkbox.value === currentValue) {
+                checkbox.checked = false; // Uncheck the duplicate checkbox
+            }
+        });
+    }
+
+    // Fungsi untuk mengirimkan form ketika checkbox filter berubah
+    function autoFilterCheckbox(event) {
+        // Pastikan ini bukan checkbox wishlist
+        if (event.target.classList.contains('filter-checkbox')) {
+            saveCheckboxState();
+            document.getElementById('peopleFilterForm').submit();
         }
     }
+
+    // Initialize checkbox filter functionality
+    document.addEventListener('DOMContentLoaded', () => {
+        loadCheckboxState();
+
+        // Setup checkbox change listeners khusus untuk filter
+        document.querySelectorAll('.filter-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', (event) => {
+                checkForDuplicates(event); // Check for duplicates on change
+                autoFilterCheckbox(event); // Trigger the filter
+            });
+        });
+    });
+</script>
+
+<script>
+    // Fungsi untuk membersihkan semua filter
+    function clearFilters() {
+        // Clear filter checkboxes only
+        document.querySelectorAll('.filter-checkbox').forEach(checkbox => {
+            checkbox.checked = false;
+            localStorage.removeItem(checkbox.value);
+        });
+
+        // Clear hidden inputs dan search input
+        document.getElementById('hidden-inputs').innerHTML = '';
+        document.querySelector('input[name="search"]').value = '';
+        document.querySelector('select[name="role"]').value = '';
+
+        // Clear localStorage
+        localStorage.removeItem('selectedTags');
+        localStorage.removeItem('companySearch');
+        localStorage.removeItem('selectedRole');
+
+        // Submit form
+        document.getElementById('peopleFilterForm').submit();
+    }
+</script>
+
+{{-- Handel Role --}}
+<script>
+    // Fungsi untuk menyimpan status role ke local storage
+    function saveRoleState(selectedRole) {
+        localStorage.setItem('selectedRole', selectedRole);
+    }
+
+    // Fungsi untuk memuat status role dari local storage
+    function loadRoleState() {
+        const savedRole = localStorage.getItem('selectedRole');
+        if (savedRole) {
+            const selectElement = document.querySelector('select[name="role"]');
+            selectElement.value = savedRole; // Set the select to the saved role
+        }
+    }
+
+    // Fungsi untuk menangani perubahan pada dropdown role
+    function handleRoleChange(selectElement) {
+        const selectedRole = selectElement.value;
+        saveRoleState(selectedRole); // Save the selected role
+        document.getElementById('peopleFilterForm').submit(); // Submit the form
+    }
+
+    // Initialize role filter functionality
+    document.addEventListener('DOMContentLoaded', () => {
+        loadRoleState(); // Load the previously saved role when the page loads
+    });
 </script>
 @endsection
