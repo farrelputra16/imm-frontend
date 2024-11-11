@@ -365,130 +365,98 @@
             </div>
         </div> --}}
 
+        <form id="projectForm" action="{{ route('projects.update', $project->id) }}" method="POST" enctype="multipart/form-data">
             <!-- Content Section -->
             <div class="container mt-6">
                 <h2 style="color: #6256CA; margin-top: 30px; margin-bottom: 42px;">Project Report</h2>
                 <div class="row">
                     <!-- Left Content -->
                     <div class="col-lg-7">
-                        <form id="projectForm" action="{{ route('projects.update', $project->id) }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
-                            <div class="background">
-                                <div class="header">Basic Project Information</div>
+                        @csrf
+                        @method('PUT')
+                        <div class="background">
+                            <div class="header">Basic Project Information</div>
 
-                                <!-- Nama Proyek -->
-                                <div class="mb-3">
-                                    <label for="nama-proyek" class="form-label">Nama Proyek</label>
-                                    <div class="d-flex">
-                                        <input type="text" class="form-control" id="nama-proyek" name="nama" value="{{ $project->nama }}" readonly>
-                                        @if ($isUserRole)
-                                            <i class="fas fa-edit edit-icon ms-2" id="edit-nama-proyek" onclick="enableEdit('nama-proyek')"></i>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <!-- Deskripsi Proyek -->
-                                <div class="mb-3">
-                                    <label for="deskripsi-proyek" class="form-label">Deskripsi Proyek</label>
-                                    <div class="d-flex">
-                                        <textarea class="form-control" id="deskripsi-proyek" name="deskripsi" rows="3" readonly>{{ $project->deskripsi }}</textarea>
-                                        @if ($isUserRole)
-                                            <i class="fas fa-edit edit-icon ms-2" id="edit-deskripsi-proyek" onclick="enableEdit('deskripsi-proyek')"></i>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="background">
-                                <h5 class="card-title" style="margin-bottom: 0px;">SDG'S</h5>
-                                <div class="row d-flex justify-content-start ">
-                                    @foreach ($project->sdgs as $sdg)
-                                        <div class="col-3 d-flex justify-content-center align-items-center mt-3" >
-                                            <img src="{{ env('APP_BACKEND_URL') . '/images/' . $sdg->img }}"
-                                                class="img-fluid" alt="{{ $sdg->order }}. {{ $sdg->name }}">
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-
-                            <div class="background-preview">
-                                <div class="section-title">Supporting Materials</div>
-
-                                <!-- Preview Pitch Deck -->
-                                <div class="mt-4">
-                                    <div class="mb-2 sub-heading-1">Pitch Deck</div>
-                                    <div id="pitch-deck-preview">
-                                        @if ($project->pitch_deck)
-                                            <embed src="{{ asset('storage/project/' . $project->nama . '/' . $project->pitch_deck) }}" type="application/pdf" width="100%" height="500px" />
-                                            <p>File name: {{ $project->pitch_deck }}</p>
-                                        @else
-                                            <p>No Pitch Deck available.</p>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <!-- Preview Video -->
-                                <div class="mt-4">
-                                    <div class="mb-2 sub-heading-1">Video Presentation</div>
-                                    <div id="video-preview" class="video-js vjs-default-skin" style="margin-bottom: 20px; width: 100%;">
-                                        @if ($project->video_pitch)
-                                            <video id="video" width="100%" height="auto" controls>
-                                                <source src="{{ asset('storage/project/' . $project->nama . '/' . $project->video_pitch) }}" type="video/mp4">
-                                                Your browser does not support the video tag.
-                                            </video>
-                                            <p>File name: {{ $project->video_pitch }}</p>
-                                        @else
-                                            <p>No Video available.</p>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <!-- Preview Roadmap -->
-                                <div class="mt-4">
-                                    <div class="mb-2 sub-heading-1">Roadmap</div>
-                                    <div id="roadmap-preview">
-                                        @if ($project->roadmap)
-                                            <embed src="{{ asset('storage/project/' . $project->nama . '/' . $project->roadmap) }}" type="application/pdf" width="100%" height="500px" />
-                                            <p>File name: {{ $project->roadmap }}</p>
-                                        @else
-                                            <p>No Roadmap available.</p>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-
-                            {{-- Ini merupakan bagian dokumen Survey Pendukung --}}
-                            {{-- <div class="card mb-4">
-                                <div class="card-body d-flex justify-content-between align-items-center">
-                                    <h5 class="card-title">Dokumen Validitas Data</h5>
+                            <!-- Nama Proyek -->
+                            <div class="mb-3">
+                                <label for="nama-proyek" class="form-label">Nama Proyek</label>
+                                <div class="d-flex">
+                                    <input type="text" class="form-control" id="nama-proyek" name="nama" value="{{ $project->nama }}" readonly>
                                     @if ($isUserRole)
-                                        <button type="button" class="btn btn-purple" id="tambah-dokumen" onclick="document.getElementById('file-input').click()">Tambah Dokumen</button>
+                                        <i class="fas fa-edit edit-icon ms-2" id="edit-nama-proyek" onclick="enableEdit('nama-proyek')"></i>
                                     @endif
-                                    <input type="file" class="form-control" id="file-input" name="documents[]" style="display: none;" multiple>
                                 </div>
-                                <ul class="list-group" id="file-list" style="scrolly">
-                                    @if ($documents->isEmpty())
-                                        <li class="list-group-item no-documents">No documents found.</li>
-                                    @else
-                                        @foreach ($documents as $document)
-                                            <li class="list-group-item">
-                                                <a href="{{ asset('public/files/' . $document->dokumen_validitas) }}"
-                                                    class="file-link">{{ $document->dokumen_validitas }}</a>
-                                                <span class="float-right">
-                                                    <i class="fas fa-trash-alt delete-icon" data-id="{{ $document->id }}"
-                                                        onclick="deleteDocument({{ $document->id }})"></i>
-                                                </span>
-                                            </li>
-                                        @endforeach
+                            </div>
+
+                            <!-- Deskripsi Proyek -->
+                            <div class="mb-3">
+                                <label for="deskripsi-proyek" class="form-label">Deskripsi Proyek</label>
+                                <div class="d-flex">
+                                    <textarea class="form-control" id="deskripsi-proyek" name="deskripsi" rows="3" readonly>{{ $project->deskripsi }}</textarea>
+                                    @if ($isUserRole)
+                                        <i class="fas fa-edit edit-icon ms-2" id="edit-deskripsi-proyek" onclick="enableEdit('deskripsi-proyek')"></i>
                                     @endif
-                                </ul>
-                            </div> --}}
-                        </form>
-                        {{-- <div class="container d-flex justify-content-center mt-5">
-                            <button type="submit" class="btn w-50 btn-purple px-4 py-2 btn-wide text-white hidden" id="save-button" style="font-weight:bold;">Simpan Perubahan Detail Proyek</button>
-                            </div> --}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="background">
+                            <h5 class="card-title" style="margin-bottom: 0px;">SDG'S</h5>
+                            <div class="row d-flex justify-content-start ">
+                                @foreach ($project->sdgs as $sdg)
+                                    <div class="col-3 d-flex justify-content-center align-items-center mt-3" >
+                                        <img src="{{ env('APP_BACKEND_URL') . '/images/' . $sdg->img }}"
+                                            class="img-fluid" alt="{{ $sdg->order }}. {{ $sdg->name }}">
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="background-preview">
+                            <div class="section-title">Supporting Materials</div>
+                            <!-- Preview Pitch Deck -->
+                            <div class="mt-4">
+                                <div class="mb-2 sub-heading-1">Pitch Deck</div>
+                                <div id="pitch-deck-preview">
+                                    @if ($project->pitch_deck)
+                                        <embed src="{{ asset('storage/project/' . $project->nama . '/' . $project->pitch_deck) }}" type="application/pdf" width="100%" height="500px" />
+                                        <p>File name: {{ $project->pitch_deck }}</p>
+                                    @else
+                                        <p>No Pitch Deck available.</p>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <!-- Preview Video -->
+                            <div class="mt-4">
+                                <div class="mb-2 sub-heading-1">Video Presentation</div>
+                                <div id="video-preview" class="video-js vjs-default-skin" style="margin-bottom: 20px; width: 100%;">
+                                    @if ($project->video_pitch)
+                                        <video id="video" width="100%" height="auto" controls>
+                                            <source src="{{ asset('storage/project/' . $project->nama . '/' . $project->video_pitch) }}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                        <p>File name: {{ $project->video_pitch }}</p>
+                                    @else
+                                        <p>No Video available.</p>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <!-- Preview Roadmap -->
+                            <div class="mt-4">
+                                <div class="mb-2 sub-heading-1">Roadmap</div>
+                                <div id="roadmap-preview">
+                                    @if ($project->roadmap)
+                                        <embed src="{{ asset('storage/project/' . $project->nama . '/' . $project->roadmap) }}" type="application/pdf" width="100%" height="500px" />
+                                        <p>File name: {{ $project->roadmap }}</p>
+                                    @else
+                                        <p>No Roadmap available.</p>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
                         {{-- Ini merupakan bagian dokumen validasi data --}}
                         <div class="card mb-4" style="max-width: 700px;">
                             <div class="card-body">
@@ -508,7 +476,7 @@
                                         @else
                                             @foreach ($documents as $document)
                                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                    <a href="{{ asset('public/files/' . $document->dokumen_validitas) }}" class="file-link">
+                                                    <a href="{{ env('APP_URL') }}/storage/project/{{ $project->nama }}/{{ $document->dokumen_validitas }}" class="file-link">
                                                         {{ $document->dokumen_validitas }}
                                                     </a>
                                                     @if ($isUserRole)
@@ -558,37 +526,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-                        {{-- <div class="card mb-4">
-                            <div class="card-body d-flex justify-content-between align-items-center">
-                                <h5 class="card-title">Survey Pendukung</h5>
-                                @if ($isUserRole)
-                                    <a href="{{ route('surveys.create', $project->id) }}" class="btn btn-purple">Tambah Survey</a>
-                                @endif
-                            </div>
-                            <ul class="list-group">
-                                @forelse ($project->surveys as $survey)
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        {{ $survey->name }}
-                                        @if ($isUserRole)
-                                            <div>
-                                                <a href="{{ route('surveys.edit', $survey->id) }}" class="btn btn-sm"><i class="fas fa-edit"></i></a>
-                                                <form action="{{ route('surveys.destroy', $survey->id) }}" method="POST" class="delete-survey-form" id="delete-survey-{{ $survey->id }}" style="display: inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm delete-survey-btn" onclick="return confirm('Apakah anda yakin akan menghapus survey ini?')">
-                                                        <i class="fas fa-trash-alt"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        @endif
-                                    </li>
-                                @empty
-                                    <li class="list-group-item">No survey found.</li>
-                                @endforelse
-                            </ul>
-                        </div> --}}
                     </div>
 
                     <!-- Right Content -->
@@ -639,6 +576,11 @@
                         </button>
                     </form>
                 @endif
+                @if ($isUserRole)
+                    <div class="container d-flex justify-content-center" style="margin: 0px; padding: 0px;">
+                        <button type="submit" class="btn btn-purple text-white hidden" id="save-button" style="font-weight:bold; width: 100%;">Simpan Perubahan Detail Proyek</button>
+                    </div>
+                @endif
 
                 <div class="modal fade" id="confirmCompleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmCompleteModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -659,15 +601,8 @@
                         </div>
                     </div>
                 </div>
-
-                @if ($isUserRole)
-                    <div class="container d-flex justify-content-center mt-5">
-                        <button type="submit" class="btn w-50 btn-purple px-4 py-2 btn-wide text-white hidden" id="save-button"
-                            style="font-weight:bold;">Simpan Perubahan Detail Proyek</button>
-                    </div>
-                @endif
-
-
+            </div>
+        </form>
         <script>
             // Script untuk menangani klik pada tombol Project Selesai
             document.getElementById('completeProjectBtn').addEventListener('click', function() {
@@ -679,6 +614,7 @@
                 document.getElementById('completeProjectForm').submit(); // Kirim form jika dikonfirmasi
             });
         </script>
+
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 
         <script>

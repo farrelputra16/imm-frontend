@@ -349,7 +349,7 @@
                     <form action="{{ route('metric-impact.show', ['projectId' => $projectId, 'metricId' => $metricId, 'metricProjectId' => $metricProjectId]) }}" method="get">
                         <select class="custom-select scrollbar" style="width: 100px;" id="year" name="year" onchange="this.form.submit()">
                             <option value="">All Years</option>  <!-- Menambahkan opsi "All Years" yang akan mengosongkan filter tahun -->
-                            @foreach(range(now()->year - 10, now()->year + 10) as $yearOption)
+                            @foreach(range(now()->year - 100, now()->year + 100) as $yearOption)
                                 <option value="{{ $yearOption }}" {{ request('year') == $yearOption ? 'selected' : '' }}>{{ $yearOption }}</option>
                             @endforeach
                         </select>
@@ -393,7 +393,7 @@
                         const imgWidth = pdf.internal.pageSize.getWidth() - 80;
                         const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-                        pdf.addImage(imgData, 'PNG', 40, 60, imgWidth, imgHeight);
+                        pdf.addImage(imgData, 'PNG', 40, 80, imgWidth, imgHeight);
                         pdf.save('Impact-Report.pdf');
                     });
                 });
