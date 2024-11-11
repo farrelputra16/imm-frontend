@@ -12,7 +12,7 @@
     </nav>
 
     <!-- Page Title -->
-    <h1 class="fw-bold" style="color: #6256CA; font-size: 2.5rem;">Funding Rounds for {{ $company->nama }}</h1>
+    <h1 class="fw-bold" style="color: #6256CA; font-size: 2.5rem;">Funding Rounds</h1>
 
     <!-- Success Message -->
     @if (session('success'))
