@@ -111,7 +111,7 @@
         ];
     @endphp
 
-        <table class="table mt-4 investment-page-table" id="investmentTable">
+        <table class="table mt-4 investment-page-table" id="investmentTable" style="margin-bottom:60px;">
             <thead>
                 <tr>
                     <th>Investor</th>

@@ -13,7 +13,6 @@ html,
 body {
     margin: 0;
     font-family: "Poppins", sans-serif;
-    padding-top:50px;
 }
 
 * {

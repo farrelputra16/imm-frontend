@@ -1,8 +1,8 @@
-@extends('layouts.app-landingpage')
+@extends('layouts.app-imm')
 
 @section('content')
 
-<div class="container">
+<div class="container" style="margin-bottom:220px;">
     <h1 class="my-4">Funding Rounds for {{ $company->nama }}</h1>
 
     <!-- Menampilkan pesan sukses jika ada -->

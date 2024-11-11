@@ -2,263 +2,261 @@
 @section('title', 'Proyek Saya')
 
 @section('css')
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    @if ($isUserRole)
-        <link rel="stylesheet" href="{{ asset('css/myproject/myproject.css') }}">
-    @else
-        <link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
-    @endif
-    <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-    <meta name="description" content="Manage your projects efficiently with MyProject">
-    <meta name="keywords" content="project management, task management, productivity">
-    <meta name="author" content="Your Name">
-    <style>
-        body {
-            padding-top: 115px;
-        }
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+@if ($isUserRole)
+    <link rel="stylesheet" href="{{ asset('css/myproject/myproject.css') }}">
+@else
+    <link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
+@endif
+<link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<meta name="description" content="Manage your projects efficiently with MyProject">
+<meta name="keywords" content="project management, task management, productivity">
+<meta name="author" content="Your Name"><meta name="description" content="Manage your projects efficiently with MyProject">
+<meta name="keywords" content="project management, task management, productivity">
+<meta name="author" content="Your Name">
+<style>
+    .btn-create-project {
+        background-color: #5940CB;
+        color: white;
+        width: 200px;
+        height: 40px;
+        border: none;
+        border-radius: 5px;
+    }
 
-        .btn-create-project {
-            background-color: #5940CB;
-            color: white;
-            width: 200px;
-            height: 40px;
-            border: none;
-            border-radius: 5px;
-        }
+    thead {
+        background-color: #6c63ff;
+        color: white;
+    }
 
-        thead {
-            background-color: #6c63ff;
-            color: white;
-        }
+    .dataTables_info {
+        display: none;
+    }
 
-        .dataTables_info {
-            display: none;
-        }
+    th {
+        color: white;
+        background-color: #5940cb;
+    }
 
-        th {
-            color: white;
-            background-color: #5940cb;
-        }
+    td {
+        color: black;
+    }
 
-        td {
-            color: black;
-        }
+    .dataTables_paginate {
+        margin-top: 20px;
+    }
 
-        .dataTables_paginate {
-            margin-top: 20px;
-        }
+    .see-all-button {
+        text-align: center;
+        margin-top: 20px;
+    }
 
-        .see-all-button {
-            text-align: center;
-            margin-top: 20px;
-        }
+    .card-body {
+        background-color: rgba(255, 250, 250, 0.5);
+    }
 
-        .card-body {
-            background-color: rgba(255, 250, 250, 0.5);
-        }
+    .see-all-button button {
+        background-color: #6c63ff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+    }
 
-        .see-all-button button {
-            background-color: #6c63ff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
+    .seeAll {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
 
-        .seeAll {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
+    .breadcrumb {
+        background-color: white;
+        padding: 0;
+    }
 
-        .breadcrumb {
-            background-color: white;
-            padding: 0;
-        }
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: ">";
+        margin-right: 14px;
+        color: #9CA3AF;
+    }
 
-        .breadcrumb-item + .breadcrumb-item::before {
-            content: ">";
-            margin-right: 14px;
-            color: #9CA3AF;
-        }
+    .nav-tabs {
+        border: none;
+        display: flex; /* Menggunakan flexbox */
+        margin-bottom: 40px;
+        padding: 0; /* Menghapus padding pada nav-tabs */
+        gap: 0px;
+    }
 
-        .nav-tabs {
-            border: none;
-            display: flex; /* Menggunakan flexbox */
-            margin-bottom: 40px;
-            padding: 0; /* Menghapus padding pada nav-tabs */
-            gap: 0px;
-        }
+    .navtabs{
+        border: none;
+        display: flex; /* Menggunakan flexbox */
+        margin-bottom: 32px;
+        margin-top: 32px;
+        padding: 0; /* Menghapus padding pada nav-tabs */
+        gap: 0px;
+    }
 
-        .navtabs{
-            border: none;
-            display: flex; /* Menggunakan flexbox */
-            margin-bottom: 32px;
-            margin-top: 32px;
-            padding: 0; /* Menghapus padding pada nav-tabs */
-            gap: 0px;
-        }
+    /* Gaya untuk tab yang tidak aktif */
+    .navlinkexpend {
+        color: #000; /* Warna teks default */
+        font-size: 24px; /* Ukuran font */
+        padding: 10px 20px 10px; /* Padding untuk mengecilkan tab */
+        text-align: center; /* Menyelaraskan teks ke tengah */
+        background-color: #ffffff; /* Warna latar belakang untuk tab tidak aktif */
+        border: none; /* Tanpa border untuk tab tidak aktif */
+        border-bottom: 1px solid #dee2e6; /* Border bawah untuk tab tidak aktif */
+        border-radius: 0.25rem; /* Sudut melengkung */
+        transition: background-color 0.3s; /* Efek transisi saat hover */
+    }
+    /* Gaya untuk tab yang aktif */
+    .nav-link-active {
+        color: #000; /* Mengubah warna teks tab aktif menjadi hitam */
+        background-color: #ffffff; /* Mengubah latar belakang tab aktif */
+        font-size: 24px; /* Ukuran font */
+        padding: 10px 20px; /* Padding untuk mengecilkan tab */
+        border-top: 1px solid #dee2e6; /* Border atas untuk tab aktif */
+        border-left: 2px solid #dee2e6; /* Border kiri untuk tab aktif */
+        border-right: 2px solid #dee2e6; /* Border kanan untuk tab aktif */
+        border-bottom: none; /* Tanpa border bawah untuk tab aktif */
+        border-radius: 0.25rem 0.25rem 0 0; /* Sudut melengkung hanya di atas */
+        margin-bottom: -1px; /* Menghindari overlap dengan border bawah tab tidak aktif */
+    }
 
-        /* Gaya untuk tab yang tidak aktif */
-        .navlinkexpend {
-            color: #000; /* Warna teks default */
-            font-size: 24px; /* Ukuran font */
-            padding: 10px 20px 10px; /* Padding untuk mengecilkan tab */
-            text-align: center; /* Menyelaraskan teks ke tengah */
-            background-color: #ffffff; /* Warna latar belakang untuk tab tidak aktif */
-            border: none; /* Tanpa border untuk tab tidak aktif */
-            border-bottom: 1px solid #dee2e6; /* Border bawah untuk tab tidak aktif */
-            border-radius: 0.25rem; /* Sudut melengkung */
-            transition: background-color 0.3s; /* Efek transisi saat hover */
-        }
-        /* Gaya untuk tab yang aktif */
-        .nav-link-active {
-            color: #000; /* Mengubah warna teks tab aktif menjadi hitam */
-            background-color: #ffffff; /* Mengubah latar belakang tab aktif */
-            font-size: 24px; /* Ukuran font */
-            padding: 10px 20px; /* Padding untuk mengecilkan tab */
-            border-top: 1px solid #dee2e6; /* Border atas untuk tab aktif */
-            border-left: 2px solid #dee2e6; /* Border kiri untuk tab aktif */
-            border-right: 2px solid #dee2e6; /* Border kanan untuk tab aktif */
-            border-bottom: none; /* Tanpa border bawah untuk tab aktif */
-            border-radius: 0.25rem 0.25rem 0 0; /* Sudut melengkung hanya di atas */
-            margin-bottom: -1px; /* Menghindari overlap dengan border bawah tab tidak aktif */
-        }
+    /* Initial Card Body */
+    .card-body {
+        max-height: 180px; /* Initial height */
+        overflow: hidden; /* Hide overflow when not expanded */
+        transition: max-height 0.5s ease; /* Smooth transition for max-height */
+        background-color: white; /* Default background color */
+    }
 
-        /* Initial Card Body */
-        .card-body {
-            max-height: 180px; /* Initial height */
-            overflow: hidden; /* Hide overflow when not expanded */
-            transition: max-height 0.5s ease; /* Smooth transition for max-height */
-            background-color: white; /* Default background color */
-        }
+    /* Expand Card Body on Hover */
+    .card:hover .card-body {
+        max-height: 500px; /* Maximum height when expanded */
+        background-color: #6256CA; /* Background turns purple */
+    }
 
-        /* Expand Card Body on Hover */
-        .card:hover .card-body {
-            max-height: 500px; /* Maximum height when expanded */
-            background-color: #6256CA; /* Background turns purple */
-        }
+    /* Card styles */
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease; /* Smooth transition for card */
+        overflow: hidden; /* Ensure content fits */
+        background-color: #fff; /* Default background */
+    }
 
-        /* Card styles */
-        .card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease; /* Smooth transition for card */
-            overflow: hidden; /* Ensure content fits */
-            background-color: #fff; /* Default background */
-        }
+    .card-img-top {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
 
-        .card-img-top {
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-        }
+    /* Card title and text */
+    .card-title {
+        color: #6A1B9A;
+        font-weight: bold;
+        transition: color 0.3s ease; /* Smooth transition for color */
+    }
 
-        /* Card title and text */
-        .card-title {
-            color: #6A1B9A;
-            font-weight: bold;
-            transition: color 0.3s ease; /* Smooth transition for color */
-        }
+    .card-text {
+        color: #757575;
+        transition: color 0.3s ease; /* Smooth transition for color */
+    }
 
-        .card-text {
-            color: #757575;
-            transition: color 0.3s ease; /* Smooth transition for color */
-        }
+    .icon-text {
+        display: flex;
+        align-items: center;
+        color: #6A1B9A;
+        transition: color 0.3s ease; /* Smooth transition for color */
+    }
 
-        .icon-text {
-            display: flex;
-            align-items: center;
-            color: #6A1B9A;
-            transition: color 0.3s ease; /* Smooth transition for color */
-        }
+    .icon-text img {
+        margin-right: 5px;
+        width: 16px;
+        height: 16px;
+    }
 
-        .icon-text img {
-            margin-right: 5px;
-            width: 16px;
-            height: 16px;
-        }
+    /* Button Styles */
+    .btn-delete, .btn-detail {
+        width: 140px;
+        height: 33px;
+        border: 1px solid white; /* Default border */
+        font-weight: 500;
+        background-color: transparent; /* Transparent background */
+        color: white; /* White text */
+        opacity: 0; /* Initially hidden */
+        transition: opacity 0.3s ease, background-color 0.3s ease;
+    }
 
-        /* Button Styles */
-        .btn-delete, .btn-detail {
-            width: 140px;
-            height: 33px;
-            border: 1px solid white; /* Default border */
-            font-weight: 500;
-            background-color: transparent; /* Transparent background */
-            color: white; /* White text */
-            opacity: 0; /* Initially hidden */
-            transition: opacity 0.3s ease, background-color 0.3s ease;
-        }
+    /* Delete Button Style */
+    .btn-delete {
+        background-color: rgba(255, 26, 26, 0.5);
+    }
 
-        /* Delete Button Style */
-        .btn-delete {
-            background-color: rgba(255, 26, 26, 0.5);
-        }
+    /* Detail Button Style */
+    .btn-detail {
+        background-color: rgba(217, 217, 217, 0.44);
+    }
 
-        /* Detail Button Style */
-        .btn-detail {
-            background-color: rgba(217, 217, 217, 0.44);
-        }
+    /* Show buttons on hover */
+    .card:hover .btn-delete,
+    .card:hover .btn-detail {
+        opacity: 1; /* Buttons become visible */
+        border-color: white; /* White border */
+        color: white; /* White text */
+    }
 
-        /* Show buttons on hover */
-        .card:hover .btn-delete,
-        .card:hover .btn-detail {
-            opacity: 1; /* Buttons become visible */
-            border-color: white; /* White border */
-            color: white; /* White text */
-        }
+    /* Change text color on hover */
+    .card:hover .card-title,
+    .card:hover .card-text,
+    .card:hover .icon-text,
+    .card:hover .icon-text span {
+        color: white; /* Change all text inside card-body to white */
+    }
 
-        /* Change text color on hover */
-        .card:hover .card-title,
-        .card:hover .card-text,
-        .card:hover .icon-text,
-        .card:hover .icon-text span {
-            color: white; /* Change all text inside card-body to white */
-        }
+    /* Card and Icon Styles */
+    .icon-text {
+        display: flex;
+        align-items: center;
+        color: #6A1B9A; /* Purple color by default */
+        transition: color 0.3s ease; /* Smooth transition for color */
+    }
 
-        /* Card and Icon Styles */
-        .icon-text {
-            display: flex;
-            align-items: center;
-            color: #6A1B9A; /* Purple color by default */
-            transition: color 0.3s ease; /* Smooth transition for color */
-        }
+    .iconify {
+        color: #6A1B9A; /* Purple color by default */
+        transition: color 0.3s ease; /* Smooth transition for icon color */
+        font-size: 18px; /* Default icon size */
+    }
 
-        .iconify {
-            color: #6A1B9A; /* Purple color by default */
-            transition: color 0.3s ease; /* Smooth transition for icon color */
-            font-size: 18px; /* Default icon size */
-        }
+    .icon-text span {
+        margin-left: 5px; /* Space between icon and text */
+    }
 
-        .icon-text span {
-            margin-left: 5px; /* Space between icon and text */
-        }
-
-        /* Hover effect */
-        .card:hover .iconify,
-        .card:hover .icon-text {
-            color: white; /* Change color to white on hover */
-        }
+    /* Hover effect */
+    .card:hover .iconify,
+    .card:hover .icon-text {
+        color: white; /* Change color to white on hover */
+    }
 
 
-        /* Hover state of buttons */
-        .btn-delete:hover,
-        .btn-detail:hover {
-            background-color: transparent; /* No background on hover */
-            border-color: white; /* White border on hover */
-        }
-        .three-dots {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 20px;
-            color: #000;
-        }
-    </style>
+    /* Hover state of buttons */
+    .btn-delete:hover,
+    .btn-detail:hover {
+        background-color: transparent; /* No background on hover */
+        border-color: white; /* White border on hover */
+    }
+    .three-dots {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 20px;
+        color: #000;
+    }
+</style>
 @endsection
 
 @section('content')
