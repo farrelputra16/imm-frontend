@@ -465,7 +465,7 @@ class MetricProjectController extends Controller
             $chart = new Chart;
             // Create label with both month and year in 'month/year' format
             $chart->labels($dataPoints->map(function($dp) {
-                return $this->formatMonth($dp->report_month) . '/' . $dp->report_year;  // Format bulan/tahun
+                return substr($this->formatMonth($dp->report_month ), 0, 3) . ' ' . $dp->report_year;  // Format bulan/tahun dengan bulan dibatasi 3 karakter
             }));
             $chart->dataset('Metric Progress', 'line', $dataPoints->pluck('value'))
                   ->backgroundColor('rgba(0,123,255,0.5)')

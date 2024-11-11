@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Project;
-use App\Models\Company;
-use App\Models\Tag;
 use App\Models\Sdg;
-use App\Models\Indicator;
-use App\Models\Metric;
-use App\Models\TargetPelanggan;
+use App\Models\Tag;
 use App\Models\Dana;
+use App\Models\Metric;
+use App\Models\Company;
+use App\Models\Project;
+use App\Models\Indicator;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\TargetPelanggan;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -261,10 +262,10 @@ class ProjectController extends Controller
         if ($request->hasFile('img')) {
             // Delete old image if it exists
             if ($project->img) {
-                File::delete(public_path('images/' . $project->img));
+                Storage::delete('public/project/' . $project->nama . '/' . $project->img);
             }
             $imageName = time() . '.' . $request->img->extension();
-            $request->img->move(public_path('images'), $imageName);
+            $request->img->storeAs('public/project/' . $project->nama, $imageName);
             $project->img = $imageName;
         }
 
@@ -274,7 +275,7 @@ class ProjectController extends Controller
             Log::debug('Handling document uploads');
             foreach ($request->file('documents') as $file) {
                 $filename = time() . '-' . $file->getClientOriginalName();
-                $file->move(public_path('files'), $filename);
+                $file->storeAs('public/project/' . $project->nama, $filename);
                 Log::debug('File uploaded', ['filename' => $filename]);
 
                 DB::table('project_dokumen')->insert([
@@ -292,7 +293,7 @@ class ProjectController extends Controller
             foreach ($request->delete_documents as $docId) {
                 $document = DB::table('project_dokumen')->where('id', $docId)->first();
                 if ($document) {
-                    File::delete(public_path('files/' . $document->dokumen_validitas));
+                    Storage::delete('public/project/' . $project->nama . '/' . $document->dokumen_validitas);
                     Log::debug('File deleted', ['filename' => $document->dokumen_validitas]);
                     DB::table('project_dokumen')->where('id', $docId)->delete();
                     Log::debug('Document record deleted', ['docId' => $docId]);
