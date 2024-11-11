@@ -7,7 +7,7 @@
         margin-top:-40px;
         background-color: white;
         padding: 10px 15px;
-        margin-bottom: 70px;
+        margin-bottom: 40px;
         border-radius: 5px;
         display: flex;
         align-items: center;

@@ -1,9 +1,28 @@
 @extends('layouts.app-landingpage')
 
+@section('css')
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+</style>
+@endsection
+
 @section('content')
 
+<div class="container mt-5">
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" style="background-color: transparent; padding: 0; margin-bottom: 20px;margin-top:-20px;">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Funding Round</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Create New Funding</li>
+        </ol>
+    </nav>
+
+
 <div class="container">
-    <h1 class="my-4">Create New Funding Round</h1>
+    <h1 class="my-4"style="color: #6256CA; font-size: 2.5rem; font-weight: bold;">Create New Funding</h1>
 
     <!-- Menampilkan pesan error jika ada -->
     @if ($errors->any())
@@ -21,26 +40,26 @@
         @csrf
 
         <div class="mb-3">
-            <label for="name" class="form-label">Funding Round Name</label>
+            <label for="name" class="form-label"style="font-weight: bold;">Funding Round Name</label>
             <!-- Set as readonly so the user cannot edit -->
-            <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" readonly>
+            <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" readonly style="border: 1px solid #6256CA;">
         </div>
 
 
         <div class="mb-3">
             <label for="target" class="form-label">Target Amount</label>
-            <input type="number" class="form-control" id="target" name="target" value="{{ old('target') }}">
+            <input type="number" class="form-control" id="target" name="target" value="{{ old('target') }}" style="border: 1px solid #6256CA">
         </div>
 
         <div class="mb-3">
             <label for="announced_date" class="form-label">Announced Date</label>
-            <input type="date" class="form-control" id="announced_date" name="announced_date" value="{{ old('announced_date') }}">
+            <input type="date" class="form-control" id="announced_date" name="announced_date" value="{{ old('announced_date') }}" style="border: 1px solid #6256CA">
         </div>
 
         <!-- Tambahkan field funding_stage -->
         <div class="mb-3">
             <label for="funding_stage" class="form-label">Funding Stage</label>
-            <select class="form-control" id="funding_stage" name="funding_stage">
+            <select class="form-control" id="funding_stage" name="funding_stage" style="border: 1px solid #6256CA">
                 <option value="" {{ old('funding_stage') === null ? 'selected' : '' }}>Tipe Pendanaan</option>
                 <option value="Pre Seed" {{ old('funding_stage') === 'Pre Seed' ? 'selected' : '' }}>Pendanaan Pre-Seed</option>
                 <option value="seed" {{ old('funding_stage') === 'seed' ? 'selected' : '' }}>Pendanaan Seed</option>
@@ -70,17 +89,15 @@
 
         <!-- Tambahkan field description -->
         <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            <textarea class="form-control" id="description" name="description" rows="4">{{ old('description') }}</textarea>
+            <label for="description" class="form-label" style="font-weight: bold;">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="4" style="border: 1px solid #6256CA">{{ old('description') }}</textarea>
         </div>
 
-        <button type="submit" class="btn btn-success">Create Funding Round</button>
+        <div class="d-flex justify-content-between mt-4" style="margin-bottom:70px;">
+            <button type="submit" class="btn btn-success" style="background-color: #6256CA; border-color: #6256CA;">Create Funding Round</button>
+            <a href="{{ route('company.funding_rounds.list') }}" class="btn btn-secondary">Back to Funding Rounds</a>
+        </div>
     </form>
-
-    <!-- Tombol untuk kembali ke halaman list funding round -->
-    <div class="mt-4">
-        <a href="{{ route('company.funding_rounds.list') }}" class="btn btn-secondary">Back to Funding Rounds</a>
-    </div>
 </div>
 <script>
     // Ketika DOM siap

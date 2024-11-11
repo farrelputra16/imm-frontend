@@ -64,7 +64,7 @@
 <body>
     @include('layouts.navbar-imm') <!-- Include Navbar -->
 
-    <div class="wrapper" style="padding-top: 20px;"> <!-- Add padding to avoid overlap -->
+    <div class="wrapper" style="padding-top: 20px; margin-bottom:50px;"> <!-- Add padding to avoid overlap -->
         <div style="padding: 20px;">
             @yield('content')
         </div>
