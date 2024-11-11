@@ -15,7 +15,8 @@ class PeopleController extends Controller
     // Index method to display list of people with filters
     public function index(Request $request)
     {
-        $query = People::query()->with('company');
+        $query = People::query()->with('company', 'experiences');
+        $rowsPerPage = $request->input('rows', 10);
 
         // Filter by location if provided
         if ($request->filled('location')) {
@@ -33,7 +34,12 @@ class PeopleController extends Controller
         }
 
         // Fetch the filtered people records
-        $people = $query->get();
+        $people = $query->paginate($rowsPerPage);
+
+        foreach($people as $person) {
+            $latestExperience = $person->experiences->sortByDesc('end_date')->first();
+            $person->pengalaman = $latestExperience->position;
+        }
 
         return view('people.index', compact('people'));
     }
@@ -191,4 +197,3 @@ public function showUpcomingEvents()
 
 
 }
-
