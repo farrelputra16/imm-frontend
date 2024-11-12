@@ -138,61 +138,152 @@ class WishlistController extends Controller
 
         // Cek role pengguna
         if ($user->role === 'USER') {
-            // Ambil investor IDs dari form
-            $investorIds = explode(',', $request->input('investor_ids'));
+            // Melakukan pengecekan terlebih dahulu apakah investor_ids atau people_ids ada di dalam request
+            if ($request->filled('investor_ids')) {
+                $investorIds = explode(',', $request->input('investor_ids'));
+                // Hapus setiap investor dari wishlist
+                foreach ($investorIds as $investorId) {
+                    // Pastikan ID tidak kosong
+                    if (!empty($investorId)) {
+                        // Cek apakah wishlist sudah ada untuk investor dan user ini
+                        $existingWishlist = Wishlist::where('user_id', $user->id)
+                            ->where('investor_id', $investorId)
+                            ->first();
 
-            // Hapus setiap investor dari wishlist
-            foreach ($investorIds as $investorId) {
-                // Pastikan ID tidak kosong
-                if (!empty($investorId)) {
-                    // Cek apakah wishlist sudah ada untuk investor dan user ini
-                    $existingWishlist = Wishlist::where('user_id', $user->id)
-                        ->where('investor_id', $investorId)
-                        ->first();
-
-                    // Jika ada, hapus dari wishlist
-                    if ($existingWishlist) {
-                        $existingWishlist->delete();
+                        // Jika ada, hapus dari wishlist
+                        if ($existingWishlist) {
+                            $existingWishlist->delete();
+                        }
                     }
                 }
+            }
+            if ($request->filled('people_ids')) {
+                $peopleIds = explode(',', $request->input('people_ids'));
+                // Hapus setiap people dari wishlist
+                foreach ($peopleIds as $peopleId) {
+                    // Pastikan ID tidak kosong
+                    if (!empty($peopleId)) {
+                        // Cek apakah wishlist sudah ada untuk people dan user ini
+                        $existingWishlist = Wishlist::where('user_id', $user->id)
+                            ->where('people_id', $peopleId)
+                            ->first();
+
+                        // Jika ada, hapus dari wishlist
+                        if ($existingWishlist) {
+                            $existingWishlist->delete();
+                        }
+                    }
+                }
+            } else {
+                return redirect()->back()->with('error', 'No items to remove from wishlist.');
             }
         } else if ($user->role === 'INVESTOR') {
-            // Ambil company IDs dari form
-            $companyIds = explode(',', $request->input('company_ids'));
+            // Check if company_ids or people_ids are in the request
+            if ($request->filled('company_ids')) {
+                // Ambil company IDs dari form
+                $companyIds = explode(',', $request->input('company_ids'));
 
-            // Hapus setiap company dari wishlist
-            foreach ($companyIds as $companyId) {
-                // Pastikan ID tidak kosong
-                if (!empty($companyId)) {
-                    // Cek apakah wishlist sudah ada untuk company dan user ini
-                    $existingWishlist = Wishlist::where('user_id', $user->id)
-                        ->where('company_id', $companyId)
-                        ->first();
+                // Hapus setiap company dari wishlist
+                foreach ($companyIds as $companyId) {
+                    // Pastikan ID tidak kosong
+                    if (!empty($companyId)) {
+                        // Cek apakah wishlist sudah ada untuk company dan user ini
+                        $existingWishlist = Wishlist::where('user_id', $user->id)
+                            ->where('company_id', $companyId)
+                            ->first();
 
-                    // Jika ada, hapus dari wishlist
-                    if ($existingWishlist) {
-                        $existingWishlist->delete();
+                        // Jika ada, hapus dari wishlist
+                        if ($existingWishlist) {
+                            $existingWishlist->delete();
+                        }
                     }
                 }
             }
-        } else if ($user->role === 'PEOPLE') {
-            // Ambil people IDs dari form
-            $peopleIds = explode(',', $request->input('people_ids'));
-
-            // Hapus setiap people dari wishlist
-            foreach ($peopleIds as $peopleId) {
-                // Pastikan ID tidak kosong
-                if (!empty($peopleId)) {
-                    // Cek apakah wishlist sudah ada untuk people dan user ini
-                    $existingWishlist = Wishlist::where('user_id', $user->id)
+            if ($request->filled('people_ids')) {
+                $peopleIds = explode(',', $request->input('people_ids'));
+                // Hapus setiap people dari wishlist
+                foreach ($peopleIds as $peopleId) {
+                    // Pastikan ID tidak kosong
+                    if (!empty($peopleId)) {
+                        // Cek apakah wishlist sudah ada untuk people dan user ini
+                        $existingWishlist = Wishlist::where('user_id', $user->id)
                         ->where('people_id', $peopleId)
                         ->first();
 
-                    // Jika ada, hapus dari wishlist
-                    if ($existingWishlist) {
-                        $existingWishlist->delete();
+                        // Jika ada, hapus dari wishlist
+                        if ($existingWishlist) {
+                            $existingWishlist->delete();
+                        }
                     }
                 }
+            } else {
+                return redirect()->back()->with('error', 'No items to remove from wishlist.');
+            }
+        } else if ($user->role === 'PEOPLE') {
+            // Check if company_ids, investor_ids, or people_ids are in the request
+            if ($request->filled('company_ids')) {
+                // Ambil company IDs dari form
+                $companyIds = explode(',', $request->input('company_ids'));
+
+                // Hapus setiap company dari wishlist
+                foreach ($companyIds as $companyId) {
+                    // Pastikan ID tidak kosong
+                    if (!empty($companyId)) {
+                        // Cek apakah wishlist sudah ada untuk company dan user ini
+                        $existingWishlist = Wishlist::where('user_id', $user->id)
+                            ->where('company_id', $companyId)
+                            ->first();
+
+                        // Jika ada, hapus dari wishlist
+                        if ($existingWishlist) {
+                            $existingWishlist->delete();
+                        }
+                    }
+                }
+            }
+
+            // Ambil investor IDs dari form
+            if ($request->filled('investor_ids')) {
+                $investorIds = explode(',', $request->input('investor_ids'));
+
+                // Hapus setiap investor dari wishlist
+                foreach ($investorIds as $investorId) {
+                    // Pastikan ID tidak kosong
+                    if (!empty($investorId)) {
+                        // Cek apakah wishlist sudah ada untuk investor dan user ini
+                        $existingWishlist = Wishlist::where('user_id', $user->id)
+                            ->where('investor_id', $investorId)
+                            ->first();
+
+                        // Jika ada, hapus dari wishlist
+                        if ($existingWishlist) {
+                            $existingWishlist->delete();
+                        }
+                    }
+                }
+            }
+
+            if ($request->filled('people_ids')) {
+                // Ambil people IDs dari form
+                $peopleIds = explode(',', $request->input('people_ids'));
+
+                // Hapus setiap people dari wishlist
+                foreach ($peopleIds as $peopleId) {
+                    // Pastikan ID tidak kosong
+                    if (!empty($peopleId)) {
+                        // Cek apakah wishlist sudah ada untuk people dan user ini
+                        $existingWishlist = Wishlist::where('user_id', $user->id)
+                            ->where('people_id', $peopleId)
+                            ->first();
+
+                        // Jika ada, hapus dari wishlist
+                        if ($existingWishlist) {
+                            $existingWishlist->delete();
+                        }
+                    }
+                }
+            } else {
+                return redirect()->back()->with('error', 'No items to remove from wishlist.');
             }
         }
 

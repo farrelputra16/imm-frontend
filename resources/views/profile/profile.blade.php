@@ -214,7 +214,7 @@
             <thead class="sub-heading-2">
                 <tr>
                     <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle; border-bottom: none;">
-                        <input type="checkbox" value="all_check" id="select_all" class="select_people">
+                        <input type="checkbox" value="all_check" id="select_all_people" class="select_people">
                     </th>
                     <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Name</th>
                     <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Primary Job Title</th>
@@ -317,6 +317,12 @@
                 <button type="submit" id="remove_wishlist_button_user" class="delete-button wishlist-button" style="display: none;">Remove from Wishlist</button>
             </form>
         @endif
+        <form action="{{ route('wishlist.remove') }}" method="POST" id="wishlistFormPeople">
+            @csrf
+            @method('DELETE')
+            <input type="hidden" name="people_ids" id="people_ids" value="">
+            <button type="submit" id="remove_wishlist_button_people" class="delete-button wishlist-button" style="display: none;">Remove from Wishlist for People</button>
+        </form>
     </div>
 </div>
 <script>
@@ -351,13 +357,24 @@
             toggleWishlistButton();
         });
 
+        // Event listener untuk select_all (people)
+        document.getElementById('select_all_people')?.addEventListener('change', function() {
+            let checkboxes = document.querySelectorAll('.select_people');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+            toggleWishlistButton();
+        });
+
         // Function to show/hide the wishlist button
         function toggleWishlistButton() {
             let checkedInvestorCheckboxes = document.querySelectorAll('.select_investor:checked');
             let checkedCompanyCheckboxes = document.querySelectorAll('.select_company:checked');
+            let checkedPeopleCheckboxes = document.querySelectorAll('.select_people:checked');
 
             let wishlistButtonInvestor = document.getElementById('remove_wishlist_button_user');
             let wishlistButtonCompany = document.getElementById('remove_wishlist_button');
+            let wishlistButtonPeople = document.getElementById('remove_wishlist_button_people');
 
             // Tambahkan pengecekan sebelum mengakses style
             if (wishlistButtonCompany) {
@@ -368,16 +385,39 @@
                 wishlistButtonInvestor.style.display = checkedInvestorCheckboxes.length > 0 ? 'block' : 'none';
             }
 
+            if (wishlistButtonPeople) {
+                wishlistButtonPeople.style.display = checkedPeopleCheckboxes.length > 0 ? 'block' : 'none';
+            }
+
             // Perbarui nilai input tersembunyi jika ada
             let companyIds = Array.from(checkedCompanyCheckboxes).map(checkbox => checkbox.dataset.id).join(',');
             let investorIds = Array.from(checkedInvestorCheckboxes).map(checkbox => checkbox.dataset.id).join(',');
+            let peopleIds = Array.from(checkedPeopleCheckboxes).map(checkbox => checkbox.dataset.id).join(',');
 
             if (userRole === 'INVESTOR') {
                 let companyIdsInput = document.getElementById('company_ids');
                 if (companyIdsInput) {
                     companyIdsInput.value = companyIds;
                 }
+                let peopleIdsInput = document.getElementById('people_ids');
+                if (peopleIdsInput) {
+                    peopleIdsInput.value = peopleIds;
+                }
             } else if (userRole === 'USER') {
+                let investorIdsInput = document.getElementById('investor_ids');
+                if (investorIdsInput) {
+                    investorIdsInput.value = investorIds;
+                }
+                let peopleIdsInput = document.getElementById('people_ids');
+            } else {
+                let peopleIdsInput = document.getElementById('people_ids');
+                if (peopleIdsInput) {
+                    peopleIdsInput.value = peopleIds;
+                }
+                let companyIdsInput = document.getElementById('company_ids');
+                if (companyIdsInput) {
+                    companyIdsInput.value = companyIds;
+                }
                 let investorIdsInput = document.getElementById('investor_ids');
                 if (investorIdsInput) {
                     investorIdsInput.value = investorIds;
@@ -386,7 +426,7 @@
         }
 
         // Event listeners untuk setiap checkbox
-        document.querySelectorAll('.select_company, .select_investor').forEach(checkbox => {
+        document.querySelectorAll('.select_company, .select_investor, .select_people').forEach(checkbox => {
             checkbox.addEventListener('change', toggleWishlistButton);
         });
 
@@ -413,6 +453,19 @@
                 document.getElementById('wishlistFormUser ').submit(); // Submit form
             } else {
                 alert('Please select at least one investor to remove.');
+            }
+        });
+
+        // Event listener for people wishlist removal
+        document.getElementById('remove_wishlist_button_people')?.addEventListener('click', function(event) {
+            event.preventDefault(); // Mencegah form dari submit otomatis
+            let checkedCheckboxes = document.querySelectorAll('.select_people:checked');
+            let idsToRemove = Array.from(checkedCheckboxes).map(checkbox => checkbox.dataset.id).join(',');
+            if (idsToRemove) {
+                document.getElementById('people_ids').value = idsToRemove; // Set nilai input tersembunyi
+                document.getElementById('wishlistFormPeople').submit(); // Submit form
+            } else {
+                alert('Please select at least one person to remove.');
             }
         });
     });
