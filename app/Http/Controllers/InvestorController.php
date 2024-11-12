@@ -30,9 +30,8 @@ class InvestorController extends Controller
                 ->orWhere('location', 'like', "%{$searchTerm}%")
                 ->orWhere('description', 'like', "%{$searchTerm}%")
                 ->orWhere('departments', 'like', "%{$searchTerm}%")
-                ->orWhere('investment_stage', 'like', "%{$searchTerm}%");
-                //   ->orWhere('investment_type', 'like', "%{$searchTerm}%");
-                // Tambahkan kolom lain yang ingin dicari
+                ->orWhere('investment_stage', 'like', "%{$searchTerm}%")
+                ->orWhere('investment_type', 'like', "%{$searchTerm}%");
             });
         }
 
@@ -68,10 +67,11 @@ class InvestorController extends Controller
             $investmentStages = is_array($request->investment_stage) ? $request->investment_stage : [$request->investment_stage];
             $query->where(function ($q) use ($investmentStages) {
                 foreach ($investmentStages as $stage) {
-                    $q->orWhere('investment_stage', 'like', '%' . $stage . '%');
+                    $q->orWhereRaw("SOUNDEX(investment_stage) = SOUNDEX(?)", [$stage]);
                 }
             });
         }
+
 
         // Filter by investor_type if provided
         if ($request->filled('investor_type')) {

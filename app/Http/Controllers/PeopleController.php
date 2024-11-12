@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use App\Models\People;
 use App\Models\Company;
-use App\Models\Experience;
 use App\Models\Education;
-use App\Models\Event;
+use App\Models\Experience;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class PeopleController extends Controller
@@ -18,24 +19,97 @@ class PeopleController extends Controller
         $query = People::query()->with('company', 'experiences');
         $rowsPerPage = $request->input('rows', 10);
 
-        // Filter by skills if provided
-        if ($request->filled('Skills')) {
-            $Skills = is_array($request->Skills) ? $request->Skills : [$request->Skills];
-            $query->where(function ($q) use ($Skills) {
-                foreach ($Skills as $Skills) {
-                    $q->orWhere('skills', 'like', "%{$Skills}%");
-                }
+        // Pencarian global
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('name', 'like', "%{$searchTerm}%")
+                ->orWhere('primary_job_title', 'like', "%{$searchTerm}%")
+                ->orWhere('primary_organization', 'like', "%{$searchTerm}%")
+                ->orWhere('location', 'like', "%{$searchTerm}%")
+                ->orWhere('regions', 'like', "%{$searchTerm}%")
+                ->orWhere('gmail', 'like', "%{$searchTerm}%")
+                ->orWhere('skills', 'like', "%{$searchTerm}%");
             });
         }
 
-       // Filter by organization if provided
-        if ($request->filled('experience')) {
-            $experiences = is_array($request->experience) ? $request->experience : [$request->experience];
-            $query->whereHas('experiences', function ($q) use ($experiences) {
-                foreach ($experiences as $experience) {
-                    $q->orWhere('position', 'like', "%{$experience}%"); // Change 'experiences' to 'experience'
+
+        if ($request->filled('Skills')) {
+            $Skills = is_array($request->Skills) ? $request->Skills : [$request->Skills];
+
+            $query->where(function ($q) use ($Skills) {
+                $matchConditions = [];
+
+                foreach ($Skills as $skill) {
+                    // Trim dan normalisasi skill
+                    $inputSkill = trim(strtolower($skill));
+
+                    // Berbagai strategi pencarian
+                    $matchConditions[] = $q->orWhere(function ($subQuery) use ($inputSkill) {
+                        // 1. Pencarian sebagian kata (partial match)
+                        $subQuery->whereRaw('LOWER(skills) LIKE ?', ['%' . $inputSkill . '%'])
+                            // 2. Pencarian berdasarkan kata yang mirip
+                            ->orWhereRaw('SOUNDEX(LOWER(skills)) = SOUNDEX(?)', [$inputSkill]);
+                    });
                 }
             });
+
+            // Sistem Peringkat Pencarian
+            $orderByConditions = [];
+            $bindings = [];
+
+            foreach ($Skills as $skill) {
+                $inputSkill = trim(strtolower($skill));
+
+                // Prioritas Peringkat:
+                // 1. Kecocokan Persis
+                // 2. Kecocokan Sebagian
+                // 3. Kecocokan Fonetik
+                $orderByConditions[] = "WHEN skills = ? THEN 1";
+                $orderByConditions[] = "WHEN LOWER(skills) LIKE ? THEN 2";
+                $orderByConditions[] = "WHEN SOUNDEX(LOWER(skills)) = SOUNDEX(?) THEN 3";
+
+                // Binding untuk setiap kondisi
+                $bindings[] = $inputSkill;       // Exact Match
+                $bindings[] = '%' . $inputSkill . '%';  // Partial Match
+                $bindings[] = $inputSkill;       // Soundex
+            }
+
+            // Kondisi default untuk skill yang tidak cocok
+            $orderByConditions[] = "ELSE " . (count($Skills) + 5);
+
+            // Tambahkan ORDER BY dengan kondisi peringkat
+            $query->orderByRaw(
+                "CASE " . implode(' ', $orderByConditions) . " END",
+                $bindings
+            );
+
+            // Batasi hasil untuk performa
+            $query->limit(100);
+        }
+
+        // Filter by experience if provided
+        if ($request->filled('experience')) {
+            $experiences = is_array($request->experience) ? $request->experience : [$request->experience];
+
+            // Apply the experience filter in the query
+            $query->whereHas('experiences', function ($q) use ($experiences) {
+                foreach ($experiences as $experience) {
+                    $q->orWhere('position', 'like', "%{$experience}%");
+                }
+            });
+
+            // Dynamically build the order clause based on the number of experiences
+            $orderByConditions = [];
+            $bindings = [];
+            foreach ($experiences as $index => $experience) {
+                $orderByConditions[] = "WHEN EXISTS (SELECT 1 FROM experiences WHERE position LIKE ?) THEN " . ($index + 1);
+                $bindings[] = "%{$experience}%";
+            }
+            $orderByConditions[] = "ELSE " . (count($experiences) + 1);
+
+            // Create the full ORDER BY clause
+            $query->orderByRaw("CASE " . implode(' ', $orderByConditions) . " END", $bindings);
         }
 
         // Filter by role if provided

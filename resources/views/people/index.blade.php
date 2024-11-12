@@ -43,123 +43,133 @@
             <div class="filter-section">
                 <form method="GET" action="{{ route('people.index') }}" id="peopleFilterForm">
                     @csrf
-
-                    {{-- Bagian buat filter skill --}}
+                    {{-- Bagian untuk filter skill --}}
                     <div class="mb-3">
                         <h6>Skill</h6>
 
-                        <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Frontend Developer" onchange="autoFilter()"> Frontend Developer</label>
-                        <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Backend Developer" onchange="autoFilter()"> Backend Developer</label>
-                        <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Full Stack Developer" onchange="autoFilter()"> Full Stack Developer</label>
-                        <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Mobile App Developer" onchange="autoFilter()"> Mobile App Developer</label>
+                        {{-- Checkbox untuk skill utama --}}
+                        <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Frontend"> Frontend Developer</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Backend"> Backend Developer</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Full Stack"> Full Stack Developer</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Mobile App"> Mobile App Developer</label>
 
+                        {{-- Checkbox tambahan untuk skill lainnya --}}
                         <div style="display: none;" id="extra-Skill">
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Public Relations" onchange="autoFilter()"> Public Relations</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Influencer Marketing" onchange="autoFilter()"> Influencer Marketing</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="E-commerce" onchange="autoFilter()"> E-commerce</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Data Analysis" onchange="autoFilter()"> Data Analysis</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Machine Learning" onchange="autoFilter()"> Machine Learning</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Cloud Computing" onchange="autoFilter()"> Cloud Computing</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="UI/UX Design" onchange="autoFilter()"> UI/UX Design</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Digital Marketing" onchange="autoFilter()"> Digital Marketing</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="SEO" onchange="autoFilter()"> SEO</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Content Writing" onchange="autoFilter()"> Content Writing</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Graphic Design" onchange="autoFilter()"> Graphic Design</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Accounting" onchange="autoFilter()"> Accounting</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Project Management" onchange="autoFilter()"> Project Management</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Sales" onchange="autoFilter()"> Sales</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Customer Service" onchange="autoFilter()"> Customer Service</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Public Speaking" onchange="autoFilter()"> Public Speaking</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Negotiation" onchange="autoFilter()"> Negotiation</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Social Media Management" onchange="autoFilter()"> Social Media Management</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Video Editing" onchange="autoFilter()"> Video Editing</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Web Analytics" onchange="autoFilter()"> Web Analytics</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Cybersecurity" onchange="autoFilter()"> Cybersecurity</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Blockchain Technology" onchange="autoFilter()"> Blockchain Technology</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="DevOps" onchange="autoFilter()"> DevOps</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Artificial Intelligence" onchange="autoFilter()"> Artificial Intelligence</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Game Developer" onchange="autoFilter()"> Game Developer</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="3D Modeling" onchange="autoFilter()"> 3D Modeling</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Animation" onchange="autoFilter()"> Animation</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Copywriting" onchange="autoFilter()"> Copywriting</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Email Marketing" onchange="autoFilter()"> Email Marketing</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Market Research" onchange="autoFilter()"> Market Research</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Event Planning" onchange="autoFilter()"> Event Planning</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Human Resources" onchange="autoFilter()"> Human Resources</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Legal Compliance" onchange="autoFilter()"> Legal Compliance</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Risk Management" onchange="autoFilter()"> Risk Management</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Supply Chain Management" onchange="autoFilter()"> Supply Chain Management</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Data Visualization" onchange="autoFilter()"> Data Visualization</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Financial Analysis" onchange="autoFilter()"> Financial Analysis</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Strategic Planning" onchange="autoFilter()"> Strategic Planning</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Coaching" onchange="autoFilter()"> Coaching</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Mentoring" onchange="autoFilter()"> Mentoring</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Team Leadership" onchange="autoFilter()"> Team Leadership</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" value="Crisis Management" onchange="autoFilter()"> Crisis Management</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Public Relations"> Public Relations</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Influencer"> Influencer Marketing</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="E-commerce"> E-commerce</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Data"> Data Analysis</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Machine Learning"> Machine Learning</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Cloud"> Cloud Computing</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="UI/UX"> UI/UX Design</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Digital Marketing"> Digital Marketing</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="SEO"> SEO</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Content"> Content Writing</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Graphic"> Graphic Design</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Accounting"> Accounting</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Project"> Project Management</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Sales"> Sales</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Customer"> Customer Service</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Public Speaking"> Public Speaking</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Negotiation"> Negotiation</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Social Media"> Social Media Management</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Video"> Video Editing</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Web"> Web Analytics</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Cybersecurity"> Cybersecurity</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Blockchain"> Blockchain Technology</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="DevOps"> DevOps</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="AI"> Artificial Intelligence</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Game"> Game Developer</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="3D"> 3D Modeling</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Animation"> Animation</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Copywriting"> Copywriting</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Email"> Email Marketing</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Market"> Market Research</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Event"> Event Planning</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="HR"> Human Resources</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Legal"> Legal Compliance</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Risk"> Risk Management</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Supply Chain"> Supply Chain Management</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Data Visualization"> Data Visualization</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Financial"> Financial Analysis</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Strategic"> Strategic Planning</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Coaching"> Coaching</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Mentoring"> Mentoring</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Team Leadership"> Team Leadership</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="Skills[]" data-category="Skills" value="Crisis"> Crisis Management</label>
                         </div>
 
+                        {{-- Tombol untuk menampilkan skill tambahan --}}
                         <label class="others-label" onclick="toggleSkills()">Others <i class="fas fa-chevron-down"></i></label>
                     </div>
 
+                    <!-- Experience Filter Section -->
                     <div class="mb-3">
                         <h6>Experience</h6>
 
-                        <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Frontend Developer" onchange="autoFilter()"> Frontend Developer</label>
-                        <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Backend Developer" onchange="autoFilter()"> Backend Developer</label>
-                        <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Full Stack Developer" onchange="autoFilter()"> Full Stack Developer</label>
-                        <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Mobile App Developer" onchange="autoFilter()"> Mobile App Developer</label>
+                        <!-- Primary Experience Options -->
+                        <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Frontend Developer"> Frontend Developer</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Backend Developer"> Backend Developer</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Full Stack Developer"> Full Stack Developer</label>
+                        <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Mobile App Developer"> Mobile App Developer</label>
 
+                        <!-- Additional Experience Options -->
                         <div style="display: none;" id="extra-Experience">
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Public Relations" onchange="autoFilter()"> Public Relations</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Industrial and Warehousing" onchange="autoFilter()"> Industrial and Warehousing</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Retail" onchange="autoFilter()"> Retail</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Hospitality" onchange="autoFilter()"> Hospitality</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Entertainment and Recreation" onchange="autoFilter()"> Entertainment and Recreation</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Healthcare" onchange="autoFilter()"> Healthcare</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Education" onchange="autoFilter()"> Education</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Finance" onchange="autoFilter()"> Finance</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Marketing" onchange="autoFilter()"> Marketing</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Sales" onchange="autoFilter()"> Sales</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Customer Service" onchange="autoFilter()"> Customer Service</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Project Management" onchange="autoFilter()"> Project Management</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Data Analysis" onchange="autoFilter()"> Data Analysis</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Graphic Design" onchange="autoFilter()"> Graphic Design</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Social Media Management" onchange="autoFilter()"> Social Media Management</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Content Writing" onchange="autoFilter()"> Content Writing</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Human Resources" onchange="autoFilter()"> Human Resources</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Supply Chain Management" onchange="autoFilter()"> Supply Chain Management</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Legal Services" onchange="autoFilter()"> Legal Services</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="IT Support" onchange="autoFilter()"> IT Support</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Research and Development" onchange="autoFilter()"> Research and Development</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Quality Assurance" onchange="autoFilter()"> Quality Assurance</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Event Planning" onchange="autoFilter()"> Event Planning</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Digital Marketing" onchange="autoFilter()"> Digital Marketing</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Business Development" onchange="autoFilter()"> Business Development</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Technical Support" onchange="autoFilter()"> Technical Support</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Network Administration" onchange="autoFilter()"> Network Administration</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Content Management" onchange="autoFilter()"> Content Management</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="E-commerce Management" onchange="autoFilter()"> E-commerce Management</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="SEO Specialist" onchange="autoFilter()"> SEO Specialist</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Data Entry" onchange="autoFilter()"> Data Entry</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Product Management" onchange="autoFilter()"> Product Management</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Risk Management" onchange="autoFilter()"> Risk Management</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Compliance" onchange="autoFilter()"> Compliance</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Training and Development" onchange="autoFilter()"> Training and Development</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Corporate Strategy" onchange="autoFilter()"> Corporate Strategy</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Public Policy" onchange="autoFilter()"> Public Policy</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Environmental Services" onchange="autoFilter()"> Environmental Services</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Non-Profit Management" onchange="autoFilter()"> Non-Profit Management</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Telecommunications" onchange="autoFilter()"> Telecommunications</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Insurance" onchange="autoFilter()"> Insurance</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Real Estate" onchange="autoFilter()"> Real Estate</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Logistics" onchange="autoFilter()"> Logistics</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Manufacturing" onchange="autoFilter()"> Manufacturing</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Agriculture" onchange="autoFilter()"> Agriculture</label>
-                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" value="Construction" onchange="autoFilter()"> Construction</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Public Relations"> Public Relations</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Industrial and Warehousing"> Industrial and Warehousing</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Retail"> Retail</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Hospitality"> Hospitality</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Entertainment and Recreation"> Entertainment and Recreation</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Healthcare"> Healthcare</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Education"> Education</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Finance"> Finance</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Marketing"> Marketing</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Sales"> Sales</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Customer Service"> Customer Service</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Project Management"> Project Management</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Data Analysis"> Data Analysis</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Graphic Design"> Graphic Design</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Social Media Management"> Social Media Management</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Content Writing"> Content Writing</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Human Resources"> Human Resources</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Supply Chain Management"> Supply Chain Management</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Legal Services"> Legal Services</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="IT Support"> IT Support</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Research and Development"> Research and Development</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Quality Assurance"> Quality Assurance</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Event Planning"> Event Planning</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Digital Marketing"> Digital Marketing</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Business Development"> Business Development</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Technical Support"> Technical Support</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Network Administration"> Network Administration</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Content Management"> Content Management</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="E-commerce Management"> E-commerce Management</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="SEO Specialist"> SEO Specialist</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Data Entry"> Data Entry</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Product Management"> Product Management</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Risk Management"> Risk Management</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Compliance"> Compliance</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Training and Development"> Training and Development</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Corporate Strategy"> Corporate Strategy</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Public Policy"> Public Policy</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Environmental Services"> Environmental Services</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Non-Profit Management"> Non-Profit Management</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Telecommunications"> Telecommunications</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Insurance"> Insurance</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Real Estate"> Real Estate</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Logistics"> Logistics</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Manufacturing"> Manufacturing</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Agriculture"> Agriculture</label>
+                            <label><input type="checkbox" class="filter-checkbox" name="experience[]" data-category="Experience" value="Construction"> Construction</label>
                         </div>
 
-                        <label class="others-Experience" onclick="toggleExperience()" style="justify-content: space-between"><div>Others</div> <i class="fas fa-chevron-down"></i></label>
+                        <!-- Toggle Button for Additional Experience Options -->
+                        <label class="others-Experience" onclick="toggleExperience()" style="justify-content: space-between">
+                            <div>Others</div>
+                            <i class="fas fa-chevron-down"></i>
+                        </label>
                     </div>
+
 
                     <!-- Role Dropdown -->
                     <div class="mb-3">
@@ -185,11 +195,11 @@
 
         <!-- Main Content Section -->
         <div class="col-md-9 table-section">
-            <form method="GET" action="{{ route('people.index') }}"  id="investorSearchForm">
+            <form method="GET" action="{{ route('people.index') }}"  id="peopleSearchForm">
                 @csrf
                 <div class="search-container">
                     <i class="fas fa-search" style="margin-left: 10px;"></i>
-                    <input class="form-control" placeholder="Search Investors" type="text" name="search" value="{{ request('search') }}" />
+                    <input class="form-control" placeholder="Search People" type="text" name="search" value="{{ request('search') }}" />
                     <button class="btn" type="submit">Search</button>
                 </div>
             </form>
@@ -481,8 +491,7 @@
         const extraSkill = document.getElementById('extra-Skill');
         const othersLabel = document.querySelector('.others-label');
 
-        // Cek apakah extraSkill ada
-        if (extraSkill) {
+        if (extraSkill && othersLabel) { // Pastikan elemen ditemukan
             if (extraSkill.style.display === "none" || extraSkill.style.display === "") {
                 othersLabel.innerHTML = 'Others <i class="fas fa-chevron-up"></i>';
                 extraSkill.style.display = "block";
@@ -491,7 +500,7 @@
                 extraSkill.style.display = "none";
             }
         } else {
-            console.error('Element with class "extra-Skill" not found.');
+            console.error('Element with id "extra-Skill" or class "others-label" not found.');
         }
     }
 
@@ -499,90 +508,128 @@
         const extraExperience = document.getElementById('extra-Experience');
         const othersExperience = document.querySelector('.others-Experience');
 
-        if (extraExperience.style.display === "none" || extraExperience.style.display === "") {
-            extraExperience.style.display = "block";
-            othersExperience.innerHTML = 'Others <i class="fas fa-chevron-up"></i>';
+        if (extraExperience && othersExperience) { // Pastikan elemen ditemukan
+            if (extraExperience.style.display === "none" || extraExperience.style.display === "") {
+                othersExperience.innerHTML = 'Others <i class="fas fa-chevron-up"></i>';
+                extraExperience.style.display = "block";
+            } else {
+                othersExperience.innerHTML = 'Others <i class="fas fa-chevron-down"></i>';
+                extraExperience.style.display = "none";
+            }
         } else {
-            extraExperience.style.display = "none";
-            othersExperience.innerHTML = 'Others <i class="fas fa-chevron-down"></i>';
+            console.error('Element with id "extra-Experience" or class "others-Experience" not found.');
         }
     }
 </script>
 
-{{-- Script untuk checkbox filter --}}
 <script>
-    // Fungsi untuk menyimpan status checkbox filter
-    function saveCheckboxState() {
-        const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
+    // Fungsi untuk menampilkan atau menyembunyikan skill tambahan
+    function toggleSkills() {
+        const extraSkillDiv = document.getElementById("extra-Skill");
+        extraSkillDiv.style.display = extraSkillDiv.style.display === "none" ? "block" : "none";
+    }
+
+    // Fungsi untuk menampilkan atau menyembunyikan experience tambahan
+    function toggleExperience() {
+        const extraExperienceDiv = document.getElementById("extra-Experience");
+        extraExperienceDiv.style.display = extraExperienceDiv.style.display === "none" ? "block" : "none";
+    }
+
+    // Fungsi untuk menyimpan status checkbox filter ke localStorage berdasarkan kategori
+    function saveCheckboxState(category) {
+        const filterCheckboxes = document.querySelectorAll(`.filter-checkbox[data-category="${category}"]`);
         filterCheckboxes.forEach(checkbox => {
-            localStorage.setItem(checkbox.value, checkbox.checked);
+            localStorage.setItem(`${category}-${checkbox.value}`, checkbox.checked);
         });
     }
 
-    // Fungsi untuk memuat status checkbox filter
-    function loadCheckboxState() {
-        const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
+    // Fungsi untuk memuat status checkbox filter dari localStorage
+    function loadCheckboxState(category) {
+        const filterCheckboxes = document.querySelectorAll(`.filter-checkbox[data-category="${category}"]`);
         filterCheckboxes.forEach(checkbox => {
-            const checked = localStorage.getItem(checkbox.value) === 'true';
+            const checked = localStorage.getItem(`${category}-${checkbox.value}`) === 'true';
             checkbox.checked = checked;
         });
     }
 
-    // Fungsi untuk memeriksa duplikat dan mengatur checkbox
-    function checkForDuplicates(event) {
-        const checkboxes = document.querySelectorAll('.filter-checkbox');
+    // Fungsi untuk mencegah duplikat checkbox yang terpilih
+    function checkForDuplicates(event, category) {
+        const checkboxes = document.querySelectorAll(`.filter-checkbox[data-category="${category}"]`);
         const currentValue = event.target.value;
 
         checkboxes.forEach(checkbox => {
             if (checkbox !== event.target && checkbox.checked && checkbox.value === currentValue) {
-                checkbox.checked = false; // Uncheck the duplicate checkbox
+                checkbox.checked = false; // Uncheck duplicate checkbox
             }
         });
     }
 
-    // Fungsi untuk mengirimkan form ketika checkbox filter berubah
+    // Fungsi untuk mengirimkan form otomatis ketika checkbox berubah
     function autoFilterCheckbox(event) {
-        // Pastikan ini bukan checkbox wishlist
         if (event.target.classList.contains('filter-checkbox')) {
-            saveCheckboxState();
-            document.getElementById('peopleFilterForm').submit();
+            const category = event.target.getAttribute('data-category');
+            saveCheckboxState(category);
+            document.getElementById('peopleFilterForm').submit(); // Autosubmit form
         }
     }
 
-    // Initialize checkbox filter functionality
+    // Inisialisasi pada saat halaman selesai dimuat
     document.addEventListener('DOMContentLoaded', () => {
-        loadCheckboxState();
+        // Muat status checkbox untuk setiap kategori
+        loadCheckboxState('Skills');
+        loadCheckboxState('Experience');
 
-        // Setup checkbox change listeners khusus untuk filter
-        document.querySelectorAll('.filter-checkbox').forEach(checkbox => {
+        // Pasang event listener perubahan checkbox berdasarkan kategori
+        document.querySelectorAll('.filter-checkbox[data-category="Skills"]').forEach(checkbox => {
             checkbox.addEventListener('change', (event) => {
-                checkForDuplicates(event); // Check for duplicates on change
-                autoFilterCheckbox(event); // Trigger the filter
+                checkForDuplicates(event, 'Skills');
+                autoFilterCheckbox(event);
+            });
+        });
+
+        document.querySelectorAll('.filter-checkbox[data-category="Experience"]').forEach(checkbox => {
+            checkbox.addEventListener('change', (event) => {
+                checkForDuplicates(event, 'Experience');
+                autoFilterCheckbox(event);
             });
         });
     });
 </script>
 
 <script>
-    // Fungsi untuk membersihkan semua filter
-    function clearFilters() {
-        // Clear filter checkboxes only
-        document.querySelectorAll('.filter-checkbox').forEach(checkbox => {
-            checkbox.checked = false;
-            localStorage.removeItem(checkbox.value);
-        });
+    // Fungsi untuk membersihkan semua filter atau berdasarkan kategori
+    function clearFilters(category = null) {
+        // Jika kategori spesifik disediakan, hanya bersihkan checkbox dari kategori itu
+        if (category) {
+            // Clear hanya checkbox untuk kategori yang dipilih
+            document.querySelectorAll(`.filter-checkbox[data-category="${category}"]`).forEach(checkbox => {
+                checkbox.checked = false;
+                localStorage.removeItem(`${category}-${checkbox.value}`);
+            });
+        } else {
+            // Jika tidak ada kategori yang ditentukan, bersihkan semua kategori
+            document.querySelectorAll('.filter-checkbox').forEach(checkbox => {
+                checkbox.checked = false;
+                const checkboxCategory = checkbox.getAttribute('data-category');
+                localStorage.removeItem(`${checkboxCategory}-${checkbox.value}`);
+            });
 
-        // Clear hidden inputs dan search input
-        document.getElementById('hidden-inputs').innerHTML = '';
-        document.querySelector('input[name="search"]').value = '';
-        document.querySelector('select[name="role"]').value = '';
+            // Clear hidden inputs, search input, dan dropdown secara umum
+            document.getElementById('hidden-inputs').innerHTML = '';
+            document.querySelector('input[name="search"]').value = '';
+            document.querySelector('select[name="role"]').value = '';
+            document.getElementById('select_all').checked = false;
+            document.querySelector('input[name="search"]').value = '';
 
-        // Clear localStorage
-        localStorage.removeItem('selectedTags');
-        localStorage.removeItem('companySearch');
-        localStorage.removeItem('selectedRole');
 
-        // Submit form
+            // Clear item umum di localStorage
+            localStorage.removeItem('selectedTags');
+            localStorage.removeItem('companySearch');
+            localStorage.removeItem('selectedRole');
+            localStorage.removeItem('peopleSearch');
+        }
+
+        // Submit form setelah pembersihan
         document.getElementById('peopleFilterForm').submit();
     }
 </script>
@@ -613,6 +660,22 @@
     // Initialize role filter functionality
     document.addEventListener('DOMContentLoaded', () => {
         loadRoleState(); // Load the previously saved role when the page loads
+    });
+</script>
+
+{{-- Filter untuk search --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Menyimpan nilai pencarian ke localStorage saat form di-submit
+        document.getElementById('peopleSearchForm').addEventListener('submit', function() {
+            localStorage.setItem('peopleSearch', document.querySelector('input[name="search"]').value);
+        });
+
+        // Mengisi input pencarian dengan nilai dari localStorage saat halaman dimuat
+        var savedSearch = localStorage.getItem('peopleSearch');
+        if (savedSearch) {
+            document.querySelector('input[name="search"]').value = savedSearch;
+        }
     });
 </script>
 @endsection
