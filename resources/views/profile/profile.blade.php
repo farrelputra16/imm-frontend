@@ -2,97 +2,10 @@
 @section('title', 'Profil')
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/profile/profile.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
-<style>
-    body {
-        font-family: 'Poppins', sans-serif;
-        background-color: #f8f9fa;
-    }
-
-    .biodata {
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        width: 100%;
-    }
-
-    .section {
-        margin-top: 80px;
-        margin-bottom: 120px;
-        display: flex;
-        align-items: center;
-        justify-content: start;
-        background-color: #E6E3F1;
-        padding: 20px 0;
-        border-radius: 10px;
-    }
-
-    .profile-section {
-        max-width: 150px;
-        border: 3px solid #6f42c1;
-        padding: 5px;
-        border-radius: 50%;
-        transition: transform 0.3s;
-    }
-
-    .img-fluid {
-        width: 200px;
-        height: 200px;
-    }
-
-    .profile-section:hover {
-        transform: scale(1.1);
-    }
-
-    .btn-primary-red {
-        background-color: #be184a;
-        color: white;
-        font-size: 20px;
-        font-weight: 500;
-        border-radius: 9px;
-    }
-
-    .btn-primary-red:hover {
-        background-color: #e6084b;
-        color: white;
-        font-size: 20px;
-        font-weight: 500;
-        border-radius: 9px;
-
-    }
-
-    @media (max-width: 768px) {
-        .section {
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            display: flex;
-            text-align: center;
-        }
-
-        .profile-section {
-            margin-bottom: 20px;
-        }
-
-        .biodata {
-            display: flex;
-            flex-direction: column;
-            align-content: center;
-            text-align: center;
-            width: 70%;
-            margin-left: 55px;
-            margin-top: 10px;
-            padding: 20px 0;
-        }
-
-        .img-fluid {
-            width: 100px;
-            height: 100px;
-        }
-    }
-</style>
+<link rel="stylesheet" href="{{ asset('css/profile/profile.css') }}">
 @endsection
 
 @section('content')
@@ -295,20 +208,113 @@
         </div>
     </div>
 
+    {{-- Bagian table tempat untuk people --}}
+    <div class="table-responsive">
+        <table class="table table-hover table-strip" style="border-top-left-radius: 20px; border-top-right-radius: 20px; overflow: hidden;">
+            <thead class="sub-heading-2">
+                <tr>
+                    <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle; border-bottom: none;">
+                        <input type="checkbox" value="all_check" id="select_all" class="select_people">
+                    </th>
+                    <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Name</th>
+                    <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Primary Job Title</th>
+                    <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Skills</th>
+                    <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Role</th>
+                    <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Last Experience</th>
+                    <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Linkedin</th>
+                    <th scope="col" class="sub-heading-2" style="border-top-right-radius: 20px; vertical-align: top; text-align: left; border-bottom: none;">Number of Contact</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($people as $person)
+                <tr data-href="{{ route('people.show', $person->id) }}" class="clickable-row">
+                    <td style="vertical-align: middle; border-left: 1px solid #ddd;">
+                        <input type="checkbox" class="select_people" data-id="{{ $person->id }}">
+                    </td>
+                    <td style="vertical-align: middle;">
+                        <div style="display: flex; align-items: center;">
+                            <div style="margin-right: 2px;">
+                                <img src="{{ !empty($person->image) ? asset($person->image) : asset('images/logo-maxy.png') }}" alt="" width="30" height="30" style="border-radius: 8px; object-fit:cover;">
+                            </div>
+                            <div style="flex-grow: 1; margin-left: 0px; margin-right: 10px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
+                                @if (strlen($person->name) > 10)
+                                    title="{{ $person->name }}"
+                                    style="cursor: pointer;"
+                                @endif
+                            >
+                                <span class="body-2">{{ $person->name }}</span>
+                            </div>
+                            <div style="margin-left: 0px; margin-right: 0px;">
+                                <i class="fas fa-search" style="color: #aee1b7;"></i>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->primary_job_title }}</td>
+                    <td style="vertical-align: middle; text-align: start;" class="body-2 skilss">{{ $person->skills }}</td>
+                    <td style="vertical-align: middle; text-align: start;" class="body-2">{{ ucfirst($person->role) }}</td>
+                    <td style="vertical-align: middle; text-align: start;" class="body-2">{{ $person->pengalaman }}</td>
+                    <td style="vertical-align: middle; text-align: center;" class="body-2">
+                        @if($person->linkedin_link)
+                            <a href="{{ $person->linkedin_link }}" target="_blank" class ="linkedin-link">Link</a>
+                        @else
+                            N/A
+                        @endif
+                    </td>
+                    <td style="vertical-align: middle; text-align: start; border-right: 1px solid #ddd;" class="body-2">{{ $person->phone_number }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
+   <!-- Footer sebagai bagian dari tabel -->
+   <div class="d-flex justify-content-between align-items-center mb-3 align-self-center"
+   style="padding: 20px;
+       background-color: #ffffff;
+       border-bottom: 1px solid #ddd;
+       border-left: 1px solid #ddd;
+       border-right: 1px solid #ddd;
+       border-top: 1px solid #ddd;
+       margin-top:0px;
+       border-end-end-radius: 20px;
+       border-end-start-radius: 20px;
+       height: 60px;">
+       <form method="GET" action="{{ route('people.index') }}" class="mb-0">
+           <div class="d-flex align-items-center">
+               <label for="rowsPerPage" class="me-2">Rows per page:</label>
+               <select name="rows"
+                       id="rowsPerPage"
+                       class="form-select me-2"
+                       onchange="this.form.submit()"
+                       style="width: 50%px; margin-left: 5px; margin-right: 5px;">
+                   <option value="10" {{ request('rows') == 10 ? 'selected' : '' }}>10</option>
+                   <option value="50" {{ request('rows') == 50 ? 'selected' : '' }}>50</option>
+                   <option value="100" {{ request('rows') == 100 ? 'selected' : '' }}>100</option>
+               </select>
+               <div>
+                   <span>Total {{ $people->firstItem() }} - {{ $people->lastItem() }} of {{ $people->total() }}</span>
+               </div>
+           </div>
+       </form>
+       <div style="margin-top: 10px;">
+           {{ $people->appends(request()->query())->links('pagination::bootstrap-4') }}
+       </div>
+   </div>
+
     <div class="align-self-center">
         @if ($userRole === 'INVESTOR')
             <form action="{{ route('wishlist.remove') }}" method="POST" id="wishlistForm">
                 @csrf
                 @method('DELETE') <!-- Ini penting untuk mensimulasikan metode DELETE -->
                 <input type="hidden" name="company_ids" id="company_ids" value="">
-                <button type="submit" id="remove_wishlist_button" class="btn btn-primary-red wishlist-button" style="display: none;">Remove from Wishlist</button>
+                <button type="submit" id="remove_wishlist_button" class="delete-button wishlist-button" style="display: none;">Remove from Wishlist</button>
             </form>
         @elseif ($userRole === 'USER')
             <form action="{{ route('wishlist.remove') }}" method="POST" id="wishlistFormUser ">
                 @csrf
                 @method('DELETE')
                 <input type="hidden" name="investor_ids" id="investor_ids" value="">
-                <button type="submit" id="remove_wishlist_button_user" class="btn btn-primary-red wishlist-button" style="display: none;">Remove from Wishlist</button>
+                <button type="submit" id="remove_wishlist_button_user" class="delete-button wishlist-button" style="display: none;">Remove from Wishlist</button>
             </form>
         @endif
     </div>

@@ -159,6 +159,18 @@
                 </div>
             </form>
 
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             {{-- Tempat menaruh tombol wishlist --}}
             <div style="margin: 0px; padding: 0px;">
                 <div id="wishlist-info" style="margin-bottom: 10px;"></div>

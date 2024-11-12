@@ -1,0 +1,121 @@
+.navbar-landingpage {
+    background-color: #ffffff;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #5940cb;
+    font-family: 'Montserrat', sans-serif;
+    z-index: 1030; /* Tambahkan z-index pada navbar */
+}
+
+.navbar-landingpage .logo img {
+        height: 40px;
+        transition: transform 0.5s ease-in-out, filter 0.5s ease-in-out;
+    }
+
+    .navbar-landingpage .logo img:hover {
+        transform: scale(1.1) rotate(360deg);
+        filter: drop-shadow(0 0 10px #5940CB);
+    }
+
+.navbar-landingpage .navbar {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    font-weight: 500;
+    font-size: 1rem;
+    color: #333;
+}
+
+.navbar-landingpage .navbar-brand {
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+.navbar-landingpage .navbar a {
+    color: #333;
+    text-decoration: none;
+    padding: 10px 15px;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.navbar-landingpage .navbar a::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background: #5940cb;
+    transition: width 0.3s ease;
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+}
+
+.navbar-landingpage .navbar a:hover::after {
+    width: 100%;
+}
+
+.navbar-landingpage .navbar a:hover {
+    color: #5940cb;
+}
+
+.navbar-landingpage .profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+/* Dropdown menu */
+.navbar-landingpage .dropdown-menu {
+    background-color: white;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1050; /* Menambah z-index untuk dropdown */
+}
+
+.navbar-landingpage .dropdown-menu .dropdown-item {
+    color: black;
+}
+
+.navbar-landingpage .dropdown-menu .dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+
+/* Warna kuning untuk ikon notifikasi */
+.notification-icon {
+    font-size: 1.5rem;
+    color: #FFD700;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.login-btn,
+.register-btn {
+    background-color: transparent;
+    color: #5940CB;
+    border: 2px solid #5940CB;
+    padding: 8px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.register-btn {
+    background-color: #5940CB;
+    color: white;
+}
+
+.login-btn:hover {
+    background-color: #f5f5f5;
+}
+
+.register-btn:hover {
+    background-color: #4829a0;
+}
+
+.ml-2 {
+    color: gray;
+}

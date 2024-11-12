@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\People;
+use App\Models\Company;
+use App\Models\Investor;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
@@ -19,76 +23,107 @@ class WishlistController extends Controller
         // Ambil user yang login
         $user = Auth::user();
 
+        // Ambil IDs dari form berdasarkan peran pengguna
+        $ids = [];
         if ($user->role === 'USER') {
-            // Ambil investor IDs dari form
-            $investorIds = explode(',', $request->input('investor_ids'));
-            ddd($investorIds);
-
-            // Simpan setiap investor ke wishlist
-            foreach ($investorIds as $investorId) {
-                // Pastikan ID tidak kosong
-                if (!empty($investorId)) {
-                    // Cek apakah wishlist sudah ada untuk investor dan user ini
-                    $existingWishlist = Wishlist::where('user_id', $user->id)
-                        ->where('investor_id', $investorId)
-                        ->first();
-
-                    // Jika belum ada, tambahkan ke wishlist
-                    if (!$existingWishlist) {
-                        Wishlist::create([
-                            'user_id' => $user->id,
-                            'investor_id' => $investorId,
-                        ]);
-                    }
-                }
+            if ($request->filled('investor_ids')) {
+                $ids = explode(',', $request->input('investor_ids'));
+            } else if ($request->filled('people_ids')) {
+                $ids = explode(',', $request->input('people_ids'));
             }
         } else if ($user->role === 'INVESTOR') {
-            // Ambil company IDs dari form
-            $companyIds = explode(',', $request->input('company_ids'));
-
-            // Simpan setiap company ke wishlist
-            foreach ($companyIds as $companyId) {
-                // Pastikan ID tidak kosong
-                if (!empty($companyId)) {
-                    // Cek apakah wishlist sudah ada untuk company dan user ini
-                    $existingWishlist = Wishlist::where('user_id', $user->id)
-                        ->where('company_id', $companyId)
-                        ->first();
-
-                    // Jika belum ada, tambahkan ke wishlist
-                    if (!$existingWishlist) {
-                        Wishlist::create([
-                            'user_id' => $user->id,
-                            'company_id' => $companyId,
-                        ]);
-                    }
-                }
+            if ($request->filled('company_ids')) {
+                $ids = explode(',', $request->input('company_ids'));
+            } else if ($request->filled('people_ids')) {
+                $ids = explode(',', $request->input('people_ids'));
             }
         } else if ($user->role === 'PEOPLE') {
-            // Ambil people IDs dari form
-            $peopleIds = explode(',', $request->input('people_ids'));
+            if ($request->filled('people_ids')) {
+                $ids = explode(',', $request->input('people_ids'));
+            } else if ($request->filled('company_ids')) {
+                $ids = explode(',', $request->input('company_ids'));
+            } else if ($request->filled('investor_ids')) {
+                $ids = explode(',', $request->input('investor_ids'));
+            }
+        }
 
-            // Simpan setiap people ke wishlist
-            foreach ($peopleIds as $peopleId) {
-                // Pastikan ID tidak kosong
-                if (!empty($peopleId)) {
-                    // Cek apakah wishlist sudah ada untuk people dan user ini
+        // Simpan setiap ID ke wishlist
+        foreach ($ids as $id) {
+            // Pastikan ID tidak kosong
+            if (!empty($id)) {
+                // Validasi ID sebelum menyimpan
+                $isValidId = false;
+
+                if ($user->role === 'USER') {
+                    $isValidId = Investor::where('id', $id)->exists() || People::where('id', $id)->exists();
+                } else if ($user->role === 'INVESTOR') {
+                    $isValidId = Company::where('id', $id)->exists() || People::where('id', $id)->exists();
+                } else if ($user->role === 'PEOPLE') {
+                    $isValidId = Investor::where('id', $id)->exists() || Company::where('id', $id)->exists() || People::where('id', $id)->exists();
+                }
+
+                if (!$isValidId) {
+                    return redirect()->back()->with('error', 'Invalid ID: ' . $id);
+                }
+
+                $existingWishlist = null;
+
+                // Cek apakah wishlist sudah ada
+                if ($user->role === 'USER') {
                     $existingWishlist = Wishlist::where('user_id', $user->id)
-                        ->where('people_id', $peopleId)
-                        ->first();
+                        ->where(function ($query) use ($id) {
+                            $query->where('investor_id', $id)
+                                ->orWhere('people_id', $id);
+                        })->first();
+                } else if ($user->role === 'INVESTOR') {
+                    $existingWishlist = Wishlist::where('user_id', $user->id)
+                        ->where(function ($query) use ($id) {
+                            $query->where('company_id', $id)
+                                ->orWhere('people_id', $id);
+                        })->first();
+                } else if ($user->role === 'PEOPLE') {
+                    $existingWishlist = Wishlist::where('user_id', $user->id)
+                        ->where(function ($query) use ($id) {
+                            $query->where('investor_id', $id)
+                                ->orWhere('company_id', $id)
+                                ->orWhere('people_id', $id);
+                        })->first();
+                }
 
-                    // Jika belum ada, tambahkan ke wishlist
-                    if (!$existingWishlist) {
-                        Wishlist::create([
-                            'user_id' => $user->id,
-                            'people_id' => $peopleId,
-                        ]);
+                // Jika belum ada, tambahkan ke wishlist
+                if (!$existingWishlist) {
+                    $data = [
+                        'user_id' => $user->id,
+                    ];
+
+                    if ($user->role === 'USER') {
+                        if ($request->filled('investor_ids') && in_array($id, explode(',', $request->input('investor_ids')))) {
+                            $data['investor_id'] = $id;
+                        } else {
+                            $data['people_id'] = $id; // Menyimpan ID people
+                        }
+                    } else if ($user->role === 'INVESTOR') {
+                        if ($request->filled('company_ids') && in_array($id, explode(',', $request->input('company_ids')))) {
+                            $data['company_id'] = $id;
+                        } else {
+                            $data['people_id'] = $id; // Menyimpan ID people
+                        }
+                    } else if ($user->role === 'PEOPLE') {
+                        if ($request->filled('investor_ids') && in_array($id, explode(',', $request->input('investor_ids')))) {
+                            $data['investor_id'] = $id;
+                        } else if ($request->filled('company_ids') && in_array($id, explode(',', $request->input('company_ids')))) {
+                            $data['company_id'] = $id;
+                        } else {
+                            $data['people_id'] = $id; // Menyimpan ID people
+                        }
                     }
+
+                    Wishlist::create($data);
                 }
             }
         }
 
-        return redirect()->back()->with('success', 'Companies added to wishlist.');
+        return redirect()->back()->with('success', 'Items added to wishlist.');
     }
 
     public function remove(Request $request)

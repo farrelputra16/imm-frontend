@@ -1,0 +1,83 @@
+.biodata {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    width: 100%;
+}
+
+.section {
+    margin-top: 80px;
+    margin-bottom: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    background-color: #E6E3F1;
+    padding: 20px 0;
+    border-radius: 10px;
+}
+
+.profile-section {
+    max-width: 150px;
+    border: 3px solid #6f42c1;
+    padding: 5px;
+    border-radius: 50%;
+    transition: transform 0.3s;
+}
+
+.img-fluid {
+    width: 200px;
+    height: 200px;
+}
+
+.profile-section:hover {
+    transform: scale(1.1);
+}
+
+.delete-button {
+    background-color: #ff4757; /* Warna merah */
+    color: white; /* Warna teks putih */
+    border: none; /* Tanpa border */
+    border-radius: 5px; /* Sudut membulat */
+    padding: 15px 30px; /* Padding atas-bawah dan kiri-kanan */
+    font-size: 16px; /* Ukuran font */
+    cursor: pointer; /* Pointer saat hover */
+    transition: background-color 0.3s, transform 0.2s; /* Efek transisi */
+}
+
+.delete-button:hover {
+    background-color: #e84118; /* Warna saat hover */
+    transform: scale(1.05); /* Efek zoom saat hover */
+}
+
+.delete-button:active {
+    transform: scale(0.95); /* Efek saat ditekan */
+}
+
+@media (max-width: 768px) {
+    .section {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        text-align: center;
+    }
+
+    .profile-section {
+        margin-bottom: 20px;
+    }
+
+    .biodata {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        text-align: center;
+        width: 70%;
+        margin-left: 55px;
+        margin-top: 10px;
+        padding: 20px 0;
+    }
+
+    .img-fluid {
+        width: 100px;
+        height: 100px;
+    }
+}

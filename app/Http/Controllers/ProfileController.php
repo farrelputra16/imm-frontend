@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\People;
 use App\Models\Company;
 use App\Models\Investor;
 use App\Models\Department;
@@ -33,13 +34,25 @@ class ProfileController extends Controller
             // Ambil ID investor dari wishlists pengguna
             $investorIds = $user->wishlists->pluck('investor_id');
 
+            // Ambil ID People dari wishlists pengguna
+            $peopleIds = $user->wishlists->pluck('people_id');
+
             // Buat query untuk mengambil investor berdasarkan ID yang ada di wishlist
             $query = Investor::whereIn('id', $investorIds);
+
+            // Buat query untuk mengambil people berdasarkan ID yang ada di wishlist
+            $people = People::whereIn('id', $peopleIds)->with('company','experiences')->paginate($rowsPerPage);
+
+            // Nambah buat people last experience
+            foreach($people as $person) {
+                $latestExperience = $person->experiences->sortByDesc('end_date')->first();
+                $person->pengalaman = $latestExperience->position;
+            }
 
             // Paginate the results
             $investors = $query->paginate($rowsPerPage);
 
-            return view('profile.profile', compact('user', 'investors', 'userRole'));
+            return view('profile.profile', compact('user', 'investors', 'people', 'userRole'));
         } else if ($userRole === 'PEOPLE') {
 
         } else if ($userRole === 'INVESTOR') {
@@ -251,5 +264,4 @@ class ProfileController extends Controller
         return redirect()->route('profile-company')->with('success', 'Profil perusahaan berhasil diperbarui.');
     }
 
-    public function addTeamMember() {}
 }
