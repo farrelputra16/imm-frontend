@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
 @endif
 <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <meta name="description" content="Manage your projects efficiently with MyProject">
 <meta name="keywords" content="project management, task management, productivity">
 <meta name="author" content="Your Name"><meta name="description" content="Manage your projects efficiently with MyProject">
