@@ -95,7 +95,13 @@ class PeopleController extends Controller
             // Apply the experience filter in the query
             $query->whereHas('experiences', function ($q) use ($experiences) {
                 foreach ($experiences as $experience) {
-                    $q->orWhere('position', 'like', "%{$experience}%");
+                    $inputExperience = trim(strtolower($experience)); // Normalisasi input
+                    $q->orWhere(function ($subQuery) use ($inputExperience) {
+                        // 1. Pencarian berdasarkan posisi yang mirip
+                        $subQuery->whereRaw('LOWER(position) LIKE ?', ['%' . $inputExperience . '%'])
+                            // 2. Pencarian fonetik
+                            ->orWhereRaw('SOUNDEX(LOWER(position)) = SOUNDEX(?)', [$inputExperience]);
+                    });
                 }
             });
 
@@ -103,10 +109,22 @@ class PeopleController extends Controller
             $orderByConditions = [];
             $bindings = [];
             foreach ($experiences as $index => $experience) {
-                $orderByConditions[] = "WHEN EXISTS (SELECT 1 FROM experiences WHERE position LIKE ?) THEN " . ($index + 1);
-                $bindings[] = "%{$experience}%";
+                $inputExperience = trim(strtolower($experience)); // Normalisasi input
+
+                // Prioritas Peringkat:
+                // 1. Kecocokan Persis
+                // 2. Kecocokan Sebagian
+                // 3. Kecocokan Fonetik
+                $orderByConditions[] = "WHEN EXISTS (SELECT 1 FROM experiences WHERE LOWER(position) LIKE ?) THEN " . ($index + 1);
+                $orderByConditions[] = "WHEN EXISTS (SELECT 1 FROM experiences WHERE SOUNDEX(LOWER(position)) = SOUNDEX(?)) THEN " . (count($experiences) + $index + 1);
+
+                // Binding untuk setiap kondisi
+                $bindings[] = '%' . $inputExperience . '%'; // Exact Match
+                $bindings[] = $inputExperience; // Soundex
             }
-            $orderByConditions[] = "ELSE " . (count($experiences) + 1);
+
+            // Kondisi default untuk pengalaman yang tidak cocok
+            $orderByConditions[] = "ELSE " . (count($experiences) * 2 + 1); // Menandakan tidak ada kecocokan
 
             // Create the full ORDER BY clause
             $query->orderByRaw("CASE " . implode(' ', $orderByConditions) . " END", $bindings);
