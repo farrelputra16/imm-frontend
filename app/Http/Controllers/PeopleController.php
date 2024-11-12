@@ -138,9 +138,15 @@ class PeopleController extends Controller
         // Fetch the filtered people records
         $people = $query->paginate($rowsPerPage);
 
-        foreach($people as $person) {
+        foreach ($people as $person) {
             $latestExperience = $person->experiences->sortByDesc('end_date')->first();
-            $person->pengalaman = $latestExperience->position;
+
+            // Cek apakah $latestExperience ada
+            if ($latestExperience) {
+                $person->pengalaman = $latestExperience->position;
+            } else {
+                $person->pengalaman = 'N/A'; // Jika tidak ada pengalaman, set ke 'N/A'
+            }
         }
 
         return view('people.index', compact('people'));
@@ -169,133 +175,133 @@ class PeopleController extends Controller
         return view('peoplepage.profile', compact('people','companies'));
     }
     public function updateDescription(Request $request)
-{
-    $request->validate([
-        'description' => 'string|max:1000',
-    ]);
+    {
+        $request->validate([
+            'description' => 'string|max:1000',
+        ]);
 
-    $people = People::where('user_id', Auth::id())->firstOrFail();
-    $people->description = $request->input('description');
-    $people->save();
+        $people = People::where('user_id', Auth::id())->firstOrFail();
+        $people->description = $request->input('description');
+        $people->save();
 
-    return redirect()->back()->with('success', 'Description updated successfully!');
-}
-public function addExperience(Request $request)
-{
-    $request->validate([
-        'company_id' => 'required|exists:companies,id',
-        'position' => 'required|string|max:255',
-        'type_of_work' => 'required|string|max:255',
-        'start_date' => 'required|date',
-        'end_date' => 'nullable|date|after_or_equal:start_date',
-        'description' => 'nullable|string|max:1000',
-    ]);
+        return redirect()->back()->with('success', 'Description updated successfully!');
+    }
+    public function addExperience(Request $request)
+    {
+        $request->validate([
+            'company_id' => 'required|exists:companies,id',
+            'position' => 'required|string|max:255',
+            'type_of_work' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'description' => 'nullable|string|max:1000',
+        ]);
 
-    // Ambil people_id dari pengguna yang sedang login
-    $peopleId = People::where('user_id', Auth::id())->firstOrFail()->id;
+        // Ambil people_id dari pengguna yang sedang login
+        $peopleId = People::where('user_id', Auth::id())->firstOrFail()->id;
 
-    // Menambahkan data baru ke database
-    Experience::create([
-        'company_id' => $request->input('company_id'),
-        'people_id' => $peopleId,
-        'position' => $request->input('position'),
-        'type_of_work' => $request->input('type_of_work'),
-        'start_date' => $request->input('start_date'),
-        'end_date' => $request->input('end_date'),
-        'description' => $request->input('description'),
-    ]);
+        // Menambahkan data baru ke database
+        Experience::create([
+            'company_id' => $request->input('company_id'),
+            'people_id' => $peopleId,
+            'position' => $request->input('position'),
+            'type_of_work' => $request->input('type_of_work'),
+            'start_date' => $request->input('start_date'),
+            'end_date' => $request->input('end_date'),
+            'description' => $request->input('description'),
+        ]);
 
-    return redirect()->back()->with('success', 'Experience added successfully!');
-}
-
-public function addEducation(Request $request)
-{
-    $request->validate([
-        'university' => 'required|string|max:255',
-        'title' => 'required|string|max:255',
-        'field_of_study' => 'nullable|string|max:255',
-        'location' => 'nullable|string|max:255',
-        'start_date' => 'required|date',
-        'end_date' => 'nullable|date|after_or_equal:start_date',
-        'grade' => 'nullable|string|max:50',
-        'activities' => 'nullable|string|max:1000',
-        'description' => 'nullable|string|max:1000',
-    ]);
-
-    // Mendapatkan people_id dari pengguna yang sedang login
-    $peopleId = People::where('user_id', Auth::id())->firstOrFail()->id;
-
-    // Menyimpan data pendidikan baru
-    Education::create([
-        'people_id' => $peopleId,
-        'university' => $request->input('university'),
-        'title' => $request->input('title'),
-        'field_of_study' => $request->input('field_of_study'),
-        'location' => $request->input('location'),
-        'start_date' => $request->input('start_date'),
-        'end_date' => $request->input('end_date'),
-        'grade' => $request->input('grade'),
-        'activities' => $request->input('activities'),
-        'description' => $request->input('description'),
-    ]);
-
-    return redirect()->back()->with('success', 'Education added successfully!');
-}
-public function addSkills(Request $request)
-{
-    $request->validate([
-        'skills.*' => 'required|string|max:255',
-    ]);
-
-    // Menggabungkan skill baru yang diinput oleh pengguna
-    $newSkills = implode(',', $request->input('skills'));
-
-    // Mendapatkan people_id dari pengguna yang sedang login
-    $people = People::where('user_id', Auth::id())->firstOrFail();
-
-    // Jika ada skills sebelumnya, tambahkan koma sebagai pemisah sebelum skill baru
-    if (!empty($people->skills)) {
-        $updatedSkills = $people->skills . ',' . $newSkills;
-    } else {
-        $updatedSkills = $newSkills;
+        return redirect()->back()->with('success', 'Experience added successfully!');
     }
 
-    // Simpan skills yang diperbarui ke database
-    $people->skills = $updatedSkills;
-    $people->save();
+    public function addEducation(Request $request)
+    {
+        $request->validate([
+            'university' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'field_of_study' => 'nullable|string|max:255',
+            'location' => 'nullable|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'grade' => 'nullable|string|max:50',
+            'activities' => 'nullable|string|max:1000',
+            'description' => 'nullable|string|max:1000',
+        ]);
 
-    return redirect()->back()->with('success', 'Skills added successfully!');
-}
+        // Mendapatkan people_id dari pengguna yang sedang login
+        $peopleId = People::where('user_id', Auth::id())->firstOrFail()->id;
 
-public function updateProfile(Request $request)
-{
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'primary_job_title' => 'required|string|max:255',
-        'location' => 'required|string|max:255',
-        'linkedin_link' => 'required|url',
-    ]);
+        // Menyimpan data pendidikan baru
+        Education::create([
+            'people_id' => $peopleId,
+            'university' => $request->input('university'),
+            'title' => $request->input('title'),
+            'field_of_study' => $request->input('field_of_study'),
+            'location' => $request->input('location'),
+            'start_date' => $request->input('start_date'),
+            'end_date' => $request->input('end_date'),
+            'grade' => $request->input('grade'),
+            'activities' => $request->input('activities'),
+            'description' => $request->input('description'),
+        ]);
 
-    // Ambil people_id dari pengguna yang sedang login
-    $people = People::where('user_id', Auth::id())->firstOrFail();
+        return redirect()->back()->with('success', 'Education added successfully!');
+    }
+    public function addSkills(Request $request)
+    {
+        $request->validate([
+            'skills.*' => 'required|string|max:255',
+        ]);
 
-    // Update profil dengan data dari form
-    $people->update([
-        'name' => $request->input('name'),
-        'primary_job_title' => $request->input('primary_job_title'),
-        'location' => $request->input('location'),
-        'linkedin_link' => $request->input('linkedin_link'),
-    ]);
+        // Menggabungkan skill baru yang diinput oleh pengguna
+        $newSkills = implode(',', $request->input('skills'));
 
-    return redirect()->back()->with('success', 'Profile updated successfully!');
-}
-public function showUpcomingEvents()
-{
-    // Ambil data event yang akan datang dari tabel 'events'
-    $upcomingEvents = Event::orderBy('start', 'asc')->take(4)->get();
+        // Mendapatkan people_id dari pengguna yang sedang login
+        $people = People::where('user_id', Auth::id())->firstOrFail();
 
-    return view('peoplepage.home', compact('upcomingEvents'));
-}
+        // Jika ada skills sebelumnya, tambahkan koma sebagai pemisah sebelum skill baru
+        if (!empty($people->skills)) {
+            $updatedSkills = $people->skills . ',' . $newSkills;
+        } else {
+            $updatedSkills = $newSkills;
+        }
+
+        // Simpan skills yang diperbarui ke database
+        $people->skills = $updatedSkills;
+        $people->save();
+
+        return redirect()->back()->with('success', 'Skills added successfully!');
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'primary_job_title' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+            'linkedin_link' => 'required|url',
+        ]);
+
+        // Ambil people_id dari pengguna yang sedang login
+        $people = People::where('user_id', Auth::id())->firstOrFail();
+
+        // Update profil dengan data dari form
+        $people->update([
+            'name' => $request->input('name'),
+            'primary_job_title' => $request->input('primary_job_title'),
+            'location' => $request->input('location'),
+            'linkedin_link' => $request->input('linkedin_link'),
+        ]);
+
+        return redirect()->back()->with('success', 'Profile updated successfully!');
+    }
+    public function showUpcomingEvents()
+    {
+        // Ambil data event yang akan datang dari tabel 'events'
+        $upcomingEvents = Event::orderBy('start', 'asc')->take(4)->get();
+
+        return view('peoplepage.home', compact('upcomingEvents'));
+    }
 
 
 }

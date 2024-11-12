@@ -68,27 +68,25 @@ class WishlistController extends Controller
 
                 $existingWishlist = null;
 
-                // Cek apakah wishlist sudah ada
-                if ($user->role === 'USER') {
-                    $existingWishlist = Wishlist::where('user_id', $user->id)
-                        ->where(function ($query) use ($id) {
-                            $query->where('investor_id', $id)
-                                ->orWhere('people_id', $id);
-                        })->first();
-                } else if ($user->role === 'INVESTOR') {
-                    $existingWishlist = Wishlist::where('user_id', $user->id)
-                        ->where(function ($query) use ($id) {
-                            $query->where('company_id', $id)
-                                ->orWhere('people_id', $id);
-                        })->first();
-                } else if ($user->role === 'PEOPLE') {
-                    $existingWishlist = Wishlist::where('user_id', $user->id)
-                        ->where(function ($query) use ($id) {
-                            $query->where('investor_id', $id)
-                                ->orWhere('company_id', $id)
-                                ->orWhere('people_id', $id);
-                        })->first();
-                }
+                // Check if wishlist already exists
+                $existingWishlist = Wishlist::where('user_id', $user->id)
+                ->where(function ($query) use ($id, $user, $request) { // Tambahkan $request di sini
+                    if ($user->role === 'USER') {
+                        $query->where('investor_id', $id)
+                            ->orWhere('people_id', $id);
+                    } else if ($user->role === 'INVESTOR') {
+                        $query->where('company_id', $id)
+                            ->orWhere('people_id', $id);
+                    } else if ($user->role === 'PEOPLE') {
+                        if ($request->filled('investor_ids') && in_array($id, explode(',', $request->input('investor_ids')))) {
+                            $query->where('investor_id', $id);
+                        } else if ($request->filled('company_ids') && in_array($id, explode(',', $request->input('company_ids')))) {
+                            $query->where('company_id', $id);
+                        } else {
+                            $query->where('people_id', $id);
+                        }
+                    }
+                })->first();
 
                 // Jika belum ada, tambahkan ke wishlist
                 if (!$existingWishlist) {

@@ -9,7 +9,6 @@
 @endsection
 
 @section('content')
-{{-- <div class="container pt-2 gap-2" style="max-width: 1200px; padding: 15px; margin: auto;"> --}}
 <div class="container pt-2 gap-2">
     <div class="row section" style="margin-bottom: 30px;">
         <div class="col-md-4 text-center">
@@ -42,8 +41,10 @@
         <div class="col-md-4"></div>
     </div>
     <!-- Table Section -->
-    <h2>Your Wishlist</h2>
+
     @if ($userRole === 'INVESTOR')
+        <h2>Your Company's Wishlist</h2>
+        {{-- Bagian table tempat untuk company --}}
         <div class="table-responsive">
             <table class="table table-hover table-strip" style="margin-bottom: 0px;">
                 <thead>
@@ -109,6 +110,8 @@
             </table>
         </div>
     @elseif ($userRole === 'USER')
+        <h2>Your Investor's Wishlist</h2>
+        {{-- Bagian table tempat untuk investor --}}
         <div class="table-responsive">
             <table class="table table-hover table-strip" style="margin-bottom: 0px;">
                 <thead class="sub-heading-2">
@@ -156,39 +159,93 @@
                 </tbody>
             </table>
         </div>
-    @endif
-
-    <!-- Footer sebagai bagian dari tabel -->
-    <div class="d-flex justify-content-between align-items-center mb-3 align-self-center" style="padding: 20px; background-color: #ffffff; border-bottom: 1px solid #ddd; border-left: 1px solid #ddd; border-right: 1px solid #ddd; border-top: 0px solid #ffffff; margin-top:0px; height:100px; border-end-end-radius: 20px; border-end-start-radius: 20px; height: 60px;">
-        <form method="GET" action="{{ route('profile') }}" class="mb-0">
-            <div class="d-flex align-items-center">
-                <label for="rowsPerPage" class="me-2">Rows per page:</label>
-                <select name="rows" id="rowsPerPage" class="form-select me-2" onchange="this.form.submit()" style="width: 50%px; margin-left: 5px; margin-right: 5px;">
-                    <option value="10" {{ request('rows') == 10 ? 'selected' : '' }}>10</option>
-                    <option value="50" {{ request('rows') == 50 ? 'selected' : '' }}>50</option>
-                    <option value="100" {{ request('rows') == 100 ? 'selected' : '' }}>100</option>
-                </select>
-                <div>
-                    @if ($userRole === 'INVESTOR')
+    @else
+        <h2>Your Company's Wishlist</h2>
+        {{-- Table bagian untuk menampilkan data company--}}
+        <div class="table-responsive">
+            <table class="table table-hover table-strip" style="margin-bottom: 0px;">
+                <thead>
+                    <tr>
+                        <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle;">
+                            <input type="checkbox" value="all_check" id="select_all" class="select_company">
+                        </th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left;">Organization <br> Name</th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top;">Founded <br> Date</th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top;">Last Funding <br> Date</th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top;">Last Funding <br> Type</th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top;">Number of <br> Employees</th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top;">Business Model</th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top;">Description</th>
+                        <th scope="col" class="sub-heading-2" style="border-top-right-radius: 20px; vertical-align: top;">Job Departments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($companies as $company)
+                        <tr data-href="{{ route('companies.show', $company->id) }}">
+                            <td style="vertical-align: middle;">
+                                <input type="checkbox" class="select_company" data-id="{{ $company->id }}">
+                            </td>
+                            <td style="vertical-align: middle;">
+                                <div style="display: flex; align-items: center;">
+                                    <div style="margin-right: 2px;">
+                                        <img src="{{ !empty($company->image) ? env('APP_URL') . $company->image : asset('images/logo-maxy.png') }}" alt="" width="30" height="30"
+                                        style="border-radius: 8px; object-fit:cover;">
+                                    </div>
+                                    <div style="flex-grow: 1; margin-left: 0px; margin-right: 0px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
+                                        @if (strlen($company->nama) > 10)
+                                            title="{{ $company->nama }}"
+                                            style="cursor: pointer;"
+                                        @endif
+                                    >
+                                        <span class="body-2">{{ $company->nama }}</span>
+                                    </div>
+                                    <div style="margin-left: 0px; margin-right: 0px;">
+                                        <i class="fas fa-search" style="color: #aee1b7;"></i>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="vertical-align: middle;" class="body-2">{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('j M, Y') : 'N/A' }}</td>
+                            <td style="vertical-align: middle;" class="body-2">{{ $company->latest_funding_date ? \Carbon\Carbon::parse($company->latest_funding_date)->format('j M, Y') : 'N/A' }}</td>
+                            <td style="vertical-align: middle;" class="body-2">
+                                <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+                                    @if ($company->funding_stage)
+                                        <div class="funding-stage">{{ $company->funding_stage }}</div>
+                                    @else
+                                        <div>No funding data available</div>
+                                    @endif
+                                </div>
+                            </td>
+                            <td style="vertical-align: middle;" class="body-2">{{ $company->jumlah_karyawan }}</td>
+                            <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $company->business_model }}</td>
+                            <td style="vertical-align: middle;" class="body-2">{{ Str::limit($company->startup_summary, 20, '...') }}</td>
+                            <td style="vertical-align: middle; cursor: pointer;" title={{ $company->all_departments }} class="body-2">
+                                {{ $company->departments->join(', ') }}
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <!-- Footer sebagai bagian dari tabel -->
+        <div class="d-flex justify-content-between align-items-center mb-3 align-self-center" style="padding: 20px; background-color: #ffffff; border-bottom: 1px solid #ddd; border-left: 1px solid #ddd; border-right: 1px solid #ddd; border-top: 0px solid #ffffff; margin-top:0px; height:100px; border-end-end-radius: 20px; border-end-start-radius: 20px; height: 60px;">
+            <form method="GET" action="{{ route('profile') }}" class="mb-0">
+                <div class="d-flex align-items-center">
+                    <label for="rowsPerPage" class="me-2">Rows per page:</label>
+                    <select name="rows" id="rowsPerPage" class="form-select me-2" onchange="this.form.submit()" style="width: 50%px; margin-left: 5px; margin-right: 5px;">
+                        <option value="10" {{ request('rows') == 10 ? 'selected' : '' }}>10</option>
+                        <option value="50" {{ request('rows') == 50 ? 'selected' : '' }}>50</option>
+                        <option value="100" {{ request('rows') == 100 ? 'selected' : '' }}>100</option>
+                    </select>
+                    <div>
                         @if ($companies->total() > 0)
                             <span>Total {{ $companies->firstItem() }} - {{ $companies->lastItem() }} of {{ $companies->total() }}</span>
                         @else
                             <span>No companies found</span>
                         @endif
-
-                    @elseif ($userRole === 'USER')
-                        @if ($investors->total() > 0)
-                            <span>Total {{ $investors->firstItem() }} - {{ $investors->lastItem() }} of {{ $investors->total() }}</span>
-                        @else
-                            <span>No investors found</span>
-                        @endif
-
-                    @endif
+                    </div>
                 </div>
-            </div>
-        </form>
-        <div style="margin-top: 10px;">
-            @if ($userRole === 'INVESTOR')
+            </form>
+            <div style="margin-top: 10px;">
                 @if ($companies->total() > 0)
                     {{ $companies->appends(request()->query())->links('pagination::bootstrap-4') }}
                 @else
@@ -196,7 +253,78 @@
                         <span>No companies found</span>
                     </div>
                 @endif
-            @elseif ($userRole === 'USER')
+            </div>
+        </div>
+
+        <h2>Your Investor's Wishlist</h2>
+        {{-- Table bagian untuk menampilkan data Investor --}}
+        <div class="table-responsive">
+            <table class="table table-hover table-strip" style="margin-bottom: 0px;">
+                <thead class="sub-heading-2">
+                    <tr>
+                        <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle; border-bottom: none;"><input type="checkbox" value="all_check" id="select_all_investor" class="select_investor"></th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Organization Name</th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Number of Contacts</th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Number of Investments</th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Invesment Stage</th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Investor Type</th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Location</th>
+                        <th scope="col" class="sub-heading-2" style="border-top-right-radius: 20px; vertical-align: top; text-align: left; border-bottom: none;">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($investors as $investor)
+                    <tr data-href="{{ route('investors.show', $investor->id) }}">
+                        <td style="vertical-align: middle; border-left: 1px solid #ddd;"><input type="checkbox" class="select_investor" data-id="{{ $investor->id }}"></td>
+                        <td style="vertical-align: middle;">
+                            <div style="display: flex; align-items: center;">
+                                <div style="margin-right: 2px;">
+                                    <img src="{{ !empty($investor->image) ? asset($investor->image) : asset('images/logo-maxy.png') }}" alt="" width="30" height="30" style="border-radius: 8px; object-fit:cover;">
+                                </div>
+                                <div style="flex-grow: 1; margin-left: 0px; margin-right: 10px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
+                                    @if (strlen($investor->org_name) > 10)
+                                        title="{{ $investor->org_name }}"
+                                        style="cursor: pointer;"
+                                    @endif
+                                >
+                                    <span class="body-2">{{ $investor->org_name }}</span>
+                                </div>
+                                <div style="margin-left: 0px; margin-right: 0px;">
+                                    <i class="fas fa-search" style="color: #aee1b7;"></i>
+                                </div>
+                            </div>
+                        </td>
+                        <td  style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->number_of_contacts }}</td>
+                        <td  style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->number_of_investments }}</td>
+                        <td  style="vertical-align: middle; text-align: center;" class="body-2 investment-stage">{{ $investor->investment_stage }}</td>
+                        <td  style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->investor_type }}</td>
+                        <td  style="vertical-align: middle; text-align: start;" class="body-2">{{ $investor->location }}</td>
+                        <td style="vertical-align: middle; text-align: start; border-right: 1px solid #ddd;" class="body-2">{{ Str::limit($investor->description, 20, '...') }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <!-- Footer sebagai bagian dari tabel -->
+        <div class="d-flex justify-content-between align-items-center mb-3 align-self-center" style="padding: 20px; background-color: #ffffff; border-bottom: 1px solid #ddd; border-left: 1px solid #ddd; border-right: 1px solid #ddd; border-top: 0px solid #ffffff; margin-top:0px; height:100px; border-end-end-radius: 20px; border-end-start-radius: 20px; height: 60px;">
+            <form method="GET" action="{{ route('profile') }}" class="mb-0">
+                <div class="d-flex align-items-center">
+                    <label for="rowsPerPage" class="me-2">Rows per page:</label>
+                    <select name="rows" id="rowsPerPage" class="form-select me-2" onchange="this.form.submit()" style="width: 50%px; margin-left: 5px; margin-right: 5px;">
+                        <option value="10" {{ request('rows') == 10 ? 'selected' : '' }}>10</option>
+                        <option value="50" {{ request('rows') == 50 ? 'selected' : '' }}>50</option>
+                        <option value="100" {{ request('rows') == 100 ? 'selected' : '' }}>100</option>
+                    </select>
+                    <div>
+                        @if ($investors->total() > 0)
+                            <span>Total {{ $investors->firstItem() }} - {{ $investors->lastItem() }} of {{ $investors->total() }}</span>
+                        @else
+                            <span>No investors found</span>
+                        @endif
+                    </div>
+                </div>
+            </form>
+            <div style="margin-top: 10px;">
                 @if ($investors->total() > 0)
                     {{ $investors->appends(request()->query())->links('pagination::bootstrap-4') }}
                 @else
@@ -204,10 +332,61 @@
                         <span>No investors found</span>
                     </div>
                 @endif
-            @endif
+            </div>
         </div>
-    </div>
+    @endif
 
+    @if ($userRole != 'PEOPLE')
+        <!-- Footer sebagai bagian dari tabel -->
+        <div class="d-flex justify-content-between align-items-center mb-3 align-self-center" style="padding: 20px; background-color: #ffffff; border-bottom: 1px solid #ddd; border-left: 1px solid #ddd; border-right: 1px solid #ddd; border-top: 0px solid #ffffff; margin-top:0px; height:100px; border-end-end-radius: 20px; border-end-start-radius: 20px; height: 60px;">
+            <form method="GET" action="{{ route('profile') }}" class="mb-0">
+                <div class="d-flex align-items-center">
+                    <label for="rowsPerPage" class="me-2">Rows per page:</label>
+                    <select name="rows" id="rowsPerPage" class="form-select me-2" onchange="this.form.submit()" style="width: 50%px; margin-left: 5px; margin-right: 5px;">
+                        <option value="10" {{ request('rows') == 10 ? 'selected' : '' }}>10</option>
+                        <option value="50" {{ request('rows') == 50 ? 'selected' : '' }}>50</option>
+                        <option value="100" {{ request('rows') == 100 ? 'selected' : '' }}>100</option>
+                    </select>
+                    <div>
+                        @if ($userRole === 'INVESTOR')
+                            @if ($companies->total() > 0)
+                                <span>Total {{ $companies->firstItem() }} - {{ $companies->lastItem() }} of {{ $companies->total() }}</span>
+                            @else
+                                <span>No companies found</span>
+                            @endif
+
+                        @elseif ($userRole === 'USER')
+                            @if ($investors->total() > 0)
+                                <span>Total {{ $investors->firstItem() }} - {{ $investors->lastItem() }} of {{ $investors->total() }}</span>
+                            @else
+                                <span>No investors found</span>
+                            @endif
+                        @endif
+                    </div>
+                </div>
+            </form>
+            <div style="margin-top: 10px;">
+                @if ($userRole === 'INVESTOR')
+                    @if ($companies->total() > 0)
+                        {{ $companies->appends(request()->query())->links('pagination::bootstrap-4') }}
+                    @else
+                        <div class="d-flex justify-content-center">
+                            <span>No companies found</span>
+                        </div>
+                    @endif
+                @elseif ($userRole === 'USER')
+                    @if ($investors->total() > 0)
+                        {{ $investors->appends(request()->query())->links('pagination::bootstrap-4') }}
+                    @else
+                        <div class="d-flex justify-content-center">
+                            <span>No investors found</span>
+                        </div>
+                    @endif
+                @endif
+            </div>
+        </div>
+    @endif
+    <h2>Your Person's Wishlist</h2>
     {{-- Bagian table tempat untuk people --}}
     <div class="table-responsive">
         <table class="table table-hover table-strip" style="border-top-left-radius: 20px; border-top-right-radius: 20px; overflow: hidden;">

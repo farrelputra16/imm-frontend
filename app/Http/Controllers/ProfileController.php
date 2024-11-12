@@ -44,9 +44,15 @@ class ProfileController extends Controller
             $people = People::whereIn('id', $peopleIds)->with('company','experiences')->paginate($rowsPerPage);
 
             // Nambah buat people last experience
-            foreach($people as $person) {
+            foreach ($people as $person) {
                 $latestExperience = $person->experiences->sortByDesc('end_date')->first();
-                $person->pengalaman = $latestExperience->position;
+
+                // Cek apakah $latestExperience ada
+                if ($latestExperience) {
+                    $person->pengalaman = $latestExperience->position;
+                } else {
+                    $person->pengalaman = 'N/A'; // Jika tidak ada pengalaman, set ke 'N/A'
+                }
             }
 
             // Paginate the results
@@ -54,7 +60,49 @@ class ProfileController extends Controller
 
             return view('profile.profile', compact('user', 'investors', 'people', 'userRole'));
         } else if ($userRole === 'PEOPLE') {
+            // Ambil ID perusahaan dari wishlists pengguna
+            $companyIds = $user->wishlists->pluck('company_id');
 
+            // Ambil perusahaan dengan data yang diperlukan
+            $companies = Company::with('departments', 'fundingRounds')->whereIn('id', $companyIds)->paginate($rowsPerPage);
+
+            // Tambahkan informasi tambahan ke setiap perusahaan
+            foreach ($companies as $company) {
+                $company->all_departments = $company->departments->pluck('name');
+                $company->departments = $company->departments->take(2)->pluck('name');
+                $company->latest_funding_date = $company->fundingRounds->max('announced_date');
+            }
+
+            $investor = $user->investor;
+
+            // Ambil ID investor dari wishlists pengguna
+            $investorIds = $user->wishlists->pluck('investor_id');
+
+            // Ambil ID People dari wishlists pengguna
+            $peopleIds = $user->wishlists->pluck('people_id');
+
+            // Buat query untuk mengambil investor berdasarkan ID yang ada di wishlist
+            $query = Investor::whereIn('id', $investorIds);
+
+            // Buat query untuk mengambil people berdasarkan ID yang ada di wishlist
+            $people = People::whereIn('id', $peopleIds)->with('company','experiences')->paginate($rowsPerPage);
+
+            // Nambah buat people last experience
+            foreach ($people as $person) {
+                $latestExperience = $person->experiences->sortByDesc('end_date')->first();
+
+                // Cek apakah $latestExperience ada
+                if ($latestExperience) {
+                    $person->pengalaman = $latestExperience->position;
+                } else {
+                    $person->pengalaman = 'N/A'; // Jika tidak ada pengalaman, set ke 'N/A'
+                }
+            }
+
+            // Paginate the results
+            $investors = $query->paginate($rowsPerPage);
+
+            return view('profile.profile', compact('user', 'companies', 'userRole', 'people', 'investors'));
         } else if ($userRole === 'INVESTOR') {
             // Ambil ID perusahaan dari wishlists pengguna
             $companyIds = $user->wishlists->pluck('company_id');
@@ -73,7 +121,25 @@ class ProfileController extends Controller
                 $company->latest_funding_date = $company->fundingRounds->max('announced_date');
             }
 
-            return view('profile.profile', compact('user', 'companies', 'userRole', 'investor'));
+            // Ambil ID People dari wishlists pengguna
+            $peopleIds = $user->wishlists->pluck('people_id');
+
+            // Buat query untuk mengambil people berdasarkan ID yang ada di wishlist
+            $people = People::whereIn('id', $peopleIds)->with('company','experiences')->paginate($rowsPerPage);
+
+            // Nambah buat people last experience
+            foreach ($people as $person) {
+                $latestExperience = $person->experiences->sortByDesc('end_date')->first();
+
+                // Cek apakah $latestExperience ada
+                if ($latestExperience) {
+                    $person->pengalaman = $latestExperience->position;
+                } else {
+                    $person->pengalaman = 'N/A'; // Jika tidak ada pengalaman, set ke 'N/A'
+                }
+            }
+
+            return view('profile.profile', compact('user', 'companies', 'userRole', 'investor', 'people'));
         }
 
     }
