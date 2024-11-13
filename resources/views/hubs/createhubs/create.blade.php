@@ -1,48 +1,65 @@
-@extends('layouts.app-hubsubmission')
+@extends('layouts.app-landingpage')
 
 @section('title', 'Ajukan Innovation Hub Baru')
 
 @section('css')
-<style>
-    select {
-        background-color: #343a40;
-        color: white;
-        border: 1px solid #ccc;
-        padding: 10px;
-        border-radius: 5px;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .form-control {
-        margin-bottom: 20px;
-    }
-
-    .btn-primary {
-        background-color: #343a40;
-        border-color: #343a40;
-    }
-
-    .btn-primary:hover {
-        background-color: #495057;
-        border-color: #495057;
-    }
-
-    .add-field-btn {
-        background-color: #343a40;
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-bottom: 10px;
-    }
-</style>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            color: #6c757d;
+        }
+        .header h1 span {
+            color: #6f42c1;
+        }
+        .header h2 {
+            font-size: 1.5rem;
+            color: #6f42c1;
+        }
+        .form-section {
+            margin-bottom: 30px;
+        }
+        .form-section h3 {
+            font-size: 1.25rem;
+            color: #343a40;
+            margin-bottom: 15px;
+        }
+        .form-control, .form-select {
+            margin-bottom: 15px;
+        }
+        select {
+            background-color: #6256CA;
+            color: white;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .btn-primary {
+            background-color: #6256CA;
+            border-color: #6256CA;
+        }
+        .btn-primary:hover {
+            background-color: #495057;
+            border-color: #495057;
+        }
+    </style>
 @endsection
 
 @section('content')
 <div class="container mt-5">
-    <h1 class="mb-4">Ajukan Innovation Hub Baru</h1>
+    <div class="header">
+        <h1>Innovation <span>Hub</span></h1>
+        <h2>Innovation Hub (InnovHub) Creation Application Form</h2>
+    </div>
 
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -58,143 +75,171 @@
         </div>
     @endif
 
-    <form action="{{ route('hubs.store') }}" method="POST" onsubmit="prepareForm()">
+    <form action="{{ route('hubs.store') }}" method="POST">
         @csrf
-        <div class="form-group">
-            <label for="name">Nama Hub:</label>
-            <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
 
-            <label for="provinsi">Provinsi:</label>
-            <select class="form-control" id="provinsi" name="provinsi" required>
-                <option value="" disabled selected>Pilih Provinsi</option>
-            </select>
-
-            <label for="kota">Kota/Kabupaten:</label>
-            <select class="form-control" id="kota" name="kota" required>
-                <option value="" disabled selected>Pilih Kota/Kabupaten</option>
-            </select>
-
-            <label for="rank">Rank:</label>
-            <input type="number" class="form-control" id="rank" name="rank" value="{{ old('rank') }}">
-
-            <label for="top_investor_types">Top Investor Types:</label>
-            <input type="text" class="form-control" id="top_investor_types" name="top_investor_types" value="{{ old('top_investor_types') }}">
-
-            <label for="top_funding_types">Top Funding Types:</label>
-            <input type="text" class="form-control" id="top_funding_types" name="top_funding_types" value="{{ old('top_funding_types') }}">
-
-            <label for="description">Deskripsi:</label>
-            <textarea class="form-control" id="description" name="description" rows="4">{{ old('description') }}</textarea>
-
-            <!-- Dynamic Facilities Field -->
-            <label>Fasilitas:</label>
-            <div id="facilities-wrapper">
-                <div class="d-flex align-items-center mb-2">
-                    <input type="text" class="form-control" placeholder="Contoh: Wi-Fi, Lab, Kantin">
-                    <button type="button" class="add-field-btn" onclick="addField('facilities-wrapper')">+</button>
+        <div class="form-section">
+            <h3>Innovation Hub Proposal Description</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <input type="text" name="name" class="form-control" placeholder="Proposed Innovation Hub Name" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="provinsi">Provinsi:</label>
+                    <select id="provinsi" name="provinsi" class="form-select" required>
+                        <option value="" disabled selected>Pilih Provinsi</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="kota">Kota/Kabupaten:</label>
+                    <select id="kota" name="kota" class="form-select" required>
+                        <option value="" disabled selected>Pilih Kota/Kabupaten</option>
+                    </select>
                 </div>
             </div>
-
-            <!-- Dynamic Programs Field -->
-            <label>Program:</label>
-            <div id="programs-wrapper">
-                <div class="d-flex align-items-center mb-2">
-                    <input type="text" class="form-control" placeholder="Contoh: Startup Accelerator, Community Development">
-                    <button type="button" class="add-field-btn" onclick="addField('programs-wrapper')">+</button>
-                </div>
-            </div>
-
-            <!-- Hidden Inputs for Converted Strings -->
-            <input type="hidden" id="facilities" name="facilities">
-            <input type="hidden" id="programs" name="programs">
         </div>
-        <button type="submit" class="btn btn-primary">Kirim Pengajuan</button>
+
+        <div class="form-section">
+            <h3>Proposed Design and Facilities</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <select name="facilities" class="form-select">
+                        <option selected>Choose your type facilities</option>
+                        <option value="Coworking Space">Coworking Space</option>
+                        <option value="StartUp Incubation Space">StartUp Incubation Space</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" name="location_size" class="form-control" placeholder="Location Size">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3>Operational Plan</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <input type="text" name="operating_hours" class="form-control" placeholder="Operating Hours">
+                </div>
+                <div class="col-md-6">
+                    <input type="text" name="funding_sources" class="form-control" placeholder="Funding Model (Investment, Sponsorship, Others)">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <input type="text" name="market_and_promotion_plan" class="form-control" placeholder="Marketing and Promotion Plan">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3>Impact Analysis</h3>
+            <div class="row">
+                <div class="col-md-12">
+                    <input type="text" name="target_participant" class="form-control" placeholder="Target Participants (Startups, Freelancers, SMEs, etc.)">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <input type="number" name="estimated_user" class="form-control" placeholder="Estimated Number of Users per Year">
+                </div>
+                <div class="col-md-6">
+                    <input type="text" name="benefit" class="form-control" placeholder="Expected Benefits to the Community/Industry">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3>Budget and Funding</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <input type="text" name="estimated_setup_cost" class="form-control" placeholder="Total Estimated Setup Costs">
+                </div>
+                <div class="col-md-6">
+                    <input type="text" name="funding_sources" class="form-control" placeholder="Available Funding Sources">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <select name="investor_id" class="form-select">
+                        <option value="">Select Investor</option>
+                        @foreach($investors as $investor)
+                            <option value="{{ $investor->id }}">{{ $investor->display_name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="submit-btn">
+            <button type="submit" class="btn btn-primary">Kirim Pengajuan</button>
+        </div>
     </form>
 </div>
-
 <script>
-    const provinsiSelect = document.getElementById('provinsi');
-    const kotaSelect = document.getElementById('kota');
-    let provincesData = [];
+    document.addEventListener('DOMContentLoaded', () => {
+        const provinsiSelect = document.getElementById('provinsi');
+        const kotaSelect = document.getElementById('kota');
+        let provincesData = [];
 
-    // Fetch Provinsi
-    fetch('https://kanglerian.github.io/api-wilayah-indonesia/api/provinces.json')
-        .then(response => response.json())
-        .then(provinces => {
-            provincesData = provinces;
-            provinces.forEach(provinsi => {
-                const option = document.createElement('option');
-                option.value = provinsi.name;
-                option.textContent = provinsi.name;
-                option.dataset.id = provinsi.id;
-                provinsiSelect.appendChild(option);
-            });
-        })
-        .catch(error => console.error('Error fetching provinces:', error));
+        // Fetch Provinsi
+        async function fetchProvinces() {
+            try {
+                const response = await fetch('https://kanglerian.github.io/api-wilayah-indonesia/api/provinces.json');
+                if (!response.ok) throw new Error('Network response was not ok');
 
-    // Populate Cities
-    function populateCities() {
-        const selectedProvinsiName = provinsiSelect.value;
-        const selectedProvinsiId = getProvinsiIdByName(selectedProvinsiName);
-        const regenciesUrl = `https://kanglerian.github.io/api-wilayah-indonesia/api/regencies/${selectedProvinsiId}.json`;
+                provincesData = await response.json();
+                provincesData.forEach(provinsi => {
+                    const option = document.createElement('option');
+                    option.value = provinsi.name;
+                    option.textContent = provinsi.name;
+                    option.dataset.id = provinsi.id;
+                    provinsiSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching provinces:', error);
+            }
+        }
 
-        kotaSelect.innerHTML = '<option value="" disabled selected>Pilih Kota/Kabupaten</option>';
-        fetch(regenciesUrl)
-            .then(response => response.json())
-            .then(regencies => {
+        // Populate Cities based on selected province
+        async function populateCities() {
+            const selectedProvinsiName = provinsiSelect.value;
+            const selectedProvinsiId = getProvinsiIdByName(selectedProvinsiName);
+            if (!selectedProvinsiId) return;
+
+            kotaSelect.innerHTML = '<option value="" disabled selected>Pilih Kota/Kabupaten</option>';
+
+            try {
+                const regenciesUrl = `https://kanglerian.github.io/api-wilayah-indonesia/api/regencies/${selectedProvinsiId}.json`;
+                const response = await fetch(regenciesUrl);
+                if (!response.ok) throw new Error('Network response was not ok');
+
+                const regencies = await response.json();
                 regencies.forEach(regency => {
                     const option = document.createElement('option');
                     option.value = regency.name;
                     option.textContent = regency.name;
                     kotaSelect.appendChild(option);
                 });
-            })
-            .catch(error => console.error(`Error fetching regencies for provinsi ${selectedProvinsiId}:`, error));
-    }
+            } catch (error) {
+                console.error(`Error fetching regencies for provinsi ${selectedProvinsiId}:`, error);
+            }
+        }
 
-    function getProvinsiIdByName(name) {
-        const provinsi = provincesData.find(provinsi => provinsi.name === name);
-        return provinsi ? provinsi.id : null;
-    }
+        // Get province ID by name
+        function getProvinsiIdByName(name) {
+            const provinsi = provincesData.find(provinsi => provinsi.name === name);
+            return provinsi ? provinsi.id : null;
+        }
 
-    provinsiSelect.addEventListener('change', populateCities);
+        // Event listener for province selection
+        provinsiSelect.addEventListener('change', populateCities);
 
-    // Prepare form data for facilities and programs fields before submission
-    function prepareForm() {
-        // Gather facilities
-        const facilitiesInputs = document.querySelectorAll('#facilities-wrapper input');
-        const facilities = Array.from(facilitiesInputs)
-            .map(input => input.value)
-            .filter(value => value.trim() !== '') // Remove empty values
-            .join(','); // Join with commas
-
-        // Set hidden input for facilities
-        document.getElementById('facilities').value = facilities;
-
-        // Gather programs
-        const programsInputs = document.querySelectorAll('#programs-wrapper input');
-        const programs = Array.from(programsInputs)
-            .map(input => input.value)
-            .filter(value => value.trim() !== '') // Remove empty values
-            .join(','); // Join with commas
-
-        // Set hidden input for programs
-        document.getElementById('programs').value = programs;
-    }
-
-    // Add Dynamic Field
-    function addField(wrapperId) {
-        const wrapper = document.getElementById(wrapperId);
-        const newField = document.createElement('div');
-        newField.classList.add('d-flex', 'align-items-center', 'mb-2');
-        newField.innerHTML = `<input type="text" class="form-control" placeholder="Masukkan ${wrapperId === 'facilities-wrapper' ? 'Fasilitas' : 'Program'}">
-                              <button type="button" class="add-field-btn" onclick="removeField(this)">-</button>`;
-        wrapper.appendChild(newField);
-    }
-
-    // Remove Dynamic Field
-    function removeField(button) {
-        button.parentNode.remove();
-    }
+        // Initial fetch of provinces
+        fetchProvinces();
+    });
 </script>
+
+
 @endsection
+

@@ -547,7 +547,7 @@
                 <div class="card-body">
                     <div class="news-item">
                         @foreach ($events as $event)
-                        <img alt="Insight image 1" src="images/landingpage/speed.jpeg" />
+                        <img alt="Insight image 1" src="" />
                         <div class="news-content">
                             <div class="date">
                                 {{ $event->start }}
