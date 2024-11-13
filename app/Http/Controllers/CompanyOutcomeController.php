@@ -48,7 +48,11 @@ class CompanyOutcomeController extends Controller
         $project = Project::findOrFail($project_id);
         $user = auth()->user();
         $isCompany = $user->role === 'USER';
-        $company = $user->companies; // Mengambil company terkait dengan user
+        if ($isCompany) {
+            $company = $user->companies()->first();
+        } else {
+            $company = $project->company;
+        }
         $companyName = strtolower(str_replace(' ', '_', $company->nama));
 
 

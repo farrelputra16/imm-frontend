@@ -15,10 +15,6 @@
         list-style-type: none;
     }
 
-    body {
-        padding-top: 115px;
-    }
-
     .tabel {
         background-color: #F7F6FB;
         border-radius: 5px;
@@ -136,7 +132,7 @@
 @php
     // Mapping antara funding type dan label yang ingin ditampilkan
     $fundingTypes = [
-       'Pre Seed' => 'Pre-Seed',
+        'Pre Seed' => 'Pre-Seed',
         'seed' => 'Seed',
         'Series A' => 'Series A',
         'Series B' => 'Series B',
@@ -306,7 +302,7 @@
                 <table id="project-table" class="table table-hover table-strip mt-3" style="margin-bottom: 0px;">
                     <thead>
                         <tr>
-                            <th scope=" col" style="border-top-left-radius: 20px; vertical-align: middle;">No.</th>
+                            <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle;">No.</th>
                             <th scope="col" style="vertical-align: middle;">Project Name</th>
                             <th scope="col" style="vertical-align: middle;">Status</th>
                             @if (!$isUserRole)
@@ -318,21 +314,29 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($projects as $project)
+                        @if ($projects->isEmpty())
                             <tr>
-                                <td style="vertical-align: middle; border-left: 1px solid #BBBEC5;">{{ $loop->iteration }}</td> <!-- Menampilkan nomor urut -->
-                                <td style="vertical-align: middle;">{{ $project->nama }}</td>
-                                <td style="vertical-align: middle;">{{ $project->status }}</td> <!-- Menampilkan status proyek -->
-                                @if (!$isUserRole)
-                                    <td style="vertical-align: middle;">Rp{{ number_format($project->jumlah_pendanaan, 0, ',', '.') }}</td> <!-- Menampilkan total dana tersedia -->
-                                    <td style="vertical-align: middle;">{{ $project->start_date ? \Carbon\Carbon::parse($project->start_date)->format('j M, Y') : 'N/A' }}</td>
-                                    <td style="vertical-align: middle;">{{ $project->end_date ? \Carbon\Carbon::parse($project->end_date)->format('j M, Y') : 'N/A' }}</td>
-                                @endif
-                                <td style="vertical-align: middle; border-right: 1px solid #BBBEC5; text-align: center  ;">
-                                    <a href="{{ route('homepageimm.detailbiaya', ['project_id' => $project->id]) }}" style="text-decoration: underline;">cek disini</a>
+                                <td colspan="{{ $isUserRole ? 4 : 6 }}" style="text-align: center; vertical-align: middle;">
+                                    <strong>No data available.</strong>
                                 </td>
                             </tr>
-                        @endforeach
+                        @else
+                            @foreach ($projects as $project)
+                                <tr>
+                                    <td style="vertical-align: middle; border-left: 1px solid #BBBEC5;">{{ $loop->iteration }}</td> <!-- Menampilkan nomor urut -->
+                                    <td style="vertical-align: middle;">{{ $project->nama }}</td>
+                                    <td style="vertical-align: middle;">{{ $project->status }}</td> <!-- Menampilkan status proyek -->
+                                    @if (!$isUserRole)
+                                        <td style="vertical-align: middle;">Rp{{ number_format($project->jumlah_pendanaan, 0, ',', '.') }}</td> <!-- Menampilkan total dana tersedia -->
+                                        <td style="vertical-align: middle;">{{ $project->start_date ? \Carbon\Carbon::parse($project->start_date)->format('j M, Y') : 'N/A' }}</td>
+                                        <td style="vertical-align: middle;">{{ $project->end_date ? \Carbon\Carbon::parse($project->end_date)->format('j M, Y') : 'N/A' }}</td>
+                                    @endif
+                                    <td style="vertical-align: middle; border-right: 1px solid #BBBEC5; text-align: center;">
+                                        <a href="{{ route('homepageimm.detailbiaya', ['project_id' => $project->id]) }}" style="text-decoration: underline;">Check here</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>

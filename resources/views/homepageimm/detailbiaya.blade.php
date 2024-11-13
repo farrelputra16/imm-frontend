@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
+<link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 <style>
 * {
     margin: 0;
@@ -187,7 +188,7 @@ margin-top: 20px;
 @endsection
 
 @section('content')
-    <div class="container" style="padding-top: 120px">
+    <div class="container">
         <div class="row d-flex justify-content-start">
             <nav aria-label="breadcrumb" class="mb-5">
                 <ol class="breadcrumb">
@@ -211,7 +212,7 @@ margin-top: 20px;
 
 
     <div class="container mt-2">
-        <h5>Detail Biaya</h5>
+        <h2>Detail Biaya</h2>
         <!-- Tampilkan tombol "Tambah Penggunaan Dana" hanya jika role-nya company -->
         <div class="d-flex justify-content-end align-items-center" style="margin-top: 48px;">
             <div class="d-flex align-items-center">

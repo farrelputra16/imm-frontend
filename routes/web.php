@@ -452,9 +452,9 @@ Route::get('/responden-esay', function () {
 //     return view('homepageimm.kelolapengeluaran');
 // });
 
-Route::get('/detailbiaya', function () {
-    return view('homepageimm.detailbiaya');
-});
+// Route::get('/detailbiaya', function () {
+//     return view('homepageimm.detailbiaya');
+// });
 
 Route::get('/unggahdokumen', function () {
     return view('myproject.creatproject.unggahdokumen');

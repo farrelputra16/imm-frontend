@@ -250,12 +250,20 @@
         background-color: transparent; /* No background on hover */
         border-color: white; /* White border on hover */
     }
-    .three-dots {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        font-size: 20px;
-        color: #000;
+
+    li.nav-item {
+        list-style-type: none; /* Menghilangkan marker */
+        padding-left: 0; /* Menghilangkan padding kiri jika ada */
+    }
+
+    ul {
+        list-style-type: none; /* Menghilangkan marker dari semua <ul> */
+        padding-left: 0; /* Menghilangkan padding kiri */
+    }
+
+    ol {
+        list-style-type: none; /* Menghilangkan marker dari semua <ol> */
+        padding-left: 0; /* Menghilangkan padding kiri */
     }
 </style>
 @endsection
