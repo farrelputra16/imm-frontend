@@ -14,12 +14,6 @@
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap");
 
-        * {
-            font-family: "Poppins", sans-serif;
-            text-decoration: none;
-            list-style-type: none;
-        }
-
         .navbar {
             background-color: #ffffff;
             color: #000000;
@@ -165,7 +159,7 @@
             gap: 10px
         }
 
-        
+
         .footerclose{
             background-color: #5940cb;
             color: #ffffff;
@@ -174,14 +168,14 @@
             border-top-left-radius: 40px;
             border-top-right-radius: 40px;
             width: 100%;
- 
+
             display: none;
         }
 
         @media (max-width: 768px) {
             footer {
                 display: none;
-                
+
             }
             .navbar-actions {
             display: flex;
@@ -194,12 +188,12 @@
             /* Remove margin between login and register buttons */
         }
             .footerclose{
-          
+
                 display: flex;
             align-items: center;
             justify-content: center;
             }
-            
+
         }
     </style>
 </head>

@@ -1,9 +1,10 @@
-@extends('layouts.app-imm-create')
+{{-- @extends('layouts.app-imm-create') --}}
+@extends('layouts.app-imm')
 @section('title', 'Membuat Proyek')
 
 @section('css')
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ asset('css/myproject/creatproject/indicator.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('css/myproject/creatproject/indicator.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('css/myproject/creatproject/creatproject.css') }}">
     {{-- <link rel="stylesheet" href="{{ asset('css/myproject/creatproject/pemilihansdgs.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
@@ -13,7 +14,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
         .breadcrumb {
             background-color: white;
@@ -444,7 +444,7 @@
             </div>
         </div>
         {{-- Akhir dari notifikasi --}}
-        <div class="container mt-5">
+        <div class="container">
             <form action="{{ route('projects.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <nav aria-label="breadcrumb" class="mb-5">
@@ -768,11 +768,6 @@
                                 </div>
                                 {{-- Bagian SDG --}}
                                 <div class="col-md-9">
-                                    <div class="search-container">
-                                        <i class="fas fa-search" style="margin-left: 10px;"></i>
-                                        <input class="form-control" placeholder="Search Data" type="text" style="border: none;">
-                                        <button class="btn">Search</button>
-                                    </div>
                                     @foreach ($sdgs as $sdg)
                                         <div class="image-container" data-sdg="{{ $sdg->id }}">
                                             @php
@@ -788,17 +783,6 @@
                                             <img src="{{ $imageUrl }}" alt="SDG {{ $sdg->order }}">
                                             <input class="sdg-checkbox-img" name="sdg_ids[]" type="checkbox" value="{{ $sdg->id }}"/>
                                         </div>
-                                        {{-- <div class="sdg-item" data-sdg="{{ $sdg->id }} ">
-                                            <img src="{{ env('APP_BACKEND_URL') . '/images/' . $sdg->img }}"
-                                                alt="SDG {{ $sdg->order }}">
-                                            <h5 class="sdg-name">{{ $sdg->order }}. {{ $sdg->name }}</h5>
-                                            <i class="fas fa-chevron-down sdg-toggle"></i>
-                                            <input type="checkbox" class="sdg-checkbox-img" name="sdg_ids[]"
-                                                value="{{ $sdg->id }}">
-                                        </div> --}}
-                                        {{-- <div class="sdg-description">
-                                            <p>{{ $sdg->description ?? 'Tidak ada deskripsi' }}</p>
-                                        </div> --}}
                                     @endforeach
                                     <div>
                                         <span class="sub-heading-1" id="category-selected" value=""></span>
@@ -819,11 +803,6 @@
                 <div id="indicator-section" style="display:none">
                     <div class="container mt-5">
                         <h2 style="color: #6256CA;" class="mb-5">SDGs Indicators</h2>
-                        <div class="search-container" style="max-width: 2000px;">
-                            <i class="fas fa-search" style="margin-left: 10px;"></i>
-                            <input class="form-control" placeholder="Search Data" type="text" style="border: none;">
-                            <button class="btn">Search</button>
-                        </div>
                         <span class="sub-heading-1" id="category-selected-indikator" style="margin-top: 24px;"></span>
                         <div class="d-flex justify-content-start mb-4" id="sdg-images-container" style="margin-top: 24px;"></div>
                         {{-- <div class="text-center bg-light p-3 mb-4" id="project-long-description"></div> --}}
@@ -861,53 +840,11 @@
                             @endforeach
                         </ul>
 
-                        {{-- @foreach ($sdgs as $sdg)
-                            <div class="goal-description mb-4 p-3 bg-white shadow-sm rounded" id="goal{{ $sdg->id }}-description">
-                                <div class="d-flex align-items-center">
-                                    <div>
-                                        <h5 class="mb-0">SDGs Goals {{ $sdg->id }}</h5>
-                                        <p class="mb-0">{{ $sdg->name }}</p>
-                                    </div>
-                                </div>
-
-                                @foreach ($sdg->indicators as $indicator)
-                                    @if ($indicator->level == 1)
-                                        <div class="mt-3 d-flex align-items-center level-1-indicator" style="gap: 15px">
-                                            <label for="indicator-{{ $indicator->id }}">
-                                                <input type="checkbox" class="indicator-checkbox"
-                                                    id="indicator-{{ $indicator->id }}" name="indicator_ids[]"
-                                                    value="{{ $indicator->id }}"
-                                                    data-target="sub-container-{{ $indicator->id }}">
-                                                <span class="ml-2">{{ $indicator->order }} </span><span class="ml-2">{{ $indicator->name }}</span>
-                                            </label>
-                                        </div>
-                                    @endif --}}
-
-                                    {{-- Sub-container untuk indikator level 2 --}}
-                                    {{-- @if ($indicator->level == 1)
-                                        <div class="sub-container" id="sub-container-{{ $indicator->id }}"
-                                            style="display: none; margin-top: 10px;">
-                                            <div class="d-flex flex-column" style="gap: 15px; margin-left:45px;">
-                                                @foreach ($indicator->childIndicators as $childIndicator)
-                                                    <div class=" d-flex">
-                                                        <span>{{ $childIndicator->order }}
-                                                        </span><span class="ml-2">{{ $childIndicator->name }}</span><br>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    @endif
-                                @endforeach
-                            </div>
-                        @endforeach  --}}
-
-
                         <div class="d-flex justify-content-between mt-3">
                             <button type="button" class="btn btn-secondary" id="back-to-sdg-section">Kembali</button>
                             <button type="button" class="btn btn-primary" id="next-to-metric-section">Simpan dan Lanjutkan</button>
                         </div>
                     </div>
-
                 </div>
 
                 {{-- Bagian Matriks --}}
@@ -1681,6 +1618,7 @@
                 // Inisialisasi tampilan saat halaman dimuat
                 updateIndicatorVisibility();
 
+
                 // Masuk section indicator
                 $('#next-to-indicator-section').on('click', function() {
                     const projectName = $('#nama').val();
@@ -1896,6 +1834,23 @@
                         // Handle error case if needed
                     }
                 });
+
+                $('.search-container input').on('input', function() {
+                    var searchTerm = $(this).val().toLowerCase(); // Ambil nilai pencarian dan ubah menjadi huruf kecil
+
+                    // Menyembunyikan semua metrik
+                    $('#metrics .card').each(function() {
+                        var metricName = $(this).find('strong').text().toLowerCase(); // Ambil nama metrik dan ubah menjadi huruf kecil
+                        var metricDefinition = $(this).find('.sdg-name-metric').text().toLowerCase(); // Ambil definisi metrik
+
+                        // Jika nama atau definisi metrik mengandung istilah pencarian, tampilkan
+                        if (metricName.includes(searchTerm) || metricDefinition.includes(searchTerm)) {
+                            $(this).show();
+                        } else {
+                            $(this).hide();
+                        }
+                    });
+                });
             });
 
             // Menambahkan logika untuk menyesuaikan matriks dengan indikator yang dipilih
@@ -2062,6 +2017,23 @@
 
                     // Initial fetch for metrics
                     fetchMetrics();
+
+                    $('.search-container input').on('input', function() {
+                        var searchTerm = $(this).val().toLowerCase(); // Ambil nilai pencarian dan ubah menjadi huruf kecil
+
+                        // Menyembunyikan semua metrik
+                        $('#metrics .card').each(function() {
+                            var metricName = $(this).find('strong').text().toLowerCase(); // Ambil nama metrik dan ubah menjadi huruf kecil
+                            var metricDefinition = $(this).find('.sdg-name-metric').text().toLowerCase(); // Ambil definisi metrik
+
+                            // Jika nama atau definisi metrik mengandung istilah pencarian, tampilkan
+                            if (metricName.includes(searchTerm) || metricDefinition.includes(searchTerm)) {
+                                $(this).show();
+                            } else {
+                                $(this).hide();
+                            }
+                        });
+                    });
                 });
             });
 
