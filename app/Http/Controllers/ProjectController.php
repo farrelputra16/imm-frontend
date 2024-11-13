@@ -101,7 +101,6 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
-        ddd($request->all());
         try {
             $validatedData = $request->validate([
                 'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10000',
@@ -172,6 +171,9 @@ class ProjectController extends Controller
             $validatedData['roadmap'] = $roadmapName;
         }
 
+        // Memastikan metric_ids tidak double
+        $validatedData['metric_ids'] = array_unique($validatedData['metric_ids']);
+
         // Create project
         $project = Project::create($validatedData);
 
@@ -189,7 +191,7 @@ class ProjectController extends Controller
         }
 
         if ($request->has('metric_ids')) {
-            $project->metrics()->attach($request->input('metric_ids'));
+            $project->metrics()->attach($validatedData['metric_ids']);
         }
 
         // Save target customers if they exist

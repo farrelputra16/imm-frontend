@@ -2130,6 +2130,7 @@
 
                 function getSelectedMetrics() {
                     var selectedMetrics = [];
+                    console.log("Selected Metrics :", selectedMetrics);
 
                     // Loop through each metric checkbox
                     $('.metric-checkbox:checked').each(function() {
