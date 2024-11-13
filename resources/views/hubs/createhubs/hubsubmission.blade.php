@@ -1,4 +1,4 @@
-@extends('layouts.app-hubsubmission')
+@extends('layouts.app-landingpage')
 
 @section('title', 'Ajukan Innovation Hub Baru')
 

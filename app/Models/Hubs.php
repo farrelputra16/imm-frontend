@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Models;
+
 use App\Models\User;
+use App\Models\Investor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,22 +15,32 @@ class Hubs extends Model
         'name',
         'provinsi',
         'kota',
-        'rank',
-        'top_investor_types',
-        'top_funding_types',
         'description',
-        'facilities',   // Tambahkan fasilitas
-        'programs',     // Tambahkan program
-        'alumni',       // Tambahkan alumni
+        'facilities',
+        'programs',
+        'alumni',
         'status',
-        'user_id'
+        'user_id',
+        'type_of_service',
+        'purpose',
+        'target_scale',
+        'location_size',
+        'operating_hours',
+        'market_and_promotion_plan',
+        'target_participant',
+        'estimated_user',
+        'benefit',
+        'estimated_setup_cost',
+        'funding_sources',
+        'investor_id'
     ];
 
     protected $casts = [
         'rank' => 'integer',
+        'estimated_user' => 'integer',
+        'estimated_setup_cost' => 'decimal:2',
     ];
 
-    // Default status adalah 'pending' jika tidak ditentukan
     protected $attributes = [
         'status' => 'pending',
     ];
@@ -36,6 +48,11 @@ class Hubs extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function investor()
+    {
+        return $this->belongsTo(Investor::class);
     }
 
     public function companies()
@@ -53,7 +70,6 @@ class Hubs extends Model
         return $this->belongsToMany(Event::class, 'event_hubs', 'hub_id', 'event_id');
     }
 
-    // Scope untuk mengambil hubs dengan status 'approved'
     public function scopeApproved($query)
     {
         return $query->where('status', 'approved');
