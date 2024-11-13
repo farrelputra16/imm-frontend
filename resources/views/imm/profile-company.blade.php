@@ -601,7 +601,7 @@
 @endsection
 
 @section('content')
-<div class="container" style="margin-top: 120px;">
+<div class="container">
     <!-- Breadcrumb -->
     <nav aria-label="breadcrumb" style="margin-bottom: 32px;">
         <ol class="breadcrumb">
@@ -614,8 +614,8 @@
             <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
                 <a href="{{ route('profile-company') }}" style="text-decoration: none; color: #212B36;">Profile</a>
             </li>
-            <li class="breadcrumb-item active sub-heading-1" style="margin-right: 4px; display: none;" id="people-arrow"></li>
-                <a href="{{ route('profile-company') }}" style="text-decoration: none; color: #212B36; display: none;" id="people-text">People</a>
+            <li class="breadcrumb-item active sub-heading-1" style="margin-right: 4px; visibility: hidden;" id="people-arrow"></li>
+                <a href="{{ route('profile-company') }}" style="text-decoration: none; color: #212B36; visibility: hidden;" id="people-text">People</a>
             </li>
         </ol>
     </nav>
@@ -1236,11 +1236,11 @@
                 if (targetSection) {
                     targetSection.style.display = 'block';
                     if (targetId === '#people-section') {
-                        arrow.style.display = 'block';
-                        text.style.display = 'block';
+                        arrow.style.visibility = 'visible';
+                        text.style.visibility = 'visible';
                     }else{
-                        arrow.style.display = 'none';
-                        text.style.display = 'none';
+                        arrow.style.visibility = 'hidden';
+                        text.style.visibility = 'hidden';
                     }
                 }
             });
