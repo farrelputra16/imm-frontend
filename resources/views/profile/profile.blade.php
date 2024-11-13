@@ -3,13 +3,12 @@
 
 @section('css')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
 <link rel="stylesheet" href="{{ asset('css/profile/profile.css') }}">
 @endsection
 
 @section('content')
-<div class="container pt-2 gap-2">
+<div class="container">
     <div class="row section" style="margin-bottom: 30px;">
         <div class="col-md-4 text-center">
             <img src="{{ $user->img ? asset('images/' . $user->img) : asset('images/default_user.webp') }}" class="rounded-circle img-fluid" alt="Profile Picture">
@@ -43,7 +42,7 @@
     <!-- Table Section -->
 
     @if ($userRole === 'INVESTOR')
-        <h2>Your Company's Wishlist</h2>
+        <h2 style="margin-top: 24px; margin-bottom: 24px;">Your Company's Wishlist</h2>
         {{-- Bagian table tempat untuk company --}}
         <div class="table-responsive">
             <table class="table table-hover table-strip" style="margin-bottom: 0px;">
@@ -110,7 +109,7 @@
             </table>
         </div>
     @elseif ($userRole === 'USER')
-        <h2>Your Investor's Wishlist</h2>
+        <h2 style="margin-top: 24px; margin-bottom: 24px;">Your Investor's Wishlist</h2>
         {{-- Bagian table tempat untuk investor --}}
         <div class="table-responsive">
             <table class="table table-hover table-strip" style="margin-bottom: 0px;">
@@ -160,7 +159,7 @@
             </table>
         </div>
     @else
-        <h2>Your Company's Wishlist</h2>
+        <h2 style="margin-top: 24px; margin-bottom: 24px;">Your Company's Wishlist</h2>
         {{-- Table bagian untuk menampilkan data company--}}
         <div class="table-responsive">
             <table class="table table-hover table-strip" style="margin-bottom: 0px;">
@@ -256,7 +255,7 @@
             </div>
         </div>
 
-        <h2>Your Investor's Wishlist</h2>
+        <h2 style="margin-top: 24px; margin-bottom: 24px;">Your Investor's Wishlist</h2>
         {{-- Table bagian untuk menampilkan data Investor --}}
         <div class="table-responsive">
             <table class="table table-hover table-strip" style="margin-bottom: 0px;">
@@ -386,7 +385,7 @@
             </div>
         </div>
     @endif
-    <h2>Your Person's Wishlist</h2>
+    <h2 style="margin-top: 24px; margin-bottom: 24px;">Your Person's Wishlist</h2>
     {{-- Bagian table tempat untuk people --}}
     <div class="table-responsive">
         <table class="table table-hover table-strip" style="border-top-left-radius: 20px; border-top-right-radius: 20px; overflow: hidden;">

@@ -5,10 +5,8 @@
 <link rel="stylesheet" href="{{ asset('css/profile/profiledit.css') }}">
 <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <style>
     body {
-    font-family: Arial, sans-serif;
     list-style-type: none;
     text-decoration: none;
 }
@@ -319,34 +317,6 @@ form {
         right: 86px;
     }
 }
-
-/* Menambahkan transisi pada navbar */
-
-.navbar {
-    transition: background-color 0.3s ease;
-}
-
-.navbar:hover {
-    background-color: #e3e3e3;
-}
-
-.navbar-button {
-    background-color: #000000;
-    color: #ffffff;
-    padding: 10px 20px;
-    border-radius: 10px;
-    border: none;
-    font-weight: 500;
-    transition: background-color 0.3s ease;
-    text-decoration: none;
-    /* Menghapus underline pada teks tautan */
-    display: inline-block;
-    /* Membuat tautan tampil sebagai blok inline */
-}
-
-.navbar-button:hover {
-    background-color: #333333;
-}
 </style>
 @endsection
 
@@ -355,7 +325,7 @@ form {
 <form action="{{ route('profile.update', $user->id) }}" method="POST" id="profileForm" enctype="multipart/form-data">
     @csrf
     @method('PUT')
-    <div class="container d-flex flex-column" style="margin-top:120px;">
+    <div class="container d-flex flex-column">
         <div class="profile-container-wrapper">
             <div class="profile-picture-container mb-4">
                 <img src="{{ $user->img ? asset('images/' . $user->img) : asset('images/default_user.webp') }}" alt="Profile Picture" class="img-fluid">
