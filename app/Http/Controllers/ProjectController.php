@@ -101,6 +101,7 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
+        ddd($request->all());
         try {
             $validatedData = $request->validate([
                 'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10000',
@@ -233,6 +234,7 @@ class ProjectController extends Controller
         $project = Project::with('tags', 'sdgs', 'indicators', 'metrics', 'targetPelanggan', 'dana', 'surveys')->findOrFail($id);
         $documents = DB::table('project_dokumen')->where('project_id', $id)->get();
         $initialMetricProjects = $project->metricProjects()->whereNull('report_month')->whereNull('report_year')->get();
+
 
         // Cek apakah role pengguna adalah "USER"
         $isUserRole = Auth::user()->role === 'USER';

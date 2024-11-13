@@ -354,7 +354,7 @@
                                         <div class="card-body position-relative">
                                             <h5 class="card-title">{{ $project->nama }}</h5>
                                             <p class="card-text">
-                                                {{ $project->deskripsi }}
+                                                {{ Str::limit($project->deskripsi, 120, '...') }}
                                             </p>
                                             <div class="d-flex justify-content-start">
                                                 <div class="icon-text me-3">
