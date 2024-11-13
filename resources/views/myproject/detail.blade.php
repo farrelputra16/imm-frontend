@@ -8,7 +8,6 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
     <style>
-
         .header-image {
             width: 100%;
             height: auto;

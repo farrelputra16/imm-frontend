@@ -14,9 +14,6 @@
         list-style-type: none;
     }
 
-    body {
-        padding-top: 115px;
-    }
     /* breadcumb */
     .breadcrumb {
         background-color: white;

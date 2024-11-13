@@ -1,32 +1,8 @@
 @extends('layouts.app-investors')
+
 @section('css')
+<link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 <style>
-    /* Global Styles */
-    body {
-        font-family: Arial, sans-serif;
-    }
-
-    /* Unique Breadcrumb Styles */
-    .investment-breadcrumb {
-        margin-top:-40px;
-        background-color: white;
-        padding: 10px 15px;
-        margin-bottom: 70px;
-        border-radius: 5px;
-        display: flex;
-        align-items: center;
-        list-style-type: none; /* Remove default numbering */
-        padding-left: 0; /* Remove default padding for ordered list */
-    }
-    .investment-breadcrumb-item {
-        margin-right: 8px;
-    }
-    .investment-breadcrumb-item + .investment-breadcrumb-item::before {
-        content: ">";
-        margin-right: 8px;
-        color: #6c757d; /* Add a lighter color for the separator */
-    }
-
     /* Table Styles */
     .table thead th {
         background-color: #6f42c1;
@@ -60,15 +36,31 @@
     .status-approved {
         color: #28a745;
     }
+
+     /* bread */
+    .breadcrumb {
+        background-color: white;
+        padding: 0;
+    }
+
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: ">";
+        margin-right: 14px;
+        color: #9CA3AF;
+    }
 </style>
 @endsection
 @section('content')
 <div class="container mt-5">
     <!-- Breadcrumb Navigation -->
-    <nav aria-label="investment-breadcrumb">
-        <ol class="investment-breadcrumb">
-            <li class="investment-breadcrumb-item"><a href="/">Home</a></li>
-            <li class="investment-breadcrumb-item active" aria-current="page">Investment</li>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                <a href="/" style="text-decoration: none; color: #212B36;">Home</a>
+            </li>
+            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                <a href="javascript:window.history.back();" style="text-decoration: none; color: #212B36;">Investment</a>
+            </li>
         </ol>
     </nav>
 
