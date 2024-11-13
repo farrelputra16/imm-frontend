@@ -5,7 +5,6 @@
     <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
     <style>
-
         .navbar-brand {
             font-weight: bold;
         }
@@ -241,7 +240,7 @@
 @endsection
 @section('content')
     <body>
-        <div class="container mt-5 detail-matrix-section">
+        <div class="container detail-matrix-section">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
@@ -343,9 +342,9 @@
             <div style="display: flex; justify-content: flex-end;">
                 <div class="custom-select-wrapper">
                     <form action="{{ route('metric-impact.show', ['projectId' => $projectId, 'metricId' => $metricId, 'metricProjectId' => $metricProjectId]) }}" method="get">
-                        <select class="custom-select scrollbar" style="width: 100px;" id="year" name="year" onchange="this.form.submit()">
+                        <select class="custom-select scrollbar" style="width: 110px;" id="year" name="year" onchange="this.form.submit()">
                             <option value="">All Years</option>  <!-- Menambahkan opsi "All Years" yang akan mengosongkan filter tahun -->
-                            @foreach(range(now()->year - 100, now()->year + 100) as $yearOption)
+                            @foreach(range(now()->year - 10, now()->year + 10) as $yearOption)
                                 <option value="{{ $yearOption }}" {{ request('year') == $yearOption ? 'selected' : '' }}>{{ $yearOption }}</option>
                             @endforeach
                         </select>

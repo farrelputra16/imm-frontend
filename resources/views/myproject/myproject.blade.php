@@ -127,16 +127,17 @@
 
     /* Initial Card Body */
     .card-body {
-        max-height: 180px; /* Initial height */
-        overflow: hidden; /* Hide overflow when not expanded */
-        transition: max-height 0.5s ease; /* Smooth transition for max-height */
-        background-color: white; /* Default background color */
+        max-height: 180px; /* Tinggi awal untuk sembunyi */
+        overflow: hidden; /* Sembunyikan konten */
+        transition: max-height 0.5s ease-out; /* Transisi mulus */
+        background-color: white; /* Warna latar default */
     }
 
     /* Expand Card Body on Hover */
     .card:hover .card-body {
-        max-height: 500px; /* Maximum height when expanded */
-        background-color: #6256CA; /* Background turns purple */
+        max-height: 1000px; /* Tinggi maksimum sementara */
+        transition: max-height 0.5s ease-in; /* Efek transisi */
+        background-color: #6256CA; /* Background ungu saat hover */
     }
 
     /* Card styles */
@@ -193,6 +194,7 @@
 
     /* Delete Button Style */
     .btn-delete {
+        margin-left: 10px; /* Space between buttons */
         background-color: rgba(255, 26, 26, 0.5);
     }
 
@@ -352,17 +354,17 @@
                                         <div class="card-body position-relative">
                                             <h5 class="card-title">{{ $project->nama }}</h5>
                                             <p class="card-text">
-                                                Bringing together skills training and support for women to start or expand their own businesses
+                                                {{ $project->deskripsi }}
                                             </p>
                                             <div class="d-flex justify-content-start">
                                                 <div class="icon-text me-3">
                                                     <span class="iconify" data-icon="mdi:calendar-month" data-inline="false" style="font-size: 18px;"></span>
-                                                    <span>May 2024</span>
+                                                    <span id="start-date" class="body-2">{{ $project->start_date }}</span>
                                                 </div>
                                                 <div class="icon-text" style="margin-left: 10px; margin-right: 10px; opacity: 0.5;"> | </div>
                                                 <div class="icon-text">
                                                     <span class="iconify" data-icon="mdi:map-marker" data-inline="false" style="font-size: 18px;"></span>
-                                                    <span>DKI Jakarta</span>
+                                                    <span class="body-2" style="font-size: 11px;">{{ $project->kota }}</span>
                                                 </div>
                                             </div>
 
@@ -642,5 +644,21 @@
                 });
             }
         });
+    </script>
+
+    <script>
+        // Ambil elemen span
+        const startDateSpan = document.getElementById('start-date');
+
+        // Ambil nilai tanggal dari span
+        const startDateValue = startDateSpan.innerText;
+
+        // Ubah format tanggal
+        const date = new Date(startDateValue);
+        const options = { year: 'numeric', month: 'long' };
+        const formattedDate = date.toLocaleDateString('id-ID', options);
+
+        // Ganti isi span dengan format yang baru
+        startDateSpan.innerText = formattedDate;
     </script>
 @endsection
