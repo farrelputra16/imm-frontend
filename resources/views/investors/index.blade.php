@@ -233,46 +233,58 @@
                 <table class="table table-hover table-strip" style="margin-bottom: 0px;">
                     <thead class="sub-heading-2">
                         <tr>
-                            <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle; border-bottom: none;"><input type="checkbox" value="all_check" id="select_all" class="select_investor"></th>
+                            <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle; border-bottom: none;">
+                                <input type="checkbox" value="all_check" id="select_all" class="select_investor">
+                            </th>
                             <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Organization Name</th>
                             <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Number of Contacts</th>
                             <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Number of Investments</th>
-                            <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Invesment Stage</th>
+                            <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Investment Stage</th>
                             <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Investor Type</th>
                             <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Location</th>
                             <th scope="col" class="sub-heading-2" style="border-top-right-radius: 20px; vertical-align: top; text-align: left; border-bottom: none;">Description</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($investors as $investor)
-                        <tr data-href="{{ route('investors.show', $investor->id) }}">
-                            <td style="vertical-align: middle; border-left: 1px solid #ddd;"><input type="checkbox" class="select_investor" data-id="{{ $investor->id }}"></td>
-                            <td style="vertical-align: middle;">
-                                <div style="display: flex; align-items: center;">
-                                    <div style="margin-right: 2px;">
-                                        <img src="{{ !empty($investor->image) ? asset($investor->image) : asset('images/logo-maxy.png') }}" alt="" width="30" height="30" style="border-radius: 8px; object-fit:cover;">
-                                    </div>
-                                    <div style="flex-grow: 1; margin-left: 0px; margin-right: 10px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
-                                        @if (strlen($investor->org_name) > 10)
-                                            title="{{ $investor->org_name }}"
-                                            style="cursor: pointer;"
-                                        @endif
-                                    >
-                                        <span class="body-2">{{ $investor->org_name }}</span>
-                                    </div>
-                                    <div style="margin-left: 0px; margin-right: 0px;">
-                                        <i class="fas fa-search" style="color: #aee1b7;"></i>
-                                    </div>
-                                </div>
-                            </td>
-                            <td  style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->number_of_contacts }}</td>
-                            <td  style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->number_of_investments }}</td>
-                            <td  style="vertical-align: middle; text-align: center;" class="body-2 investment-stage">{{ $investor->investment_stage }}</td>
-                            <td  style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->investor_type }}</td>
-                            <td  style="vertical-align: middle; text-align: start;" class="body-2">{{ $investor->location }}</td>
-                            <td style="vertical-align: middle; text-align: start; border-right: 1px solid #ddd;" class="body-2">{{ Str::limit($investor->description, 20, '...') }}</td>
-                        </tr>
-                        @endforeach
+                        @if($investors->isEmpty())
+                            <tr>
+                                <td colspan="8" style="text-align: center; vertical-align: middle; border-left: 1px solid #ddd;border-right: 1px solid #ddd;">
+                                    <strong>Tidak ada data yang tersedia.</strong>
+                                </td>
+                            </tr>
+                        @else
+                            @foreach($investors as $investor)
+                                <tr data-href="{{ route('investors.show', $investor->id) }}">
+                                    <td style="vertical-align: middle; border-left: 1px solid #ddd;">
+                                        <input type="checkbox" class="select_investor" data-id="{{ $investor->id }}">
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        <div style="display: flex; align-items: center;">
+                                            <div style="margin-right: 2px;">
+                                                <img src="{{ !empty($investor->image) ? asset($investor->image) : asset('images/logo-maxy.png') }}" alt="" width="30" height="30" style="border-radius: 8px; object-fit:cover;">
+                                            </div>
+                                            <div style="flex-grow: 1; margin-left: 0px; margin-right: 10px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
+                                                @if (strlen($investor->org_name) > 10)
+                                                    title="{{ $investor->org_name }}"
+                                                    style="cursor: pointer;"
+                                                @endif
+                                            >
+                                                <span class="body-2">{{ $investor->org_name }}</span>
+                                            </div>
+                                            <div style="margin-left: 0px; margin-right: 0px;">
+                                                <i class="fas fa-search" style="color: #aee1b7;"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->number_of_contacts }}</td>
+                                    <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->number_of_investments }}</td>
+                                    <td style="vertical-align: middle; text-align: center;" class="body-2 investment-stage">{{ $investor->investment_stage }}</td>
+                                    <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->investor_type }}</td>
+                                    <td style="vertical-align: middle; text-align: start;" class="body-2">{{ $investor->location }}</td>
+                                    <td style="vertical-align: middle; text-align: start; border-right: 1px solid #ddd;" class="body-2">{{ Str::limit($investor->description, 20, '... ') }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>

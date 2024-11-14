@@ -169,7 +169,7 @@ td:nth-child(9)  /* Job Departments */ {
                     <tbody>
                         @if($hubs->isEmpty())
                             <tr>
-                                <td colspan="8" style="text-align: center;">Tidak ada data yang tersedia.</td>
+                                <td colspan="8" style="text-align: center; border-left: 1px solid #ddd;border-right: 1px solid #ddd;">Tidak ada data yang tersedia.</td>
                             </tr>
                         @else
                             @foreach($hubs as $index => $hub)
