@@ -250,43 +250,51 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($people as $person)
-                        <tr data-href="{{ route('people.show', $person->id) }}" class="clickable-row">
-                            <td style="vertical-align: middle; border-left: 1px solid #ddd;">
-                                <input type="checkbox" class="select_people" data-id="{{ $person->id }}">
-                            </td>
-                            <td style="vertical-align: middle;">
-                                <div style="display: flex; align-items: center;">
-                                    <div style="margin-right: 2px;">
-                                        <img src="{{ !empty($person->image) ? asset($person->image) : asset('images/logo-maxy.png') }}" alt="" width="30" height="30" style="border-radius: 8px; object-fit:cover;">
-                                    </div>
-                                    <div style="flex-grow: 1; margin-left: 0px; margin-right: 10px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
-                                        @if (strlen($person->name) > 10)
-                                            title="{{ $person->name }}"
-                                            style="cursor: pointer;"
+                        @if($people->isEmpty())
+                            <tr>
+                                <td colspan="8" style="text-align: center; vertical-align: middle; border-left: 1px solid #ddd; border-right: 1px solid #ddd;">
+                                    <strong>Tidak ada data yang tersedia.</strong>
+                                </td>
+                            </tr>
+                        @else
+                            @foreach($people as $person)
+                                <tr data-href="{{ route('people.show', $person->id) }}" class="clickable-row">
+                                    <td style="vertical-align: middle; border-left: 1px solid #ddd;">
+                                        <input type="checkbox" class="select_people" data-id="{{ $person->id }}">
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        <div style="display: flex; align-items: center;">
+                                            <div style="margin-right: 2px;">
+                                                <img src="{{ !empty($person->image) ? asset($person->image) : asset('images/logo-maxy.png') }}" alt="" width="30" height="30" style="border-radius: 8px; object-fit:cover;">
+                                            </div>
+                                            <div style="flex-grow: 1; margin-left: 0px; margin-right: 10px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
+                                                @if (strlen($person->name) > 10)
+                                                    title="{{ $person->name }}"
+                                                    style="cursor: pointer;"
+                                                @endif
+                                            >
+                                                <span class="body-2">{{ $person->name }}</span>
+                                            </div>
+                                            <div style="margin-left: 0px; margin-right: 0px;">
+                                                <i class="fas fa-search" style="color: #aee1b7;"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->primary_job_title }}</td>
+                                    <td style="vertical-align: middle; text-align: start;" class="body-2 skilss">{{ $person->skills }}</td>
+                                    <td style="vertical-align: middle; text-align: start;" class="body-2">{{ ucfirst($person->role) }}</td>
+                                    <td style="vertical-align: middle; text-align: start;" class="body-2">{{ $person->pengalaman }}</td>
+                                    <td style="vertical-align: middle; text-align: center;" class="body-2">
+                                        @if($person->linkedin_link)
+                                            <a href="{{ $person->linkedin_link }}" target="_blank" class="linkedin-link">Link</a>
+                                        @else
+                                            N/A
                                         @endif
-                                    >
-                                        <span class="body-2">{{ $person->name }}</span>
-                                    </div>
-                                    <div style="margin-left: 0px; margin-right: 0px;">
-                                        <i class="fas fa-search" style="color: #aee1b7;"></i>
-                                    </div>
-                                </div>
-                            </td>
-                            <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->primary_job_title }}</td>
-                            <td style="vertical-align: middle; text-align: start;" class="body-2 skilss">{{ $person->skills }}</td>
-                            <td style="vertical-align: middle; text-align: start;" class="body-2">{{ ucfirst($person->role) }}</td>
-                            <td style="vertical-align: middle; text-align: start;" class="body-2">{{ $person->pengalaman }}</td>
-                            <td style="vertical-align: middle; text-align: center;" class="body-2">
-                                @if($person->linkedin_link)
-                                    <a href="{{ $person->linkedin_link }}" target="_blank" class ="linkedin-link">Link</a>
-                                @else
-                                    N/A
-                                @endif
-                            </td>
-                            <td style="vertical-align: middle; text-align: start; border-right: 1px solid #ddd;" class="body-2">{{ $person->phone_number }}</td>
-                        </tr>
-                        @endforeach
+                                    </td>
+                                    <td style="vertical-align: middle; text-align: start; border-right: 1px solid #ddd;" class="body-2">{{ $person->phone_number }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>

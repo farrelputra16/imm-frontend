@@ -880,7 +880,7 @@
                                     <tbody>
                                         @if ($team->isEmpty())
                                             <tr>
-                                                <td colspan="6" style="text-align: center; padding: 20px;">
+                                                <td colspan="6" style="text-align: center; padding: 20px; border-left: 1px solid #ddd; border-right: 1px solid #ddd;">
                                                     <p>No team members available. Please add new members.</p>
                                                 </td>
                                             </tr>
