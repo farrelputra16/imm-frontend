@@ -206,49 +206,57 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($companies as $company)
-                            <tr data-href="{{ route('companies.show', $company->id) }}">
-                                <td style="vertical-align: middle;">
-                                    <input type="checkbox" class="select_company" data-id="{{ $company->id }}">
-                                </td>
-                                <td style="vertical-align: middle;">
-                                    <div style="display: flex; align-items: center;">
-                                        <div style="margin-right: 2px;">
-                                            <img src="{{ !empty($company->image) ? env('APP_URL') . $company->image : asset('images/logo-maxy.png') }}" alt="" width="30" height="30"
-                                            style="border-radius: 8px; object-fit:cover;">
-                                        </div>
-                                        <div style="flex-grow: 1; margin-left: 0px; margin-right: 0px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
-                                            @if (strlen($company->nama) > 10)
-                                                title="{{ $company->nama }}"
-                                                style="cursor: pointer;"
-                                            @endif
-                                        >
-                                            <span class="body-2">{{ $company->nama }}</span>
-                                        </div>
-                                        <div style="margin-left: 0px; margin-right: 0px;">
-                                            <i class="fas fa-search" style="color: #aee1b7;"></i>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td style="vertical-align: middle;" class="body-2">{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('j M, Y') : 'N/A' }}</td>
-                                <td style="vertical-align: middle;" class="body-2">{{ $company->latest_funding_date ? \Carbon\Carbon::parse($company->latest_funding_date)->format('j M, Y') : 'N/A' }}</td>
-                                <td style="vertical-align: middle;" class="body-2">
-                                    <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
-                                        @if ($company->funding_stage)
-                                            <div class="funding-stage">{{ $company->funding_stage }}</div>
-                                        @else
-                                            <div>No funding data available</div>
-                                        @endif
-                                    </div>
-                                </td>
-                                <td style="vertical-align: middle;" class="body-2">{{ $company->jumlah_karyawan }}</td>
-                                <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $company->business_model }}</td>
-                                <td style="vertical-align: middle;" class="body-2">{{ Str::limit($company->startup_summary, 20, '...') }}</td>
-                                <td style="vertical-align: middle; cursor: pointer;" title={{ $company->all_departments }} class="body-2">
-                                    {{ $company->departments->join(', ') }}
+                        @if($companies->isEmpty())
+                            <tr>
+                                <td colspan="9" style="text-align: center; vertical-align: middle;">
+                                    <strong>Tidak ada data yang tersedia.</strong>
                                 </td>
                             </tr>
-                        @endforeach
+                        @else
+                            @foreach ($companies as $company)
+                                <tr data-href="{{ route('companies.show', $company->id) }}">
+                                    <td style="vertical-align: middle;">
+                                        <input type="checkbox" class="select_company" data-id="{{ $company->id }}">
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        <div style="display: flex; align-items: center;">
+                                            <div style="margin-right: 2px;">
+                                                <img src="{{ !empty($company->image) ? env('APP_URL') . $company->image : asset('images/logo-maxy.png') }}" alt="" width="30" height="30"
+                                                style="border-radius: 8px; object-fit:cover;">
+                                            </div>
+                                            <div style="flex-grow: 1; margin-left: 0px; margin-right: 0px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
+                                                @if (strlen($company->nama) > 10)
+                                                    title="{{ $company->nama }}"
+                                                    style="cursor: pointer;"
+                                                @endif
+                                            >
+                                                <span class="body-2">{{ $company->nama }}</span>
+                                            </div>
+                                            <div style="margin-left: 0px; margin-right: 0px;">
+                                                <i class="fas fa-search" style="color: #aee1b7;"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align: middle;" class="body-2">{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('j M, Y') : 'N/A' }}</td>
+                                    <td style="vertical-align: middle;" class="body-2">{{ $company->latest_funding_date ? \Carbon\Carbon::parse($company->latest_funding_date)->format('j M, Y') : 'N/A' }}</td>
+                                    <td style="vertical-align: middle;" class="body-2">
+                                        <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+                                            @if ($company->funding_stage)
+                                                <div class="funding-stage">{{ $company->funding_stage }}</div>
+                                            @else
+                                                <div>No funding data available</div>
+                                            @endif
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align: middle;" class="body-2">{{ $company->jumlah_karyawan }}</td>
+                                    <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $company->business_model }}</td>
+                                    <td style="vertical-align: middle;" class="body-2">{{ Str::limit($company->startup_summary, 20, '...') }}</td>
+                                    <td style="vertical-align: middle; cursor: pointer;" title="{{ $company->all_departments }}" class="body-2">
+                                        {{ $company->departments->join(', ') }}
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>
