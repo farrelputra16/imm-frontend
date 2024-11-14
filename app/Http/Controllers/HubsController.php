@@ -17,16 +17,41 @@ class HubsController extends Controller
     public function index(Request $request)
     {
         $query = Hubs::approved();
+        $rowsPerPage = $request->input('rows', 10);
 
-        if ($request->filled('provinsi')) {
-            $query->where('provinsi', 'like', '%' . $request->provinsi . '%');
-        }
-
+         // Filter berdasarkan rank jika ada
         if ($request->filled('rank')) {
-            $query->where('rank', $request->rank);
+            $rank = (int)$request->rank; // Mengubah rank menjadi integer
+
+            // Tentukan batas atas berdasarkan pilihan
+            if ($rank === 10) {
+                $query->whereBetween('rank', [1, 10]);
+            } elseif ($rank === 50) {
+                $query->whereBetween('rank', [1, 50]);
+            } elseif ($rank === 100) {
+                $query->whereBetween('rank', [1, 100]);
+            }
         }
 
-        $hubs = $query->get();
+        if ($request->filled('location')) {
+            $query->where('kota', 'like', '%' . $request->location . '%');
+            $query->orWhere('provinsi', 'like', '%' . $request->province_hidden . '%');
+        }
+
+        // Filter berdasarkan status jika ada
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Mendapatkan id yang buat hub dengan memanfaatkannya dengan user_id
+
+        foreach($query as $hub){
+             $user = User::find($hub->user_id);
+             $hub->user_id = $user->name;
+        }
+
+        $hubs = $query->paginate($rowsPerPage);
+
         return view('hubs.index', compact('hubs'));
     }
 

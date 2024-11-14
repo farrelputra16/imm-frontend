@@ -1,6 +1,5 @@
 @extends('layouts.app-investors')
 
-@section('css')
 <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 <style>
     /* Table Styles */
@@ -49,7 +48,7 @@
         color: #9CA3AF;
     }
 </style>
-@endsection
+
 @section('content')
 <div class="container mt-5">
     <!-- Breadcrumb Navigation -->
