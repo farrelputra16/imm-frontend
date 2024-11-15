@@ -177,8 +177,12 @@ class CompanyController extends Controller
         ]));
 
         $department = Department::all();
+        if ($request->has('status'))
+        {
+            $status = $request->input('status');
+        }
 
-        return view('companies.company-list', compact('companies', 'request', 'department'));
+        return view('companies.company-list', compact('companies', 'request', 'department', 'status'));
     }
 
     /**

@@ -50,12 +50,21 @@
                 <a href="{{ route('landingpage') }}" style="text-decoration: none; color: #212B36;">Home</a>
             </li>
             <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
-                <a href="#" style="text-decoration: none; color: #212B36;">Find StartUp</a>
+                @if ($status == 'company')
+                    <a href="{{ route('companies.list', ['status' => 'company']) }}" style="text-decoration: none; color: #212B36;">Find StartUp</a>
+
+                @elseif ($status == 'benchmark')
+                    <a href="{{ route('companies.list', ['status' => 'benchmark']) }}" style="text-decoration: none; color: #212B36;">Benchmark StartUp</a>
+                @endif
             </li>
         </ol>
     </nav>
 
-    <h2 style="margin-bottom: 32px; color: #6256CA;">Find StartUp</h2>
+    @if ($status == 'company')
+        <h2 style="margin-bottom: 32px; color: #6256CA;">Find StartUp</h2>
+    @elseif ($status == 'benchmark')
+        <h2 style="margin-bottom: 32px; color: #6256CA;">Benchmark StartUp</h2>
+    @endif
 
     <div class="row">
         <!-- Filter Section -->

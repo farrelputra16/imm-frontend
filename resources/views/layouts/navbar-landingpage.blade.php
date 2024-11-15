@@ -135,7 +135,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Opportunities</a>
                         <div class="dropdown-menu">
                             <a href="{{ route('investors.index') }}" class="dropdown-item">Find Investor</a>
-                            <a href="{{ route('companies.list') }}" class="dropdown-item">Find Company</a>
+                            <a href="{{ route('companies.list', ['status' => 'company']) }}" class="dropdown-item">Find Company</a>
                             <a href="{{ route('funding_rounds.index') }}" class="dropdown-item">Funding Rounds</a>
                         </div>
                     </div>
@@ -148,7 +148,7 @@
                             @else
                                 <a href="{{ route('home') }}" class="dropdown-item">IMM</a>
                             @endif
-                            <a href="#" class="dropdown-item">Benchmarking</a>
+                            <a href="{{ route('companies.list', ['status' => 'benchmark']) }}" class="dropdown-item">Benchmarking</a>
                         </div>
                     </div>
                     <div class="dropdown">

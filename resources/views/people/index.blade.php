@@ -273,25 +273,25 @@
                                                     style="cursor: pointer;"
                                                 @endif
                                             >
-                                                <span class="body-2">{{ $person->name }}</span>
+                                                <span class="body-2">{{ $person->name ?: 'N/A' }}</span>
                                             </div>
                                             <div style="margin-left: 0px; margin-right: 0px;">
                                                 <i class="fas fa-search" style="color: #aee1b7;"></i>
                                             </div>
                                         </div>
                                     </td>
-                                    <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->primary_job_title }}</td>
-                                    <td style="vertical-align: middle; text-align: start;" class="body-2 skilss">{{ $person->skills }}</td>
-                                    <td style="vertical-align: middle; text-align: start;" class="body-2">{{ ucfirst($person->role) }}</td>
-                                    <td style="vertical-align: middle; text-align: start;" class="body-2">{{ $person->pengalaman }}</td>
+                                    <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->primary_job_title ?: 'N/A' }}</td>
+                                    <td style="vertical-align: middle; text-align: start;" class="body-2 skilss">{{ $person->skills ?: 'N/A' }}</td>
+                                    <td style="vertical-align: middle; text-align: start;" class="body-2">{{ ucfirst($person->role) ?: 'N/A' }}</td>
+                                    <td style="vertical-align: middle; text-align: start;" class="body-2">{{ $person->pengalaman ?: 'N/A' }}</td>
                                     <td style="vertical-align: middle; text-align: center;" class="body-2">
                                         @if($person->linkedin_link)
-                                            <a href="{{ $person->linkedin_link }}" target="_blank" class="linkedin-link">Link</a>
+                                            <a href ="{{ $person->linkedin_link }}" target="_blank" class="linkedin-link">Link</a>
                                         @else
                                             N/A
                                         @endif
                                     </td>
-                                    <td style="vertical-align: middle; text-align: start; border-right: 1px solid #ddd;" class="body-2">{{ $person->phone_number }}</td>
+                                    <td style="vertical-align: middle; text-align: start; border-right: 1px solid #ddd;" class="body-2">{{ $person->phone_number ?: 'N/A' }}</td>
                                 </tr>
                             @endforeach
                         @endif
