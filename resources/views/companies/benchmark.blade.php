@@ -52,17 +52,21 @@
         max-width: 60%;
     }
     .info-box {
-        display: flex;
-        align-items: center;
-        border: 1px solid #dee2e6;
+        border: 1px solid #d3d3d3;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        padding-left: 15px;
+        text-align: start;
+        margin: 5% auto;
         border-radius: 2px;
-        padding: 15px;
         gap: 10px;
-        margin-bottom: 10px;
-        height: 80px;
-        width: 100%;
-        max-width: 200px;
         transition: all 0.3s ease;
+    }
+    .funding-title {
+        color: #7d7d7d;
+    }
+    .funding-amount {
+        color: #333333;
     }
     .custom-icon-color {
         color: #6f42c1 !important;
@@ -119,38 +123,112 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="info-box">
-                    <i class="fas fa-phone-alt custom-icon-color"></i>
-                    <span>{{ $company->telepon }}</span>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="info-box">
-                    <i class="fas fa-map-marker-alt custom-icon-color"></i>
-                    <span>{{ $company->negara }}</span>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <a href="{{ $company->profile }}" target="_blank" title="{{ $company->profile }}" style="color: black; text-decoration: none;">
-                    <div class="info-box">
-                        <i class="fas fa-globe custom-icon-color"></i>
-                        <span id="company-profile">{{ Str::limit($company->profile, 18, '...') }}</span>
+                    <div class="funding-title body-1">Total Funding</div>
+                    <div class="funding-amount">
+                        <h4>
+                            <?php
+                                $formatted_amount = '';
+
+                                if ($total_funding >= 1000000) {
+                                    $formatted_amount = number_format($total_funding / 1000000, 2, ',', '.') . 'M'; // M untuk million
+                                } elseif ($total_funding >= 1000) {
+                                    $formatted_amount = number_format($total_funding / 1000, 2, ',', '.') . 'K'; // K untuk thousand
+                                } else {
+                                    $formatted_amount = number_format($total_funding, 0, ',', '.');
+                                }
+
+                                // Menambahkan simbol dollar
+                                $formatted_amount = '$' . $formatted_amount;
+
+                                echo $formatted_amount;
+                            ?>
+                        </h4>
                     </div>
-                </a>
-            </div>
-            <div class="col-md-4">
-                <div class="info-box">
-                    <i class="fas fa-users custom-icon-color"></i>
-                    <span>{{ $company->jumlah_karyawan }}</span>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="info-box">
-                    <i class="fas fa-dollar-sign custom-icon-color"></i>
-                    <span id="funding-stage">{{ $company->funding_stage }}</span>
+                    <div class="funding-title body-1">Location</div>
+                    <div class="funding-amount">
+                        <h4>
+                            {{ $company->negara }}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="info-box">
+                    <div class="funding-title body-1">Last Funding</div>
+                    <div class="funding-amount">
+                        <h4>
+                            <?php
+                                $formatted_amount = '';
+
+                                if ($funding_terbaru->money_raised >= 1000000) {
+                                    $formatted_amount = number_format($funding_terbaru->money_raised / 1000000, 2, ',', '.') . 'M'; // M untuk million
+                                } elseif ($funding_terbaru->money_raised >= 1000) {
+                                    $formatted_amount = number_format($funding_terbaru->money_raised / 1000, 2, ',', '.') . 'K'; // K untuk thousand
+                                } else {
+                                    $formatted_amount = number_format($funding_terbaru->money_raised, 0, ',', '.');
+                                }
+
+                                // Menambahkan simbol dollar
+                                $formatted_amount = '$' . $formatted_amount;
+
+                                echo $formatted_amount;
+                            ?>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="info-box">
+                    <div class="funding-title body-1">Funding Stage</div>
+                    <div class="funding-amount">
+                        <h4>
+                            {{ $company->funding_stage }}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="info-box">
+                    <div class="funding-title body-1">Total Rounds</div>
+                    <div class="funding-amount">
+                        <h4>
+                            {{ $total_round }}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="info-box">
+                    <div class="funding-title body-1">Investors</div>
+                    <div class="funding-amount">
+                        <h4>
+                            {{ $total_investor }}
+                        </h4>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
+    <div>
+        <hr style="margin-top: 32px; margin-bottom: 32px; border-top: 2px solid #000000;">
+    </div>
+    <div>
+        <h2 style="color: #6256CA;">{{ $company->nama }} Overview</h2>
+    </div>
+    <div style="margin-top: 24px;">
+        {{ $company->startup_summary }}
+    </div>
+    <div class="row">
+        {{-- Graph finance --}}
+        <div class="col-md-6">
+        </div>
+        {{-- Graph Invesment --}}
+        <div class="col-md-6">
+        </div>
+    </div>
 </div>
 @endsection

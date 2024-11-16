@@ -142,15 +142,11 @@ class CompanyController extends Controller
             ->whereHas('company', fn($query) => $query->where('id', $id))
             ->paginate($projectRowsPerPage);
 
-        // Load team members and assign departments
-        $team = $company->teamMembers;
-        foreach ($team as $person) {
-            $position_id = $person->pivot->position;
-            $department = Department::find($position_id);
-            $person->department = $department ? $department->name : 'No department assigned';
-        }
-
-        return view('companies.benchmark', compact('company', 'fundingRounds', 'team', 'allProjectsQuery'));
+        $total_funding = $company->fundingRounds->sum('money_raised');
+        $total_round = $company->fundingRounds->count();
+        $funding_terbaru = $company->fundingRounds->sortByDesc('announced_date')->first();
+        $total_investor = $company->investments->count();
+        return view('companies.benchmark', compact('company', 'fundingRounds', 'allProjectsQuery', 'total_funding', 'total_round', 'funding_terbaru', 'total_investor'));
     }
 
 
