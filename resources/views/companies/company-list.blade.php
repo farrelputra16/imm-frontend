@@ -75,8 +75,9 @@
                 <img src="{{ asset('images/filter.svg') }}" alt="Search Icon" style="width: 20px; height: 20px; margin-left: 10px;">
             </div>
             <div class="filter-section">
-                <form method="GET" action="{{ route('companies.list') }}" id="companyFilterForm">
+                <form method="GET" action="{{ route('companies.list', ['status' => $status]) }}" id="companyFilterForm">
                     @csrf
+                    <input type="hidden" name="status" value="{{ $status }}">
                     <!-- LOCATION Filter -->
                     <div class="mb-3">
                         <h6>LOCATION</h6>
@@ -158,6 +159,7 @@
         <div class="col-md-9 table-section">
             <form method="GET" action="{{ route('companies.list') }}"  id="companySearchForm">
                 @csrf
+                <input type="hidden" name="status" value="{{ $status }}">
                 <div class="search-container">
                     <i class="fas fa-search" style="margin-left: 10px;"></i>
                     <input class="form-control" placeholder="Search Investors" type="text" name="search" id="search_input" value="{{ request('search') }}" />
@@ -206,11 +208,23 @@
                             </th>
                             <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left;">Organization <br> Name</th>
                             <th scope="col" class="sub-heading-2" style="vertical-align: top;">Founded <br> Date</th>
-                            <th scope="col" class="sub-heading-2" style="vertical-align: top;">Last Funding <br> Date</th>
+                            @if ($status == 'benchmark')
+                                <th scope="col" class="sub-heading-2" style="vertical-align: top;">Business <br> Model</th>
+                            @elseif ($status == 'company')
+                                <th scope="col" class="sub-heading-2" style="vertical-align: top;">Last Funding <br> Date</th>
+                            @endif
                             <th scope="col" class="sub-heading-2" style="vertical-align: top;">Last Funding <br> Type</th>
                             <th scope="col" class="sub-heading-2" style="vertical-align: top;">Number of <br> Employees</th>
-                            <th scope="col" class="sub-heading-2" style="vertical-align: top;">Business Model</th>
-                            <th scope="col" class="sub-heading-2" style="vertical-align: top;">Description</th>
+                            @if ($status == 'company')
+                                <th scope="col" class="sub-heading-2" style="vertical-align: top;">Business Model</th>
+                            @elseif ($status == 'benchmark')
+                                <th scope="col" class="sub-heading-2" style="vertical-align: top;">Last Funding <br> Date</th>
+                            @endif
+                            @if ($status == 'benchmark')
+                                <th scope="col" class="sub-heading-2" style="vertical-align: top;">Total Raised</th>
+                            @elseif ($status == 'company')
+                                <th scope="col" class="sub-heading-2" style="vertical-align: top;">Description</th>
+                            @endif
                             <th scope="col" class="sub-heading-2" style="border-top-right-radius: 20px; vertical-align: top;">Job Departments</th>
                         </tr>
                     </thead>
@@ -223,7 +237,11 @@
                             </tr>
                         @else
                             @foreach ($companies as $company)
-                                <tr data-href="{{ route('companies.show', $company->id) }}">
+                                @if ($status == 'company')
+                                    <tr data-href="{{ route('companies.show', $company->id) }}">
+                                @elseif ($status == 'benchmark')
+                                    <tr data-href="{{ route('companies.benchmark', $company->id) }}">
+                                @endif
                                     <td style="vertical-align: middle;">
                                         <input type="checkbox" class="select_company" data-id="{{ $company->id }}">
                                     </td>
@@ -246,7 +264,14 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td style="vertical-align: middle;" class="body-2">{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('j M, Y') : 'N/A' }}</td>
+                                    @if ($status == 'company')
+                                        <td style="vertical-align: middle;" class="body-2">{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('j M, Y') : 'N/A' }}</td>
+                                    @elseif ($status == 'benchmark')
+                                        <td style="vertical-align: middle;" class="body-2">{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('Y') : 'N/A' }}</td>
+                                    @endif
+                                    @if ($status == 'benchmark')
+                                        <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $company->business_model }}</td>
+                                    @endif
                                     <td style="vertical-align: middle;" class="body-2">{{ $company->latest_funding_date ? \Carbon\Carbon::parse($company->latest_funding_date)->format('j M, Y') : 'N/A' }}</td>
                                     <td style="vertical-align: middle;" class="body-2">
                                         <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
@@ -258,8 +283,14 @@
                                         </div>
                                     </td>
                                     <td style="vertical-align: middle;" class="body-2">{{ $company->jumlah_karyawan }}</td>
-                                    <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $company->business_model }}</td>
-                                    <td style="vertical-align: middle;" class="body-2">{{ Str::limit($company->startup_summary, 20, '...') }}</td>
+                                    @if ($status == 'company')
+                                        <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $company->business_model }}</td>
+                                    @endif
+                                    @if ($status == 'benchmark')
+                                        <td style="vertical-align: middle;" class="body-2">{{ number_format($company->total_funding, 0, ',', '.') }} IDR</td>
+                                    @elseif ($status == 'company')
+                                        <td style="vertical-align: middle;" class="body-2">{{ Str::limit($company->startup_summary, 20, '...') }}</td>
+                                    @endif
                                     <td style="vertical-align: middle; cursor: pointer;" title="{{ $company->all_departments }}" class="body-2">
                                         {{ $company->departments->join(', ') }}
                                     </td>
@@ -273,6 +304,7 @@
             <!-- Footer sebagai bagian dari tabel -->
             <div class="d-flex justify-content-between align-items-center mb-3 align-self-center" style="padding: 20px; background-color: #ffffff; border-bottom: 1px solid #ddd; border-left: 1px solid #ddd; border-right: 1px solid #ddd; border-top: 0px solid #ffffff; margin-top:0px; height:100px; border-end-end-radius: 20px; border-end-start-radius: 20px; height: 60px;">
                 <form method="GET" action="{{ route('companies.list') }}" class="mb-0">
+                    <input type="hidden" name="status" value="{{ $status }}">
                     <div class="d-flex align-items-center">
                         <label for="rowsPerPage" class="me-2">Rows per page:</label>
                         <select name="rows" id="rowsPerPage" class="form-select me-2" onchange="this.form.submit()" style="width: 50%px; margin-left: 5px; margin-right: 5px;">
@@ -286,7 +318,7 @@
                     </div>
                 </form>
                 <div style="margin-top: 10px;">
-                    {{ $companies->appends($request->only(['location', 'industry', 'departments', 'funding_stage','search']))->links('pagination::bootstrap-4') }}
+                    {{ $companies->appends($request->only(['location', 'industry', 'departments', 'funding_stage','search', 'status']))->links('pagination::bootstrap-4') }}
                 </div>
             </div>
         </div>

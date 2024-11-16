@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use ConsoleTVs\Charts\Classes\Chartjs\Chart;
 
 class CompanyController extends Controller
 {
@@ -127,6 +128,31 @@ class CompanyController extends Controller
         return view('companies.view', compact('company', 'fundingRounds', 'team', 'allProjectsQuery'));
     }
 
+    public function showBenchmark(Request $request, $id)
+    {
+        $company = Company::findOrFail($id);
+
+        // Ambil parameter untuk funding rounds
+        $fundingRowsPerPage = $request->get('funding_rows', 10); // Default 10
+        $fundingRounds = $company->fundingRounds()->paginate($fundingRowsPerPage);
+
+        // Ambil parameter untuk project list
+        $projectRowsPerPage = $request->get('project_rows', 10); // Default 10
+        $allProjectsQuery = Project::with('tags', 'sdgs', 'indicators', 'metrics', 'targetPelanggan', 'dana')
+            ->whereHas('company', fn($query) => $query->where('id', $id))
+            ->paginate($projectRowsPerPage);
+
+        // Load team members and assign departments
+        $team = $company->teamMembers;
+        foreach ($team as $person) {
+            $position_id = $person->pivot->position;
+            $department = Department::find($position_id);
+            $person->department = $department ? $department->name : 'No department assigned';
+        }
+
+        return view('companies.benchmark', compact('company', 'fundingRounds', 'team', 'allProjectsQuery'));
+    }
+
 
     public function index()
     {
@@ -181,7 +207,6 @@ class CompanyController extends Controller
         {
             $status = $request->input('status');
         }
-
         return view('companies.company-list', compact('companies', 'request', 'department', 'status'));
     }
 

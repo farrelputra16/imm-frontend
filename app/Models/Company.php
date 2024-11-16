@@ -194,7 +194,9 @@ class Company extends Model
             $company->all_departments = $company->departments->pluck('name');
             $company->departments = $company->departments->take(2)->pluck('name');
             $company->latest_funding_date = $company->fundingRounds->max('announced_date');
+            $company->total_funding = $company->fundingRounds->sum('money_raised');
         }
+
 
         return $companies;
     }

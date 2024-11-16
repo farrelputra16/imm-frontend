@@ -2,6 +2,7 @@
 
 @section('content')
 <link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
+<link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 <style>
     .breadcrumb {
         background-color: white;
@@ -134,7 +135,7 @@
                 <a href="{{ route('landingpage') }}" style="text-decoration: none; color: #212B36;">Home</a>
             </li>
             <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
-                <a href="#" style="text-decoration: none; color: #212B36;">Find Company</a>
+                <a href="{{ route('companies.list', ['status' => 'company']) }}" style="text-decoration: none; color: #212B36;">Find Company</a>
             </li>
             <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px; color: #5A5A5A;" aria-current="page">Profile Company</li>
         </ol>
@@ -244,24 +245,32 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($fundingRounds as $round)
+                    @if ($fundingRounds->isEmpty())
                         <tr>
-                            <td style="vertical-align: middle; border-left: 1px solid #ddd;">
-                                {{ $loop->iteration + ($fundingRounds->currentPage() - 1) * $fundingRounds->perPage() }}
+                            <td colspan="6" style="text-align: center; vertical-align: middle;">
+                                <strong>Data kosong</strong>
                             </td>
-                            <td style="vertical-align: middle;">{{ $round->name }}</td>
-                            <td style="vertical-align: middle;">Rp {{ number_format($round->target, 0, ',', '.') }}</td>
-                            <td style="vertical-align: middle;">Rp {{ number_format($round->money_raised, 0, ',', '.') }}</td>
-                            <td style="vertical-align: middle;">
-                                @if ($round->leadInvestor)
-                                    <a href="{{ route('investors.show', $round->leadInvestor->id) }}">{{ $round->leadInvestor->org_name }}</a>
-                                @else
-                                    No
-                                @endif
-                            </td>
-                            <td style="vertical-align: middle; border-right: 1px solid #ddd;">{{ date('Y', strtotime($round->announced_date)) }}</td>
                         </tr>
-                    @endforeach
+                    @else
+                        @foreach ($fundingRounds as $round)
+                            <tr>
+                                <td style="vertical-align: middle; border-left: 1px solid #ddd;">
+                                    {{ $loop->iteration + ($fundingRounds->currentPage() - 1) * $fundingRounds->perPage() }}
+                                </td>
+                                <td style="vertical-align: middle;">{{ $round->name }}</td>
+                                <td style="vertical-align: middle;">Rp {{ number_format($round->target, 0, ',', '.') }}</td>
+                                <td style="vertical-align: middle;">Rp {{ number_format($round->money_raised, 0, ',', '.') }}</td>
+                                <td style="vertical-align: middle;">
+                                    @if ($round->leadInvestor)
+                                        <a href="{{ route('investors.show', $round->leadInvestor->id) }}">{{ $round->leadInvestor->org_name }}</a>
+                                    @else
+                                        No
+                                    @endif
+                                </td>
+                                <td style="vertical-align: middle; border-right: 1px solid #ddd;">{{ date('Y', strtotime($round->announced_date)) }}</td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -308,18 +317,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($allProjectsQuery as $project)
+                    @if ($allProjectsQuery->isEmpty())
                         <tr>
-                            <td style="vertical-align: middle; border-left: 1px solid #BBBEC5;">{{ $loop->iteration  + ($allProjectsQuery->currentPage() - 1) * $allProjectsQuery->perPage()}}</td>
-                            <td style="vertical-align: middle;">{{ $project->nama }}</td>
-                            <td style="vertical-align: middle;">Rp{{ number_format($project->jumlah_pendanaan, 0, ',', '.') }}</td>
-                            <td style="vertical-align: middle;">{{ $project->start_date ? \Carbon\Carbon::parse($project->start_date)->format('j M, Y') : 'N/A' }}</td>
-                            <td style="vertical-align: middle;">{{ $project->end_date ? \Carbon\Carbon::parse($project->end_date)->format('j M, Y') : 'N/A' }}</td>
-                            <td style="vertical-align: middle; border-right: 1px solid #BBBEC5; text-align: center;">
-                                <a href="{{ route('projects_company.view', ['id' => $project->id]) }}" style="color: black; text-decoration: underline;">Detail</a>
+                            <td colspan="6" style="text-align: center; vertical-align: middle;">
+                                <strong>Data kosong</strong>
                             </td>
                         </tr>
-                    @endforeach
+                    @else
+                        @foreach ($allProjectsQuery as $project)
+                            <tr>
+                                <td style="vertical-align: middle; border-left: 1px solid #BBBEC5;">
+                                    {{ $loop->iteration + ($allProjectsQuery->currentPage() - 1) * $allProjectsQuery->perPage() }}
+                                </td>
+                                <td style="vertical-align: middle;">{{ $project->nama }}</td>
+                                <td style="vertical-align: middle;">Rp {{ number_format($project->jumlah_pendanaan, 0, ',', '.') }}</td>
+                                <td style="vertical-align: middle;">{{ $project->start_date ? \Carbon\Carbon::parse($project->start_date)->format('j M, Y') : 'N/A' }}</td>
+                                <td style="vertical-align: middle;">{{ $project->end_date ? \Carbon\Carbon::parse($project->end_date)->format('j M, Y') : 'N/A' }}</td>
+                                <td style="vertical-align: middle; border-right: 1px solid #BBBEC5; text-align: center;">
+                                    <a href="{{ route('projects_company.view', ['id' => $project->id]) }}" style="color: black; text-decoration: underline;">Detail</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>

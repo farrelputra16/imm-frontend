@@ -115,6 +115,7 @@ Route::get('/companies-list', [CompanyController::class, 'companyList'])->name('
 Route::get('/companies/{id}', [CompanyController::class, 'show'])->name('companies.show');
 Route::get('/companies/{id}/team', [CompanyController::class, 'showTeam'])->name('companies.team');
 Route::get('/companies/{id}/project', [CompanyController::class, 'showProducts'])->name('companies.project');
+Route::get('/companies/benchmark/{id}', [CompanyController::class, 'showBenchmark'])->name('companies.benchmark');
 
 /**
  * Pembuatan Route untuk bagian melihat project pada company yang tidak memerlukan autentikasi
