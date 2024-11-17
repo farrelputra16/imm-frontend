@@ -214,32 +214,107 @@
         </div>
     </div>
     <div>
-        <hr style="margin-top: 32px; margin-bottom: 32px; border-top: 2px solid #000000;">
+        <hr style="margin-top: 32px; margin-bottom: 32px; border-top: 2px solid #000000; opacity: 0.2;">
     </div>
     <div>
         <h3 style="color: #6256CA;">{{ $company->nama }} Overview</h3>
     </div>
-    <div style="margin-top: 24px; margin-bottom: 24px;" class="">
+    <div style="margin-top: 24px; margin-bottom: 24px;" class="body-1">
         {{ $company->startup_summary }}
     </div>
     <div>
-        <hr style="margin-top: 32px; margin-bottom: 32px; border-top: 2px solid #000000;">
+        <hr style="margin-top: 32px; margin-bottom: 32px; border-top: 2px solid #000000; opacity: 0.2;">
     </div>
     <div class="row">
-        {{-- Graph finance --}}
+        {{-- Investment Over Time Chart --}}
         <div class="col-md-6">
-            <div id="chartContainer" style="width: 100%; height: 400px;">
-                {!! $chart->container() !!}
+            <h3 style="color: #6256CA;">Investment Over Time</h3>
+            <div id="investmentChartContainer" style="width: 100%; height: 400px;">
+                {!! $chart_investment->container() !!}
             </div>
-
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-            {!! $chart->script() !!}
         </div>
 
-        {{-- Graph Invesment --}}
+        {{-- Laba Bersih by Quarter Chart --}}
         <div class="col-md-6">
+            <h3 style="color: #6256CA;">Net Profit by Quarter</h3>
+            <div id="labaBersihChartContainer" style="width: 100%; height: 400px;">
+                {!! $chart_laba_bersih->container() !!}
+            </div>
+        </div>
+    </div>
+
+    {{-- Include scripts once --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    {!! $chart_investment->script() !!}
+    {!! $chart_laba_bersih->script() !!}
+
+    <div>
+        <hr style="margin-top: 32px; margin-bottom: 32px; border-top: 2px solid #000000; opacity: 0.2;">
+    </div>
+
+    {{-- Bagian Proejct --}}
+    <div class="funding-section mt-5">
+        <h2>Project List</h2>
+        <div class="table-responsive">
+            <table id="ongoing-project-table" class="table table-hover table-strip mt-3">
+                <thead>
+                    <tr>
+                        <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle;">No.</th>
+                        <th scope="col" style="vertical-align: middle;">Project Name</th>
+                        <th scope="col" style="vertical-align: middle;">Budget Plan</th>
+                        <th scope="col" style="vertical-align: middle;">Start Date</th>
+                        <th scope="col" style="vertical-align: middle;">End Date</th>
+                        <th scope="col" style="border-top-right-radius: 20px; vertical-align: middle;">Details Project</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if ($allProjectsQuery->isEmpty())
+                        <tr>
+                            <td colspan="6" style="text-align: center; vertical-align: middle;">
+                                <strong>Data kosong</strong>
+                            </td>
+                        </tr>
+                    @else
+                        @foreach ($allProjectsQuery as $project)
+                            <tr>
+                                <td style="vertical-align: middle; border-left: 1px solid #BBBEC5;">
+                                    {{ $loop->iteration + ($allProjectsQuery->currentPage() - 1) * $allProjectsQuery->perPage() }}
+                                </td>
+                                <td style="vertical-align: middle;">{{ $project->nama }}</td>
+                                <td style="vertical-align: middle;">Rp {{ number_format($project->jumlah_pendanaan, 0, ',', '.') }}</td>
+                                <td style="vertical-align: middle;">{{ $project->start_date ? \Carbon\Carbon::parse($project->start_date)->format('j M, Y') : 'N/A' }}</td>
+                                <td style="vertical-align: middle;">{{ $project->end_date ? \Carbon\Carbon::parse($project->end_date)->format('j M, Y') : 'N/A' }}</td>
+                                <td style="vertical-align: middle; border-right: 1px solid #BBBEC5; text-align: center;">
+                                    <a href="{{ route('projects_company.view', ['id' => $project->id, 'status' => 'benchmark', 'companyId' => $company->id]) }}" style="color: black; text-decoration: underline;">Detail</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
+                </tbody>
+            </table>
+        </div>
+        <!-- Footer untuk Proyek Belum Selesai -->
+        <div class="d-flex justify-content-between align-items-center mb-3 align-self-center" style="padding: 20px; background-color: #ffffff; border-bottom: 1px solid #ddd; border-left: 1px solid #ddd; border-right: 1px solid #ddd; border-top: 1px solid #BBBEC5; margin-top:0px; height:100px; border-end-end-radius: 20px; border-end-start-radius: 20px; height: 60px;">
+            <form method="GET" action="{{ route('companies.show', $company->id) }}" class="mb-0">
+                <div class="d-flex align-items-center">
+                    <label for="rowsPerPageOngoing" class="me-2">Rows per page:</label>
+                    <select name="project_rows" id="rowsPerPageOngoing" class="form-select me-2" onchange="this.form.submit()" style="width: 50px; margin-left: 5px; margin-right: 5px;">
+                        <option value="10" {{ request('project_rows') == 10 ? 'selected' : '' }}>10</option>
+                        <option value="50" {{ request('project_rows') == 50 ? 'selected' : '' }}>50</option>
+                        <option value="100" {{ request('project_rows') == 100 ? 'selected' : '' }}>100</option>
+                    </select>
+                    <div>
+                        <span>Total {{ $allProjectsQuery->firstItem() }} - {{ $allProjectsQuery->lastItem() }} of {{ $allProjectsQuery->total() }}</span>
+                    </div>
+                </div>
+                <input type="hidden" name="search" value="{{ request('search') }}">
+                <input type="hidden" name="company_id" value="{{ $company->id }}">
+            </form>
+            <div style="margin-top: 5px;">
+                {{ $allProjectsQuery->appends(['search' => request('search'), 'project_rows' => request('project_rows')])->links('pagination::bootstrap-4') }}
+            </div>
         </div>
     </div>
 </div>

@@ -231,22 +231,33 @@ class ProjectController extends Controller
         return $data;
     }
 
-    public function view($id)
+    public function view(Request $request, $id)
     {
+        $status = null;
+        $companyId = null;
         $project = Project::with('tags', 'sdgs', 'indicators', 'metrics', 'targetPelanggan', 'dana', 'surveys')->findOrFail($id);
         $documents = DB::table('project_dokumen')->where('project_id', $id)->get();
         $initialMetricProjects = $project->metricProjects()->whereNull('report_month')->whereNull('report_year')->get();
 
-
         // Cek apakah role pengguna adalah "USER"
         $isUserRole = Auth::user()->role === 'USER';
+
+        // Check apakah reques  ini dari benchmark
+        if ($request->has('status'))
+        {
+            $status = $request->input('status');
+        }
+        if ($request->has('company_id'))
+        {
+            $companyId = $request->input('company_id');
+        }
 
         $projectData = $this->relationshipsToArray($project);
         $projectData['documents'] = $documents->toArray();
 
         Log::debug('Project Viewed (All Data):', $projectData);
 
-        return view('myproject.detail', compact('project', 'documents', 'initialMetricProjects', 'isUserRole'));
+        return view('myproject.detail', compact('project', 'documents', 'initialMetricProjects', 'isUserRole', 'status', 'companyId'));
     }
 
     public function update(Request $request, $id)

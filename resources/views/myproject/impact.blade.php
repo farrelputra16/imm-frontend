@@ -244,17 +244,21 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
-                        @if ($userRole == 'USER')
+                        @if ($userRole == 'USER' && $status != 'benchmark')
                             <a href="{{ route('homepage') }}" style="text-decoration: none; color: #212B36;">Home</a>
                         @else
-                            <a href="{{ route('investments.pending') }}" style="text-decoration: none; color: #212B36;">Home</a>
+                            @if ($status == 'benchmark')
+                                <a href="{{ route('companies.benchmark', $companyId) }}" style="text-decoration: none; color: #212B36;">Home</a>
+                            @else
+                                <a href="{{ route('investments.pending') }}" style="text-decoration: none; color: #212B36;">Home</a>
+                            @endif
                         @endif
                     </li>
                     <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
                         <a href="javascript:window.history.back();" style="text-decoration: none; color: #212B36;">IMM</a>
                     </li>
                     <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
-                        <a href="{{ route('projects.view', ['id' => $project->id]) }}" style="text-decoration: none; color: #212B36;">Project Report</a>
+                        <a href="{{ route('projects.view', ['id' => $project->id, 'status' => $status]) }}" style="text-decoration: none; color: #212B36;">Project Report</a>
                     </li>
                     <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
                         <a href="#" style="text-decoration: none; color: #5A5A5A;">Metrics Score</a>
@@ -269,68 +273,70 @@
                     <div class="form-section mt-2">
                         <p class="body-2" style="color: #3F3F46">{{ $metricProject->metric->definition }}</p>
                     </div>
-                    <div class="row mt-4">
-                        <div class="col-md-6">
-                            <div class="section-title sub-heading-1" style="color: #DADBE3">Input Data Matrix</div>
-                            <div class="form-section mt-2">
-                                <form id="metricForm"
-                                    action="{{ route('metric-projects.storeReport', [$project->id, $metricProject->id]) }}"
-                                    method="POST">
-                                    @csrf
-                                    <div class="form-group">
-                                        <label for="nilaiData sub-heading-1" style="color: #3F3F46">Nilai Pengukuran</label>
-                                        <input type="text" name="value" id="value" class="form-control body-2"
-                                            value="{{ old('value') }}" placeholder="Masukkan nilai disini">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="report_month sub-heading-1" style="color: #3F3F46">Bulan</label>
-                                        <input type="text" name="report_month" id="report_month" class="form-control body-2"
-                                            value="{{ $nextMonthName }}" readonly>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="report_year sub-heading-1" style="color: #3F3F46">Tahun</label>
-                                        <input type="number" name="report_year" id="report_year" class="form-control body-2"
-                                            value="{{ $nextYear }}" readonly>
-                                    </div>
-                                    <button type="button" class="btn-save-custom" data-toggle="modal"
-                                        data-target="#confirmationModal">Save</button>
-                                </form>
+                    @if ($userRole == 'USER' && $status != 'benchmark')
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <div class="section-title sub-heading-1" style="color: #DADBE3">Input Data Matrix</div>
+                                <div class="form-section mt-2">
+                                    <form id="metricForm"
+                                        action="{{ route('metric-projects.storeReport', [$project->id, $metricProject->id]) }}"
+                                        method="POST">
+                                        @csrf
+                                        <div class="form-group">
+                                            <label for="nilaiData sub-heading-1" style="color: #3F3F46">Nilai Pengukuran</label>
+                                            <input type="text" name="value" id="value" class="form-control body-2"
+                                                value="{{ old('value') }}" placeholder="Masukkan nilai disini">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="report_month sub-heading-1" style="color: #3F3F46">Bulan</label>
+                                            <input type="text" name="report_month" id="report_month" class="form-control body-2"
+                                                value="{{ $nextMonthName }}" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="report_year sub-heading-1" style="color: #3F3F46">Tahun</label>
+                                            <input type="number" name="report_year" id="report_year" class="form-control body-2"
+                                                value="{{ $nextYear }}" readonly>
+                                        </div>
+                                        <button type="button" class="btn-save-custom" data-toggle="modal"
+                                            data-target="#confirmationModal">Save</button>
+                                    </form>
 
-                                {{-- Buat nambah data poup konfirmasi --}}
-                                <div class="modal fade" id="confirmationModal" tabindex="-1"
-                                    aria-labelledby="confirmationModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content shadow">
-                                            <div class="modal-body">
-                                                <h5 class="modal-title" id="confirmationModalLabel">Apakah data sudah benar?
-                                                </h5>
-                                                <p class="text-muted">Note: Data yang anda tambahkan tidak bisa diubah
-                                                    kembali, pastikan semua input
-                                                    data sudah benar</p>
-                                                <div class="btnn">
-                                                    <button type="button" class="btn btn-keluar" id="confirmUpdate">Belum,
-                                                        cek kembali</button>
-                                                    <button type="submit" form="metricForm" class="btn btn-masuk">Ya, sudah
-                                                        benar</button>
+                                    {{-- Buat nambah data poup konfirmasi --}}
+                                    <div class="modal fade" id="confirmationModal" tabindex="-1"
+                                        aria-labelledby="confirmationModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content shadow">
+                                                <div class="modal-body">
+                                                    <h5 class="modal-title" id="confirmationModalLabel">Apakah data sudah benar?
+                                                    </h5>
+                                                    <p class="text-muted">Note: Data yang anda tambahkan tidak bisa diubah
+                                                        kembali, pastikan semua input
+                                                        data sudah benar</p>
+                                                    <div class="btnn">
+                                                        <button type="button" class="btn btn-keluar" id="confirmUpdate">Belum,
+                                                            cek kembali</button>
+                                                        <button type="submit" form="metricForm" class="btn btn-masuk">Ya, sudah
+                                                            benar</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="section-title sub-heading-1" style="color: #DADBE3" >Cara Hitung Matrix</div>
-                            <div class="form-section mt-2">
-                                @if (!empty($calculation))
-                                    <p class="body-2" style="color: #3F3F46">{{ $calculation }}</p>
-                                @else
-                                    <p class="body-2" style="color: #3F3F46">Silahkan baca deskripsi matrix. Masukkan value sesuai dengan arahan deskripsi matrix
-                                    </p>
-                                @endif
+                            <div class="col-md-6">
+                                <div class="section-title sub-heading-1" style="color: #DADBE3" >Cara Hitung Matrix</div>
+                                <div class="form-section mt-2">
+                                    @if (!empty($calculation))
+                                        <p class="body-2" style="color: #3F3F46">{{ $calculation }}</p>
+                                    @else
+                                        <p class="body-2" style="color: #3F3F46">Silahkan baca deskripsi matrix. Masukkan value sesuai dengan arahan deskripsi matrix
+                                        </p>
+                                    @endif
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -405,12 +411,14 @@
                     <div class="col">
                         <h3>Matrix Report</h3>
                     </div>
-                    <div class="col d-flex justify-content-end">
-                        <a
-                            href="{{ route('metric-projects.createMatrixReport', ['projectId' => $project->id, 'metricId' => $metricProject->metric_id, 'metricProjectId' => $metricProject->id]) }}"
-                            class="add-report-btn">Tambah Laporan
-                        </a>
-                    </div>
+                    @if ($userRole == 'USER' && $status != 'benchmark')
+                        <div class="col d-flex justify-content-end">
+                            <a
+                                href="{{ route('metric-projects.createMatrixReport', ['projectId' => $project->id, 'metricId' => $metricProject->metric_id, 'metricProjectId' => $metricProject->id]) }}"
+                                class="add-report-btn">Tambah Laporan
+                            </a>
+                        </div>
+                    @endif
                 </div>
             </div>
 

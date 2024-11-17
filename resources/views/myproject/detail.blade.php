@@ -1,11 +1,13 @@
-@extends('layouts.app-imm')
+@php
+    $layout = ($isUserRole && $status != 'benchmark') ? 'layouts.app-imm' : 'layouts.app-landingpage';
+@endphp
+
+@extends($layout)
+
 @section('title', 'Detail Proyek')
 
 @section('css')
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
     <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
     <style>
         .header-image {
@@ -196,13 +198,6 @@
             border-radius: 0.25rem;
         }
 
-        .header {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #343a40;
-            margin-bottom: 20px;
-        }
-
         .edit-icon {
             cursor: pointer;
             color: #6256CA; /* Warna untuk edit icon */
@@ -242,10 +237,6 @@
             padding: 15px;
             border: 1px solid #ced4da;
             border-radius: 8px;
-        }
-
-        p {
-            color: #666;
         }
 
         /* Ini merupakan bagian untuk dokumen validasi data */
@@ -328,10 +319,14 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
-                        @if ($isUserRole)
+                        @if ($isUserRole && $status != 'benchmark')
                             <a href="{{ route('homepage') }}" style="text-decoration: none; color: #212B36;">Home</a>
                         @else
-                            <a href="{{ route('investments.pending') }}" style="text-decoration: none; color: #212B36;">Home</a>
+                            @if ($status == 'benchmark')
+                            <a href="{{ route('companies.benchmark', $companyId) }}" style="text-decoration: none; color: #212B36;">Home</a>
+                            @else
+                                <a href="{{ route('investments.pending') }}" style="text-decoration: none; color: #212B36;">Home</a>
+                            @endif
                         @endif
                     </li>
                     <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
@@ -343,22 +338,6 @@
                 </ol>
             </nav>
         </div>
-        <!-- Main Container -->
-        {{-- <div class="container mt-5 pt-5 contentTop">
-            <div class="row">
-                <div class="col-12">
-                    <div class="container">
-                        <label for="img-upload" class="w-100" aria-placeholder="">
-                            <img class="upload-container"
-                                src="{{ $project->img ? asset('images/' . $project->img) : asset('images/default_project.png') }}"
-                                id="image-preview">
-                        </label>
-                        <input type="file" class="form-control" id="img-upload" name="img" accept="image/*"
-                            style="display: none">
-                    </div>
-                </div>
-            </div>
-        </div> --}}
 
         <form id="projectForm" action="{{ route('projects.update', $project->id) }}" method="POST" enctype="multipart/form-data">
             <!-- Content Section -->
@@ -377,7 +356,7 @@
                                 <label for="nama-proyek" class="form-label">Nama Proyek</label>
                                 <div class="d-flex">
                                     <input type="text" class="form-control" id="nama-proyek" name="nama" value="{{ $project->nama }}" readonly>
-                                    @if ($isUserRole)
+                                    @if ($isUserRole && $status != 'benchmark')
                                         <i class="fas fa-edit edit-icon ms-2" id="edit-nama-proyek" onclick="enableEdit('nama-proyek')"></i>
                                     @endif
                                 </div>
@@ -388,7 +367,7 @@
                                 <label for="deskripsi-proyek" class="form-label">Deskripsi Proyek</label>
                                 <div class="d-flex">
                                     <textarea class="form-control" id="deskripsi-proyek" name="deskripsi" rows="3" readonly>{{ $project->deskripsi }}</textarea>
-                                    @if ($isUserRole)
+                                    @if ($isUserRole && $status != 'benchmark')
                                         <i class="fas fa-edit edit-icon ms-2" id="edit-deskripsi-proyek" onclick="enableEdit('deskripsi-proyek')"></i>
                                     @endif
                                 </div>
@@ -456,7 +435,7 @@
                         <div class="card mb-4" style="max-width: 700px;">
                             <div class="card-body">
                                 <h5 class="card-title">Dokumen Validitas Data</h5>
-                                @if ($isUserRole)
+                                @if ($isUserRole && $status != 'benchmark')
                                     <div class="upload-box-custom" onclick="document.getElementById('file-input').click();">
                                         <img src="{{ asset('images/upload.svg') }}" alt="Upload icon">
                                         <p>Tambah Dokumen</p>
@@ -474,7 +453,7 @@
                                                     <a href="{{ env('APP_URL') }}/storage/project/{{ $project->nama }}/{{ $document->dokumen_validitas }}" class="file-link">
                                                         {{ $document->dokumen_validitas }}
                                                     </a>
-                                                    @if ($isUserRole)
+                                                    @if ($isUserRole && $status != 'benchmark')
                                                         <i class="fas fa-trash-alt delete-icon" data-id="{{ $document->id }}" onclick="deleteDocument({{ $document->id }})"></i>
                                                     @endif
                                                 </li>
@@ -489,7 +468,7 @@
                         <div class="card mb-4" style="max-width: 700px;">
                             <div class="card-body">
                                 <h5 class="card-title">Survey Pendukung</h5>
-                                @if ($isUserRole)
+                                @if ($isUserRole && $status != 'benchmark')
                                     <div class="upload-box-custom" onclick="window.location='{{ route('surveys.create', $project->id) }}'">
                                         <img src="{{ asset('images/upload.svg') }}" alt="Upload icon">
                                         <p>Tambah Survey</p>
@@ -501,7 +480,7 @@
                                         @forelse ($project->surveys as $survey)
                                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                                 {{ $survey->name }}
-                                                @if ($isUserRole)
+                                                @if ($isUserRole && $status != 'benchmark')
                                                     <div>
                                                         <a href="{{ route('surveys.edit', $survey->id) }}" class="btn btn-sm"><i class="fas fa-edit"></i></a>
                                                         <form action="{{ route('surveys.destroy', $survey->id) }}" method="POST" class="delete-survey-form" id="delete-survey-{{ $survey->id }}" style="display: inline;">
@@ -532,11 +511,11 @@
                                 <ul class="list-group mt-3 scrollable" id="metricsList">
                                     @foreach ($initialMetricProjects as $metricProject)
                                         <li class="list-group-item">
-                                            @if ($isUserRole)
+                                            @if ($isUserRole && $status != 'benchmark')
                                                 <a href="{{ route('metric-impact.show', ['projectId' => $project->id, 'metricId' => $metricProject->metric_id, 'metricProjectId' => $metricProject->id]) }}"
                                                     class="text-dark metric-item">{{ $metricProject->metric->name }}</a>
                                             @else
-                                                <a href="{{ route('companies-metric-impact.show', ['projectId' => $project->id, 'metricId' => $metricProject->metric_id, 'metricProjectId' => $metricProject->id]) }}"
+                                                <a href="{{ route('metric-impact.show', ['projectId' => $project->id, 'metricId' => $metricProject->metric_id, 'metricProjectId' => $metricProject->id, 'status' => $status, 'companyId' => $companyId]) }}"
                                                     class="text-dark metric-item">{{ $metricProject->metric->name }}</a>
                                             @endif
                                         </li>
@@ -559,7 +538,7 @@
                     </div>
 
                 <!-- Selesaikan Project Button -->
-                @if ($isUserRole)
+                @if ($isUserRole && $status != 'benchmark')
                     <hr style="border: none; height: 0.2px; background-color: #000000; margin-left: 15px; margin-bottom: 40px; margin-top 86px; margin-right 0px; opacity: 0.2; width: 100%;;">
                     <form id="completeProjectForm" action="{{ route('projects.complete', $project->id) }}" method="POST" style="width: 100%;">
                         @csrf
@@ -571,7 +550,7 @@
                         </button>
                     </form>
                 @endif
-                @if ($isUserRole)
+                @if ($isUserRole && $status != 'benchmark')
                     <div class="container d-flex justify-content-center" style="margin: 0px; padding: 0px;">
                         <button type="submit" class="btn btn-purple text-white hidden" id="save-button" style="font-weight:bold; width: 100%;">Simpan Perubahan Detail Proyek</button>
                     </div>

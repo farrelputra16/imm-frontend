@@ -213,4 +213,8 @@ class Company extends Model
     {
         return $this->hasMany(Experience::class);
     }
+    public function companyFinance()
+    {
+        return $this->hasMany(CompanyFinance::class);
+    }
 }

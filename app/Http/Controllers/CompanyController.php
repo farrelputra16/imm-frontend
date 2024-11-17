@@ -148,29 +148,50 @@ class CompanyController extends Controller
         $funding_terbaru = $company->fundingRounds->sortByDesc('announced_date')->first();
         $total_investor = $company->investments->count();
 
-        // Aggregate data by date
+        // Step 1: Aggregate data for the investment chart
         $investments = $company->investments()
         ->selectRaw('investment_date, SUM(amount) as total_amount')
         ->groupBy('investment_date')
         ->orderBy('investment_date')
         ->get();
 
-        // Format dates to "Mar 2024" format and prepare chart data
-        $labels = $investments->pluck('investment_date')->map(function ($date) {
-            return Carbon::parse($date)->format('M Y'); // e.g., Mar 2024
+        // Format dates to "Mar 2024" format for investment chart
+        $investmentLabels = $investments->pluck('investment_date')->map(function ($date) {
+        return Carbon::parse($date)->format('M Y'); // e.g., Mar 2024
         });
-        $data = $investments->pluck('total_amount');
+        $investmentData = $investments->pluck('total_amount');
 
-        // Chart setup
-        $chart = new Chart();
-        $chart->dataset('Investment Amount', 'line', $data)
-            ->backgroundcolor('rgba(75, 192, 192, 0.2)')
-            ->color('rgba(75, 192, 192, 1)');
-        $chart->labels($labels);
-        $chart->displayLegend(false);
-        $chart->title('Investment Over Time');
-        $chart->height(100);
-        return view('companies.benchmark', compact('company', 'fundingRounds', 'allProjectsQuery', 'total_funding', 'total_round', 'funding_terbaru', 'total_investor', 'chart'));
+        // Chart setup for Investment Amount Over Time
+        $chart_investment = new Chart();
+        $chart_investment->dataset('Investment Amount', 'line', $investmentData)
+        ->backgroundColor('rgba(154, 208, 245, 0.2)') // Set background color to lighter shade of #9AD0F5
+        ->color('#9AD0F5'); // Line color to #9AD0F5
+        $chart_investment->labels($investmentLabels);
+        $chart_investment->displayLegend(false); // Hide legend
+
+        // Step 2: Aggregate data for Laba Bersih by Quarter and Year
+        $companyFinance = $company->companyFinance()
+        ->selectRaw('tahun, status_quarter, SUM(laba_bersih_tahun_berjalan) as total_laba_bersih')
+        ->groupBy('tahun', 'status_quarter')
+        ->orderBy('tahun', 'asc')
+        ->orderBy('status_quarter', 'asc')
+        ->get();
+
+        // Format labels as "Q1 2024" for laba bersih chart
+        $labaBersihLabels = $companyFinance->map(function ($finance) {
+        return $finance->status_quarter . ' ' . $finance->tahun; // e.g., Q1 2024
+        });
+        $labaBersihData = $companyFinance->pluck('total_laba_bersih');
+
+        // Chart setup for Laba Bersih by Quarter
+        $chart_laba_bersih = new Chart();
+        $chart_laba_bersih->dataset('Net Profit', 'line', $labaBersihData)
+        ->backgroundColor('rgba(255, 98, 133, 0.2)') // Set background color to lighter shade of #FF6285
+        ->color('#FF6285'); // Line color to #FF6285
+        $chart_laba_bersih->labels($labaBersihLabels);
+        $chart_laba_bersih->displayLegend(false); // Hide legend
+
+        return view('companies.benchmark', compact('company', 'fundingRounds', 'allProjectsQuery', 'total_funding', 'total_round', 'funding_terbaru', 'total_investor', 'chart_investment', 'chart_laba_bersih'));
     }
 
 

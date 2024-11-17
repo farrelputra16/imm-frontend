@@ -415,6 +415,14 @@ class MetricProjectController extends Controller
     public function showMetricImpact($projectId, $metricId, $metricProjectId, Request $request)
     {
         try {
+            $status = null;
+            $companyId = null;
+            if ($request->has('status')) {
+                $status = $request->input('status');
+            }
+            if ($request->has('company_id')) {
+                $companyId = $request->input('company_id');
+            }
             $user = Auth::user();
             $userRole = $user->role;
 
@@ -474,7 +482,7 @@ class MetricProjectController extends Controller
             // Pass the year, next month, and other necessary data to the view
             return view('myproject.impact', compact(
                 'project', 'metricProject', 'dataPoints', 'nextMonthName',
-                'nextYear', 'calculation', 'matrixReports', 'userRole', 'year', 'chart', 'projectId', 'metricId', 'metricProjectId'
+                'nextYear', 'calculation', 'matrixReports', 'userRole', 'status', 'year', 'chart', 'projectId', 'metricId', 'metricProjectId', 'companyId'
             ));
         } catch (\Exception $e) {
             // Handle errors
