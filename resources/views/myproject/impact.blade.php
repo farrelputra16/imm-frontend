@@ -102,10 +102,6 @@
             color: white;
         }
 
-        .detail-matrix-section {
-            margin-top: 20px;
-        }
-
         .detail-matrix-section .card-header {
             background-color: #5940CB;
             color: white;
@@ -261,7 +257,10 @@
                     </li>
                     @if ($userRole == 'USER' && $status != 'benchmark')
                         <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
-                            <a href="javascript:window.history.back();" style="text-decoration: none; color: #212B36;">IMM</a>
+                            <a href="{{ route('myproject.myproject') }}" style="text-decoration: none; color: #212B36;">IMM</a>
+                        </li>
+                        <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                            <a href="{{ route('projects.view', ['id' => $project->id]) }}" style="text-decoration: none; color: #212B36;">Project Report</a>
                         </li>
                     @else
                         <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">

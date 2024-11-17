@@ -331,7 +331,7 @@
                     </li>
                     @if ($isUserRole && $status != 'benchmark')
                         <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
-                            <a href="javascript:window.history.back();" style="text-decoration: none; color: #212B36;">IMM</a>
+                            <a href="{{ route('myproject.myproject') }}" style="text-decoration: none; color: #212B36;">IMM</a>
                         </li>
                     @else
                         <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
@@ -342,7 +342,7 @@
                         </li>
                     @endif
                     <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
-                        <a href="#" style="text-decoration: none; color: #5A5A5A;">Project Report</a>
+                        <a href="detail/{{ $project->id }}" style="text-decoration: none; color: #5A5A5A;">Project Report</a>
                     </li>
                 </ol>
             </nav>
