@@ -323,15 +323,24 @@
                             <a href="{{ route('homepage') }}" style="text-decoration: none; color: #212B36;">Home</a>
                         @else
                             @if ($status == 'benchmark')
-                            <a href="{{ route('companies.benchmark', $companyId) }}" style="text-decoration: none; color: #212B36;">Home</a>
+                                <a href="{{ route('landingpage') }}" style="text-decoration: none; color: #212B36;">Home</a>
                             @else
                                 <a href="{{ route('investments.pending') }}" style="text-decoration: none; color: #212B36;">Home</a>
                             @endif
                         @endif
                     </li>
-                    <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
-                        <a href="javascript:window.history.back();" style="text-decoration: none; color: #212B36;">IMM</a>
-                    </li>
+                    @if ($isUserRole && $status != 'benchmark')
+                        <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                            <a href="javascript:window.history.back();" style="text-decoration: none; color: #212B36;">IMM</a>
+                        </li>
+                    @else
+                        <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                            <a href="{{ route('companies.list', ['status' => 'benchmark']) }}" style="text-decoration: none; color: #212B36;">Find Company</a>
+                        </li>
+                        <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px; color: #212B36;" aria-current="page">
+                            <a href="{{  route('companies.benchmark', $companyId) }}" style="text-decoration: none; color: #212B36;">Company Profile</a>
+                        </li>
+                    @endif
                     <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
                         <a href="#" style="text-decoration: none; color: #5A5A5A;">Project Report</a>
                     </li>
@@ -515,7 +524,7 @@
                                                 <a href="{{ route('metric-impact.show', ['projectId' => $project->id, 'metricId' => $metricProject->metric_id, 'metricProjectId' => $metricProject->id]) }}"
                                                     class="text-dark metric-item">{{ $metricProject->metric->name }}</a>
                                             @else
-                                                <a href="{{ route('metric-impact.show', ['projectId' => $project->id, 'metricId' => $metricProject->metric_id, 'metricProjectId' => $metricProject->id, 'status' => $status, 'companyId' => $companyId]) }}"
+                                                <a href="{{ route('metric-impact.show', ['projectId' => $project->id, 'metricId' => $metricProject->metric_id, 'metricProjectId' => $metricProject->id, 'status' => $status, 'companyId' =>  $companyId]) }}"
                                                     class="text-dark metric-item">{{ $metricProject->metric->name }}</a>
                                             @endif
                                         </li>

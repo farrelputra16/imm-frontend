@@ -3,6 +3,7 @@
 
 @section('css')
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 <style>
 /* Styling tetap sama */
 h4 {
@@ -62,7 +63,20 @@ h4 {
 @endsection
 
 @section('content')
-<div class="container" style="margin-top:100px;">
+<div class="container">
+    <nav aria-label="breadcrumb" class="mb-5">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                <a href="{{ route('homepage') }}" style="text-decoration: none; color: #212B36;">Home</a>
+            </li>
+            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                <a href="{{ route('kelolapengeluaran', ['company_id' => $company->id]) }}" style="text-decoration: none; color: #212B36;">Financial Management</a>
+            </li>
+            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                <a href="#" style="text-decoration: none; color: #5A5A5A;">Financial Management</a>
+            </li>
+        </ol>
+    </nav>
     <h4>Tambah Penggunaan Dana</h4>
     <form action="{{ route('companyIncome.store') }}" method="POST">
         @csrf

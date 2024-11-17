@@ -70,30 +70,13 @@ body {
     color: #ff6347;
 }
 
-span {
-    color: #acacac;
-}
-
 .price {
     font-size: 20px;
     font-weight: bold;
     color: #6256CA;
 }
 
-p {
-    margin-top: 0;
-    margin-bottom: 1rem;
-    position: relative;
-    right: -17px;
-    top: -9px;
-}
 
-h4 {
-    font-size: 39px;
-    color: #ffffff;
-    font-weight: bold;
-    line-height: 1.2;
-}
 
 .notification-section {
     border: 1px solid #e0e0e0;

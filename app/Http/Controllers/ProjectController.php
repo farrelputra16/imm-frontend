@@ -247,9 +247,9 @@ class ProjectController extends Controller
         {
             $status = $request->input('status');
         }
-        if ($request->has('company_id'))
+        if ($request->has('companyId'))
         {
-            $companyId = $request->input('company_id');
+            $companyId = $request->input('companyId');
         }
 
         $projectData = $this->relationshipsToArray($project);

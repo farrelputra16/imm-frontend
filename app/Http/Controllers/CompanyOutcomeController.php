@@ -54,9 +54,9 @@ class CompanyOutcomeController extends Controller
             $company = $project->company;
         }
         $companyName = strtolower(str_replace(' ', '_', $company->nama));
+        $companyId = $company->id;
 
-
-        return view('homepageimm.detailbiaya', compact('outcomes', 'project_id', 'project', 'isCompany', 'companyName'));
+        return view('homepageimm.detailbiaya', compact('outcomes', 'project_id', 'project', 'isCompany', 'companyName', 'companyId'));
     }
 
     public function create($project_id)

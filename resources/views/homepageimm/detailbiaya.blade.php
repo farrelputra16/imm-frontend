@@ -2,15 +2,11 @@
 @section('title', 'Detail Biaya')
 
 @section('css')
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
 <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 <style>
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
     text-decoration: none;
     list-style-type: none;
 }
@@ -173,16 +169,6 @@ margin-top: 20px;
     font-size: 14px;
     /* Adjust the font size as needed */
 }
-/* breadcumb */
-.breadcrumb {
-    background-color: white;
-    padding: 0;
-}
-.breadcrumb-item + .breadcrumb-item::before {
-    content: ">";
-    margin-right: 14px;
-    color: #9CA3AF;
-}
 </style>
 
 @endsection
@@ -200,10 +186,10 @@ margin-top: 20px;
                         @endif
                     </li>
                     <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
-                        <a href="{{ url()->previous() }}" style="text-decoration: none; color: #212B36;">Financial Management</a>
+                        <a href="{{ route('kelolapengeluaran', ['company_id' => $companyId]) }}" style="text-decoration: none; color: #212B36;">Financial Management</a>
                     </li>
                     <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
-                        <a href="{{ url()->previous() }}" style="text-decoration: none; color: #212B36;">Add New Income Entry</a>
+                        <a href="{{ url()->previous() }}" style="text-decoration: none; color: #212B36;">Expense Details</a>
                     </li>
                 </ol>
             </nav>
@@ -224,7 +210,7 @@ margin-top: 20px;
                     </form>
                 </div>
                 @if($isCompany)
-                <a href="{{ route('selectProjectOutcome', ['project_id' => $project_id]) }}">
+                <a href="{{ route('selectProjectOutcome', ['project_id' => $project_id, 'company_id' => $companyId]) }}">
                     <button class="btn-tambahdana">Add New</button>
                 </a>
                 @endif

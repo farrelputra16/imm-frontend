@@ -3,12 +3,9 @@
 
 @section('css')
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
+    <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 <style>
     * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
         text-decoration: none;
         list-style-type: none;
     }
@@ -116,14 +113,17 @@
 @endsection
 
 @section('content')
-    <div class="container" style="padding-top: 120px">
+    <div class="container">
         <nav aria-label="breadcrumb" class="mb-5">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
                     <a href="{{ route('homepage') }}" style="text-decoration: none; color: #212B36;">Home</a>
                 </li>
                 <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
-                    <a href="{{ url()->previous() }}" style="text-decoration: none; color: #212B36;">Financial Management</a>
+                    <a href="{{ route('kelolapengeluaran', ['company_id' => $company_id]) }}" style="text-decoration: none; color: #212B36;">Financial Management</a>
+                </li>
+                <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                    <a href="{{ url()->previous() }}" style="text-decoration: none; color: #212B36;">Expense Details</a>
                 </li>
                 <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
                     <a href="{{ url()->previous() }}" style="text-decoration: none; color: #212B36;">Add New Income Entry</a>

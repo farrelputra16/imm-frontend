@@ -53,6 +53,9 @@ class ManagementKeuanganController extends Controller
     public function createOutcome(Request $request)
     {
         $project = app(CompanyOutcomeController::class)->create($request->project_id);
-        return view('homepageimm.pengeluaran-proyek', compact('project'));
+        if($request->has('company_id')){
+            $company_id = $request->company_id;
+        }
+        return view('homepageimm.pengeluaran-proyek', compact('project', 'company_id'));
     }
 }

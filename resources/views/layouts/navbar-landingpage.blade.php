@@ -135,7 +135,12 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Opportunities</a>
                         <div class="dropdown-menu">
                             <a href="{{ route('investors.index') }}" class="dropdown-item">Find Investor</a>
-                            <a href="{{ route('companies.list', ['status' => 'company']) }}" class="dropdown-item">Find Company</a>
+                            @php
+                                $role = Auth::check() ? Auth::user()->role : null;
+                            @endphp
+                            @if ($role != 'USER')
+                                <a href="{{ route('companies.list', ['status' => 'company']) }}" class="dropdown-item">Find Company</a>
+                            @endif
                             <a href="{{ route('funding_rounds.index') }}" class="dropdown-item">Funding Rounds</a>
                         </div>
                     </div>
@@ -145,10 +150,13 @@
                             @if(Auth::check())
                                 @php $role = Auth::user()->role; @endphp
                                 <a href="{{ route($role == 'USER' ? 'home' : strtolower($role) . '.home') }}" class="dropdown-item">IMM</a>
+                                @php
+                                    $role2 = Auth::check() ? Auth::user()->role : null;
+                                @endphp
+                                <a href="{{ route('companies.list', ['status' => 'benchmark']) }}" class="dropdown-item">Benchmarking</a>
                             @else
                                 <a href="{{ route('home') }}" class="dropdown-item">IMM</a>
                             @endif
-                            <a href="{{ route('companies.list', ['status' => 'benchmark']) }}" class="dropdown-item">Benchmarking</a>
                         </div>
                     </div>
                     <div class="dropdown">

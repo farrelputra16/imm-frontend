@@ -1,4 +1,9 @@
-@extends('layouts.app-imm')
+@php
+    $layout = ($userRole == 'USER' && $status != 'benchmark') ? 'layouts.app-imm' : 'layouts.app-landingpage';
+@endphp
+
+@extends($layout)
+
 @section('title', 'Dampak Proyek')
 
 @section('css')
@@ -248,18 +253,27 @@
                             <a href="{{ route('homepage') }}" style="text-decoration: none; color: #212B36;">Home</a>
                         @else
                             @if ($status == 'benchmark')
-                                <a href="{{ route('companies.benchmark', $companyId) }}" style="text-decoration: none; color: #212B36;">Home</a>
+                                <a href="{{  route('companies.list', ['status' => 'benchmark']) }}" style="text-decoration: none; color: #212B36;">Home</a>
                             @else
                                 <a href="{{ route('investments.pending') }}" style="text-decoration: none; color: #212B36;">Home</a>
                             @endif
                         @endif
                     </li>
-                    <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
-                        <a href="javascript:window.history.back();" style="text-decoration: none; color: #212B36;">IMM</a>
-                    </li>
-                    <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
-                        <a href="{{ route('projects.view', ['id' => $project->id, 'status' => $status]) }}" style="text-decoration: none; color: #212B36;">Project Report</a>
-                    </li>
+                    @if ($userRole == 'USER' && $status != 'benchmark')
+                        <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                            <a href="javascript:window.history.back();" style="text-decoration: none; color: #212B36;">IMM</a>
+                        </li>
+                    @else
+                        <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                            <a href="{{ route('companies.list', ['status' => 'benchmark']) }}" style="text-decoration: none; color: #212B36;">Find Company</a>
+                        </li>
+                        <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px; color: #212B36;" aria-current="page">
+                            <a href="{{  route('companies.benchmark', $companyId) }}" style="text-decoration: none; color: #212B36;">Company Profile</a>
+                        </li>
+                        <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                            <a href="{{ route('projects_company.view', ['id' => $project->id, 'status' => 'benchmark', 'companyId' => $companyId]) }}" style="text-decoration: none; color: #5A5A5A;">Project Report</a>
+                        </li>
+                    @endif
                     <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
                         <a href="#" style="text-decoration: none; color: #5A5A5A;">Metrics Score</a>
                     </li>

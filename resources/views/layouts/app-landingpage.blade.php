@@ -26,40 +26,60 @@
         .footer {
             background-color: #0F1F3E;
             color: white;
+            text-align: left;
             padding: 20px 0; /* Adjust padding for better spacing */
-            border-radius: 50px 50px 0 0;
+            border-radius: 20px 20px 0 0;
             font-size: 0.9rem; /* Smaller font size */
-        }
-
-        /* Tambahkan CSS untuk footer */
-        footer {
-            margin-top: auto; /* Memastikan footer berada di bawah */
-        }
-
-        .footer-logo img {
-            height: 50px; /* Adjust logo size */
+            bottom: 0;
+            width: 100%;
+            font-family: 'Poppins', sans-serif; /* Set font to Poppins */
         }
 
         .footer-text {
-            font-size: 0.9rem; /* Reduce text size */
-            line-height: 1.4;
-            margin-top: 10px;
+            font-size: 0.9rem; /* Smaller font size */
+            margin: 0;
+            font-family: 'Poppins', sans-serif; /* Set font to Poppins */
         }
 
-        .footer-social {
-            text-align: center;
-            padding-top: 10px; /* Adjust padding */
+        /* Tambahkan CSS untuk footer */
+        .logo-footer {
+            height: 50px;
+        }
+        .footer h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-family: 'Poppins', sans-serif; /* Set font to Poppins */
+        }
+        .footer p {
+            font-size: 0.9375rem; /* 15px in rem */
+            margin: 0;
+            font-family: 'Poppins', sans-serif; /* Set font to Poppins */
+        }
+
+        .footer span {
+            font-size: 1rem; /* 16px in rem */
+            font-weight: bold;
+            font-family: 'Poppins', sans-serif; /* Set font to Poppins */
+            margin-right: 27px;
+        }
+
+        .social-media {
+            margin-top: 10px;
+        }
+        .social-media i {
+            font-size: 1.5rem;
+            margin-right: 15px;
         }
 
         .social-icon {
             color: white;
             font-size: 1.8rem; /* Reduce icon size */
-            margin: 0 10px; /* Equal spacing between icons */
             text-decoration: none;
         }
 
         .social-icon:hover {
-            color: #d9fa07; /* Hover effect */
+            color: inherit; /* Remove hover effect */
+            text-decoration: none;
         }
 
         @media (max-width: 768px) {
@@ -83,7 +103,7 @@
     </div>
 
     <footer>
-        <div class="container">
+        <div class="container" style="margin-top: 32px;">
             @include('layouts.footer-landingpage')
         </div>
     </footer>

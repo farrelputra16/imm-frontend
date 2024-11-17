@@ -420,8 +420,8 @@ class MetricProjectController extends Controller
             if ($request->has('status')) {
                 $status = $request->input('status');
             }
-            if ($request->has('company_id')) {
-                $companyId = $request->input('company_id');
+            if ($request->has('companyId')) {
+                $companyId = $request->input('companyId');
             }
             $user = Auth::user();
             $userRole = $user->role;
