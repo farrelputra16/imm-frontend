@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Company;
 use App\Models\Project;
@@ -146,7 +147,30 @@ class CompanyController extends Controller
         $total_round = $company->fundingRounds->count();
         $funding_terbaru = $company->fundingRounds->sortByDesc('announced_date')->first();
         $total_investor = $company->investments->count();
-        return view('companies.benchmark', compact('company', 'fundingRounds', 'allProjectsQuery', 'total_funding', 'total_round', 'funding_terbaru', 'total_investor'));
+
+        // Aggregate data by date
+        $investments = $company->investments()
+        ->selectRaw('investment_date, SUM(amount) as total_amount')
+        ->groupBy('investment_date')
+        ->orderBy('investment_date')
+        ->get();
+
+        // Format dates to "Mar 2024" format and prepare chart data
+        $labels = $investments->pluck('investment_date')->map(function ($date) {
+            return Carbon::parse($date)->format('M Y'); // e.g., Mar 2024
+        });
+        $data = $investments->pluck('total_amount');
+
+        // Chart setup
+        $chart = new Chart();
+        $chart->dataset('Investment Amount', 'line', $data)
+            ->backgroundcolor('rgba(75, 192, 192, 0.2)')
+            ->color('rgba(75, 192, 192, 1)');
+        $chart->labels($labels);
+        $chart->displayLegend(false);
+        $chart->title('Investment Over Time');
+        $chart->height(100);
+        return view('companies.benchmark', compact('company', 'fundingRounds', 'allProjectsQuery', 'total_funding', 'total_round', 'funding_terbaru', 'total_investor', 'chart'));
     }
 
 

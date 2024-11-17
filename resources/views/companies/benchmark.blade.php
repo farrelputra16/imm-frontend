@@ -217,15 +217,27 @@
         <hr style="margin-top: 32px; margin-bottom: 32px; border-top: 2px solid #000000;">
     </div>
     <div>
-        <h2 style="color: #6256CA;">{{ $company->nama }} Overview</h2>
+        <h3 style="color: #6256CA;">{{ $company->nama }} Overview</h3>
     </div>
-    <div style="margin-top: 24px;">
+    <div style="margin-top: 24px; margin-bottom: 24px;" class="">
         {{ $company->startup_summary }}
+    </div>
+    <div>
+        <hr style="margin-top: 32px; margin-bottom: 32px; border-top: 2px solid #000000;">
     </div>
     <div class="row">
         {{-- Graph finance --}}
         <div class="col-md-6">
+            <div id="chartContainer" style="width: 100%; height: 400px;">
+                {!! $chart->container() !!}
+            </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+            {!! $chart->script() !!}
         </div>
+
         {{-- Graph Invesment --}}
         <div class="col-md-6">
         </div>
