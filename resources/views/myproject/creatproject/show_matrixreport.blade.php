@@ -1,17 +1,15 @@
-@extends('layouts.app-imm')
+@php
+    $layout = ($userRole == 'USER' && $status != 'benchmark') ? 'layouts.app-imm' : 'layouts.app-landingpage';
+@endphp
+
+@extends($layout)
 @section('title', 'Laporan Matrix')
 
 @section('css')
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="{{ asset('css/myproject/creatproject/matrixreport.css') }}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+<link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 <style>
-        body{
-      padding-top: 55px;  
-    }
-    .content-container h1 {
+    .content-container h3 {
         background-color: #5940CB;
         color: #FFFFFF;
         padding: 10px;
@@ -35,7 +33,7 @@
         margin-bottom: 20px;
         border-radius: 5px;
     }
-    .content-box h2 {
+    .content-box h4 {
         background-color: #5940CB;
         color: #FFFFFF;
         padding: 10px;
@@ -83,11 +81,50 @@
 @endsection
 
 @section('content')
-<div class="container mt-5 content-container" id="content-to-export">
-    <h1>Matrix: {{ $metricProject->metric ? $metricProject->metric->name : 'Matrix Report' }}</h1>
-    <h2>Perkembangan Matrix</h2>
+<div class="container content-container" id="content-to-export" style="margin-bottom: 50px;">
+    <nav aria-label="breadcrumb" style="margin-bottom: 32px;">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                @if ($userRole == 'USER' && $status != 'benchmark')
+                    <a href="{{ route('homepage') }}" style="text-decoration: none; color: #212B36;">Home</a>
+                @else
+                    @if ($status == 'benchmark')
+                        <a href="{{  route('companies.list', ['status' => 'benchmark']) }}" style="text-decoration: none; color: #212B36;">Home</a>
+                    @else
+                        <a href="{{ route('investments.pending') }}" style="text-decoration: none; color: #212B36;">Home</a>
+                    @endif
+                @endif
+            </li>
+            @if ($userRole == 'USER' && $status != 'benchmark')
+                <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                    <a href="{{ route('myproject.myproject') }}" style="text-decoration: none; color: #212B36;">IMM</a>
+                </li>
+                <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                    <a href="{{ route('projects.view', ['id' => $project->id]) }}" style="text-decoration: none; color: #212B36;">Project Report</a>
+                </li>
+            @else
+                <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                    <a href="{{ route('companies.list', ['status' => 'benchmark']) }}" style="text-decoration: none; color: #212B36;">Find Company</a>
+                </li>
+                <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px; color: #212B36;" aria-current="page">
+                    <a href="{{  route('companies.benchmark', $companyId) }}" style="text-decoration: none; color: #212B36;">Company Profile</a>
+                </li>
+                <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                    <a href="{{ route('projects_company.view', ['id' => $project->id, 'status' => 'benchmark', 'companyId' => $companyId]) }}" style="text-decoration: none; color: #5A5A5A;">Project Report</a>
+                </li>
+            @endif
+            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                <a href="{{ route('metric-impact.show', ['projectId' => $project->id, 'metricId' => $metricProject->metric_id, 'metricProjectId' => $metricProject->id]) }}" style="text-decoration: none; color: #212B36;">Metrics Score</a>
+            </li>
+            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                <a href="#" style="text-decoration: none; color: #5A5A5A;">Metrics Report</a>
+            </li>
+        </ol>
+    </nav>
+    <h3>Matrix: {{ $metricProject->metric ? $metricProject->metric->name : 'Matrix Report' }}</h3>
+    <h4>Perkembangan Matrix</h4>
     <div class="date-box">
-        Tanggal: {{ \Carbon\Carbon::parse($matrixReport->created_at)->format('d/m/Y') }}
+        Tanggal: {{ \Carbon\Carbon::parse($matrixReport->created_at)->translatedFormat('d F Y') }}
     </div>
     <div class="chart-container">
         {!! $chart->container() !!}
@@ -96,21 +133,31 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="content-box">
-                    <h2>Evaluasi Matrix</h2>
+                    <h4>Evaluasi Matrix</h4>
                     <form action="{{ route('metric-projects.updateMatrixReport', [$project->id, $matrixReport->id]) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="form-group">
                             <label for="evaluation">Evaluation</label>
-                            <textarea class="form-control" name="evaluation" id="evaluation" rows="3" required>{{ $matrixReport->evaluation }}</textarea>
+                            @if ($userRole == 'USER' && $status != 'benchmark')
+                                <textarea class="form-control" name="evaluation" id="evaluation" rows="3" required>{{ $matrixReport->evaluation }}</textarea>
+                            @else
+                                <textarea class="form-control" name="evaluation" id="evaluation" rows="3" required readonly>{{ $matrixReport->evaluation }}</textarea>
+                            @endif
                         </div>
                         <div class="form-group">
                             <label for="analysis">Analysis</label>
-                            <textarea class="form-control" name="analysis" id="analysis" rows="3" required>{{ $matrixReport->analysis }}</textarea>
+                            @if ($userRole == 'USER' && $status != 'benchmark')
+                                <textarea class="form-control" name="analysis" id="analysis" rows="3" required>{{ $matrixReport->analysis }}</textarea>
+                            @else
+                                <textarea class="form-control" name="analysis" id="analysis" rows="3" required readonly>{{ $matrixReport->analysis }}</textarea>
+                            @endif
                         </div>
                         <input type="hidden" name="metric_id" value="{{ $metricProject->metric ? $metricProject->metric->id : '' }}">
                         <div class="btn-container">
-                            <button type="submit" class="btn save-btn">Save</button>
+                            @if ($userRole == 'USER' && $status != 'benchmark')
+                                <button type="submit" class="btn save-btn">Save</button>
+                            @endif
                             <button id="export-btn" type="button" class="btn export-btn">Export PDF</button>
                         </div>
                     </form>

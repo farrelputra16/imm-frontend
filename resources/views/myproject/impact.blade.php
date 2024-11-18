@@ -16,6 +16,28 @@
         .file-item-report{
             color:  #5940CB;
         }
+        .matrix-report-container {
+            background-color: #f8f9fa; /* Warna latar belakang untuk kontainer */
+            border-radius: 0.5rem; /* Sudut melengkung */
+            padding: 20px; /* Padding di dalam kontainer */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Bayangan */
+        }
+
+        .file-report {
+            background-color: #ffffff; /* Warna latar belakang kartu */
+            border: 1px solid #dee2e6; /* Border */
+            border-radius: 0.5rem; /* Sudut melengkung */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Bayangan */
+        }
+
+        .file-item-report {
+            margin-bottom: 15px; /* Jarak bawah untuk item file */
+            transition: transform 0.2s; /* Transisi saat hover */
+        }
+
+        .file-item-report:hover {
+            transform: scale(1.05); /* Efek zoom saat hover */
+        }
         .matrix-section {
             margin-top: 20px;
         }
@@ -168,21 +190,17 @@
 
         .add-report-btn {
             background-color: #5940cb;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            /* Add animation */
-            float: right;
-            position: relative;
+            color: white; /* Warna teks tombol */
+            padding: 10px 20px; /* Padding tombol */
+            border-radius: 0.25rem; /* Sudut melengkung tombol */
+            text-decoration: none; /* Menghilangkan garis bawah */
+            transition: background-color 0.3s; /* Transisi saat hover */
+        }
 
+        .add-report-btn:hover {
+            background-color: #5940ba; /* Warna saat hover */
+            color: white;
             text-decoration: none;
-            /* Remove underline for link */
-            display: inline-block;
-            /* Ensure it behaves like a button */
         }
 
         /* bread */
@@ -419,45 +437,45 @@
             </div>
         </div>
 
-            <div class="container mt-5 mb-3 matrix-report-container">
-                <div class="row d-flex justify-content-between align-items-center">
-                    <div class="col">
-                        <h3>Matrix Report</h3>
-                    </div>
-                    @if ($userRole == 'USER' && $status != 'benchmark')
-                        <div class="col d-flex justify-content-end">
-                            <a
-                                href="{{ route('metric-projects.createMatrixReport', ['projectId' => $project->id, 'metricId' => $metricProject->metric_id, 'metricProjectId' => $metricProject->id]) }}"
-                                class="add-report-btn">Tambah Laporan
-                            </a>
-                        </div>
-                    @endif
+        <div class="container mt-5 mb-3 matrix-report-container">
+            <div class="row d-flex justify-content-between align-items-center">
+                <div class="col">
+                    <h3>Matrix Report</h3>
                 </div>
+                @if ($userRole == 'USER' && $status != 'benchmark')
+                    <div class="col d-flex justify-content-end">
+                        <a href="{{ route('metric-projects.createMatrixReport', ['projectId' => $project->id, 'metricId' => $metricProject->metric_id, 'metricProjectId' => $metricProject->id]) }}" class="add-report-btn">Tambah Laporan</a>
+                    </div>
+                @endif
             </div>
 
-            <div class="container " style="margin-top: 100px;">
-                <div class="row d-flex align-items-center justify-content-center">
-                    @if ($matrixReports->isEmpty())
-                        <div class="col-12">
-                            <p class="text-center">Belum ada laporan.</p>
-                        </div>
-                    @else
-                        @foreach ($matrixReports as $report)
-                        <div class="col-6 col-md-4 col-lg-2">
-                            <a href="{{ route('metric-projects.showReport', ['projectId' => $project->id, 'metricId' => $report->metric_id, 'reportId' => $report->id, 'metricProjectId' => $metricProject->id]) }}" >
-                                <div class="file-report text-center">
-                                    <div class="file-item-report mb-5">
-                                        <i class="fas fa-file-alt fa-5x mb-2"></i>
-                                        <p>{{ \Carbon\Carbon::parse($report->created_at)->format('d/m/y') }}</p>
+            <div class="row mt-3">
+                @if ($matrixReports->isEmpty())
+                    <div class="col-12">
+                        <p class="text-center">Belum ada laporan.</p>
+                    </div>
+                @else
+                    <div class="col-12">
+                        <div class="file-report card">
+                            <div class="card-body text-center">
+                                <div class="row">
+                                    @foreach ($matrixReports as $report)
+                                    <div class="col-6 col-md-4 col-lg-2 mb-4">
+                                        <a href="{{ route('metric-projects.showReport', ['projectId' => $project->id, 'metricId' => $report->metric_id, 'reportId' => $report->id, 'metricProjectId' => $metricProject->id, 'status' => $status, 'userRole' => $userRole]) }}">
+                                            <div class="file-item-report">
+                                                <i class="fas fa-file-alt fa-5x mb-2"></i>
+                                                <p>{{ \Carbon\Carbon::parse($report->created_at)->format('d M Y') }}</p>
+                                            </div>
+                                        </a>
                                     </div>
+                                    @endforeach
                                 </div>
-                            </a>
+                            </div>
                         </div>
-                        @endforeach
-                    @endif
-                </div>
+                    </div>
+                @endif
             </div>
         </div>
-
-    </body>
+    </div>
+</body>
 @endsection

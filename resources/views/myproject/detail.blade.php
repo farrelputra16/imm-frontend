@@ -63,12 +63,6 @@
             border-radius: 50rem;
         }
 
-        .footer {
-            background-color: #343a40;
-            color: #ffffff;
-            padding: 20px;
-        }
-
         .span-footer {
             font-size: 0.9rem;
         }

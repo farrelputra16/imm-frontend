@@ -343,8 +343,19 @@ class MetricProjectController extends Controller
         return redirect()->route('myproject.detail', $projectId)->with('success', 'Matrix report created successfully.');
     }
 
-    public function showReport($projectId, $metricId, $reportId, $metricProjectId)
+    public function showReport(Request $request, $projectId, $metricId, $reportId, $metricProjectId)
     {
+        if ($request->has('status')) {
+            $status = $request->input('status');
+        } else {
+            $status = null;
+        }
+        if ($request->has('userRole')) {
+            $userRole = $request->input('userRole');
+        } else {
+            $userRole = null;
+        }
+
         $project = Project::findOrFail($projectId);
 
         $metricProject = MetricProject::where('project_id', $projectId)
@@ -382,7 +393,7 @@ class MetricProjectController extends Controller
                                     ->where('id', $reportId)
                                     ->firstOrFail();
 
-        return view('myproject.creatproject.show_matrixreport', compact('project', 'metricProject', 'chart', 'matrixReport'));
+        return view('myproject.creatproject.show_matrixreport', compact('project', 'metricProject', 'chart', 'matrixReport', 'status', 'userRole'));
     }
 
 
