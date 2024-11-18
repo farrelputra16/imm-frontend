@@ -76,11 +76,6 @@ h4 {
     color: #9CA3AF;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
 .form-control {
     border-radius: 6px; /* Tetap menggunakan px */
     -webkit-border-radius: 6px;

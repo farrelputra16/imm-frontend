@@ -1,7 +1,6 @@
 @extends('layouts.app-landingpage')
 
 @section('content')
-<!-- Custom Font from Google Fonts -->
 <link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
 <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 <style>
@@ -765,6 +764,4 @@
     // Memanggil fetchProvinces saat dokumen dimuat
     document.addEventListener('DOMContentLoaded', fetchProvinces);
 </script>
-
-
 @endsection
