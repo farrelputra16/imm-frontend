@@ -461,7 +461,7 @@
                                 <div class="row">
                                     @foreach ($matrixReports as $report)
                                     <div class="col-6 col-md-4 col-lg-2 mb-4">
-                                        <a href="{{ route('metric-projects.showReport', ['projectId' => $project->id, 'metricId' => $report->metric_id, 'reportId' => $report->id, 'metricProjectId' => $metricProject->id, 'status' => $status, 'userRole' => $userRole]) }}">
+                                        <a href="{{ route('metric-projects.showReport', ['projectId' => $project->id, 'metricId' => $report->metric_id, 'reportId' => $report->id, 'metricProjectId' => $metricProject->id, 'status' => $status, 'userRole' => $userRole, ' companyId' => $companyId]) }}">
                                             <div class="file-item-report">
                                                 <i class="fas fa-file-alt fa-5x mb-2"></i>
                                                 <p>{{ \Carbon\Carbon::parse($report->created_at)->format('d M Y') }}</p>

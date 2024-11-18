@@ -40,7 +40,7 @@ Route::get('/choose-role', function () {
 })->name('auth.choose-role');
 Route::get('/', [LandingPageController::class, 'index'])->name('landingpage');
 Route::get('/investors', [InvestorController::class, 'index'])->name('investors.index');
-Route::get('/investors/{id}', [InvestorController::class, 'show'])->name('investors.show')->middleware('checkrole:USER');
+Route::get('/investors/{id}', [InvestorController::class, 'show'])->name('investors.show');
 
 
 Route::get('/people', [PeopleController::class, 'index'])->name('people.index');

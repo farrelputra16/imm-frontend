@@ -18,6 +18,7 @@ class FundingRoundController extends Controller
 {
     // Ambil query untuk filtering berdasarkan input dari request
     $query = FundingRound::query()->with('company');
+    $rowsPerPage = $request->input('rows', 10);
 
     // Filter berdasarkan perusahaan (company)
     if ($request->filled('company_id')) {
@@ -37,7 +38,8 @@ class FundingRoundController extends Controller
     }
 
     // Dapatkan hasil filtering
-    $fundingRounds = $query->get();
+    $fundingRounds = $query->paginate($rowsPerPage);
+
 
     // Ambil semua companies untuk dropdown filtering
     $companies = Company::all();

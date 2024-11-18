@@ -96,7 +96,7 @@
     </nav>
 
     <div>
-        <h2 style="color: #6256CA;">Company Profile</h2>
+        <h2 style="color: #6256CA; margin-bottom: 32px;">Company Profile</h2>
     </div>
 
     <div style="padding: 0px; margin-top: 32px;">

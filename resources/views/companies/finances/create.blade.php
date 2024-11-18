@@ -2,13 +2,9 @@
 @section('title', 'Tambah Penggunaan Dana')
 
 @section('css')
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 <style>
 /* Styling tetap sama */
-body{
-    padding-top: 110px;
-}
 h4 {
     color: #5940CB;
     font-weight: bold;

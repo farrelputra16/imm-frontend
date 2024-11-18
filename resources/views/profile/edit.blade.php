@@ -1,4 +1,4 @@
-@extends('layouts.app-imm')
+@extends('layouts.app-landingpage')
 @section('title', 'Edit Profil')
 
 @section('css')

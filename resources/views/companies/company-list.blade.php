@@ -70,9 +70,9 @@
         <!-- Filter Section -->
         <div class="col-md-3">
             <!-- Filter Header -->
-            <div class="filter-header" style="vertical-align: center;">
+            <div class="filter-header" style="vertical-align: center;  justify-content: flex-start;">
                 <h4><b>FILTER</b></h4>
-                <img src="{{ asset('images/filter.svg') }}" alt="Search Icon" style="width: 20px; height: 20px; margin-left: 10px;">
+                <img src="{{ asset('images/filter.svg') }}" alt="Search Icon" style="width: 20px; height: 20px; margin-left: 120px;">
             </div>
             <div class="filter-section">
                 <form method="GET" action="{{ route('companies.list', ['status' => $status]) }}" id="companyFilterForm">
@@ -160,7 +160,7 @@
             <form method="GET" action="{{ route('companies.list') }}"  id="companySearchForm">
                 @csrf
                 <input type="hidden" name="status" value="{{ $status }}">
-                <div class="search-container">
+                <div class="search-container"  style="max-width: 100%;">
                     <i class="fas fa-search" style="margin-left: 10px;"></i>
                     <input class="form-control" placeholder="Search Investors" type="text" name="search" id="search_input" value="{{ request('search') }}" />
                     <button class="btn" type="submit">Search</button>
@@ -199,7 +199,7 @@
             </form>
 
             <!-- Companies Table -->
-            <div class="table-responsive">
+            <div class="table-responsive"  style="max-width: 100%;">
                 <table class="table table-hover table-strip" style="margin-bottom: 0px;">
                     <thead>
                         <tr>
@@ -302,7 +302,7 @@
             </div>
 
             <!-- Footer sebagai bagian dari tabel -->
-            <div class="d-flex justify-content-between align-items-center mb-3 align-self-center" style="padding: 20px; background-color: #ffffff; border-bottom: 1px solid #ddd; border-left: 1px solid #ddd; border-right: 1px solid #ddd; border-top: 0px solid #ffffff; margin-top:0px; height:100px; border-end-end-radius: 20px; border-end-start-radius: 20px; height: 60px;">
+            <div class="d-flex justify-content-between align-items-center mb-3 align-self-center" style="padding: 20px; background-color: #ffffff; border-bottom: 1px solid #ddd; border-left: 1px solid #ddd; border-right: 1px solid #ddd; border-top: 0px solid #ffffff; margin-top:0px; height:100px; border-end-end-radius: 20px; border-end-start-radius: 20px; height: 60px; max-width: 100%;">
                 <form method="GET" action="{{ route('companies.list') }}" class="mb-0">
                     <input type="hidden" name="status" value="{{ $status }}">
                     <div class="d-flex align-items-center">

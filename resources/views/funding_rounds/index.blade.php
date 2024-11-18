@@ -3,15 +3,21 @@
 @section('content')
 <!-- Custom Font from Google Fonts -->
 <link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
+<link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 
 <div class="container-fluid">
-    <div class="header d-flex justify-content-between align-items-center">
-        <div>
-            <a href="{{ route('landingpage') }}">Home</a> &gt; <a href="#">Funding Rounds</a>
-        </div>
-    </div>
+    <nav aria-label="breadcrumb" style="margin-bottom: 32px;">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                <a href="{{ route('landingpage') }}" style="text-decoration: none; color: #212B36;">Home</a>
+            </li>
+            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                <a href="#" style="text-decoration: none; color: #212B36;">Funding Rounds</a>
+            </li>
+        </ol>
+    </nav>
 
-    <h1 class="header"><b>Funding Rounds</b></h1>
+    <h2 style="margin-bottom: 32px; color: #6256CA;">Funding Rounds</h2>
 
     <div class="row">
         <!-- Filter Section -->
@@ -19,7 +25,7 @@
             <!-- Filter Header -->
             <div class="filter-header d-flex align-items-center mb-3">
                 <h4><b>FILTER</b></h4>
-                <img src="{{ asset('images/filter.svg') }}" alt="Search Icon" style="width: 20px; height: 20px; margin-left: 10px;">
+                <img src="{{ asset('images/filter.svg') }}" alt="Search Icon" style="width: 20px; height: 20px; margin-left: 120px;">
             </div>
 
             <!-- Filter Form -->
@@ -83,68 +89,101 @@
         </div>
 
         <div class="col-md-9 table-section">
-            <div class="search-container mb-3">
+            <div class="search-container mb-3"  style="max-width: 100%; width: 100%;">
                 <i class="fas fa-search" style="margin-left: 10px;"></i>
                 <input class="form-control" placeholder="Search Data" type="text" style="border: none;">
                 <button class="btn">Search</button>
             </div>
 
             <!-- Table Section -->
-            <div class="table-section">
-                <div class="table-responsive">
-                    <table class="table table-hover table-strip" style="margin-bottom: 0px;">
-                        <thead class="sub-heading-2">
-                            <tr>
-                                <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle;">Name</th>
-                                <th scope="col" style="vertical-align: middle;">Company</th>
-                                <th scope="col" style="vertical-align: middle;">Funding Type</th>
-                                <th scope="col" style="vertical-align: middle;">Target Amount</th>
-                                <th scope="col" style="vertical-align: middle;">Money Raised</th>
-                                <th scope="col" style="vertical-align: middle;">Announced</th>
-                                <th scope="col" style="vertical-align: middle;">Lead Investor</th>
-                                <th scope="col" style="border-top-right-radius: 20px; vertical-align: middle;">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($fundingRounds as $fundingRound)
-                                <tr data-href="{{ route('funding_rounds.show', $fundingRound->id) }}">
-                                    <td style="vertical-align: middle;">
-                                        <span>{{ $fundingRound->name }}</span>
-                                    </td>
-                                    <td style="vertical-align: middle;">
-                                        @if ($fundingRound->company)
-                                            <a href="{{ route('companies.show', $fundingRound->company->id) }}">
-                                                {{ $fundingRound->company->nama ?? 'N/A' }}
-                                            </a>
-                                        @else
-                                            N/A
-                                        @endif
-                                    </td>
-                                    <td style="vertical-align: middle;">
-                                        {{ $fundingRound->funding_stage ?? 'N/A' }}
-                                    </td>
-                                    <td style="vertical-align: middle;">Rp {{ $fundingRound->target ? number_format($fundingRound->target,0, ',', '.') : 'N/A' }}</td>
-                                    <td style="vertical-align: middle;">Rp {{ $fundingRound->money_raised ? number_format($fundingRound->money_raised,0, ',', '.') : 'N/A' }}</td>
-                                    <td style="vertical-align: middle;">{{ $fundingRound->announced_date ? \Carbon\Carbon::parse($fundingRound->announced_date)->format('j M, Y') : 'N/A' }}</td>
-                                    <td style="vertical-align: middle;">
-                                        @if ($fundingRound->leadInvestor)
-                                            <a href="{{ route('investors.show', $fundingRound->leadInvestor->id) }}">
-                                                {{ $fundingRound->leadInvestor->org_name }}
-                                            </a>
-                                        @else
-                                            N/A
-                                        @endif
-                                    </td>
+            <div class="table-responsive"  style="max-width: 100%; width: 100%;">
+                <table class="table table-hover table-strip" style="margin-bottom: 0px;">
+                    <thead class="sub-heading-2">
+                        <tr>
+                            <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle;">Name</th>
+                            <th scope="col" style="vertical-align: middle;">Company</th>
+                            <th scope="col" style="vertical-align: middle;">Funding Type</th>
+                            <th scope="col" style="vertical-align: middle;">Target Amount</th>
+                            <th scope="col" style="vertical-align: middle;">Money Raised</th>
+                            <th scope="col" style="vertical-align: middle;">Announced</th>
+                            <th scope="col" style="vertical-align: middle;">Lead Investor</th>
+                            <th scope="col" style="border-top-right-radius: 20px; vertical-align: middle;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($fundingRounds as $fundingRound)
+                            <tr data-href="{{ route('funding_rounds.show', $fundingRound->id) }}">
+                                <td style="vertical-align: middle;">
+                                    <span>{{ $fundingRound->name }}</span>
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    @if ($fundingRound->company)
+                                        <a href="{{ route('companies.show', $fundingRound->company->id) }}">
+                                            {{ $fundingRound->company->nama ?? 'N/A' }}
+                                        </a>
+                                    @else
+                                        N/A
+                                    @endif
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    {{ $fundingRound->funding_stage ?? 'N/A' }}
+                                </td>
+                                <td style="vertical-align: middle;">Rp {{ $fundingRound->target ? number_format($fundingRound->target,0, ',', '.') : 'N/A' }}</td>
+                                <td style="vertical-align: middle;">Rp {{ $fundingRound->money_raised ? number_format($fundingRound->money_raised,0, ',', '.') : 'N/A' }}</td>
+                                <td style="vertical-align: middle;">{{ $fundingRound->announced_date ? \Carbon\Carbon::parse($fundingRound->announced_date)->format('j M, Y') : 'N/A' }}</td>
+                                <td style="vertical-align: middle;">
+                                    @if ($fundingRound->leadInvestor)
+                                        <a href="{{ route('investors.show', $fundingRound->leadInvestor->id) }}">
+                                            {{ $fundingRound->leadInvestor->org_name }}
+                                        </a>
+                                    @else
+                                        N/A
+                                    @endif
+                                </td>
 
-                                    <td style="vertical-align: middle;">
-                                        <a href="{{ route('funding_rounds.show', $fundingRound->id) }}" class="btn btn-primary">View</a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                                <td style="vertical-align: middle;">
+                                    <a href="{{ route('funding_rounds.show', $fundingRound->id) }}" class="btn btn-primary">View</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
+             <!-- Footer sebagai bagian dari tabel -->
+             <div class="d-flex justify-content-between align-items-center mb-3 align-self-center"
+             style="padding: 20px;
+                 background-color: #ffffff;
+                 border-bottom: 1px solid #ddd;
+                 border-left: 1px solid #ddd;
+                 border-right: 1px solid #ddd;
+                 border-top: 1px solid #ddd;
+                 margin-top:0px;
+                 border-end-end-radius: 20px;
+                 border-end-start-radius: 20px;
+                 height: 60px;
+                 max-width: 100%;
+                 ">
+                 <form method="GET" action="{{ route('funding_rounds.index') }}" class="mb-0">
+                     <div class="d-flex align-items-center">
+                         <label for="rowsPerPage" class="me-2">Rows per page:</label>
+                         <select name="rows"
+                                 id="rowsPerPage"
+                                 class="form-select me-2"
+                                 onchange="this.form.submit()"
+                                 style="width: 50%px; margin-left: 5px; margin-right: 5px;">
+                             <option value="10" {{ request('rows') == 10 ? 'selected' : '' }}>10</option>
+                             <option value="50" {{ request('rows') == 50 ? 'selected' : '' }}>50</option>
+                             <option value="100" {{ request('rows') == 100 ? 'selected' : '' }}>100</option>
+                         </select>
+                         <div>
+                             <span>Total {{ $fundingRounds->firstItem() }} - {{ $fundingRounds->lastItem() }} of {{ $fundingRounds->total() }}</span>
+                         </div>
+                     </div>
+                 </form>
+                 <div style="margin-top: 10px;">
+                     {{ $fundingRounds->appends(request()->query())->links('pagination::bootstrap-4') }}
+                 </div>
+             </div>
         </div>
     </div>
 </div>

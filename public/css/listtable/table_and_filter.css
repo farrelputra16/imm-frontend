@@ -121,7 +121,7 @@ body {
 
 .filter-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     margin-bottom: 10px; /* 0.625rem */
     margin-top: 10px !important; /* 0.625rem */

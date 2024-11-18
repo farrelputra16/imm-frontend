@@ -2,7 +2,6 @@
 @section('title', 'Profil Perusahaan')
 
 @section('css')
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 <link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
 
@@ -431,7 +430,7 @@
     .nav-item-separator {
         font-size: 40px;
         color: #6c757d;
-        margin: 1px 200px;
+        margin: 1px 250px;
         line-height: 1.5;
         opacity: 0.2;
     }
@@ -649,7 +648,7 @@
                         <input type="file" id="photoUpload" accept="image/*" style="display: none;" name="image" />
                         <button id="button-img-add" style="visibility: hidden;"><em class="sub-heading-1">Upload Photo</em></button>
                     </div>
-                    <div class="row justify-content-center">
+                    <div class="row justify-content-center" style="margin-left: 90px;">
                         <div class="col-md-10" style="margin-bottom: 10px;">
                             <div class="d-flex align-items-center">
                                 <h5 class="mr-5 sub-heading-1">Edit Data Perusahaan</h5>
@@ -856,7 +855,7 @@
                             </div>
                         </ul>
                     </div>
-                    <div class="row justify-content-center">
+                    <div class="justify-content-center">
                         <form method="GET" action="{{ route('companies.list') }}"  id="companySearchForm">
                             @csrf
                             <div class="search-container">

@@ -355,6 +355,11 @@ class MetricProjectController extends Controller
         } else {
             $userRole = null;
         }
+        if ($request->has('companyId')) {
+            $companyId = $request->input('companyId');
+        } else {
+            $companyId = null;
+        }
 
         $project = Project::findOrFail($projectId);
 
@@ -393,7 +398,7 @@ class MetricProjectController extends Controller
                                     ->where('id', $reportId)
                                     ->firstOrFail();
 
-        return view('myproject.creatproject.show_matrixreport', compact('project', 'metricProject', 'chart', 'matrixReport', 'status', 'userRole'));
+        return view('myproject.creatproject.show_matrixreport', compact('project', 'metricProject', 'chart', 'matrixReport', 'status', 'userRole', 'companyId'));
     }
 
 

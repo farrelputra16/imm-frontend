@@ -2,7 +2,6 @@
 @section('title', 'Halaman Perusahaan')
 
 @section('css')
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 <link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
 <style>

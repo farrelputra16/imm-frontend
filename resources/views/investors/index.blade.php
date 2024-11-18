@@ -62,9 +62,9 @@
     <div class="row">
         <!-- Filter Section -->
         <div class="col-md-3">
-            <div class="filter-header" style="vertical-align: center;">
+            <div class="filter-header" style="vertical-align: center;  justify-content: flex-start;">
                 <h4><b>FILTER</b></h4>
-                <img src="{{ asset('images/filter.svg') }}" alt="Search Icon" style="width: 20px; height: 20px; margin-left: 10px;">
+                <img src="{{ asset('images/filter.svg') }}" alt="Search Icon" style="width: 20px; height: 20px; margin-left: 120px;">
             </div>
             <div class="filter-section">
                 <form method="GET" action="{{ route('investors.index') }}" id="investorFilterForm">
@@ -192,8 +192,8 @@
         <div class="col-md-9 table-section">
             <form method="GET" action="{{ route('investors.index') }}"  id="investorSearchForm">
                 @csrf
-                <div class="search-container">
-                    <i class="fas fa-search" style="margin-left: 10px;"></i>
+                <div class="search-container" style="max-width: 100%;">
+                    <i class="fas fa-search" style="margin-left: 10px; max-width: 100%"></i>
                     <input class="form-control" placeholder="Search Investors" type="text" name="search" value="{{ request('search') }}" />
                     <button class="btn" type="submit">Search</button>
                 </div>
@@ -229,7 +229,7 @@
                 <input type="hidden" name="investor_ids" id="investor_ids" value="">
             </form>
 
-            <div class="table-responsive">
+            <div class="table-responsive"  style="max-width: 100%; width: 100%;">
                 <table class="table table-hover table-strip" style="margin-bottom: 0px;">
                     <thead class="sub-heading-2">
                         <tr>
@@ -300,7 +300,9 @@
                 margin-top:0px;
                 border-end-end-radius: 20px;
                 border-end-start-radius: 20px;
-                height: 60px;">
+                height: 60px;
+                max-width: 100%;
+                ">
                 <form method="GET" action="{{ route('investors.index') }}" class="mb-0">
                     <div class="d-flex align-items-center">
                         <label for="rowsPerPage" class="me-2">Rows per page:</label>

@@ -35,9 +35,9 @@
     <div class="row">
         <!-- Sidebar Filter Section -->
         <div class="col-md-3">
-            <div class="filter-header">
+            <div class="filter-header" style="vertical-align: center;  justify-content: flex-start;">
                 <h4><b>FILTER</b></h4>
-                <img src="{{ asset('images/filter.svg') }}" alt="Filter Icon" style="width: 20px; height: 20px; margin-left: 10px;">
+                <img src="{{ asset('images/filter.svg') }}" alt="Search Icon" style="width: 20px; height: 20px; margin-left: 120px;">
             </div>
             <div class="filter-section">
                 <form method="GET" action="{{ route('people.index') }}" id="peopleFilterForm">
@@ -196,7 +196,7 @@
         <div class="col-md-9 table-section">
             <form method="GET" action="{{ route('people.index') }}"  id="peopleSearchForm">
                 @csrf
-                <div class="search-container">
+                <div class="search-container"  style="max-width: 100%;">
                     <i class="fas fa-search" style="margin-left: 10px;"></i>
                     <input class="form-control" placeholder="Search People" type="text" name="search" value="{{ request('search') }}" />
                     <button class="btn" type="submit">Search</button>
@@ -233,7 +233,7 @@
                 <input type="hidden" name="people_ids" id="people_ids" value="">
             </form>
 
-            <div class="table-responsive">
+            <div class="table-responsive" style="max-width: 100%;">
                 <table class="table table-hover table-strip" style="border-top-left-radius: 20px; border-top-right-radius: 20px; overflow: hidden;">
                     <thead class="sub-heading-2">
                         <tr>
@@ -310,7 +310,9 @@
                margin-top:0px;
                border-end-end-radius: 20px;
                border-end-start-radius: 20px;
-               height: 60px;">
+               height: 60px;
+               max-width: 100%;
+              ">
                <form method="GET" action="{{ route('people.index') }}" class="mb-0">
                    <div class="d-flex align-items-center">
                        <label for="rowsPerPage" class="me-2">Rows per page:</label>

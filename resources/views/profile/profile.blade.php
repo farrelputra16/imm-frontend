@@ -1,8 +1,7 @@
-@extends('layouts.app-imm')
+@extends('layouts.app-landingpage')
 @section('title', 'Profil')
 
 @section('css')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
 <link rel="stylesheet" href="{{ asset('css/profile/profile.css') }}">
 @endsection
@@ -10,10 +9,10 @@
 @section('content')
 <div class="container">
     <div class="row section" style="margin-bottom: 30px;">
-        <div class="col-md-4 text-center">
+        <div class="col text-center">
             <img src="{{ $user->img ? asset('images/' . $user->img) : asset('images/default_user.webp') }}" class="rounded-circle img-fluid" alt="Profile Picture">
         </div>
-        <div class="col-md-4 bio">
+        <div class="col bio">
             <div class="biodata">
                 @if ($userRole === 'INVESTOR')
                     <h2 class="mb-3"> {{$user->nama_depan}} {{ $user->nama_belakang }}</h2>
@@ -62,49 +61,54 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($companies as $company)
-                        <tr data-href="{{ route('companies.show', $company->id) }}">
-                            <td style="vertical-align: middle;">
-                                <input type="checkbox" class="select_company" data-id="{{ $company->id }}">
-                            </td>
-                            <td style="vertical-align: middle;">
-                                <div style="display: flex; align-items: center;">
-                                    <div style="margin-right: 2px;">
-                                        <img src="{{ !empty($company->image) ? env('APP_URL') . $company->image : asset('images/logo-maxy.png') }}" alt="" width="30" height="30"
-                                        style="border-radius: 8px; object-fit:cover;">
-                                    </div>
-                                    <div style="flex-grow: 1; margin-left: 0px; margin-right: 0px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
-                                        @if (strlen($company->nama) > 10)
-                                            title="{{ $company->nama }}"
-                                            style="cursor: pointer;"
-                                        @endif
-                                    >
-                                        <span class="body-2">{{ $company->nama }}</span>
-                                    </div>
-                                    <div style="margin-left: 0px; margin-right: 0px;">
-                                        <i class="fas fa-search" style="color: #aee1b7;"></i>
-                                    </div>
-                                </div>
-                            </td>
-                            <td style="vertical-align: middle;" class="body-2">{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('j M, Y') : 'N/A' }}</td>
-                            <td style="vertical-align: middle;" class="body-2">{{ $company->latest_funding_date ? \Carbon\Carbon::parse($company->latest_funding_date)->format('j M, Y') : 'N/A' }}</td>
-                            <td style="vertical-align: middle;" class="body-2">
-                                <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
-                                    @if ($company->funding_stage)
-                                        <div class="funding-stage">{{ $company->funding_stage }}</div>
-                                    @else
-                                        <div>No funding data available</div>
-                                    @endif
-                                </div>
-                            </td>
-                            <td style="vertical-align: middle;" class="body-2">{{ $company->jumlah_karyawan }}</td>
-                            <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $company->business_model }}</td>
-                            <td style="vertical-align: middle;" class="body-2">{{ Str::limit($company->startup_summary, 20, '...') }}</td>
-                            <td style="vertical-align: middle; cursor: pointer;" title={{ $company->all_departments }} class="body-2">
-                                {{ $company->departments->join(', ') }}
-                            </td>
+                    @if ($companies->isEmpty())
+                        <tr>
+                            <td colspan="9" class="text-center" style="border-left: 1px solid #ddd; border-right: 1px solid #ddd;">No data available</td>
                         </tr>
-                    @endforeach
+                    @else
+                        @foreach ($companies as $company)
+                            <tr data-href="{{ route('companies.show', $company->id) }}">
+                                <td style="vertical-align: middle;">
+                                    <input type="checkbox" class="select_company" data-id="{{ $company->id }}">
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    <div style="display: flex; align-items: center;">
+                                        <div style="margin-right: 2px;">
+                                            <img src="{{ !empty($company->image) ? env('APP_URL') . $company->image : asset('images/logo-maxy.png') }}" alt="" width="30" height="30"
+                                            style="border-radius: 8px; object-fit:cover;">
+                                        </div>
+                                        <div style="flex-grow: 1; margin-left: 0px; margin-right: 0px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
+                                            @if (strlen($company->nama) > 10)
+                                                title="{{ $company->nama }}"
+                                                style="cursor: pointer;"
+                                            @endif
+                                        >
+                                            <span class="body-2">{{ $company->nama }}</span>
+                                        </div>
+                                        <div style="margin-left: 0px; margin-right: 0px;">
+                                            <i class="fas fa-search" style="color: #aee1b7;"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="vertical-align: middle;" class="body-2">{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('j M, Y') : 'N/A' }}</td>
+                                <td style="vertical-align: middle;" class="body-2">{{ $company->latest_funding_date ? \Carbon\Carbon::parse($company->latest_funding_date)->format('j M, Y') : 'N/A' }}</td>
+                                <td style="vertical-align: middle;" class="body-2">
+                                    <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+                                        @if ($company->funding_stage)
+                                            <div class="funding-stage">{{ $company->funding_stage }}</div>
+                                        @else
+                                            <div>No funding data available</div>
+                                        @endif
+                                    </div>
+                                </td>
+                                <td style="vertical-align: middle;" class="body-2">{{ $company->jumlah_karyawan }}</td <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $company->business_model }}</td>
+                                <td style="vertical-align: middle;" class="body-2">{{ Str::limit($company->startup_summary, 20, '...') }}</td>
+                                <td style="vertical-align: middle; cursor: pointer;" title="{{ $company->all_departments }}" class="body-2">
+                                    {{ $company->departments->join(', ') }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -115,46 +119,56 @@
             <table class="table table-hover table-strip" style="margin-bottom: 0px;">
                 <thead class="sub-heading-2">
                     <tr>
-                        <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle; border-bottom: none;"><input type="checkbox" value="all_check" id="select_all_investor" class="select_investor"></th>
+                        <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle; border-bottom: none;">
+                            <input type="checkbox" value="all_check" id="select_all_investor" class="select_investor">
+                        </th>
                         <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Organization Name</th>
                         <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Number of Contacts</th>
                         <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Number of Investments</th>
-                        <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Invesment Stage</th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Investment Stage</th>
                         <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Investor Type</th>
                         <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Location</th>
                         <th scope="col" class="sub-heading-2" style="border-top-right-radius: 20px; vertical-align: top; text-align: left; border-bottom: none;">Description</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($investors as $investor)
-                    <tr data-href="{{ route('investors.show', $investor->id) }}">
-                        <td style="vertical-align: middle; border-left: 1px solid #ddd;"><input type="checkbox" class="select_investor" data-id="{{ $investor->id }}"></td>
-                        <td style="vertical-align: middle;">
-                            <div style="display: flex; align-items: center;">
-                                <div style="margin-right: 2px;">
-                                    <img src="{{ !empty($investor->image) ? asset($investor->image) : asset('images/logo-maxy.png') }}" alt="" width="30" height="30" style="border-radius: 8px; object-fit:cover;">
-                                </div>
-                                <div style="flex-grow: 1; margin-left: 0px; margin-right: 10px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
-                                    @if (strlen($investor->org_name) > 10)
-                                        title="{{ $investor->org_name }}"
-                                        style="cursor: pointer;"
-                                    @endif
-                                >
-                                    <span class="body-2">{{ $investor->org_name }}</span>
-                                </div>
-                                <div style="margin-left: 0px; margin-right: 0px;">
-                                    <i class="fas fa-search" style="color: #aee1b7;"></i>
-                                </div>
-                            </div>
-                        </td>
-                        <td  style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->number_of_contacts }}</td>
-                        <td  style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->number_of_investments }}</td>
-                        <td  style="vertical-align: middle; text-align: center;" class="body-2 investment-stage">{{ $investor->investment_stage }}</td>
-                        <td  style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->investor_type }}</td>
-                        <td  style="vertical-align: middle; text-align: start;" class="body-2">{{ $investor->location }}</td>
-                        <td style="vertical-align: middle; text-align: start; border-right: 1px solid #ddd;" class="body-2">{{ Str::limit($investor->description, 20, '...') }}</td>
-                    </tr>
-                    @endforeach
+                    @if ($investors->isEmpty())
+                        <tr>
+                            <td colspan="8" class="text-center" style="border-left: 1px solid #ddd; border-right: 1px solid #ddd;">No data available</td>
+                        </tr>
+                    @else
+                        @foreach($investors as $investor)
+                            <tr data-href="{{ route('investors.show', $investor->id) }}">
+                                <td style="vertical-align: middle; border-left: 1px solid #ddd;">
+                                    <input type="checkbox" class="select_investor" data-id="{{ $investor->id }}">
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    <div style="display: flex; align-items: center;">
+                                        <div style="margin-right: 2px;">
+                                            <img src="{{ !empty($investor->image) ? asset($investor->image) : asset('images/logo-maxy.png') }}" alt="" width="30" height="30" style="border-radius: 8px; object-fit:cover;">
+                                        </div>
+                                        <div style="flex-grow: 1; margin-left: 0px; margin-right: 10px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
+                                            @if (strlen($investor->org_name) > 10)
+                                                title="{{ $investor->org_name }}"
+                                                style="cursor: pointer;"
+                                            @endif
+                                        >
+                                            <span class="body-2">{{ $investor->org_name }}</span>
+                                        </div>
+                                        <div style="margin-left: 0px; margin-right: 0px;">
+                                            <i class="fas fa-search" style="color: #aee1b7;"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->number_of_contacts }}</td>
+                                <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->number_of_investments }}</td>
+                                <td style="vertical-align: middle; text-align: center;" class="body-2 investment-stage">{{ $investor->investment_stage }}</td>
+                                <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->investor_type }}</td>
+                                <td style="vertical-align: middle; text-align: start;" class="body-2">{{ $investor->location }}</td>
+                                <td style=" vertical-align: middle; text-align: start; border-right: 1px solid #ddd;" class="body-2">{{ Str::limit($investor->description, 20, '...') }}</td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -179,49 +193,55 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($companies as $company)
-                        <tr data-href="{{ route('companies.show', $company->id) }}">
-                            <td style="vertical-align: middle;">
-                                <input type="checkbox" class="select_company" data-id="{{ $company->id }}">
-                            </td>
-                            <td style="vertical-align: middle;">
-                                <div style="display: flex; align-items: center;">
-                                    <div style="margin-right: 2px;">
-                                        <img src="{{ !empty($company->image) ? env('APP_URL') . $company->image : asset('images/logo-maxy.png') }}" alt="" width="30" height="30"
-                                        style="border-radius: 8px; object-fit:cover;">
-                                    </div>
-                                    <div style="flex-grow: 1; margin-left: 0px; margin-right: 0px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
-                                        @if (strlen($company->nama) > 10)
-                                            title="{{ $company->nama }}"
-                                            style="cursor: pointer;"
-                                        @endif
-                                    >
-                                        <span class="body-2">{{ $company->nama }}</span>
-                                    </div>
-                                    <div style="margin-left: 0px; margin-right: 0px;">
-                                        <i class="fas fa-search" style="color: #aee1b7;"></i>
-                                    </div>
-                                </div>
-                            </td>
-                            <td style="vertical-align: middle;" class="body-2">{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('j M, Y') : 'N/A' }}</td>
-                            <td style="vertical-align: middle;" class="body-2">{{ $company->latest_funding_date ? \Carbon\Carbon::parse($company->latest_funding_date)->format('j M, Y') : 'N/A' }}</td>
-                            <td style="vertical-align: middle;" class="body-2">
-                                <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
-                                    @if ($company->funding_stage)
-                                        <div class="funding-stage">{{ $company->funding_stage }}</div>
-                                    @else
-                                        <div>No funding data available</div>
-                                    @endif
-                                </div>
-                            </td>
-                            <td style="vertical-align: middle;" class="body-2">{{ $company->jumlah_karyawan }}</td>
-                            <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $company->business_model }}</td>
-                            <td style="vertical-align: middle;" class="body-2">{{ Str::limit($company->startup_summary, 20, '...') }}</td>
-                            <td style="vertical-align: middle; cursor: pointer;" title={{ $company->all_departments }} class="body-2">
-                                {{ $company->departments->join(', ') }}
-                            </td>
+                    @if ($companies->isEmpty())
+                        <tr>
+                            <td colspan="9" class="text-center" style="border-left: 1px solid #ddd; border-right: 1px solid #ddd;">No data available</td>
                         </tr>
-                    @endforeach
+                    @else
+                        @foreach ($companies as $company)
+                            <tr data-href="{{ route('companies.show', $company->id) }}">
+                                <td style="vertical-align: middle;">
+                                    <input type="checkbox" class="select_company" data-id="{{ $company->id }}">
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    <div style="display: flex; align-items: center;">
+                                        <div style="margin-right: 2px;">
+                                            <img src="{{ !empty($company->image) ? env('APP_URL') . $company->image : asset('images/logo-maxy.png') }}" alt="" width="30" height="30"
+                                            style="border-radius: 8px; object-fit:cover;">
+                                        </div>
+                                        <div style="flex-grow: 1; margin-left: 0px; margin-right: 0px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
+                                            @if (strlen($company->nama) > 10)
+                                                title="{{ $company->nama }}"
+                                                style="cursor: pointer;"
+                                            @endif
+                                        >
+                                            <span class="body-2">{{ $company->nama }}</span>
+                                        </div>
+                                        <div style="margin-left: 0px; margin-right: 0px;">
+                                            <i class="fas fa-search" style="color: #aee1b7;"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="vertical-align: middle;" class="body-2">{{ $company->founded_date ? \Carbon\Carbon::parse($company->founded_date)->format('j M, Y') : 'N/A' }}</td>
+                                <td style="vertical-align: middle;" class="body-2">{{ $company->latest_funding_date ? \Carbon\Carbon::parse($company->latest_funding_date)->format('j M, Y') : 'N/A' }}</td>
+                                <td style="vertical-align: middle;" class="body-2">
+                                    <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+                                        @if ($company->funding_stage)
+                                            <div class="funding-stage">{{ $company->funding_stage }}</div>
+                                        @else
+                                            <div>No funding data available</div>
+                                        @endif
+                                    </div>
+                                </td>
+                                <td style="vertical-align: middle;" class="body-2">{{ $company->jumlah_karyawan }}</td>
+                                <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $company->business_model }}</td>
+                                <td style="vertical-align: middle;" class="body-2">{{ Str::limit($company->startup_summary, 20, '...') }}</td>
+                                <td style="vertical-align: middle; cursor: pointer;" title="{{ $company->all_departments }}" class="body-2">
+                                    {{ $company->departments->join(', ') }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -261,46 +281,56 @@
             <table class="table table-hover table-strip" style="margin-bottom: 0px;">
                 <thead class="sub-heading-2">
                     <tr>
-                        <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle; border-bottom: none;"><input type="checkbox" value="all_check" id="select_all_investor" class="select_investor"></th>
+                        <th scope="col" style="border-top-left-radius: 20px; vertical-align: middle; border-bottom: none;">
+                            <input type="checkbox" value="all_check" id="select_all_investor" class="select_investor">
+                        </th>
                         <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Organization Name</th>
                         <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Number of Contacts</th>
                         <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Number of Investments</th>
-                        <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Invesment Stage</th>
+                        <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Investment Stage</th>
                         <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Investor Type</th>
                         <th scope="col" class="sub-heading-2" style="vertical-align: top; text-align: left; border-bottom: none;">Location</th>
                         <th scope="col" class="sub-heading-2" style="border-top-right-radius: 20px; vertical-align: top; text-align: left; border-bottom: none;">Description</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($investors as $investor)
-                    <tr data-href="{{ route('investors.show', $investor->id) }}">
-                        <td style="vertical-align: middle; border-left: 1px solid #ddd;"><input type="checkbox" class="select_investor" data-id="{{ $investor->id }}"></td>
-                        <td style="vertical-align: middle;">
-                            <div style="display: flex; align-items: center;">
-                                <div style="margin-right: 2px;">
-                                    <img src="{{ !empty($investor->image) ? asset($investor->image) : asset('images/logo-maxy.png') }}" alt="" width="30" height="30" style="border-radius: 8px; object-fit:cover;">
-                                </div>
-                                <div style="flex-grow: 1; margin-left: 0px; margin-right: 10px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
-                                    @if (strlen($investor->org_name) > 10)
-                                        title="{{ $investor->org_name }}"
-                                        style="cursor: pointer;"
-                                    @endif
-                                >
-                                    <span class="body-2">{{ $investor->org_name }}</span>
-                                </div>
-                                <div style="margin-left: 0px; margin-right: 0px;">
-                                    <i class="fas fa-search" style="color: #aee1b7;"></i>
-                                </div>
-                            </div>
-                        </td>
-                        <td  style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->number_of_contacts }}</td>
-                        <td  style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->number_of_investments }}</td>
-                        <td  style="vertical-align: middle; text-align: center;" class="body-2 investment-stage">{{ $investor->investment_stage }}</td>
-                        <td  style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->investor_type }}</td>
-                        <td  style="vertical-align: middle; text-align: start;" class="body-2">{{ $investor->location }}</td>
-                        <td style="vertical-align: middle; text-align: start; border-right: 1px solid #ddd;" class="body-2">{{ Str::limit($investor->description, 20, '...') }}</td>
-                    </tr>
-                    @endforeach
+                    @if ($investors->isEmpty())
+                        <tr>
+                            <td colspan="8" class="text-center" style="border-left: 1px solid #ddd; border-right: 1px solid #ddd;">No data available</td>
+                        </tr>
+                    @else
+                        @foreach($investors as $investor)
+                            <tr data-href="{{ route('investors.show', $investor->id) }}">
+                                <td style="vertical-align: middle; border-left: 1px solid #ddd;">
+                                    <input type="checkbox" class="select_investor" data-id="{{ $investor->id }}">
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    <div style="display: flex; align-items: center;">
+                                        <div style="margin-right: 2px;">
+                                            <img src="{{ !empty($investor->image) ? asset($investor->image) : asset('images/logo-maxy.png') }}" alt="" width="30" height="30" style="border-radius: 8px; object-fit:cover;">
+                                        </div>
+                                        <div style="flex-grow: 1; margin-left: 0px; margin-right: 10px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
+                                            @if (strlen($investor->org_name) > 10)
+                                                title="{{ $investor->org_name }}"
+                                                style="cursor: pointer;"
+                                            @endif
+                                        >
+                                            <span class="body-2">{{ $investor->org_name }}</span>
+                                        </div>
+                                        <div style="margin-left: 0px; margin-right: 0px;">
+                                            <i class="fas fa-search" style="color: #aee1b7;"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->number_of_contacts }}</td>
+                                <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->number_of_investments }}</td>
+                                <td style="vertical-align: middle; text-align: center;" class="body-2 investment-stage">{{ $investor->investment_stage }}</td>
+                                <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $investor->investor_type }}</td>
+                                <td style="vertical-align: middle; text-align: start;" class="body-2">{{ $investor->location }}</td>
+                                <td style="vertical-align: middle; text-align: start; border-right: 1px solid #ddd;" class="body-2">{{ Str::limit($investor->description, 20, '...') }}</td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -404,43 +434,49 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($people as $person)
-                <tr data-href="{{ route('people.show', $person->id) }}" class="clickable-row">
-                    <td style="vertical-align: middle; border-left: 1px solid #ddd;">
-                        <input type="checkbox" class="select_people" data-id="{{ $person->id }}">
-                    </td>
-                    <td style="vertical-align: middle;">
-                        <div style="display: flex; align-items: center;">
-                            <div style="margin-right: 2px;">
-                                <img src="{{ !empty($person->image) ? asset($person->image) : asset('images/logo-maxy.png') }}" alt="" width="30" height="30" style="border-radius: 8px; object-fit:cover;">
-                            </div>
-                            <div style="flex-grow: 1; margin-left: 0px; margin-right: 10px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
-                                @if (strlen($person->name) > 10)
-                                    title="{{ $person->name }}"
-                                    style="cursor: pointer;"
+                @if ($people->isEmpty())
+                    <tr>
+                        <td colspan="8" class="text-center" style="border-left: 1px solid #ddd; border-right: 1px solid #ddd;">No data available</td>
+                    </tr>
+                @else
+                    @foreach($people as $person)
+                        <tr data-href="{{ route('people.show', $person->id) }}" class="clickable-row">
+                            <td style="vertical-align: middle; border-left: 1px solid #ddd;">
+                                <input type="checkbox" class="select_people" data-id="{{ $person->id }}">
+                            </td>
+                            <td style="vertical-align: middle;">
+                                <div style="display: flex; align-items: center;">
+                                    <div style="margin-right: 2px;">
+                                        <img src="{{ !empty($person->image) ? asset($person->image) : asset('images/logo-maxy.png') }}" alt="" width="30" height="30" style="border-radius: 8px; object-fit:cover;">
+                                    </div>
+                                    <div style="flex-grow: 1; margin-left: 0px; margin-right: 10px; width: 100px; word-wrap: break-word; word-break: break-word; white-space: normal;"
+                                        @if (strlen($person->name) > 10)
+                                            title="{{ $person->name }}"
+                                            style="cursor: pointer;"
+                                        @endif
+                                    >
+                                        <span class="body-2">{{ $person->name }}</span>
+                                    </div>
+                                    <div style="margin-left: 0px; margin-right: 0px;">
+                                        <i class="fas fa-search" style="color: #aee1b7;"></i>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->primary_job_title }}</td>
+                            <td style="vertical-align: middle; text-align: start;" class="body-2 skilss">{{ $person->skills }}</td>
+                            <td style="vertical-align: middle; text-align: start;" class="body-2">{{ ucfirst($person->role) }}</td>
+                            <td style="vertical-align: middle; text-align: start;" class="body-2">{{ $person->pengalaman }}</td>
+                            <td style="vertical-align: middle; text-align: center;" class="body-2">
+                                @if($person->linkedin_link)
+                                    <a href="{{ $person->linkedin_link }}" target="_blank" class ="linkedin-link">Link</a>
+                                @else
+                                    N/A
                                 @endif
-                            >
-                                <span class="body-2">{{ $person->name }}</span>
-                            </div>
-                            <div style="margin-left: 0px; margin-right: 0px;">
-                                <i class="fas fa-search" style="color: #aee1b7;"></i>
-                            </div>
-                        </div>
-                    </td>
-                    <td style="vertical-align: middle; text-align: center;" class="body-2">{{ $person->primary_job_title }}</td>
-                    <td style="vertical-align: middle; text-align: start;" class="body-2 skilss">{{ $person->skills }}</td>
-                    <td style="vertical-align: middle; text-align: start;" class="body-2">{{ ucfirst($person->role) }}</td>
-                    <td style="vertical-align: middle; text-align: start;" class="body-2">{{ $person->pengalaman }}</td>
-                    <td style="vertical-align: middle; text-align: center;" class="body-2">
-                        @if($person->linkedin_link)
-                            <a href="{{ $person->linkedin_link }}" target="_blank" class ="linkedin-link">Link</a>
-                        @else
-                            N/A
-                        @endif
-                    </td>
-                    <td style="vertical-align: middle; text-align: start; border-right: 1px solid #ddd;" class="body-2">{{ $person->phone_number }}</td>
-                </tr>
-                @endforeach
+                            </td>
+                            <td style="vertical-align: middle; text-align: start; border-right: 1px solid #ddd;" class="body-2">{{ $person->phone_number }}</td>
+                        </tr>
+                    @endforeach
+                @endif
             </tbody>
         </table>
     </div>

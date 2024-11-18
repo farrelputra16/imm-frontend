@@ -110,11 +110,11 @@
                     <a href="{{  route('companies.benchmark', $companyId) }}" style="text-decoration: none; color: #212B36;">Company Profile</a>
                 </li>
                 <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
-                    <a href="{{ route('projects_company.view', ['id' => $project->id, 'status' => 'benchmark', 'companyId' => $companyId]) }}" style="text-decoration: none; color: #5A5A5A;">Project Report</a>
+                    <a href="{{ route('projects_company.view', ['id' => $project->id, 'status' => 'benchmark', 'companyId' => $companyId]) }}" style="text-decoration: none; color:  #212B36;">Project Report</a>
                 </li>
             @endif
             <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
-                <a href="{{ route('metric-impact.show', ['projectId' => $project->id, 'metricId' => $metricProject->metric_id, 'metricProjectId' => $metricProject->id]) }}" style="text-decoration: none; color: #212B36;">Metrics Score</a>
+                <a href="{{ route('metric-impact.show', ['projectId' => $project->id, 'metricId' => $metricProject->metric_id, 'metricProjectId' => $metricProject->id, 'status' => $status]) }}" style="text-decoration: none; color: #212B36;">Metrics Score</a>
             </li>
             <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
                 <a href="#" style="text-decoration: none; color: #5A5A5A;">Metrics Report</a>
