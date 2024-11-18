@@ -22,6 +22,8 @@
 
         .container {
             flex: 1; /* Membuat kontainer mengambil ruang yang tersedia */
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         .wrapper {
