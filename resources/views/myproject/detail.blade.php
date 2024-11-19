@@ -316,7 +316,7 @@
                         @if ($isUserRole && $status != 'benchmark')
                             <a href="{{ route('homepage') }}" style="text-decoration: none; color: #212B36;">Home</a>
                         @else
-                            @if ($status == 'benchmark')
+                            @if ($status == 'benchmark' || $status == 'company')
                                 <a href="{{ route('landingpage') }}" style="text-decoration: none; color: #212B36;">Home</a>
                             @else
                                 <a href="{{ route('investments.pending') }}" style="text-decoration: none; color: #212B36;">Home</a>
@@ -329,10 +329,18 @@
                         </li>
                     @else
                         <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
-                            <a href="{{ route('companies.list', ['status' => 'benchmark']) }}" style="text-decoration: none; color: #212B36;">Find Company</a>
+                            @if ($status == 'benchmark')
+                                <a href="{{ route('companies.list', ['status' => 'benchmark']) }}" style="text-decoration: none; color: #212B36;">Find Company</a>
+                            @elseif ($status == 'company')
+                                <a href="{{ route('companies.list', ['status' => 'company']) }}" style="text-decoration: none; color: #212B36;">Find Company</a>
+                            @endif
                         </li>
                         <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px; color: #212B36;" aria-current="page">
-                            <a href="{{  route('companies.benchmark', $companyId) }}" style="text-decoration: none; color: #212B36;">Company Profile</a>
+                            @if ($status == 'company')
+                                <a href="{{ route('companies.show', $companyId) }}" style="text-decoration: none; color: #212B36;">Company Profile</a>
+                            @elseif ($status == 'benchmark')
+                                <a href="{{ route('companies.benchmark', ['id' => $companyId]) }}" style="text-decoration: none; color: #212B36;">Company Profile</a>
+                            @endif
                         </li>
                     @endif
                     <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">

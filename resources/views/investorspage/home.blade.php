@@ -1,13 +1,19 @@
 @extends('layouts.app-investors')
 @section('title', 'Halaman IMM')
 
-@section('css')
+@section('content')
 <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
 <style>
     body {
         font-family: Arial, sans-serif;
         background-color: #f8f9fa;
+    }
+
+    .container {
+        flex: 1; /* Membuat kontainer mengambil ruang yang tersedia */
+        max-width: 1400px;
+        margin: 0 auto;
     }
 
     /* Profile Header Styles */
@@ -234,9 +240,7 @@
 }
 
 </style>
-@endsection
 
-@section('content')
 <div class="container mt-5">
     <div class="profile-header">
         <div class="info">
@@ -284,7 +288,7 @@
     <div class="row mt-5">
         <!-- Chart Column -->
         <div class="col-md-5">
-            <div class="chart-card">
+            <div class="chart-card" style="max-width: 100%; width: 100%;;">
                 <h3>Investment Trends</h3>
                 <div class="chart-container">
                     {!! $chart2->container() !!}
@@ -295,39 +299,39 @@
         </div>
 
         <!-- Carousel Column -->
-<div class="col-md-6 custom-carousel-container">
-    <div id="customCarousel" class="carousel slide custom-carousel" data-bs-ride="carousel">
-        <div class="carousel-controls">
-            <button class="carousel-control-prev" type="button" data-bs-target="#customCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#customCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-        <div class="carousel-inner">
-            @foreach ($companies->chunk(2) as $index => $companyPair) <!-- Group companies in pairs of two -->
-                <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                    <div class="row">
-                        @foreach ($companyPair as $company)
-                            <div class="col-6"> <!-- Two items per slide -->
-                                <div class="carousel-card">
-                                    <img src="https://storage.googleapis.com/a1aa/image/xsDrvMl6olZBGd3phCL7krIDHG174HxZSa5oobictMu9s46E.jpg" alt="Company Image {{ $loop->index + 1 }}">
-                                    <div class="carousel-card-body">
-                                        <h5 class="carousel-card-title">{{ $company->nama }}</h5>
-                                        <p>{{ $company->startup_summary }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
+        <div class="col-md-6 custom-carousel-container">
+            <div id="customCarousel" class="carousel slide custom-carousel" data-bs-ride="carousel" style="max-width: 100%; width: 100%;">
+                <div class="carousel-controls">
+                    <button class="carousel-control-prev" type="button" data-bs-target="#customCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#customCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 </div>
-            @endforeach
+                <div class="carousel-inner">
+                    @foreach ($companies->chunk(2) as $index => $companyPair) <!-- Group companies in pairs of two -->
+                        <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                            <div class="row">
+                                @foreach ($companyPair as $company)
+                                    <div class="col-6"> <!-- Two items per slide -->
+                                        <div class="carousel-card">
+                                            <img src="https://storage.googleapis.com/a1aa/image/xsDrvMl6olZBGd3phCL7krIDHG174HxZSa5oobictMu9s46E.jpg" alt="Company Image {{ $loop->index + 1 }}">
+                                            <div class="carousel-card-body">
+                                                <h5 class="carousel-card-title">{{ $company->nama }}</h5>
+                                                <p>{{ $company->startup_summary }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
 
 

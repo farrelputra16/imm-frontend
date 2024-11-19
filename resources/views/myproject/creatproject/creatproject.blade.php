@@ -2,17 +2,13 @@
 @section('title', 'Membuat Proyek')
 
 @section('css')
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    {{-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> --}}
 
     <link rel="stylesheet" href="{{ asset('css/myproject/creatproject/creatproject.css') }}">
     {{-- <link rel="stylesheet" href="{{ asset('css/myproject/creatproject/pemilihansdgs.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.12/plyr.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         .breadcrumb {
             background-color: white;
@@ -633,10 +629,10 @@
                                     <p>Upload a short video presenting your project and its key highlights.</p>
                                     <input type="file" id="video-upload" name="video_pitch" accept="video/*" style="display:none;">
                                 </div>
-                                <div id="video-preview" class="video-js vjs-default-skin" style="margin-bottom: 175px; display: none; width: 100%;">
+                                <div id="video-preview" class="video-js vjs-default-skin" style="margin-bottom: 250px; display: none; width: 100%;">
                                     <video id="video" width="100%" height="auto" controls></video>
                                 </div>
-                                <div id="video-name" style="margin-bottom: 20px;"></div>
+                                <div id="video-name" style="margin-bottom: 20px; margin-top: 20px;"></div>
                             </div>
                         </div>
 
@@ -1123,6 +1119,10 @@
                             if (file.type.startsWith('video/')) {
                                 var videoPreview = document.getElementById('video');
                                 var namePreview = document.getElementById('video-name');
+                                // Membersihkan preview sebelumnya
+                                videoPreview.src = '';
+                                namePreview.textContent = '';
+                                // Menampilkan video preview
                                 videoPreview.src = e.target.result;
                                 previewContainer.style.display = 'block';
                                 namePreview.innerHTML += `<p>File name: ${file.name}</p>`;

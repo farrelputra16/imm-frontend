@@ -158,7 +158,7 @@
                     <div class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Opportunities</a>
                         <div class="dropdown-menu">
-                            <a href="{{ route('companies.list') }}" class="dropdown-item">Find Company</a>
+                            <a href="{{ route('companies.list', ['status' => 'company']) }}" class="dropdown-item">Find Company</a>
                             <a href="{{ route('funding_rounds.index') }}" class="dropdown-item">Funding Rounds</a>
                         </div>
                     </div>

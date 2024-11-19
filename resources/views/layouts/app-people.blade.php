@@ -11,56 +11,92 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     @yield('css')
     <style>
-       .footer {
-    background-color: #0F1F3E;
-    color: white;
-    padding: 20px 0;
-    border-radius: 50px 50px 0 0;
-    font-size: 0.9rem;
-    /* Align items to center */
-    display: flex;
-    justify-content: center;
-}
 
-.footer-logo img {
-    height: 50px;
-    margin-bottom: 10px;
-}
+        html, body {
+            height: 100%; /* Pastikan html dan body memiliki tinggi penuh */
+            margin: 0; /* Menghapus margin default */
+        }
 
-.footer-text {
-    font-size: 0.9rem;
-    line-height: 1.4;
-    margin-top: 10px;
-}
+        body {
+            display: flex;
+            flex-direction: column; /* Mengatur arah kolom */
+        }
 
-.footer-social {
-    padding-top: 10px;
-}
+        .container {
+            flex: 1; /* Membuat kontainer mengambil ruang yang tersedia */
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .footer {
+            background-color: #0F1F3E;
+            color: white;
+            text-align: left;
+            padding: 20px 0; /* Adjust padding for better spacing */
+            border-radius: 20px 20px 0 0;
+            font-size: 0.9rem; /* Smaller font size */
+            bottom: 0;
+            width: 100%;
+            font-family: 'Poppins', sans-serif; /* Set font to Poppins */
+        }
 
-.social-icon {
-    color: white;
-    font-size: 1.8rem;
-    margin: 0 10px;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
+        .footer-text {
+            font-size: 0.9rem; /* Smaller font size */
+            margin: 0;
+            font-family: 'Poppins', sans-serif; /* Set font to Poppins */
+        }
 
-.social-icon:hover {
-    color: #d9fa07;
-}
+        /* Tambahkan CSS untuk footer */
+        .logo-footer {
+            height: 50px;
+        }
+        .footer h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-family: 'Poppins', sans-serif; /* Set font to Poppins */
+        }
+        .footer p {
+            font-size: 0.9375rem; /* 15px in rem */
+            margin: 0;
+            font-family: 'Poppins', sans-serif; /* Set font to Poppins */
+        }
 
-@media (max-width: 768px) {
-    .footer-logo,
-    .footer-text,
-    .footer-social {
-        text-align: center;
-    }
+        .footer span {
+            font-size: 1rem; /* 16px in rem */
+            font-weight: bold;
+            font-family: 'Poppins', sans-serif; /* Set font to Poppins */
+            margin-right: 27px;
+        }
 
-    .footer-social {
-        padding-top: 15px;
-    }
-}
-eperti yang sudah ada di file original */
+        .social-media {
+            margin-top: 10px;
+        }
+        .social-media i {
+            font-size: 1.5rem;
+            margin-right: 15px;
+        }
+
+        .social-icon {
+            color: white;
+            font-size: 1.8rem; /* Reduce icon size */
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            color: inherit; /* Remove hover effect */
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .footer-logo,
+            .footer-text,
+            .footer-social {
+                text-align: center; /* Center-align on smaller screens */
+            }
+
+            .footer-social {
+                padding-top: 15px; /* Adjust padding for smaller screens */
+            }
+        }
     </style>
 </head>
 

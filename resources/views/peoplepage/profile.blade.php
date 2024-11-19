@@ -3,17 +3,15 @@
 @section('title', 'Profile Page')
 
     <!-- External styles and custom fonts -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;700&display=swap">
+    <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
     <style>
         /* Custom styling for the Profile page */
-
         .profile-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 15px; /* Konsisten dengan Bootstrap */
-    }
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px; /* Konsisten dengan Bootstrap */
+        }
         body {
             background-color: #f8f9fa;
             font-family: Arial, sans-serif;
@@ -49,7 +47,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Added shadow */
         }
         .profile-header img {
-            margin-right:800px;
+            margin-right:1000px;
             border: 3px solid white;
             border-radius: 50%;
             width: 245px;
@@ -189,7 +187,7 @@
     <div class="profile-header">
         <div class="profile-header-top"></div>
         <div class="profile-header-bottom">
-            <img src="https://storage.googleapis.com/a1aa/image/TxW2evqYS0S6diF7YRBzLKxmUrnnoWjf1WpI2fQvZsdazVYnA.jpg" alt="Profile picture of Agraditya Putra" />
+            <img src="{{ $user->img ? asset('images/' . $user->img) : asset('images/default_user.webp') }}" alt="Profile picture of Agraditya Putra" />
             <div class="profile-info">
                 <h1>{{ $people->name }}</h1>
                 <h2>{{ $people->primary_job_title ?? 'Your Title Here' }}</h2>
@@ -526,4 +524,3 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 @endsection
-

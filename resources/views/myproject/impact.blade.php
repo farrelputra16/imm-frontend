@@ -266,8 +266,8 @@
                         @if ($userRole == 'USER' && $status != 'benchmark')
                             <a href="{{ route('homepage') }}" style="text-decoration: none; color: #212B36;">Home</a>
                         @else
-                            @if ($status == 'benchmark')
-                                <a href="{{  route('companies.list', ['status' => 'benchmark']) }}" style="text-decoration: none; color: #212B36;">Home</a>
+                            @if ($status == 'benchmark' || $status == 'company')
+                                <a href="{{ route('landingpage') }}" style="text-decoration: none; color: #212B36;">Home</a>
                             @else
                                 <a href="{{ route('investments.pending') }}" style="text-decoration: none; color: #212B36;">Home</a>
                             @endif
@@ -282,13 +282,25 @@
                         </li>
                     @else
                         <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
-                            <a href="{{ route('companies.list', ['status' => 'benchmark']) }}" style="text-decoration: none; color: #212B36;">Find Company</a>
+                            @if ($status == 'benchmark')
+                                <a href="{{ route('companies.list', ['status' => 'benchmark']) }}" style="text-decoration: none; color: #212B36;">Find Company</a>
+                            @elseif ($status == 'company')
+                                <a href="{{ route('companies.list', ['status' => 'company']) }}" style="text-decoration: none; color: #212B36;">Find Company</a>
+                            @endif
                         </li>
                         <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px; color: #212B36;" aria-current="page">
-                            <a href="{{  route('companies.benchmark', $companyId) }}" style="text-decoration: none; color: #212B36;">Company Profile</a>
+                            @if ($status == 'company')
+                                <a href="{{ route('companies.show', $companyId) }}" style="text-decoration: none; color: #212B36;">Company Profile</a>
+                            @elseif ($status == 'benchmark')
+                                <a href="{{ route('companies.benchmark', ['id' => $companyId]) }}" style="text-decoration: none; color: #212B36;">Company Profile</a>
+                            @endif
                         </li>
                         <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
-                            <a href="{{ route('projects_company.view', ['id' => $project->id, 'status' => 'benchmark', 'companyId' => $companyId]) }}" style="text-decoration: none; color: #5A5A5A;">Project Report</a>
+                            @if ($status == 'company')
+                                <a href="{{ route('projects_company.view', ['id' => $project->id, 'status' => 'company', 'companyId' => $companyId]) }}" style="text-decoration: none; color: #5A5A5A;">Project Report</a>
+                            @elseif ($status == 'benchmark')
+                                <a href="{{ route('projects_company.view', ['id' => $project->id, 'status' => 'benchmark', 'companyId' => $companyId]) }}" style="text-decoration: none; color: #5A5A5A;">Project Report</a>
+                            @endif
                         </li>
                     @endif
                     <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
@@ -444,7 +456,7 @@
                 </div>
                 @if ($userRole == 'USER' && $status != 'benchmark')
                     <div class="col d-flex justify-content-end">
-                        <a href="{{ route('metric-projects.createMatrixReport', ['projectId' => $project->id, 'metricId' => $metricProject->metric_id, 'metricProjectId' => $metricProject->id]) }}" class="add-report-btn">Tambah Laporan</a>
+                        <a href="{{ route('metric-projects.createMatrixReport', ['projectId' => $project->id, 'metricId' => $metricProject->metric_id, 'metricProjectId' => $metricProject->id, 'companyId' => $companyId]) }}" class="add-report-btn">Tambah Laporan</a>
                     </div>
                 @endif
             </div>
@@ -461,7 +473,7 @@
                                 <div class="row">
                                     @foreach ($matrixReports as $report)
                                     <div class="col-6 col-md-4 col-lg-2 mb-4">
-                                        <a href="{{ route('metric-projects.showReport', ['projectId' => $project->id, 'metricId' => $report->metric_id, 'reportId' => $report->id, 'metricProjectId' => $metricProject->id, 'status' => $status, 'userRole' => $userRole, ' companyId' => $companyId]) }}">
+                                        <a href="{{ route('metric-projects.showReport', ['projectId' => $project->id, 'metricId' => $report->metric_id, 'reportId' => $report->id, 'metricProjectId' => $metricProject->id, 'status' => $status, 'userRole' => $userRole, 'companyId' => $companyId]) }}">
                                             <div class="file-item-report">
                                                 <i class="fas fa-file-alt fa-5x mb-2"></i>
                                                 <p>{{ \Carbon\Carbon::parse($report->created_at)->format('d M Y') }}</p>

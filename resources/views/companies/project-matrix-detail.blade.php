@@ -68,7 +68,7 @@
             @else
                 @foreach ($matrixReports as $report)
                     <div class="col-6 col-md-4 col-lg-2 mb-4">
-                        <a href="{{ route('metric-projects.showReport', ['projectId' => $project->id, 'metricId' => $report->metric_id, 'reportId' => $report->id, 'metricProjectId' => $metricProject->id]) }}">
+                        <a href="{{ route('metric-projects.showReport', ['projectId' => $project->id, 'metricId' => $report->metric_id, 'reportId' => $report->id, 'metricProjectId' => $metricProject->id, 'companyId' => $company->id]) }}">
                             <div class="card text-center">
                                 <div class="card-body">
                                     <i class="fas fa-file-alt fa-5x mb-2"></i>

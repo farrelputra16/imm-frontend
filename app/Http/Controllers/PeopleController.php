@@ -164,7 +164,8 @@ class PeopleController extends Controller
     public function profile()
     {
         // Mendapatkan ID user yang sedang login
-        $userId = Auth::id();
+        $user = Auth::user();
+        $userId = $user->id;
 
         // Mengambil data people berdasarkan user_id
         $people = People::where('user_id', $userId)->firstOrFail();
@@ -172,7 +173,7 @@ class PeopleController extends Controller
         $companies = Company::all();
 
         // Tampilkan halaman profil
-        return view('peoplepage.profile', compact('people','companies'));
+        return view('peoplepage.profile', compact('user','people','companies'));
     }
     public function updateDescription(Request $request)
     {

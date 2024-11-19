@@ -162,9 +162,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::group(['middleware' => ['auth', 'investor']], function () {
-        Route::get(
-            '/investor-home',
-            [InvestorPageController::class, 'index'] // Return the view for investor homepage
+        Route::get('/investor-home',[InvestorPageController::class, 'index'] // Return the view for investor homepage
         )->name('investor.home');
         Route::get('/companies/{companyId}/start-invest', [FundingRoundController::class, 'startInvest'])->name('start.invest');
     });

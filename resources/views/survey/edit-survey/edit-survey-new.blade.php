@@ -2,18 +2,187 @@
 @section('title', 'Edit Survey')
 
 @section('css')
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    {{-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> --}}
     {{-- <link rel="stylesheet" href="{{ asset('css/responden/edit-survey.css') }}"> --}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="{{ asset('css/responden/edit-survey.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    {{-- <link rel="stylesheet" href="{{ asset('css/responden/edit-survey.css') }}"> --}}
+    <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
+    <style>
+    .content {
+        background-color: #f7f6fb;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 50px;
+        text-align: justify;
+        /* Add some space between each section */
+    }
+
+    .form-control-select {
+        width: 315px;
+        height: 49px;
+        background-color: #5940cb;
+        color: white;
+        font-size: 20px;
+        font-family: "Poppins", sans-serif;
+        font-weight: bold;
+    }
+
+    .form-control {
+        height: 47px;
+        width: 100%;
+        border: 2px solid #5940cb;
+    }
+
+    .btn-tambah-bagian {
+        cursor: pointer;
+        color: white;
+        background-color: #5940cb;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 32px;
+        font-family: "Quicksand", sans-serif;
+        font-weight: bold;
+    }
+
+    .btn-tambah {
+        width: 315px;
+        height: 49px;
+        background-color: #5940cb;
+        border: 3px solid #5940cb;
+        border-radius: 6px;
+        color: white;
+        font-size: 20px;
+        font-family: "Quicksand", sans-serif;
+        font-weight: bold;
+    }
+
+    .form-esay,
+    .form-pilihan-ganda,
+    .form-skala {
+        padding: 20px;
+        border-radius: 5px;
+    }
+
+    .radio-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .radio-item input {
+        margin-bottom: 5px;
+    }
+
+    .btn-tambah.hidden {
+        display: none;
+    }
+
+    .angka {
+        height: 54px;
+        width: 35px;
+        background-color: #5940cb;
+        font-size: 20px;
+        font-family: "Poppins", sans-serif;
+        font-weight: 500;
+        color: white;
+    }
+
+    .radio-item {
+        display: flex;
+        align-items: center;
+    }
+
+    .radio-item input[type="radio"] {
+        margin-right: 5px;
+    }
+
+    .form-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .form-container>div {
+        flex: 1 1 30%;
+        /* Adjust the percentage as needed to control the width */
+        margin: 10px;
+    }
+
+    .btn {
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
+    }
+
+    .btn-lihat {
+        width: 226px;
+        height: 49px;
+        background-color: white;
+        border: 3px solid #5940cb;
+        border-radius: 6px;
+        color: #5940cb;
+        font-size: 20px;
+        font-family: "Poppins", sans-serif;
+        font-weight: bold;
+    }
+
+    .btn-mulai,
+    .btn-akhiri,
+    .btn-lihat-responden {
+        width: 200px;
+        height: 49px;
+        background-color: #5940cb;
+        border: 3px solid #5940cb;
+        border-radius: 6px;
+        color: white;
+        font-size: 20px;
+        font-family: "Poppins", sans-serif;
+        font-weight: bold;
+    }
+
+    .btn-lihat-responden {
+        width: 300px;
+    }
+
+    .btn-simpan {
+        width: 240px;
+        height: 49px;
+        background-color: #5940cb;
+        border: 3px solid #5940cb;
+        border-radius: 6px;
+        color: white;
+        font-size: 20px;
+        font-family: "Quicksand", sans-serif;
+        font-weight: bold;
+    }
+
+    .metric-item:hover {
+        filter: brightness(0.95);
+    }
+
+    .metric-checkbox {
+        width: 20px;
+        height: 20px;
+    }
+
+    .text-primary {
+        color: #5940cb !important;
+    }
+
+    .sub-content {
+        background-color: #e5e2f2;
+        width: 100%;
+        height: 182px;
+        justify-content: center;
+        display: flex;
+        margin-bottom: 30px;
+    }
+
+    </style>
 @endsection
 @section('content')
-
     <body>
-
         <form action="{{ route('surveys.update', $survey) }}" method="POST">
             @csrf
             @method('PUT')
@@ -41,7 +210,11 @@
                         <a href="{{ route('surveys.view', $survey) }}" class="btn-lihat d-flex justify-content-around align-items-center text-dark" target="_blank">
                             <span>Lihat Survey</span>
                             <img src="{{ asset('images/mata-icon.png') }}" width="25" height="20" alt="">
-                        </a>                        
+                        </a>
+                        {{-- Tombol untuk Menyalin URL --}}
+                        <button class="btn-bagikan d-flex justify-content-center align-items-center" id="copyLinkButton" title="Bagikan Survey">
+                            <i class="fas fa-share-alt" style="font-size: 25px;"></i> <!-- Ikon berbagi -->
+                        </button>
                     </div>
 
                     <div class="form-group" style="display: none;">
@@ -253,6 +426,43 @@
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                document.getElementById('copyLinkButton').addEventListener('click', function(event) {
+                    event.preventDefault(); // Mencegah refresh halaman
+
+                    const surveyUrl = "{{ route('surveys.view', $survey) }}"; // URL survei
+
+                    // Coba menggunakan Clipboard API
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(surveyUrl).then(function() {
+                            alert('Link survei berhasil disalin: ' + surveyUrl);
+                        }).catch(function(err) {
+                            console.error('Gagal menyalin link: ', err);
+                            alert('Terjadi kesalahan saat mencoba untuk menyalin link.');
+                        });
+                    } else {
+                        // Jika Clipboard API tidak tersedia, gunakan metode fallback
+                        const tempInput = document.createElement('input');
+                        tempInput.value = surveyUrl;
+                        document.body.appendChild(tempInput);
+                        tempInput.select(); // Pilih teks
+                        try {
+                            const successful = document.execCommand('copy'); // Salin ke clipboard
+                            if (successful) {
+                                alert('Link survei berhasil disalin: ' + surveyUrl);
+                            } else {
+                                alert('Gagal menyalin link.');
+                            }
+                        } catch (err) {
+                            console.error('Gagal menyalin link: ', err);
+                            alert('Terjadi kesalahan saat mencoba untuk menyalin link.');
+                        }
+                        document.body.removeChild(tempInput); // Hapus elemen input
+                    }
+                });
+            });
+        </script>
     </body>
 
 @endsection

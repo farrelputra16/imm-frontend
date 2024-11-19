@@ -334,7 +334,7 @@
                                 <td style="vertical-align: middle;">{{ $project->start_date ? \Carbon\Carbon::parse($project->start_date)->format('j M, Y') : 'N/A' }}</td>
                                 <td style="vertical-align: middle;">{{ $project->end_date ? \Carbon\Carbon::parse($project->end_date)->format('j M, Y') : 'N/A' }}</td>
                                 <td style="vertical-align: middle; border-right: 1px solid #BBBEC5; text-align: center;">
-                                    <a href="{{ route('projects_company.view', ['id' => $project->id]) }}" style="color: black; text-decoration: underline;">Detail</a>
+                                    <a href="{{ route('projects_company.view', ['id' => $project->id, 'companyId' => $company->id, 'status' => 'company']) }}" style="color: black; text-decoration: underline;">Detail</a>
                                 </td>
                             </tr>
                         @endforeach
