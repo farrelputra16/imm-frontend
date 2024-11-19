@@ -102,9 +102,15 @@ class SurveyController extends Controller
         return view('survey.responden.responden-data-diri', compact('survey'));
     }
 
-    public function edit(Survey $survey)
+    public function edit(Survey $survey, Request $request)
     {
-        return view('survey.edit-survey.edit-survey-new', compact('survey'));
+        // Mengambil semua parameter dari request
+        $status = $request->input('status');
+        $isUserRole = $request->input('isUserRole');
+        $projectId = $request->input('projectId');
+        $companyId = $request->input('companyId');
+
+        return view('survey.edit-survey.edit-survey-new', compact('survey', 'status', 'isUserRole', 'projectId', 'companyId'));
     }
 
     public function update(Request $request, Survey $survey)

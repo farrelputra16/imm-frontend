@@ -491,9 +491,11 @@
                                         @forelse ($project->surveys as $survey)
                                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                                 {{ $survey->name }}
-                                                @if ($isUserRole && $status != 'benchmark')
-                                                    <div>
-                                                        <a href="{{ route('surveys.edit', $survey->id) }}" class="btn btn-sm"><i class="fas fa-edit"></i></a>
+                                                <div>
+                                                    <a href="{{ route('surveys.edit', ['survey' => $survey->id, 'status' => $status, 'isUserRole' => $isUserRole, 'projectId' => $project->id, 'companyId' => $companyId]) }}" class="btn btn-sm">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    @if ($isUserRole && $status != 'benchmark')
                                                         <form action="{{ route('surveys.destroy', $survey->id) }}" method="POST" class="delete-survey-form" id="delete-survey-{{ $survey->id }}" style="display: inline;">
                                                             @csrf
                                                             @method('DELETE')
@@ -501,8 +503,8 @@
                                                                 <i class="fas fa-trash-alt"></i>
                                                             </button>
                                                         </form>
-                                                    </div>
-                                                @endif
+                                                    @endif
+                                                </div>
                                             </li>
                                         @empty
                                             <li class="list-group-item">No survey found.</li>

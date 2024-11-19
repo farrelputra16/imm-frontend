@@ -183,11 +183,60 @@
 @endsection
 @section('content')
     <body>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                    @if ($isUserRole && $status != 'benchmark')
+                        <a href="{{ route('homepage') }}" style="text-decoration: none; color: #212B36;">Home</a>
+                    @else
+                        @if ($status == 'benchmark' || $status == 'company')
+                            <a href="{{ route('landingpage') }}" style="text-decoration: none; color: #212B36;">Home</a>
+                        @else
+                            <a href="{{ route('investments.pending') }}" style="text-decoration: none; color: #212B36;">Home</a>
+                        @endif
+                    @endif
+                </li>
+                @if ($isUserRole && $status != 'benchmark')
+                    <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                        <a href="{{ route('myproject.myproject') }}" style="text-decoration: none; color: #212B36;">IMM</a>
+                    </li>
+                @else
+                    <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                        @if ($status == 'benchmark')
+                            <a href="{{ route('companies.list', ['status' => 'benchmark']) }}" style="text-decoration: none; color: #212B36;">Find Company</a>
+                        @elseif ($status == 'company')
+                            <a href="{{ route('companies.list', ['status' => 'company']) }}" style="text-decoration: none; color: #212B36;">Find Company</a>
+                        @endif
+                    </li>
+                    <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px; color: #212B36;" aria-current="page">
+                        @if ($status == 'company')
+                            <a href="{{ route('companies.show', $companyId) }}" style="text-decoration: none; color: #212B36;">Company Profile</a>
+                        @elseif ($status == 'benchmark')
+                            <a href="{{ route('companies.benchmark', ['id' => $companyId]) }}" style="text-decoration: none; color: #212B36;">Company Profile</a>
+                        @endif
+                    </li>
+                @endif
+                <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                    @if ($status == 'company')
+                        <a href="{{ route('projects_company.view', ['id' => $projectId, 'status' => 'company', 'companyId' => $companyId]) }}" style="text-decoration: none; color: #5A5A5A;">Project Report</a>
+                    @elseif ($status == 'benchmark')
+                        <a href="{{ route('projects_company.view', ['id' => $projectId, 'status' => 'benchmark', 'companyId' => $companyId]) }}" style="text-decoration: none; color: #5A5A5A;">Project Report</a>
+                    @else
+                        <a href="{{ route('projects.view', $projectId) }}" style="text-decoration: none; color: #5A5A5A;">Project Report</a>
+                    @endif
+                </li>
+                <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                    <a href="#" style="text-decoration: none; color: #212B36;">Survey</a>
+                </li>
+            </ol>
+        </nav>
         <form action="{{ route('surveys.update', $survey) }}" method="POST">
             @csrf
             @method('PUT')
 
             <div class="container content mt-5 mb-5">
+
                 <div class="container">
                     <div class="mb-2 mt-2">
                         <input type="text" name="name" class="form-control" placeholder="Judul Survey anda"
@@ -198,10 +247,12 @@
                     </div>
 
                     <div class="row d-flex justify-content-between mt-5">
-                        <button type="submit" class="btn-simpan d-flex justify-content-around align-items-center">
-                            <span class="text-white">Update Survey</span>
-                            <img src="{{ asset('images/simpan-icon.png') }}" width="29" height="auto" alt="">
-                        </button>
+                        @if ($isUserRole && $status != 'benchmark')
+                            <button type="submit" class="btn-simpan d-flex justify-content-around align-items-center">
+                                <span class="text-white">Update Survey</span>
+                                <img src="{{ asset('images/simpan-icon.png') }}" width="29" height="auto" alt="">
+                            </button>
+                        @endif
                         {{-- <button type="" class="btn-akhiri">Akhiri Survey</button> --}}
                         <a href="{{ route('surveys.results', $survey) }}"
                             class="btn-lihat-responden d-flex align-items-center justify-content-center">
@@ -237,35 +288,40 @@
                                 <span>
                                     <div class="mb-2 mt-2">
                                         <input type="text" name="sections[{{ $sectionIndex }}][name]"
-                                            class="form-control section-number" placeholder="Judul bagian"
-                                            style="border: none; background:transparent; font-size: 40px;font-weight: bold;"
-                                            value="{{ $section->name }}" required>
+                                               class="form-control section-number"
+                                               placeholder="Judul bagian"
+                                               style="border: none; background:transparent; font-size: 40px;font-weight: bold;"
+                                               value="{{ $section->name }}" required
+                                               @if (!($isUserRole && $status != 'benchmark')) readonly @endif>
                                     </div>
                                 </span>
                             </div>
                             <div class="questions-container container mt-3">
                                 @foreach ($section->questions as $questionIndex => $question)
                                     <div class="form-group question-group">
-                                        <span
-                                            class="angka d-flex justify-content-center align-items-center mt-2 mb-1">{{ $sectionIndex + 1 }}.{{ $questionIndex + 1 }}</span>
+                                        <span class="angka d-flex justify-content-center align-items-center mt-2 mb-1">
+                                            {{ $sectionIndex + 1 }}.{{ $questionIndex + 1 }}
+                                        </span>
                                         <label for="question-content">Tambahkan pertanyaan</label>
                                         <input type="text"
-                                            name="sections[{{ $sectionIndex }}][questions][{{ $questionIndex }}][content]"
-                                            class="form-control mb-2" value="{{ $question->content }}" required>
+                                               name="sections[{{ $sectionIndex }}][questions][{{ $questionIndex }}][content]"
+                                               class="form-control mb-2"
+                                               value="{{ $question->content }}" required
+                                               @if (!($isUserRole && $status != 'benchmark')) readonly @endif>
 
                                         <label for="question-type">Tipe pertanyaan</label>
-                                        <select
-                                            name="sections[{{ $sectionIndex }}][questions][{{ $questionIndex }}][type]"
-                                            class="form-control question-type mb-2" required>
+                                        <select name="sections[{{ $sectionIndex }}][questions][{{ $questionIndex }}][type]"
+                                                class="form-control question-type mb-2" required
+                                                @if (!($isUserRole && $status != 'benchmark')) disabled @endif>
                                             @foreach (['text', 'number', 'radio', 'multiselect', 'range'] as $type)
                                                 <option value="{{ $type }}"
-                                                    {{ $question->type == $type ? 'selected' : '' }}>{{ ucfirst($type) }}
+                                                        {{ $question->type == $type ? 'selected' : '' }}>{{ ucfirst($type) }}
                                                 </option>
                                             @endforeach
                                         </select>
 
                                         <div class="question-options-container mb-2"
-                                            @if ($question->type != 'radio' && $question->type != 'multiselect') style="display: none;" @endif>
+                                             @if ($question->type != 'radio' && $question->type != 'multiselect') style="display: none;" @endif>
                                             <label for="question-options">Opsi (untuk radio dan multiselect)</label>
                                             @php
                                                 $options = is_array($question->options)
@@ -274,10 +330,12 @@
                                             @endphp
                                             @foreach ($options as $optionIndex => $option)
                                                 <input type="text"
-                                                    name="sections[{{ $sectionIndex }}][questions][{{ $questionIndex }}][options][{{ $optionIndex }}]"
-                                                    class="form-control question-option mb-1"
-                                                    placeholder="Opsi {{ $optionIndex + 1 }}" value="{{ $option }}"
-                                                    @if ($question->type != 'radio' && $question->type != 'multiselect') disabled @endif>
+                                                       name="sections[{{ $sectionIndex }}][questions][{{ $questionIndex }}][options][{{ $optionIndex }}]"
+                                                       class="form-control question-option mb-1"
+                                                       placeholder="Opsi {{ $optionIndex + 1 }}"
+                                                       value="{{ $option }}"
+                                                       @if ($question->type != 'radio' && $question->type != 'multiselect') disabled @endif
+                                                       @if (!($isUserRole && $status != 'benchmark')) readonly @endif>
                                             @endforeach
                                         </div>
 
@@ -285,16 +343,21 @@
                                 @endforeach
                             </div>
                             <span>
-                                <button type="button" class="btn-tambah add-question ml-5">Tambah Pertanyaan</button>
+                                <button type="button" class="btn-tambah add-question ml-5"
+                                        @if (!($isUserRole && $status != 'benchmark')) disabled @endif>
+                                    Tambah Pertanyaan
+                                </button>
                             </span>
                         </div>
                     @endforeach
                 </div>
 
                 <div class="container d-flex justify-content-center mt-5">
-                    <span class="btn-tambah-bagian" id="add-section-btn">Tambah Bagian Survey +</span>
+                    <span class="btn-tambah-bagian" id="add-section-btn"
+                          @if (!($isUserRole && $status != 'benchmark')) style="pointer-events: none; opacity: 0.5;" @endif>
+                        Tambah Bagian Survey +
+                    </span>
                 </div>
-            </div>
         </form>
 
         <template id="section-template">
