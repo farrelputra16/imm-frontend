@@ -40,6 +40,11 @@
         background-color: #4c43b3;
         border-color: #4c43b3;
     }
+    .container {
+        flex: 1; /* Membuat kontainer mengambil ruang yang tersedia */
+        max-width: 1400px;
+        margin: 0 auto;
+    }
 </style>
 <div class="container">
     <!-- Breadcrumb -->

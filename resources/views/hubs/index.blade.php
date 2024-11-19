@@ -59,6 +59,11 @@ td:nth-child(9)  /* Job Departments */ {
     text-align: start;
     vertical-align: middle;
 }
+.container {
+    flex: 1; /* Membuat kontainer mengambil ruang yang tersedia */
+    max-width: 1400px;
+    margin: 0 auto;
+}
 </style>
 
 <div class="container">

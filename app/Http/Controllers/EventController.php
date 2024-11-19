@@ -24,11 +24,12 @@ class EventController extends Controller
 
         foreach ($events as $event) {
             $event->description = \Illuminate\Support\Str::limit($event->description, 100, $end = '...');
-            $event->cover_img = env('APP_BACKEND_URL') . '/images/' . $event->cover_img;
-            $event->hero_img = env('APP_BACKEND_URL') . '/images/' . $event->hero_img;
+            $event->cover_img = env('APP_URL'). '/' . $event->cover_img;
+            $event->hero_img = env('APP_URL'). '/' . $event->hero_img;
+            $event->location = \Illuminate\Support\Str::limit($event->location, 15, $end = '...');
         }
 
-        $backendUrl = env('APP_BACKEND_URL');
+        $Url = env('APP_URL');
 
         // Inisialisasi $user sebagai null
         $user = null;
@@ -38,7 +39,7 @@ class EventController extends Controller
         }
 
         // Gunakan compact dengan variabel yang selalu ada
-        return view('event.event', compact('events', 'backendUrl', 'islogin', 'user'));
+        return view('event.event', compact('events', 'Url', 'islogin', 'user'));
     }
 
 
@@ -102,29 +103,31 @@ class EventController extends Controller
         // Cek apakah gambar sudah ada di database
         $existingEvent = Event::where('title', $validatedData['title'])->first();
 
-        // Menyimpan gambar jika ada
+        // Menggunakan slug dari judul event dan timestamp untuk nama file
         $eventTitleSlug = Str::slug($validatedData['title']);
         $timestamp = time();
 
+        // Menyimpan gambar cover jika ada
         if ($request->hasFile('cover_img')) {
             $coverImage = $request->file('cover_img');
             $coverImageName = "{$eventTitleSlug}_cover_{$timestamp}." . $coverImage->getClientOriginalExtension();
+            // Menyimpan gambar ke storage/app/public/event
             $coverImage->storeAs('event', $coverImageName, 'public');
-
-            // Simpan hanya nama file ke validated data
-            $validatedData['cover_img'] = $coverImageName;
+            // Simpan nama file dan path lengkap ke validated data
+            $validatedData['cover_img'] = 'storage/event/' . $coverImageName; // Path lengkap
         } elseif ($existingEvent) {
             // Jika event sudah ada, gunakan gambar yang ada
             $validatedData['cover_img'] = $existingEvent->cover_img;
         }
 
+        // Menyimpan gambar hero jika ada
         if ($request->hasFile('hero_img')) {
             $heroImage = $request->file('hero_img');
             $heroImageName = "{$eventTitleSlug}_hero_{$timestamp}." . $heroImage->getClientOriginalExtension();
+            // Menyimpan gambar ke storage/app/public/event
             $heroImage->storeAs('event', $heroImageName, 'public');
-
-            // Simpan hanya nama file ke validated data
-            $validatedData['hero_img'] = $heroImageName;
+            // Simpan nama file dan path lengkap ke validated data
+            $validatedData['hero_img'] = 'storage/event/' . $heroImageName; // Path lengkap
         } elseif ($existingEvent) {
             // Jika event sudah ada, gunakan gambar yang ada
             $validatedData['hero_img'] = $existingEvent->hero_img;

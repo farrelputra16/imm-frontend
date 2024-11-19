@@ -3,9 +3,9 @@
 @section('content')
 <!-- Custom Font from Google Fonts -->
 <link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
-<link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
+{{-- <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}"> --}}
 
-<div class="container-fluid">
+<div class="container">
     <nav aria-label="breadcrumb" style="margin-bottom: 32px;">
         <ol class="breadcrumb">
             <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">

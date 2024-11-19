@@ -156,8 +156,6 @@ ul {
 @section('content')
 
 <body>
- 
-
     <div class="container mt-5">
                 <div class="back-link">
             <a href="/blog"><i class="fas fa-arrow-left mr-4"></i> Artikel</a>

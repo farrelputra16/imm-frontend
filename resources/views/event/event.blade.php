@@ -1,21 +1,11 @@
 @extends('layouts.app-landingpage')
 @section('title', 'Event')
+@section('content')
     <style>
         * {
-            font-family: "Poppins", sans-serif;
             text-decoration: none;
             list-style-type: none;
         }
-        body,
-        html {
-            font-family: "Roboto", sans-serif;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            margin: 0;
-        }
-
         .btn {
             margin-left: 10px;
             gap: 10px;
@@ -80,54 +70,61 @@
             justify-content: space-around;
         }
 
-        .event-card {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 364.02px;
+            height: 464.24px;
+            margin: auto;
             margin-bottom: 20px;
-            min-height: 400px;
-            text-align: left;
-            flex: 0 0 30%;
+        }
+        .card img {
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            height: 200px;
+            object-fit: cover;
+        }
+        .card-body {
+            padding: 20px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Menambahkan bayangan untuk efek elevasi */
-            border: 1px solid #ddd; /* Menambahkan border untuk membuat tampilan lebih modern */
+            height: 100%;
         }
-
-        .event-card a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .event-card .event-image {
-            height: 200px;
-            background-size: cover;
-            background-position: center;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            object-fit: cover; /* Menambahkan object-fit untuk membuat gambar lebih rapih */
-        }
-
-        .event-card h3 {
+        .card-title {
             font-size: 1.5rem;
             font-weight: bold;
+        }
+        .card-text {
+            color: #6c757d;
+        }
+        .btn-primary {
+            background-color: #6f42c1;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+        }
+        .btn-primary:hover {
+            background-color: #5a32a3;
+        }
+        .event-info {
+            display: flex;
+            align-items: center;
             margin-bottom: 10px;
-            min-height: 3em;
         }
-
-        .event-card p {
-            font-size: 1.1rem;
-            line-height: 1.5;
-            flex-grow: 1;
-            margin-bottom: 15px; /* Jarak bawah antara paragraf dan judul */
-            color: #666; /* Menambahkan warna untuk membuat teks lebih jelas */
+        .event-info i {
+            color: #6f42c1;
+            margin-right: 5px;
         }
-
-        .event-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Menambahkan efek hover untuk membuat tampilan lebih modern */
+        .event-info span {
+            margin-right: 15px;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        .text-center {
+            text-align: center;
+            margin-top: 19px;
+            margin-bottom: 23.24px;
         }
 
         .pagination-container {
@@ -154,13 +151,13 @@
             padding: 15px 25px;
             border: none;
             border-radius: 50px;
-            font-size: 18px;
+            font-size: 14px;
             font-weight: bold;
             text-transform: uppercase;
             transition: all 0.3s ease;
             box-shadow: 0 4px 6px rgba(98, 86, 202, 0.3);
             display: inline-block;
-            margin-top: 20px;
+            margin-top: 23px;
         }
 
         .btn-create-event:hover {
@@ -180,15 +177,29 @@
         }
     </style>
 
-@section('content')
-    <div class="container mt-5">
-        @if ($islogin)
-            <div style="margin-bottom: 0px; display: flex; justify-content: flex-end;">
-                <a href="{{ route('events.make', ['user_id' => Auth::id()]) }}" class="btn btn-create-event">
-                    <i class="fas fa-plus-circle"></i> Buat Event Baru
-                </a>
-            </div>
-        @endif
+    <div class="container">
+        <nav aria-label="breadcrumb" style="margin-bottom: 32px;">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                    <a href="{{ route('landingpage') }}" style="text-decoration: none; color: #212B36;">Home</a>
+                </li>
+                <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                    <a href="#" style="text-decoration: none; color: #212B36;">Events</a>
+                </li>
+            </ol>
+        </nav>
+
+        <div class="d-flex justify-content-between align-items-center mb-3" style="vertical-align: middle;">
+            <h2 class="header-title" style="color: #6256CA">Events</h2>
+            @if ($islogin)
+                <div style="margin-bottom: 0px; display: flex; justify-content: flex-end;">
+                    <a href="{{ route('events.make', ['user_id' => Auth::id()]) }}" class="btn btn-create-event">
+                        <i class="fas fa-plus-circle"></i> Buat Event Baru
+                    </a>
+                </div>
+            @endif
+        </div>
+
         <div class="align-items-center">
             <div class="col-md-8">
                 <h4 class="mb-0" style="margin-top: 30px">Temukan wawasan tentang dampak baru disini</h4>
@@ -198,9 +209,11 @@
             <input type="text" class="form-control" placeholder="Cari disini" id="searchInput">
             <button onclick="searchEvent()" class="btn-search"><i class="fas fa-search"></i></button>
         </div>
+
         <div class="row mt-5" id="eventContainer">
             <!-- event cards will be inserted here by JavaScript -->
         </div>
+
         <div id="noEventsMessage" class="no-events-message py-3 border" style="display: none;">
             Belum ada acara.
         </div>
@@ -212,8 +225,9 @@
     </div>
 
     <script>
-        const backendUrl = @json($backendUrl);
+        const Url = @json($Url);
         const events = @json($events);
+        console.log(events);
 
         document.addEventListener("DOMContentLoaded", function() {
             const eventContainer = document.getElementById("eventContainer");
@@ -231,43 +245,29 @@
 
                 currentEvents.forEach((event) => {
                     const eventCard = document.createElement("div");
-                    eventCard.className = "event-card";
+                    eventCard.className = "card";
+                    console.log(event.cover_img);
                     eventCard.innerHTML = `
-                        <a href="/event/${event.id}" class="text-left">
-                            <div class="event-image" style="background-image: url(${event.cover_img});"></div>
-                            <div class="event-info">
-                                <h3>${event.title}</h3>
-                                <p>${event.description}</p>
-                                <div class="event-details">
-                                    <div class="detail">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <span>Location: ${event.location}</span>
-                                    </div>
-                                    <div class="detail">
+                        <img src="${event.cover_img}" alt="${event.title}" class="card-img-top">
+                        <div class="card-body">
+                            <div>
+                                <h5 class="card-title">${event.title}</h5>
+                                <div class="event-info">
+                                    <div>
                                         <i class="fas fa-calendar-alt"></i>
-                                        <span>Start Date: ${event.start}</span>
+                                        <span>${event.start}</span>
                                     </div>
-                                    <div class="detail">
-                                        <i class="fas fa-clock"></i>
-                                        <span>Event Duration: ${event.event_duration}</span>
-                                    </div>
-                                    <div class="detail">
-                                        <i class="fas fa-users"></i>
-                                        <span>Allowed Participants: ${event.allowed_participants}</span>
-                                    </div>
-                                    <div class="detail">
-                                        <i class="fas fa-money-bill-alt"></i>
-                                        <span>Fee Type: ${event.fee_type}</span>
+                                    <div style="margin-left: 30px;">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>${event.location}</span>
                                     </div>
                                 </div>
-                                <div class="event-organizer">
-                                    <h4>Organizer</h4>
-                                    <p>${event.organizer_name}</p>
-                                    <p>${event.email}</p>
-                                    <p>${event.nomor_tlpn}</p>
-                                </div>
+                                <p class="card-text">${event.description}</p>
                             </div>
-                        </a>
+                            <div class="text-center">
+                                <a href="/event/${event.id}" class="btn btn-primary">Read More</a>
+                            </div>
+                        </div>
                     `;
                     eventContainer.appendChild(eventCard);
                 });
@@ -282,6 +282,9 @@
                 currentPage = page;
                 updatePaginationButtons();
             }
+
+            // Call showEvents for the first page
+            showEvents(currentPage);
 
             function updatePaginationButtons() {
                 const totalPages = Math.ceil(events.length / eventsPerPage);
