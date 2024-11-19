@@ -101,7 +101,7 @@
         .btn-primary {
             background-color: #6f42c1;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             padding: 10px 20px;
         }
         .btn-primary:hover {

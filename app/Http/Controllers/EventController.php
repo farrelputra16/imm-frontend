@@ -63,8 +63,14 @@ class EventController extends Controller
             return redirect()->route('event.index')->with('error', 'User not found');
         }
 
+        // Mengambil data event yang sudah ada dan terbaru
+        $events = Event::all();
+        if ($events->isNotEmpty()) {
+            $events = $events->sortByDesc('created_at')->take(12);
+        }
+
         // Tampilkan view dengan data user
-        return view('event.create', compact('user'));
+        return view('event.create', compact('user', 'events'));
     }
 
     public function edit($id)
@@ -146,24 +152,39 @@ class EventController extends Controller
 
     public function update(Request $request, $id)
     {
-        $event = Event::findOrFail($id);
+        try {
+            // Mencari event berdasarkan ID
+            $event = Event::findOrFail($id);
 
-        $request->validate([
-            'pekerjaan' => 'required|string',
-            'instansi' => 'nullable|string',
-        ]);
+            // Validasi input
+            $request->validate([
+                'pekerjaan' => 'required|string',
+                'instansi' => 'nullable|string',
+                'nama_depan' => 'required|string|max:255', // Validasi untuk nama depan
+                'email' => 'required|email|max:255', // Validasi untuk email
+            ]);
 
-        $user = Auth::user();
+            // Mengambil pengguna yang sedang login
+            $user = Auth::user(); // Menggunakan Auth::user() untuk mendapatkan pengguna yang sedang login
 
-        $user->pekerjaan = $request->pekerjaan;
-        $user->instansi = $request->instansi;
+            // Mengupdate data pekerjaan dan instansi pengguna
+            $user->pekerjaan = $request->pekerjaan;
+            $user->instansi = $request->instansi;
 
-        $user->save;
+            // Menyimpan perubahan pada pengguna
+            $user->save(); // Memanggil save() sebagai fungsi
 
-        $event = Event::findOrFail($request->event_id);
-        $user->events->attach($event);
+            // Mengaitkan event dengan pengguna
+            if (!$user->events()->where('event_id', $event->id)->exists()) {
+                $user->events()->attach($event->id); // Menggunakan id dari event yang ditemukan
+            }
 
-        return view('event.succes', compact('event'));
+            // Mengembalikan tampilan sukses
+            return redirect()->route('events.view', $event->id)->with('success', 'Event updated successfully.');
+        } catch (\Exception $e) {
+            // Menangkap error dan mengembalikan pesan ke tampilan
+            return redirect()->back()->withErrors(['error' => 'Exception: ' . $e->getMessage()]);
+        }
     }
 
     public function view($id)

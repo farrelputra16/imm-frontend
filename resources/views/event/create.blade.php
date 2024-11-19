@@ -316,143 +316,34 @@
 
         <div class="carousel slide" data-bs-ride="carousel" id="carouselExampleIndicators">
             <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="position-relative">
-                                <img alt="A group of people attending a seminar in a large hall" class="d-block w-100" src="https://placehold.co/242x255"/>
-                                <div class="carousel-caption d-block">
-                                    <h5>SDGs Festival:</h5>
-                                    <h5>Towards a Sustainable Future</h5>
-                                    <p><span class="emoji">🌍</span> Join us at the SDGs Festival on November 15 and discover how to contribute to a sustainable future! Enjoy inspiring seminars, creative workshops, and an eco-friendly product bazaar.</p>
+                @php
+                    $eventChunks = $events->chunk(4); // Membagi data event menjadi kelompok 4
+                @endphp
+
+                @foreach ($eventChunks as $index => $chunk)
+                    <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                        <div class="row">
+                            @foreach ($chunk as $event)
+                                <div class="col-md-3">
+                                    <div class="position-relative">
+                                        <img alt="{{ $event->title }}" class="d-block w-100" src="{{ env('APP_URL'). '/' . $event->cover_img }}" />
+                                        <div class="carousel-caption d-block">
+                                            <h5>{{ $event->title }}</h5>
+                                            <h5>{{ $event->topic }}</h5>
+                                            <p><span class="emoji">🌍</span> {{ $event->description }}</p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="position-relative">
-                                <img alt="A person speaking at a podium with a crowd in the background" class="d-block w-100" src="https://placehold.co/242x255"/>
-                                <div class="carousel-caption d-block">
-                                    <h5>SDGs Festival:</h5>
-                                    <h5>Towards a Sustainable Future</h5>
-                                    <p><span class="emoji">🌍</span> Join us at the SDGs Festival on November 15 and discover how to contribute to a sustainable future! Enjoy inspiring seminars, creative workshops, and an eco-friendly product bazaar.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="position-relative">
-                                <img alt="A person speaking at a podium with a crowd in the background" class="d-block w-100" src="https://placehold.co/242x255"/>
-                                <div class="carousel-caption d-block">
-                                    <h5>SDGs Festival:</h5>
-                                    <h5>Towards a Sustainable Future</h5>
-                                    <p><span class="emoji">🌍</span> Join us at the SDGs Festival on November 15 and discover how to contribute to a sustainable future! Enjoy inspiring seminars, creative workshops, and an eco-friendly product bazaar.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="position-relative">
-                                <img alt="A historic building with intricate architecture" class="d-block w-100" src="https://placehold.co/242x255"/>
-                                <div class="carousel-caption d-block">
-                                    <h5>SDGs Festival:</h5>
-                                    <h5>Towards a Sustainable Future</h5>
-                                    <p><span class="emoji">🌍</span> Join us at the SDGs Festival on November 15 and discover how to contribute to a sustainable future! Enjoy inspiring seminars, creative workshops, and an eco-friendly product bazaar.</p>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="position-relative">
-                                <img alt="A group of people attending a seminar in a large hall" class="d-block w-100" src="https://placehold.co/242x255"/>
-                                <div class="carousel-caption d-block">
-                                    <h5>SDGs Festival:</h5>
-                                    <h5>Towards a Sustainable Future</h5>
-                                    <p><span class="emoji">🌍</span> Join us at the SDGs Festival on November 15 and discover how to contribute to a sustainable future! Enjoy inspiring seminars, creative workshops, and an eco-friendly product bazaar.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="position-relative">
-                                <img alt="A person speaking at a podium with a crowd in the background" class="d-block w-100" src="https://placehold.co/242x255"/>
-                                <div class="carousel-caption d-block">
-                                    <h5>SDGs Festival:</h5>
-                                    <h5>Towards a Sustainable Future</h5>
-                                    <p><span class="emoji">🌍</span> Join us at the SDGs Festival on November 15 and discover how to contribute to a sustainable future! Enjoy inspiring seminars, creative workshops, and an eco-friendly product bazaar.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="position-relative">
-                                <img alt="A person speaking at a podium with a crowd in the background" class="d-block w-100" src="https://placehold.co/242x255"/>
-                                <div class="carousel-caption d-block">
-                                    <h5>SDGs Festival:</h5>
-                                    <h5>Towards a Sustainable Future</h5>
-                                    <p><span class="emoji">🌍</span> Join us at the SDGs Festival on November 15 and discover how to contribute to a sustainable future! Enjoy inspiring seminars, creative workshops, and an eco-friendly product bazaar.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="position-relative">
-                                <img alt="A historic building with intricate architecture" class="d-block w-100" src="https://placehold.co/242x255"/>
-                                <div class="carousel-caption d-block">
-                                    <h5>SDGs Festival:</h5>
-                                    <h5>Towards a Sustainable Future</h5>
-                                    <p><span class="emoji">🌍</span> Join us at the SDGs Festival on November 15 and discover how to contribute to a sustainable future! Enjoy inspiring seminars, creative workshops, and an eco-friendly product bazaar.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="position-relative">
-                                <img alt="A group of people attending a seminar in a large hall" class="d-block w-100" src="https://placehold.co/242x255"/>
-                                <div class="carousel-caption d-block">
-                                    <h5>SDGs Festival:</h5>
-                                    <h5>Towards a Sustainable Future</h5>
-                                    <p><span class="emoji">🌍</span> Join us at the SDGs Festival on November 15 and discover how to contribute to a sustainable future! Enjoy inspiring seminars, creative workshops, and an eco-friendly product bazaar.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="position-relative">
-                                <img alt="A person speaking at a podium with a crowd in the background" class="d-block w-100" src="https://placehold.co/242x255"/>
-                                <div class="carousel-caption d-block">
-                                    <h5>SDGs Festival:</h5>
-                                    <h5>Towards a Sustainable Future</h5>
-                                    <p><span class="emoji">🌍</span> Join us at the SDGs Festival on November 15 and discover how to contribute to a sustainable future! Enjoy inspiring seminars, creative workshops, and an eco-friendly product bazaar.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="position-relative">
-                                <img alt="A person speaking at a podium with a crowd in the background" class="d-block w-100" src="https://placehold.co/242x255"/>
-                                <div class="carousel-caption d-block">
-                                    <h5>SDGs Festival:</h5>
-                                    <h5>Towards a Sustainable Future</h5>
-                                    <p><span class="emoji">🌍</span> Join us at the SDGs Festival on November 15 and discover how to contribute to a sustainable future! Enjoy inspiring seminars, creative workshops, and an eco-friendly product bazaar.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="position-relative">
-                                <img alt="A historic building with intricate architecture" class="d-block w-100" src="https://placehold.co/242x255"/>
-                                <div class="carousel-caption d-block">
-                                    <h5>SDGs Festival:</h5>
-                                    <h5>Towards a Sustainable Future</h5>
-                                    <p><span class="emoji">🌍</span> hello test</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
+
             <div class="carousel-indicators d-flex justify-content-center">
-                <button aria-current="true" aria-label="Slide 1" class="active" data-bs-slide-to="0" data-bs-target="#carouselExampleIndicators" type="button"></button>
-                <button aria-label="Slide 2" data-bs-slide-to="1" data-bs-target="#carouselExampleIndicators" type="button"></button>
-                <button aria-label="Slide 3" data-bs-slide-to="2" data-bs-target="#carouselExampleIndicators" type="button"></button>
+                @foreach ($eventChunks as $index => $chunk)
+                    <button aria-label="Slide {{ $index + 1 }}" data-bs-slide-to="{{ $index }}" data-bs-target="#carouselExampleIndicators" type="button" class="{{ $index === 0 ? 'active' : '' }}"></button>
+                @endforeach
             </div>
         </div>
 
@@ -477,11 +368,20 @@
                 </table>
             </div>
             <div class="col-md-8">
-                <div class="event-card" style="margin-left: 40px; margin-bottom: 50px; height: 120px; padding-left: 26px;">
-                    <span class="badge body-1" style="margin-bottom: 10px; color: black; font-size: ">Event</span>
-                    <div class="event-title" style="margin-bottom: 10px;">"Pesta SDGs: Menuju Masa Depan Berkelanjutan"</div>
-                    <div class="event-date" style="margin-bottom: 10px;"><i class="fas fa-circle"></i> 17 October 2024</div>
-                </div>
+                @php
+                    // Ambil dua event teratas
+                    $twoEvents = $events->take(2);
+                @endphp
+
+                @foreach ($twoEvents as $event)
+                    <div class="event-card" style="margin-left: 40px; margin-bottom: 50px; height: 120px; padding-left: 26px;">
+                        <span class="badge body-1" style="margin-bottom: 10px; color: black; font-size: ">Event</span>
+                        <div class="event-title" style="margin-bottom: 10px;">{{ $event->title }}</div>
+                        <div class="event-date" style="margin-bottom: 10px;">
+                            <i class="fas fa-circle"></i> {{ \Carbon\Carbon::parse($event->start)->format('d F Y') }}
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </div>
 

@@ -2,18 +2,14 @@
 @section('title', 'Event Detail')
 
 @section('css')
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Quicksand:wght@300..700&display=swap');
-
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
         text-decoration: none;
         list-style-type: none;
-        font-family: "Quicksand", sans-serif;
     }
 
     body {
@@ -22,7 +18,7 @@
 
     .banner {
         width: 100%; /* Menggunakan 100vw untuk memenuhi lebar viewport */
-        height: 400px;
+        height: 500px;
         overflow: hidden; /* Menyembunyikan bagian gambar yang melampaui */
         position: relative; /* Menambahkan posisi relatif untuk elemen anak */
     }
@@ -36,10 +32,10 @@
     .banner-text {
         position: absolute; /* Mengatur posisi absolut untuk menimpa gambar */
         top: 50%; /* Menempatkan teks di tengah vertikal */
-        right: 10px; /* Menempatkan teks sedikit dari kanan */
+        right: 20px; /* Menempatkan teks sedikit dari kanan */
         transform: translateY(-50%); /* Mengatur posisi vertikal agar tepat di tengah */
-        color: black; /* Warna teks */
-        font-size: 24px; /* Ukuran font */
+        color: white; /* Warna teks */
+        font-size: 32px; /* Ukuran font */
     }
     .btn{
         background-color: #C1E2A4;
@@ -105,6 +101,17 @@
     .image-section img {
         margin: 5px;
     }
+    .event-details {
+        font-size: 1rem;
+        color: #6c757d;
+    }
+    .event-details i {
+        color: #6f42c1;
+        margin-right: 5px;
+    }
+    .event-details .detail-item {
+        margin-right: 20px; /* Adjust this value to set the spacing */
+    }
 
     @media (max-width: 768px) {
         .img-grid {
@@ -116,12 +123,43 @@
 
 @section('content')
 <body>
+    <div class="container">
+        <nav aria-label="breadcrumb" class="mb-5">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                    <a href="{{ route('landingpage') }}" style="text-decoration: none; color: #212B36;">Home</a>
+                </li>
+                <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                    <a href="{{ route('events.index') }}" style="text-decoration: none; color: #212B36;">Event</a>
+                </li>
+                <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                    <a href="#" style="text-decoration: none; color: #5A5A5A;">Event Detail</a>
+                </li>
+            </ol>
+        </nav>
+    </div>
     <section class="banner">
-        <img class="banner-img" src="{{ env('APP_BACKEND_URL') . '/images/' . $event->hero_img }}" alt="Banner Image">
+        <img class="banner-img" src="{{ env('APP_URL'). '/' . $event->hero_img }}" alt="Banner Image">
         <div class="banner-text">
             {{ $event->topic }} <!-- Menampilkan topik dari event -->
         </div>
     </section>
+
+    <div class="container mt-5 mb-5">
+        <h2>Eventchamps Conference</h2>
+        <div class="event-details mt-2">
+            <span class="detail-item"><i class="fas fa-calendar-alt"></i>{{ \Carbon\Carbon::parse($event->start)->format('d M Y') }}</span>
+            <span class="detail-item"><i class="fas fa-clock"></i> {{ $event->event_duration }}</span>
+            <span class="detail-item"><i class="fas fa-map-marker-alt"></i>{{ $event->location }}</span>
+            <span class="detail-item"><i class="fas fa-user"></i>{{ $event->allowed_participants }}</span>
+            <span class="detail-item"><i class="fas fa-money-bill-wave"></i> {{ $event->fee_type }}</span>
+            <span class="detail-item"><i class="fas fa-cogs"></i> Event Organizer by {{ $event->organizer_name }}</span>
+        </div>
+    </div>
+
+    <div class="container mt-5 mb-5">
+        <p>{{ $event->description }}</p>
+    </div>
 
     <div class="d-flex justify-content-center">
         @if (in_array(Auth::id(), $eventUsers))
@@ -137,8 +175,8 @@
         <h1>Sustainable Development Activities</h1>
     </div>
 
-    <div class="activities container">
- <div class="row">
+    <div class="activities container" style="margin-top: 32px; margin-bottom: 32px;">
+        <div class="row">
             <div class="col">
                 <div class="icon text-success">
                     <i class="fas fa-tree"></i>

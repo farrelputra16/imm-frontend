@@ -85,6 +85,7 @@ class User extends Authenticatable
         return $this->hasOne(Company::class, 'user_id');
     }
 
+   // Di dalam model User.php
     public function events()
     {
         return $this->belongsToMany(Event::class, 'event_user', 'user_id', 'event_id');
