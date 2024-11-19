@@ -197,10 +197,10 @@ margin-top: 20px;
     </div>
 
 
-    <div class="container mt-2">
+    <div class="container">
         <h2>Detail Biaya</h2>
         <!-- Tampilkan tombol "Tambah Penggunaan Dana" hanya jika role-nya company -->
-        <div class="d-flex justify-content-end align-items-center" style="margin-top: 48px;">
+        <div class="d-flex justify-content-end align-items-center" >
             <div class="d-flex align-items-center">
                 <div class="search-container" style="margin-right:10px; margin-bottom: 0px;">
                     <i class="fas fa-search" style="margin-left: 10px;"></i>

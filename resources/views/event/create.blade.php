@@ -101,7 +101,7 @@
         }
         .carousel-item img {
             width: 100%;
-            height: auto;
+            height: 200px;
             object-fit: cover;
         }
         .carousel-indicators {
@@ -374,7 +374,7 @@
                 @endphp
 
                 @foreach ($twoEvents as $event)
-                    <div class="event-card" style="margin-left: 40px; margin-bottom: 50px; height: 120px; padding-left: 26px;">
+                    <div class="event-card" style="margin-left: 40px; margin-bottom: 50px; height: 120px; padding-left: 26px; margin-top: 20px;">
                         <span class="badge body-1" style="margin-bottom: 10px; color: black; font-size: ">Event</span>
                         <div class="event-title" style="margin-bottom: 10px;">{{ $event->title }}</div>
                         <div class="event-date" style="margin-bottom: 10px;">

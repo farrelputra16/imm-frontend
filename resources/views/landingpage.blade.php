@@ -1,6 +1,6 @@
-<!DOCTYPE html>
 @extends('layouts.app-landingpage')
 
+@section('content')
 <style>
     /* Section Hero Styling */
     .section-hero {
@@ -11,16 +11,11 @@
         margin-bottom: 100px;
     }
     /* Adding smooth transition for the changing word */
-#changing-word {
-    color: #333;
-    font-weight: bold;
-    display: inline-block;
-    transition: opacity 0.5s ease;
-}
-
-    /* General container styling with margin for spacing */
-    .container {
-        margin-top: 1px;
+    #changing-word {
+        color: #333;
+        font-weight: bold;
+        display: inline-block;
+        transition: opacity 0.5s ease;
     }
 
     /* Heading Text Styling */
@@ -453,7 +448,7 @@
     }
 </style>
 
-@section('content')
+
 <!-- Section Hero -->
 <div class="container">
     <div class="row section-hero">
@@ -531,7 +526,6 @@
                 </h1>
             </div>
             <div class="col-md-4 text-end"  style="padding-left: 100px;">
-
                 <img src="images/landingpage/logocrunch.png" class="image-crunchbase" alt="Crunchbase Insights & Analysis Logo">
             </div>
         </div>
@@ -545,19 +539,19 @@
                     Latest Events
                 </div>
                 <div class="card-body">
+                    @foreach ($events->take(5) as $event) <!-- Ambil hanya 5 event -->
                     <div class="news-item">
-                        @foreach ($events as $event)
-                        <img alt="Insight image 1" src="" />
+                        <img alt="" src="{{ env('APP_URL'). '/' . $event->cover_img; }}" />
                         <div class="news-content">
                             <div class="date">
                                 {{ $event->start }}
                             </div>
                             <h5>{{ $event->title }}</h5>
                             <p>{{ $event->topic }}</p>
-                            <p>{{ $event->description }}</p>
+                            <p>{{ Str::limit($event->description, 60) }}</p> <!-- Limit description to 100 characters -->
                         </div>
                     </div>
-                        @endforeach
+                    @endforeach
                     <a class="btn-link" href="{{ route('events.index') }}">MORE EVENTS</a>
                 </div>
             </div>
@@ -572,7 +566,7 @@
                             <tr>
                                 <th>Organization name</th>
                                 <th>Investments Amount</th>
-                                <th>Departments</th>
+                                <th>Investor Type</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -580,7 +574,7 @@
                             <tr onclick="window.location.href='{{ route('investors.show', $investor->id) }}'">
                                 <td>{{ $investor->org_name }}</td>
                                 <td>{{ $investor->number_of_investments }}</td>
-                                <td>{{ $investor->departments }}</td>
+                                <td>{{ $investor->investor_type }}</td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -593,25 +587,25 @@
         <!-- Kolom Kanan: This Week on Crunchbase dan sisanya -->
         <div class="col-md-6">
             <div class="card this-week-section">
-                <h1>This Week on Crunchbase</h1>
+                <h2>This Week on Crunchbase</h2>
                 <div class="row">
                     <div class="col-6">
-                        <div class="number">393</div>
+                        <div class="number">{{ number_format($fundingRoundsCount) }}</div>
                         <div class="label">FUNDING ROUNDS</div>
                     </div>
                     <div class="col-6">
-                        <div class="number">36.7B</div>
+                        <div class="number">{{ number_format($fundingRoundsTotal / 1e9, 1) }}B</div>
                         <div class="label">TOTAL FUNDING</div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-6">
-                        <div class="number">163</div>
-                        <div class="label">ACQUISITIONS RECORDED</div>
+                        <div class="number">{{ number_format($fundingRoundsAverage / 1e6, 1) }}M</div>
+                        <div class="label">AVERAGE FUNDING</div>
                     </div>
                     <div class="col-6">
-                        <div class="number">28.2B</div>
-                        <div class="label">ACQUISITIONS AMOUNT</div>
+                        <div class="number">{{ number_format($fundingRoundsHighest / 1e6, 1) }}M</div>
+                        <div class="label">HIGHEST FUNDING</div>
                     </div>
                 </div>
             </div>
@@ -642,7 +636,7 @@
             </div>
 
             <!-- Featured Searches and Lists Card -->
-            <div class="card mt-4">
+            {{-- <div class="card mt-4">
                 <div class="card-header">Featured Searches and Lists</div>
                 <div class="card-body">
                     <ul class="list-group">
@@ -650,7 +644,7 @@
                     </ul>
                     <a class="btn-link" href="#">ALL Featured Searches and Lists ></a>
                 </div>
-            </div>
+            </div> --}}
 
             <!-- Trending Companies Card -->
             <div class="card mt-4">
@@ -659,6 +653,7 @@
                     <table class="table fixed-width-table">
                         <thead>
                             <tr>
+                                <th>#</th> <!-- Kolom untuk nomor urut -->
                                 <th>Company</th>
                                 <th>Logo</th>
                             </tr>
@@ -666,8 +661,11 @@
                         <tbody>
                             @foreach ($companies as $company)
                             <tr>
+                                <td>{{ $loop->iteration < 10 ? '0' . $loop->iteration : $loop->iteration }}</td> <!-- Menampilkan nomor urut dengan format 01, 02, dst. -->
                                 <td>{{ $company->nama }}</td>
-                                <td><img alt="Company Logo" src="https://placehold.co/30x30" /></td>
+                                <td>
+                                    <img alt="Company Logo" src="{{ $company->image ? env('APP_URL') . $company->image : 'images/imm.png' }}" />
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -697,7 +695,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <a class="btn-link" href="#">SHOW ALL EVENTS ></a>
+                    <a class="btn-link" href="#">SHOW ALL People ></a>
                 </div>
             </div>
         </div>

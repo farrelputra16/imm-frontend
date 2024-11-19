@@ -248,7 +248,7 @@
             <h1>{{ Auth::user()->nama_depan }} {{ Auth::user()->nama_belakang }} 👋 <i class="fas fa-hand-wave"></i></h1>
         </div>
         <div class="profile-image">
-            <img src="images/investorpage/obama.jpg" alt="Profile image of Agraditya Putra smiling, wearing glasses and a white shirt" />
+            <img src="{{ $user->img ? asset('images/' . $user->img) : asset('images/default_user.webp') }}" alt="Profile image of Agraditya Putra smiling, wearing glasses and a white shirt" />
         </div>
     </div>
 </div>
@@ -318,7 +318,7 @@
                                 @foreach ($companyPair as $company)
                                     <div class="col-6"> <!-- Two items per slide -->
                                         <div class="carousel-card">
-                                            <img src="https://storage.googleapis.com/a1aa/image/xsDrvMl6olZBGd3phCL7krIDHG174HxZSa5oobictMu9s46E.jpg" alt="Company Image {{ $loop->index + 1 }}">
+                                            <img src="{{ $company->image ? env('APP_URL') . $company->image : 'images/imm.png' }}" alt="Company Image {{ $loop->index + 1 }}">
                                             <div class="carousel-card-body">
                                                 <h5 class="carousel-card-title">{{ $company->nama }}</h5>
                                                 <p>{{ $company->startup_summary }}</p>
@@ -354,8 +354,8 @@
                             <tr>
                                 <td>{{ $transaction->investment_date->format('d/m/Y') }}</td>
                                 <td>
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{ $transaction->company->logo_url ?? 'images/landingpage/bitcoin.png' }}"
+                                    <div class="d-flex align-items-center" style="gap: 10px; margin-left:50px;">
+                                        <img src="{{ $transaction->company->image ? env('APP_URL') . $transaction->company->image : 'images/imm.png' }}"
                                              alt="Logo of {{ $transaction->company->nama }}"
                                              class="company-logo me-2" />
                                         {{ $transaction->company->nama }}
@@ -391,7 +391,7 @@
                             <tr>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <img src="{{ $investment->company->logo_url ?? 'images/landingpage/bitcoin.png' }}"
+                                        <img src="{{ $investment->company->image ? env('APP_URL') . $investment->company->image : 'images/imm.png' }}"
                                              alt="Logo of {{ $investment->company->nama }}"
                                              class="company-logo me-2" />
                                         {{ $investment->company->nama }}

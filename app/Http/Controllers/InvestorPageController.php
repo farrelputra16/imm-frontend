@@ -67,7 +67,7 @@ class InvestorPageController extends Controller
         $chart2->dataset('Investment Amount per Year', 'line', $amounts);
 
         // Kirim data ke view, termasuk companyFunded, transactionCount, dan totalInvested
-        return view('investorspage.home', compact('recentTransactions', 'investedCompanies', 'chart2', 'companyFunded', 'transactionCount', 'totalInvested','companies'));
+        return view('investorspage.home', compact('recentTransactions', 'investedCompanies', 'chart2', 'companyFunded', 'transactionCount', 'totalInvested','companies', 'user'));
     }
     // InvestmentController.php
 

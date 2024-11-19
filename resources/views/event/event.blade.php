@@ -189,6 +189,18 @@
             </ol>
         </nav>
 
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <div class="d-flex justify-content-between align-items-center mb-3" style="vertical-align: middle;">
             <h2 class="header-title" style="color: #6256CA">Events</h2>
             @if ($islogin)
@@ -227,7 +239,6 @@
     <script>
         const Url = @json($Url);
         const events = @json($events);
-        console.log(events);
 
         document.addEventListener("DOMContentLoaded", function() {
             const eventContainer = document.getElementById("eventContainer");

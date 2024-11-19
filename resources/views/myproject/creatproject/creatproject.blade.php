@@ -1188,6 +1188,7 @@
 
         {{-- Bagian untuk peta penting mendapatkan langitud  dan logitude yang nantinya akan dimasukkan ke dalam link google maps --}}
         <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        {{-- Script untuk megganti input value hidden --}}
         <script>
             const provinsiSelect = document.getElementById('provinsi_id');
             const provinsiName = document.getElementById('provinsi');
@@ -1211,13 +1212,11 @@
             fetch('https://kanglerian.github.io/api-wilayah-indonesia/api/provinces.json')
                 .then(response => response.json())
                 .then(provinces => {
-                    provincesData = provinces;
-                    provinces.forEach(provinsi_id => {
+                    provincesData = provinces; // Store provinces data
+                    provinces.forEach(provinsi => {
                         const option = document.createElement('option');
-                        option.value = provinsi_id.id; // Use ID as value
-                        provinsiName.value = provinsi_id.name;
-                        console.log(provinsi_id.name);
-                        option.textContent = provinsi_id.name;
+                        option.value = provinsi.id; // Use ID as value
+                        option.textContent = provinsi.name;
                         provinsiSelect.appendChild(option);
                     });
                 })
@@ -1244,6 +1243,15 @@
                     .catch(error => console.error(`Error fetching regencies for provinsi_id ${selectedProvinsiId}:`, error));
             }
 
+            // Update the province name when a province is selected
+            function updateProvinceName() {
+                const selectedProvinsiId = provinsiSelect.value;
+                const selectedProvince = provincesData.find(provinsi => provinsi.id === selectedProvinsiId);
+                if (selectedProvince) {
+                    provinsiName.value = selectedProvince.name; // Update the province name
+                }
+            }
+
             // Update map view when a city is selected
             kotaSelect.addEventListener('change', function () {
                 const selectedCity = this.value;
@@ -1258,7 +1266,7 @@
                         // Set map view to the selected city
                         map.setView([lat, lng], 10); // Zoom in to the city
 
-         // Update hidden inputs for latitude and longitude
+                        // Update hidden inputs for latitude and longitude
                         document.getElementById('latitude').value = lat;
                         document.getElementById('longitude').value = lng;
 
@@ -1277,13 +1285,17 @@
                             .openPopup();
                     })
                     .catch(error => console.error('Error fetching coordinates:', error));
+
             });
 
             // Add event listener for province selection
-            provinsiSelect.addEventListener('change', populateCities);
+            provinsiSelect.addEventListener('change', function() {
+                populateCities();
+                updateProvinceName(); // Call to update the province name
+            });
 
             // Add event listener for map click
-            map.on('click', function (e) {
+            map.on('click', function(e) {
                 const lat = e.latlng.lat;
                 const lng = e.latlng.lng;
 
