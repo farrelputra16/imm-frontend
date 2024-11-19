@@ -658,11 +658,12 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="provinsi" class="sub-heading-1">Provinsi</label>
-                                <select class="form-control" name="provinsi" id="provinsi" required>
+                                <label for="provinsi_id" class="sub-heading-1">Provinsi</label>
+                                <select class="form-control" name="provinsi_id" id="provinsi_id" required>
                                     <!-- Placeholder option -->
                                     <option value="" disabled selected>Pilih Provinsi</option>
                                 </select>
+                                <input type="hidden" name = "provinsi" id="provinsi">
                             </div>
 
                             <div class="form-group">
@@ -763,11 +764,11 @@
                                 </div>
                                 {{-- Bagian SDG --}}
                                 <div class="col-md-9">
-                                    <div class="search-container">
+                                    {{-- <div class="search-container">
                                         <i class="fas fa-search" style="margin-left: 10px;"></i>
                                         <input class="form-control" placeholder="Search Data" type="text" style="border: none;">
                                         <button class="btn">Search</button>
-                                    </div>
+                                    </div> --}}
                                     @foreach ($sdgs as $sdg)
                                         <div class="image-container" data-sdg="{{ $sdg->id }}">
                                             @php
@@ -814,11 +815,11 @@
                 <div id="indicator-section" style="display:none">
                     <div class="container mt-5">
                         <h2 style="color: #6256CA;" class="mb-5">SDGs Indicators</h2>
-                        <div class="search-container" style="max-width: 2000px;">
+                        {{-- <div class="search-container" style="max-width: 2000px;">
                             <i class="fas fa-search" style="margin-left: 10px;"></i>
                             <input class="form-control" placeholder="Search Data" type="text" style="border: none;">
                             <button class="btn">Search</button>
-                        </div>
+                        </div> --}}
                         <span class="sub-heading-1" id="category-selected-indikator" style="margin-top: 24px;"></span>
                         <div class="d-flex justify-content-start mb-4" id="sdg-images-container" style="margin-top: 24px;"></div>
                         {{-- <div class="text-center bg-light p-3 mb-4" id="project-long-description"></div> --}}
@@ -1188,7 +1189,9 @@
         {{-- Bagian untuk peta penting mendapatkan langitud  dan logitude yang nantinya akan dimasukkan ke dalam link google maps --}}
         <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
         <script>
-            const provinsiSelect = document.getElementById('provinsi');
+            const provinsiSelect = document.getElementById('provinsi_id');
+            const provinsiName = document.getElementById('provinsi');
+
             const kotaSelect = document.getElementById('kota');
             let provincesData = [];
             let currentMarker = null; // Variable to store the current marker
@@ -1209,10 +1212,12 @@
                 .then(response => response.json())
                 .then(provinces => {
                     provincesData = provinces;
-                    provinces.forEach(provinsi => {
+                    provinces.forEach(provinsi_id => {
                         const option = document.createElement('option');
-                        option.value = provinsi.id; // Use ID as value
-                        option.textContent = provinsi.name;
+                        option.value = provinsi_id.id; // Use ID as value
+                        provinsiName.value = provinsi_id.name;
+                        console.log(provinsi_id.name);
+                        option.textContent = provinsi_id.name;
                         provinsiSelect.appendChild(option);
                     });
                 })
@@ -1236,7 +1241,7 @@
                             kotaSelect.appendChild(option);
                         });
                     })
-                    .catch(error => console.error(`Error fetching regencies for provinsi ${selectedProvinsiId}:`, error));
+                    .catch(error => console.error(`Error fetching regencies for provinsi_id ${selectedProvinsiId}:`, error));
             }
 
             // Update map view when a city is selected

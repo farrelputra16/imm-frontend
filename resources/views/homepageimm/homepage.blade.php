@@ -5,7 +5,6 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
 <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 
-
 <style>
 * {
     text-decoration: none;
@@ -567,31 +566,32 @@
                     }).join('');
 
                     var popupContent = `<strong>${project.nama}</strong><br>
-                                        Kota: ${project.kota}<br>
-                                        <a href="${project.gmaps}" target="_blank">Lihat di Google Maps</a><br>
-                                        <table>
-                                            <thead>
-                                                <tr>
-                                                    <th>Status</th>
-                                                    <th>Rentang Usia</th>
-                                                    <th>Deskripsi Pelanggan</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>${targetPelanggan ? targetPelanggan.status : '-'}</td>
-                                                    <td>${targetPelanggan ? targetPelanggan.rentang_usia : '-'}</td>
-                                                    <td>${targetPelanggan ? targetPelanggan.deskripsi_pelanggan : '-'}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <div class="sdg-list" style="margin-top: 5px;">
-                                            <strong>Indikator SDG:</strong>
-                                            <ul>
-                                                ${sdgList.length > 0 ? sdgList : '<li>Tidak ada SDG yang terkait</li>'}
-                                            </ul>
-                                        </div>`;
-
+                    Kota: ${project.kota}<br>
+                    <a href="${project.gmaps}" target="_blank">Lihat di Google Maps</a><br>
+                    <div style="max-width: 100%; overflow-x: auto;">
+                        <table style="width: 100%; table-layout: auto;">
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Rentang Usia</th>
+                                    <th>Deskripsi Pelanggan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>${targetPelanggan ? targetPelanggan.status : '-'}</td>
+                                    <td>${targetPelanggan ? targetPelanggan.rentang_usia : '-'}</td>
+                                    <td>${targetPelanggan ? targetPelanggan.deskripsi_pelanggan : '-'}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="sdg-list" style="margin-top: 5px;">
+                        <strong>Indikator SDG:</strong>
+                        <ul>
+                            ${sdgList.length > 0 ? sdgList : '<li>Tidak ada SDG yang terkait</li>'}
+                        </ul>
+                    </div>`;
                     marker.bindPopup(popupContent);
                 }
             });

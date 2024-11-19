@@ -187,15 +187,16 @@ class InvestmentController extends Controller
         return redirect()->route('investments.pending')->with('success', 'Investment submitted successfully!');
     }
     // Menampilkan halaman approval untuk pemilik perusahaan
-    public function approval()
+    public function approval(Request $request)
     {
+        $rowsPerPage = $request->input('rows', 10);
         // Ambil user yang login sebagai pemilik perusahaan
         $user = Auth::user();
 
         // Ambil semua investasi yang berkaitan dengan perusahaan yang dimiliki user (tidak hanya pending)
         $investments = Investment::whereHas('company', function ($query) use ($user) {
             $query->where('user_id', $user->id);
-        })->get(); // Mengambil semua status (pending, approved, rejected)
+        })->paginate($rowsPerPage); // Menggunakan paginate untuk membatasi jumlah baris per halaman
 
         // Jika Anda ingin menambahkan label investasi ke setiap investasi
         foreach ($investments as $investment) {

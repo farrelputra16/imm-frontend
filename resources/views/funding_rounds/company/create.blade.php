@@ -1,28 +1,28 @@
-@extends('layouts.app-landingpage')
-
-@section('css')
-<style>
-    body {
-        font-family: Arial, sans-serif;
-    }
-</style>
-@endsection
+@extends('layouts.app-imm')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
+<style>
 
-<div class="container mt-5">
+</style>
+<div class="container">
     <!-- Breadcrumb Navigation -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb" style="background-color: transparent; padding: 0; margin-bottom: 20px;margin-top:-20px;">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item"><a href="#">Funding Round</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Create New Funding</li>
+    <nav aria-label="breadcrumb" class="mb-5">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                    <a href="{{ route('landingpage') }}" style="text-decoration: none; color: #212B36;">Home</a>
+            </li>
+            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                <a href="{{ url()->previous() }}" style="text-decoration: none; color: #212B36;">Funding Rounds</a>
+            </li>
+            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                <a href="#" style="text-decoration: none; color: #212B36;">Create New Funding</a>
+            </li>
         </ol>
     </nav>
 
 
-<div class="container">
-    <h1 class="my-4"style="color: #6256CA; font-size: 2.5rem; font-weight: bold;">Create New Funding</h1>
+    <h2>Create New Funding</h2>
 
     <!-- Menampilkan pesan error jika ada -->
     @if ($errors->any())

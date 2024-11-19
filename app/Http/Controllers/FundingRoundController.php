@@ -49,17 +49,18 @@ class FundingRoundController extends Controller
 }
 
 
-public function companyList()
+public function companyList(Request $request)
 {
     // Ambil user yang login
     $user = Auth::user();
+    $rowsPerPage = $request->input('rows', 10);
 
     // Ambil perusahaan yang dimiliki oleh user yang login
     $company = Company::where('user_id', $user->id)->first();
 
     // Ambil semua funding rounds yang dimiliki oleh perusahaan
     if ($company) {
-        $fundingRounds = FundingRound::where('company_id', $company->id)->get();
+        $fundingRounds = FundingRound::where('company_id', $company->id)->paginate($rowsPerPage);
     } else {
         return redirect()->route('profile-company')->with('error', 'Anda belum mendaftarkan perusahaan.');
     }
@@ -68,24 +69,24 @@ public function companyList()
     return view('funding_rounds.company.list', compact('fundingRounds', 'company'));
 }
 
-public function companyDetail(FundingRound $fundingRound)
-{
-    // Pastikan funding round milik perusahaan yang login
-    $user = Auth::user();
-    $company = Company::where('user_id', $user->id)->first();
+    public function companyDetail(FundingRound $fundingRound)
+    {
+        // Pastikan funding round milik perusahaan yang login
+        $user = Auth::user();
+        $company = Company::where('user_id', $user->id)->first();
 
-    if (!$company || $fundingRound->company_id != $company->id) {
-        return redirect()->route('company.funding_rounds.list')->with('error', 'Anda tidak memiliki akses ke funding round ini.');
+        if (!$company || $fundingRound->company_id != $company->id) {
+            return redirect()->route('company.funding_rounds.list')->with('error', 'Anda tidak memiliki akses ke funding round ini.');
+        }
+
+        // Ambil semua investor yang telah berinvestasi dalam funding round ini
+        $investors = $fundingRound->investments()->with('investor')->get()->map(function ($investment) {
+            return $investment->investor;
+        });
+
+        // Tampilkan halaman detail funding round dengan opsi memilih lead investor
+        return view('funding_rounds.company.detail', compact('fundingRound', 'investors', 'company'));
     }
-
-    // Ambil semua investor yang telah berinvestasi dalam funding round ini
-    $investors = $fundingRound->investments()->with('investor')->get()->map(function ($investment) {
-        return $investment->investor;
-    });
-
-    // Tampilkan halaman detail funding round dengan opsi memilih lead investor
-    return view('funding_rounds.company.detail', compact('fundingRound', 'investors', 'company'));
-}
 
 
 
@@ -110,21 +111,21 @@ public function companyUpdate(Request $request, FundingRound $fundingRound)
 
     return redirect()->route('company.funding_rounds.list', $fundingRound->id)->with('success', 'Funding Round updated successfully!');
 }
-public function companyCreate()
-{
-    // Ambil user yang login
-    $user = Auth::user();
+    public function companyCreate()
+    {
+        // Ambil user yang login
+        $user = Auth::user();
 
-    // Cek apakah user memiliki perusahaan
-    $company = Company::where('user_id', $user->id)->first();
+        // Cek apakah user memiliki perusahaan
+        $company = Company::where('user_id', $user->id)->first();
 
-    if (!$company) {
-        // Jika tidak ada perusahaan, redirect ke halaman profil perusahaan dengan pesan error
-        return redirect()->route('profile-company')->with('error', 'Anda belum mendaftarkan perusahaan.');
+        if (!$company) {
+            // Jika tidak ada perusahaan, redirect ke halaman profil perusahaan dengan pesan error
+            return redirect()->route('profile-company')->with('error', 'Anda belum mendaftarkan perusahaan.');
+        }
+
+        return view('funding_rounds.company.create', compact('company'));
     }
-
-    return view('funding_rounds.company.create', compact('company'));
-}
 
 public function companyStore(Request $request)
 {
