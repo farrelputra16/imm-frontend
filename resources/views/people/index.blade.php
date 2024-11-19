@@ -351,7 +351,7 @@
     document.querySelectorAll('tr[data-href]').forEach(tr => {
         tr.addEventListener('click', function(e) {
             if (e.target.type !== 'checkbox' && !e.target.closest('.wishlist-button')) {
-                window.Skills.href = this.dataset.href;
+                window.location.href = this.dataset.href;
             }
         });
     });

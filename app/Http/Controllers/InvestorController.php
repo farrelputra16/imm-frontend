@@ -85,6 +85,10 @@ class InvestorController extends Controller
 
         // Paginate the results
         $investors = $query->paginate($rowsPerPage);
+        // masang gambar ke investor
+        foreach ($investors as $investor) {
+            $investor->image = $investor->user->img ? asset('images/' . $investor->user->img) : asset('images/default_user.webp');
+        }
         $department = Department::all();
 
         return view('investors.index', compact('investors', 'department'));

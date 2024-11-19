@@ -140,6 +140,7 @@ class PeopleController extends Controller
 
         foreach ($people as $person) {
             $latestExperience = $person->experiences->sortByDesc('end_date')->first();
+            $person->image = $person->user->img ? asset('images/' . $person->user->img) : asset('images/default_user.webp');
 
             // Cek apakah $latestExperience ada
             if ($latestExperience) {
