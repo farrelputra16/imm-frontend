@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\CollaborationApplicant;
+use App\Models\People;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Collaboration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -10,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 
 class CollaborationApplicantController extends Controller
 {
+    
     // Show the collaboration form
     public function create()
     {
@@ -34,17 +37,37 @@ class CollaborationApplicantController extends Controller
 
         // Handle the file upload
         $resumePath = $request->file('resume')->store('resumes', 'public');
-
+        $user = Auth::user();
+        // Ambil investor dari user_id yang login
+        $people = People::where('user_id', $user->id)->first();
         // Save the data to the CollaborationApplicant model
         CollaborationApplicant::create([
             'collaboration_id' => $request->collaboration_id,
-            'people_id' => auth()->id(), // Assuming the user is authenticated
+            'people_id' => $people->id, // Assuming the user is authenticated
             'name' => $request->name,
             'position' => $request->position,
             'resume' => $resumePath,
             'status' => 'pending' // default status
         ]);
 
-        return redirect()->route('collaboration.create')->with('success', 'Application submitted successfully!');
+        return redirect()->back()->with('success', 'Application submitted successfully!');
     }
+
+    public function approve($id)
+{
+    $applicant = CollaborationApplicant::findOrFail($id);
+    
+    // Update the status to approved
+    $applicant->status = 'approve';
+    $applicant->save();
+
+    return redirect()->back()->with('success', 'Applicant approved successfully!');
+}
+
+public function index($collaborationId)
+{
+    $collaboration = Collaboration::findOrFail($collaborationId);
+    $applicants = CollaborationApplicant::where('collaboration_id', $collaborationId)->paginate(10);
+    return view('collaboration.applicants', compact('collaboration', 'applicants'));
+}
 }

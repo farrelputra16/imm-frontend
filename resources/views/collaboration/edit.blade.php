@@ -7,8 +7,8 @@
     <style>
         body { font-family: Arial, sans-serif; }
         .container { max-width: 600px; margin-top: 50px; }
-        h1 { color: #6c63ff; font-weight: bold; }
-        .btn-primary { background-color: #6c63ff; border-color: #6c63ff; }
+        h1 { color: #6256CA; font-weight: bold; }
+        .btn-primary { background-color: #6256CA; border-color: #6256CA; }
     </style>
 </head>
 <body>

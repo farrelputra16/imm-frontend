@@ -134,7 +134,7 @@
                     <div class="card-body">
                         <h5 class="custom-card-title">{{ $collaboration->title }}</h5>
                         <p class="custom-card-text">{{ $collaboration->description }}</p>
-                        <a href="{{ route('collaboration.apply', $collaboration->id) }}" class="btn custom-btn">Collaborate</a>
+                        <a href="{{ route('collaboration.applicant.create') }}" class="btn custom-btn">Collaborate</a>
                     </div>
                 </div>
             </div>

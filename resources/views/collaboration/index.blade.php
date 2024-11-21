@@ -7,12 +7,19 @@
     <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
     <style>
-        body { font-family: Arial, sans-serif; }
-        .header { font-size: 2.5rem; font-weight: bold; color: #6A5ACD; margin: 20px 0; }
-        .table-container { margin: 20px 0; }
-        .table thead { background-color: #6A5ACD; color: white; }
-        .table tbody tr:nth-child(odd) { background-color: #f9f9f9; }
-        .table tbody tr:nth-child(even) { background-color: #ffffff; }
+        body {
+        font-family: Arial, sans-serif;
+    }
+    .header {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #6256CA;
+        margin: 20px;
+    }
+    .table thead th {
+        background-color: #6256CA;
+        color: white;
+    }
         .pagination { justify-content: flex-end; }
     </style>
 @endsection
@@ -48,7 +55,8 @@
                 oninput="this.form.submit()" 
                 style="width: 250px;"
             >
-        </form>  <a href="{{ route('collaboration.create') }}" class="btn btn-primary me-2">Add</a>
+        </form>  
+        <a href="{{ route('collaboration.create') }}" class="btn btn-primary ms-2">Add</a>
     </div>
 
     <!-- Collaboration Table -->
@@ -74,11 +82,7 @@
                         <td></td>
                         <td>
                             <a href="{{ route('collaboration.edit', $collaboration->id) }}" class="btn btn-outline-primary">Edit</a>
-                            <form action="{{ route('collaboration.destroy', $collaboration->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-outline-danger">Delete</button>
-                            </form>
+                            <a href="{{ route('collaboration.applicant.index', $collaboration->id) }}" class="btn btn-outline-primary">Applicants</a>
                         </td>
                     </tr>
                 @endforeach

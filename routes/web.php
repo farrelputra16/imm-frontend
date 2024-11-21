@@ -132,14 +132,15 @@ Route::get('companies/project/{projectId}/metric/{metricId}/metricProject/{metri
 Route::post('/wishlist/add', [WishlistController::class, 'add'])->name('wishlist.add');
 Route::delete('/wishlist/remove', [WishlistController::class, 'remove'])->name('wishlist.remove');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/collaboration/create', [CollaborationApplicantController::class, 'create'])->name('collaboration.create');
-    Route::post('/collaboration/store', [CollaborationApplicantController::class, 'store'])->name('collaboration.store');
-    Route::get('/collaboration/{collaboration}/apply', [CollaborationApplicantController::class, 'create'])->name('collaboration.apply');
-});
 // Rute yang memerlukan autentikasi
 Route::middleware(['auth'])->group(function () {
     Route::resource('collaboration', CollaborationController::class);
+    
+    // Collaboration Applicants
+    Route::get('collaboration/{collaboration}/applicants', [CollaborationApplicantController::class, 'index'])->name('collaboration.applicant.index');
+    Route::get('collaboration/applicant/create', [CollaborationApplicantController::class, 'create'])->name('collaboration.applicant.create');
+    Route::post('collaboration/applicant', [CollaborationApplicantController::class, 'store'])->name('collaboration.applicant.store');
+    Route::patch('collaboration/applicant/{applicant}/approve', [CollaborationApplicantController::class, 'approve'])->name('collaboration.applicant.approve');
 
     Route::get('/myproject', [ProjectController::class, 'index'])->name('myproject.myproject');
     Route::get('/imm', function () {
