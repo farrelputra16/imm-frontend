@@ -10,9 +10,10 @@ use Illuminate\Support\Facades\Auth;
 class CollaborationController extends Controller
 {
     // Menampilkan daftar kolaborasi
-    public function index()
+    public function index(Request $request)
     {
-        $collaborations = Collaboration::paginate(10);
+        $rowsperpage = $request->input('rowsperpage', 10);
+        $collaborations = Collaboration::paginate($rowsperpage);
         return view('collaboration.index', compact('collaborations'));
     }
 
@@ -24,33 +25,33 @@ class CollaborationController extends Controller
 
     // Menyimpan kolaborasi baru
     public function store(Request $request)
-{
+    {
+        $request->validate([
+            'title' => 'required|string',
+            'image' => 'required|image',
+            'description' => 'required|string',
+            'position' => 'required|array',
+        ]);
 
-    $request->validate([
-        'title' => 'required|string',
-        'image' => 'required|image',
-        'description' => 'required|string',
-        'positions' => 'required|array',
-    ]);
+        $user = Auth::user();
 
-    $user = Auth::user();
+        // Dapatkan perusahaan yang terhubung dengan user
+        $company = Company::where('user_id', $user->id)->first();
 
-    // Dapatkan perusahaan yang terhubung dengan user
-    $company = Company::where('user_id', $user->id)->first();
-    // Upload image
-    $imagePath = $request->file('image')->store('public/collaborations');
+        // Upload image
+        $imagePath = $request->file('image')->store('public/collaborations');
 
-    // Menyimpan data kolaborasi
-    Collaboration::create([
-        'company_id' => $company->id,
-        'title' => $request->title,
-        'image' => $imagePath,
-        'description' => $request->description,
-        'positions' => $request->positions,
-    ]);
+        // Menyimpan data kolaborasi
+        Collaboration::create([
+            'company_id' => $company->id,
+            'title' => $request->title,
+            'image' => $imagePath,
+            'description' => $request->description,
+            'position' => json_encode($request->positions), // Simpan sebagai JSON
+        ]);
 
-    return redirect()->route('collaboration.index')->with('success', 'Collaboration registered successfully');
-}
+        return redirect()->route('collaboration.index')->with('success', 'Collaboration registered successfully');
+    }
 
     // Menampilkan form edit kolaborasi
     public function edit($id)

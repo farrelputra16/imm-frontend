@@ -5,7 +5,6 @@
 @section('content')
     <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
     <style>
-        body { font-family: Arial, sans-serif; }
         .header { font-size: 2.5rem; font-weight: bold; color: #6256CA; margin: 20px 0; }
         .breadcrumb {
             background-color: white;
@@ -51,19 +50,19 @@
         <div class="header">Register New Collaboration</div>
 
         <!-- Form -->
-        <form action="{{ route('collaboration.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('collaboration.store') }}" method="POST" enctype="multipart/form-data" id="collaboration-form">
             @csrf
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
-                <input type="text" name="title" class="form-control" id="title" placeholder="Input title of the collaboration opportunity">
+                <input type="text" name="title" class="form-control" id="title" placeholder="Input title of the collaboration opportunity" required>
             </div>
             <div class="mb-3">
                 <label for="image" class="form-label">Image</label>
-                <input type="file" name="image" class="form-control" id="image">
+                <input type="file" name="image" class="form-control" id="image" accept="image/*" required>
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Description</label>
-                <textarea name="description" class="form-control" id="description" rows="4" placeholder="Input the description of your project"></textarea>
+                <textarea name="description" class="form-control" id="description" rows="4" placeholder="Input the description of your project" required></textarea>
             </div>
 
             <!-- Positions (Dynamic Fields) -->
@@ -71,7 +70,7 @@
                 <label for="positions" class="form-label">Positions</label>
                 <div id="positions-wrapper">
                     <div class="position-field">
-                        <input type="text" name="positions[]" class="form-control" placeholder="Position Name">
+                        <input type="text" name="position[]" class="form-control" placeholder="Position Name" required>
                     </div>
                 </div>
                 <button type="button" id="add-position" class="btn btn-primary">+ Add Position</button>
@@ -86,7 +85,7 @@
             let positionsWrapper = document.getElementById('positions-wrapper');
             let newPositionField = document.createElement('div');
             newPositionField.classList.add('position-field');
-            newPositionField.innerHTML = '<input type="text" name="positions[]" class="form-control" placeholder="Position Name">';
+            newPositionField.innerHTML = '<input type="text" name="positions[]" class="form-control" placeholder="Position Name" required>';
             positionsWrapper.appendChild(newPositionField);
         });
     </script>

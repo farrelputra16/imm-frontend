@@ -459,18 +459,24 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($ongoingProjects as $project)
+                                @if($collaborations->isEmpty())
                                     <tr>
-                                        <td style="vertical-align: middle; border-left: 1px solid #BBBEC5;">{{ $loop->iteration }}</td>
-                                        <td style="vertical-align: middle;">{{ $project->nama }}</td>
-                                        <td style="vertical-align: middle;">Rp{{ number_format($project->jumlah_pendanaan, 0, ',', '.') }}</td>
-                                        <td style="vertical-align: middle;">{{ $project->start_date ? \Carbon\Carbon::parse($project->start_date)->format('j M, Y') : 'N/A' }}</td>
-                                        <td style="vertical-align: middle;">{{ $project->end_date ? \Carbon\Carbon::parse($project->end_date)->format('j M, Y') : 'N/A' }}</td>
-                                        <td style="vertical-align: middle; border-right: 1px solid #BBBEC5; text-align: center;">
-                                            <a href="{{ route('projects.view', ['id' => $project->id, 'status' => $status, 'company_id' => $companyId]) }}" style="color: black; text-decoration: underline;">Detail</a>
-                                        </td>
+                                        <td colspan="6" class="text-center" style="border-left: 1px solid #BBBEC5; border-right: 1px solid #BBBEC5;">No data available</td>
                                     </tr>
-                                @endforeach
+                                @else
+                                    @foreach ($ongoingProjects as $project)
+                                        <tr>
+                                            <td style="vertical-align: middle; border-left: 1px solid #BBBEC5;">{{ $loop->iteration }}</td>
+                                            <td style="vertical-align: middle;">{{ $project->nama }}</td>
+                                            <td style="vertical-align: middle;">Rp{{ number_format($project->jumlah_pendanaan, 0, ',', '.') }}</td>
+                                            <td style="vertical-align: middle;">{{ $project->start_date ? \Carbon\Carbon::parse($project->start_date)->format('j M, Y') : 'N/A' }}</td>
+                                            <td style="vertical-align: middle;">{{ $project->end_date ? \Carbon\Carbon::parse($project->end_date)->format('j M, Y') : 'N/A' }}</td>
+                                            <td style="vertical-align: middle; border-right: 1px solid #BBBEC5; text-align: center;">
+                                                <a href="{{ route('projects.view', ['id' => $project->id, 'status' => $status, 'company_id' => $companyId]) }}" style="color: black; text-decoration: underline;">Detail</a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>

@@ -135,7 +135,7 @@ Route::delete('/wishlist/remove', [WishlistController::class, 'remove'])->name('
 // Rute yang memerlukan autentikasi
 Route::middleware(['auth'])->group(function () {
     Route::resource('collaboration', CollaborationController::class);
-    
+
     // Collaboration Applicants
     Route::get('collaboration/{collaboration}/applicants', [CollaborationApplicantController::class, 'index'])->name('collaboration.applicant.index');
     Route::get('collaboration/applicant/create', [CollaborationApplicantController::class, 'create'])->name('collaboration.applicant.create');
