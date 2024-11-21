@@ -127,36 +127,18 @@
     <h2 class="collaboration-title">Collaboration</h2>
     <div class="container">
         <div class="row">
+            @foreach($collaborations as $collaboration)
             <div class="col-md-4 mb-4">
                 <div class="card custom-card">
-                    <img src="https://storage.googleapis.com/a1aa/image/z8SOjsZDPsYCCBfPdLgied87uQbsRBCIxsDcnik3yrTw4fanA.jpg" class="card-img-top" alt="Tech Startup Partnership" height="400" width="600">
+                    <img src="{{ $collaboration->image }}" class="card-img-top" alt="{{ $collaboration->title }}" height="400" width="600">
                     <div class="card-body">
-                        <h5 class="custom-card-title">Tech Startup Partnership</h5>
-                        <p class="custom-card-text">Looking for a technology partner to co-develop an AI-powered analytics tool for e-commerce businesses.</p>
-                        <button class="btn custom-btn">Collaborate</button>
+                        <h5 class="custom-card-title">{{ $collaboration->title }}</h5>
+                        <p class="custom-card-text">{{ $collaboration->description }}</p>
+                        <a href="{{ route('collaboration.apply', $collaboration->id) }}" class="btn custom-btn">Collaborate</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card custom-card">
-                    <img src="https://storage.googleapis.com/a1aa/image/P4RPhsOwqYoiKVyZGSiVWMaD82XgsagcpoPfWrMmWWkV8v2JA.jpg" class="card-img-top" alt="Marketing Agency Collaboration" height="400" width="600">
-                    <div class="card-body">
-                        <h5 class="custom-card-title">Marketing Agency Collaboration</h5>
-                        <p class="custom-card-text">Partnering to create comprehensive marketing solutions for tech startups.</p>
-                        <button class="btn custom-btn">Collaborate</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card custom-card">
-                    <img src="https://storage.googleapis.com/a1aa/image/bgDMkcIRMp6nBhfWqj8ot1f2eW3oFukpKrHpdush0Wmdxf1OB.jpg" class="card-img-top" alt="App Development Collaboration" height="400" width="600">
-                    <div class="card-body">
-                        <h5 class="custom-card-title">App Development Collaboration</h5>
-                        <p class="custom-card-text">Co-developing innovative mobile applications for various business needs.</p>
-                        <button class="btn custom-btn">Collaborate</button>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
 </div>

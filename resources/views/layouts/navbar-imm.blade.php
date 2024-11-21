@@ -28,8 +28,14 @@
                     <div class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Opportunities</a>
                         <div class="dropdown-menu">
+                            <!-- Link ke halaman Find Investor -->
                             <a href="{{ route('investors.index') }}" class="dropdown-item">Find Investor</a>
+                            
+                            <!-- Link ke halaman Funding Rounds -->
                             <a href="{{ route('company.funding_rounds.list') }}" class="dropdown-item">Funding Rounds</a>
+                        
+                            <!-- Link ke halaman Collaboration Index -->
+                            <a href="{{ route('collaboration.index') }}" class="dropdown-item">Collaboration</a>
                         </div>
                     </div>
                     <div class="dropdown">

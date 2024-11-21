@@ -70,4 +70,8 @@ class People extends Model
     {
         return $this->hasMany(Education::class);
     }
+    public function collaborationApplicants()
+    {
+        return $this->hasMany(collaborationApplicant::class);
+    }
 }

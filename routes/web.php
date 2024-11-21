@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\CollaborationApplicantController;
+use App\Http\Controllers\CollaborationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HubsController;
 use App\Http\Controllers\PostController;
@@ -118,6 +119,7 @@ Route::get('/companies/{id}/team', [CompanyController::class, 'showTeam'])->name
 Route::get('/companies/{id}/project', [CompanyController::class, 'showProducts'])->name('companies.project');
 Route::get('/companies/benchmark/{id}', [CompanyController::class, 'showBenchmark'])->name('companies.benchmark');
 
+
 /**
  * Pembuatan Route untuk bagian melihat project pada company yang tidak memerlukan autentikasi
  * */
@@ -130,8 +132,15 @@ Route::get('companies/project/{projectId}/metric/{metricId}/metricProject/{metri
 Route::post('/wishlist/add', [WishlistController::class, 'add'])->name('wishlist.add');
 Route::delete('/wishlist/remove', [WishlistController::class, 'remove'])->name('wishlist.remove');
 
+Route::middleware('auth')->group(function () {
+    Route::get('/collaboration/create', [CollaborationApplicantController::class, 'create'])->name('collaboration.create');
+    Route::post('/collaboration/store', [CollaborationApplicantController::class, 'store'])->name('collaboration.store');
+    Route::get('/collaboration/{collaboration}/apply', [CollaborationApplicantController::class, 'create'])->name('collaboration.apply');
+});
 // Rute yang memerlukan autentikasi
 Route::middleware(['auth'])->group(function () {
+    Route::resource('collaboration', CollaborationController::class);
+
     Route::get('/myproject', [ProjectController::class, 'index'])->name('myproject.myproject');
     Route::get('/imm', function () {
         return view('imm.imm');

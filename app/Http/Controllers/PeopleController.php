@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use App\Models\People;
+use App\Models\Collaboration;
 use App\Models\Company;
 use App\Models\Education;
 use App\Models\Experience;
@@ -297,13 +298,16 @@ class PeopleController extends Controller
 
         return redirect()->back()->with('success', 'Profile updated successfully!');
     }
+
     public function showUpcomingEvents()
-    {
-        // Ambil data event yang akan datang dari tabel 'events'
-        $upcomingEvents = Event::orderBy('start', 'asc')->take(4)->get();
+{
+    // Fetch upcoming events
+    $upcomingEvents = Event::orderBy('start', 'asc')->take(4)->get();
+    
+    // Fetch collaborations from the database
+    $collaborations = Collaboration::all(); // You can modify this to add any specific filters if needed
 
-        return view('peoplepage.home', compact('upcomingEvents'));
-    }
-
+    return view('peoplepage.home', compact('upcomingEvents', 'collaborations'));
+}
 
 }

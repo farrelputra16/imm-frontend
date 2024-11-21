@@ -209,6 +209,14 @@ class Company extends Model
     {
         return $this->hasMany(Investment::class, 'company_id');
     }
+    public function collaborations()
+    {
+        return $this->hasMany(Collaboration::class);
+    }
+    public function collaborationApplicants()
+    {
+        return $this->hasMany(collaborationApplicant::class,collaboration::class);
+    }
     public function experiences()
     {
         return $this->hasMany(Experience::class);

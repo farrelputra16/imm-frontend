@@ -61,7 +61,7 @@
    <div class="profile-header"><h1>Investor Profile</h1></div>
 
    <div class="profile-info d-flex align-items-center">
-      <img src="https://storage.googleapis.com/a1aa/image/SiUTxb2vjMqcJFeesuJx30fvexVSxi9zWCPvrVgxpYKceYicC.jpg" alt="Profile picture of the investor" width="100" height="100" class="rounded-circle me-3">
+      <img src="" alt="Profile picture of the investor" width="100" height="100" class="rounded-circle me-3">
       <h2>{{ $investor->user->nama_depan }} {{ $investor->user->nama_belakang }}</h2>
    </div>
 
