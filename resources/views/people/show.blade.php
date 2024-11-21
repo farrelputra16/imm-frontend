@@ -2,23 +2,12 @@
 
 <!-- Styles -->
 <style>
-    /* Desain sesuai dengan yang Anda minta */
-    body {
-        font-family: Arial, sans-serif;
-    }
-
     .breadcrumb {
         background-color: white;
     }
 
     .breadcrumb-item + .breadcrumb-item::before {
         content: ">";
-    }
-
-    .mentor-profile-title {
-        color: #6c63ff;
-        font-size: 2rem;
-        font-weight: bold;
     }
 
     .profile-card {
@@ -32,14 +21,8 @@
         border-radius: 10px;
     }
 
-    .profile-card .name {
-        font-size: 2rem;
-        font-weight: bold;
-    }
-
     .profile-card .designation {
-        color: #8bc34a;
-        font-size: 1.2rem;
+        color: #C1E2A4;
     }
 
     .profile-card .rating {
@@ -52,6 +35,11 @@
         padding: 5px 10px;
         margin-right: 5px;
         font-size: 0.9rem;
+    }
+
+    .document-card-link {
+        text-decoration: none; /* Menghilangkan garis bawah pada link */
+        display: block; /* Membuat seluruh area kartu dapat diklik */
     }
 
     .document-card {
@@ -74,42 +62,34 @@
 </style>
 
 @section('content')
-<div class="container mt-4">
+<div class="container">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="#">
-                    Home
-                </a>
+            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                <a href="{{ route('landingpage') }}" style="text-decoration: none; color: #212B36;">Home</a>
             </li>
-            <li class="breadcrumb-item">
-                <a href="{{ route('people.index') }}">
-                    Find Mentor
-                </a>
+            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                <a href="{{ route('people.index') }}" style="text-decoration: none; color: #212B36;">Find Company</a>
             </li>
-            <li aria-current="page" class="breadcrumb-item active">
-                Mentor Profile
-            </li>
+            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px; color: #5A5A5A;" aria-current="page">Profile Company</li>
         </ol>
     </nav>
 
-    <h1 class="mentor-profile-title">
-        Mentor Profile
-    </h1>
+    <h2>Mentor Profile</h2>
 
     <div class="profile-card p-4 bg-white">
         <div class="row">
             <div class="col-md-2">
-                <img alt="Lion Bird Logo" class="img-profile" height="100" src="https://storage.googleapis.com/a1aa/image/fyw9SmXxl0xeDEL8arxfQGnTTeSkf2JUwLRrYRLWQ7lVXPicC.jpg" width="100"/>
+                <img alt="Lion Bird Logo" class="img-profile" height="200" src="{{ !empty($person->image) ? asset($person->image) : asset('images/logo-maxy.png') }}" width="200"/>
             </div>
             <div class="col-md-10">
                 <div class="name">
-                    {{ $people->name }}
+                   <h1 style="color: #3F3F46">{{ $people->name }}</h1>
                 </div>
-                <div class="designation">
-                    {{ $people->role }}
+                <div>
+                    <h3 class="designation">{{ ucfirst($people->role) }}</h3>
                 </div>
-                <div class="rating">
+                {{-- <div class="rating">
                     4.5
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
@@ -117,16 +97,13 @@
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star-half-alt"></i>
                     (120 Reviews)
+                </div> --}}
+                <div class="tags mt-3">
+                    @foreach (explode(',', $people->skills) as $skill)
+                        <span>{{ $skill }}</span>
+                    @endforeach
                 </div>
-                <div class="tags mt-2">
-                    <span>Utilities</span>
-                    <span>Health Care</span>
-                    <span>IT</span>
-                    <span>Manufacturing</span>
-                    <span>Education</span>
-                    <span>Finance</span>
-                </div>
-                <p class="mt-3">
+                <p class="mt-4">
                     {{ $people->description }}
                 </p>
                 <div class="contact-info mt-3">
@@ -147,7 +124,6 @@
                             N/A
                         @endif
                     </p>
-                    
                 </div>
             </div>
         </div>
@@ -155,23 +131,27 @@
 
     <div class="row mt-4">
         <div class="col-md-6">
-            <div class="document-card bg-white">
-                <i class="fas fa-file-alt text-primary"></i>
-                <div class="title">
-                    Curiculum Vitae
+            <a href="{{ asset($people->cv_path) }}" target="_blank" class="document-card-link">
+                <div class="document-card bg-white">
+                    <i class="fas fa-file-alt text-primary"></i>
+                    <div class="title" style="color: #8079BE;">
+                        Curriculum Vitae
+                    </div>
+                    <p>{{ basename($people->cv_path) }}</p>
                 </div>
-                <p>Cv Jane Cooper.pdf</p>
-            </div>
+            </a>
         </div>
 
         <div class="col-md-6">
-            <div class="document-card bg-white">
-                <i class="fas fa-file-alt text-danger"></i>
-                <div class="title">
-                    Portfolio
+            <a href="{{ asset($people->portfolio_path) }}" target="_blank" class="document-card-link">
+                <div class="document-card bg-white">
+                    <i class="fas fa-file-alt text-danger"></i>
+                    <div class="title" style="color: #F5848A;">
+                        Portfolio
+                    </div>
+                    <p>{{ basename($people->portfolio_path) }}</p>
                 </div>
-                <p>Portfolio Jane Cooper.pdf</p>
-            </div>
+            </a>
         </div>
     </div>
 </div>
