@@ -53,6 +53,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Route untuk menampilkan daftar pengajuan pengguna
     Route::get('/hubs/hubsubmission', [HubsController::class, 'mySubmissions'])->name('hubs.create.hubsubmission');
+    Route::get('/hubs/hubsubmission/{id}', [HubsController::class, 'hubSubmissionDetail'])->name('hubs.hubsubmission.detail');
 });
 
 // Route umum yang tidak memerlukan autentikasi

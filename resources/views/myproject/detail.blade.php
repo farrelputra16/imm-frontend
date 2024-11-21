@@ -1,15 +1,38 @@
 @php
-    $layout = ($isUserRole && $status != 'benchmark') ? 'layouts.app-imm' : 'layouts.app-landingpage';
+    $layout = ($isUserRole == 'USER' && $status != 'benchmark') ? 'layouts.app-imm' : 'layouts.app-landingpage';
+    if ($status == 'investor'){
+        $layout = 'layouts.app-investors';
+    }
 @endphp
 
 @extends($layout)
 
 @section('title', 'Detail Proyek')
-
-@section('css')
+@section('content')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
     <style>
+         /* Mengatur font family untuk seluruh halaman */
+        body {
+            font-family: 'Poppins', sans-serif; /* Menggunakan Inter untuk isi/content */
+        }
+
+        /* Mengatur font family untuk heading */
+        h1, h2, h3, h4 {
+            font-family: 'Poppins', sans-serif; /* Menggunakan Work Sans untuk heading */
+        }
+
+        /* Mengatur font family untuk sub-heading dan body */
+        .sub-heading-1, .sub-heading-2, .body-1, .body-2 {
+            font-family: 'Poppins', sans-serif; /* Set font to Poppins */
+        }
+
+        .container {
+            flex: 1; /* Membuat kontainer mengambil ruang yang tersedia */
+            max-width: 1400px;
+            margin: 0 auto;
+        }
         .header-image {
             width: 100%;
             height: auto;
@@ -304,9 +327,7 @@
             background: #555;
         }
     </style>
-@endsection
 
-@section('content')
     <body>
         {{-- Bagian Breadcumb project --}}
         <div class="container">
@@ -328,24 +349,35 @@
                             <a href="{{ route('myproject.myproject') }}" style="text-decoration: none; color: #212B36;">IMM</a>
                         </li>
                     @else
-                        <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
-                            @if ($status == 'benchmark')
-                                <a href="{{ route('companies.list', ['status' => 'benchmark']) }}" style="text-decoration: none; color: #212B36;">Find Company</a>
-                            @elseif ($status == 'company')
-                                <a href="{{ route('companies.list', ['status' => 'company']) }}" style="text-decoration: none; color: #212B36;">Find Company</a>
-                            @endif
-                        </li>
-                        <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px; color: #212B36;" aria-current="page">
-                            @if ($status == 'company')
-                                <a href="{{ route('companies.show', $companyId) }}" style="text-decoration: none; color: #212B36;">Company Profile</a>
-                            @elseif ($status == 'benchmark')
-                                <a href="{{ route('companies.benchmark', ['id' => $companyId]) }}" style="text-decoration: none; color: #212B36;">Company Profile</a>
-                            @endif
-                        </li>
+                        @if ($status != 'investor')
+                            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                                @if ($status == 'benchmark')
+                                    <a href="{{ route('companies.list', ['status' => 'benchmark']) }}" style="text-decoration: none; color: #212B36;">Find Company</a>
+                                @elseif ($status == 'company')
+                                    <a href="{{ route('companies.list', ['status' => 'company']) }}" style="text-decoration: none; color: #212B36;">Find Company</a>
+                                @endif
+                            </li>
+                            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px; color: #212B36;" aria-current="page">
+                                @if ($status == 'company')
+                                    <a href="{{ route('companies.show', $companyId) }}" style="text-decoration: none; color: #212B36;">Company Profile</a>
+                                @elseif ($status == 'benchmark')
+                                    <a href="{{ route('companies.benchmark', ['id' => $companyId]) }}" style="text-decoration: none; color: #212B36;">Company Profile</a>
+                                @endif
+                            </li>
+                        @endif
                     @endif
                     <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
-                        <a href="detail/{{ $project->id }}" style="text-decoration: none; color: #5A5A5A;">Project Report</a>
+                        @if ($status == 'investor')
+                            <a href="{{ route('myproject.myproject', ['company_id' => $companyId, 'status' => $status]) }}" style="text-decoration: none; color: #5A5A5A;">Project Report</a>
+                        @else
+                            <a href="{{ route('projects.view', ['id' => $project->id, 'status' => $status]) }}" style="text-decoration: none; color: #5A5A5A;">Project Report</a>
+                        @endif
                     </li>
+                    @if ($status == 'investor')
+                        <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                            <a href="{{ route('projects.view', ['id' => $project->id, 'status' => $status]) }}" style="text-decoration: none; color: #5A5A5A;">Project Detail</a>
+                        </li>
+                    @endif
                 </ol>
             </nav>
         </div>

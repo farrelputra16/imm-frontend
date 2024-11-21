@@ -19,7 +19,7 @@
     /* Profile Header Styles */
     .profile-header {
         height: 181px;
-        background-color: #702DFF;
+        background-color: #6256CA;
         color: white;
         padding: 20px;
         border-radius: 15px;
@@ -119,7 +119,7 @@
         margin-top:90px;
         width: 450px;
         height: 340px;
-        border: 1px solid #702DFF;
+        border: 1px solid #6256CA;
         background-color: white;
         border-radius: 20px;
         padding: 10px;
@@ -194,6 +194,7 @@
     }
 
     .carousel-card {
+        margin-left:50px;
         width: 300px;
         border: none;
         border-radius: 15px;
@@ -228,7 +229,7 @@
 
     .carousel-control-prev-icon,
     .carousel-control-next-icon {
-        background-color: #702DFF;
+        background-color: #6256CA;
         border-radius: 50%;
         padding: 10px;
     }
@@ -338,7 +339,7 @@
     <!-- Tables Below Chart and Carousel -->
     <div class="row mt-5">
         <div class="col-md-6">
-            <div class="investor-card">
+            <div class="investor-card"style="margin-top:30px;">
                 <div class="investor-card-header">Recent Transactions</div>
                 <div class="card-body">
                     <table class="investor-table table">
@@ -375,7 +376,7 @@
         </div>
 
         <div class="col-md-6">
-            <div class="investor-card">
+            <div class="investor-card"style="margin-top:30px;">
                 <div class="investor-card-header">Invested Companies</div>
                 <div class="card-body">
                     <table class="investor-table table">

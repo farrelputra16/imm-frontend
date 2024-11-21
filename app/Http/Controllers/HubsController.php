@@ -181,4 +181,13 @@ class HubsController extends Controller
 
         return redirect()->route('hubs.pending')->with('success', 'Hub berhasil ditolak.');
     }
+    public function hubSubmissionDetail($id)
+    {
+        $hub = Hubs::findOrFail($id);
+        $facilities = $hub->facilities ? explode(',', $hub->facilities) : [];
+        $programs = $hub->programs ? explode(',', $hub->programs) : [];
+        $alumni = $hub->alumni ? explode(',', $hub->alumni) : [];
+
+        return view('hubs.createhubs.hubsubmission-detail',compact('hub', 'facilities', 'programs', 'alumni'));
+    }
 }

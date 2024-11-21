@@ -15,8 +15,13 @@ class ManagementKeuanganController extends Controller
 {
     public function show(Request $request, $company_id = null)
     {
+        $status = null;
         // Ambil pengguna yang sedang login
         $user = Auth::user();
+
+        if ($request->has('status')) {
+            $status = $request->status;
+        }
 
         // Cek apakah role pengguna adalah "USER"
         $isUserRole = $user->role === 'USER';
@@ -47,7 +52,7 @@ class ManagementKeuanganController extends Controller
         $projects = app(ProjectController::class)->showProject($company->id, $request);
 
         // Kembalikan view dengan data yang diperlukan
-        return view('homepageimm.kelolapengeluaran', compact('companyIncomes', 'projects', 'isUserRole', 'company'));
+        return view('homepageimm.kelolapengeluaran', compact('companyIncomes', 'projects', 'isUserRole', 'company', 'status'));
     }
 
     public function createOutcome(Request $request)

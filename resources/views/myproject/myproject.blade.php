@@ -1,7 +1,15 @@
-@extends('layouts.app-imm')
+@php
+    $layout = ($isUserRole == 'USER' && $status != 'benchmark') ? 'layouts.app-imm' : 'layouts.app-landingpage';
+    if ($status == 'investor'){
+        $layout = 'layouts.app-investors';
+    }
+@endphp
+
+@extends($layout)
 @section('title', 'Proyek Saya')
 
-@section('css')
+@section('content')
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 @if ($isUserRole)
@@ -16,6 +24,26 @@
 <meta name="keywords" content="project management, task management, productivity">
 <meta name="author" content="Your Name">
 <style>
+    /* Mengatur font family untuk seluruh halaman */
+    body {
+        font-family: 'Poppins', sans-serif; /* Menggunakan Inter untuk isi/content */
+    }
+
+    /* Mengatur font family untuk heading */
+    h1, h2, h3, h4 {
+        font-family: 'Poppins', sans-serif; /* Menggunakan Work Sans untuk heading */
+    }
+
+    /* Mengatur font family untuk sub-heading dan body */
+    .sub-heading-1, .sub-heading-2, .body-1, .body-2 {
+        font-family: 'Poppins', sans-serif; /* Set font to Poppins */
+    }
+
+    .container {
+        flex: 1; /* Membuat kontainer mengambil ruang yang tersedia */
+        max-width: 1400px;
+        margin: 0 auto;
+    }
     .btn-create-project {
         background-color: #5940CB;
         color: white;
@@ -265,9 +293,8 @@
         padding-left: 0; /* Menghilangkan padding kiri */
     }
 </style>
-@endsection
 
-@section('content')
+
     <div class="container">
         {{-- Ini bagian untuk breadcumb --}}
         @if (!$isUserRole)
@@ -284,10 +311,10 @@
 
             <ul class="navtabs">
                 <li class="nav-item" style="margin-right: 0px;">
-                    <a class="nav-link-active sub-heading-1" href="{{ route('myproject.myproject', ['company_id' => $companyId]) }}" style="text-decoration: none; color: #212B36;">Project Reports</a>
+                    <a class="nav-link-active sub-heading-1" href="{{ route('myproject.myproject', ['company_id' => $companyId, 'status' => $status]) }}" style="text-decoration: none; color: #212B36;">Project Reports</a>
                 </li>
                 <li class="nav-item" style="margin-left: 0px;">
-                    <a class="navlinkexpend project-reports sub-heading-1" href="{{ route('kelolapengeluaran', ['company_id' => $companyId]) }}" style="text-decoration: none; color: #6256CA;">Expenditure Reports</a>
+                    <a class="navlinkexpend project-reports sub-heading-1" href="{{ route('kelolapengeluaran', ['company_id' => $companyId, 'status' => $status]) }}" style="text-decoration: none; color: #6256CA;">Expenditure Reports</a>
                 </li>
             </ul>
         @endif
@@ -440,7 +467,7 @@
                                         <td style="vertical-align: middle;">{{ $project->start_date ? \Carbon\Carbon::parse($project->start_date)->format('j M, Y') : 'N/A' }}</td>
                                         <td style="vertical-align: middle;">{{ $project->end_date ? \Carbon\Carbon::parse($project->end_date)->format('j M, Y') : 'N/A' }}</td>
                                         <td style="vertical-align: middle; border-right: 1px solid #BBBEC5; text-align: center;">
-                                            <a href="detail/{{ $project->id }}" style="color: black; text-decoration: underline;">Detail</a>
+                                            <a href="{{ route('projects.view', ['id' => $project->id, 'status' => $status, 'company_id' => $companyId]) }}" style="color: black; text-decoration: underline;">Detail</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -485,19 +512,25 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($completedProjects as $project)
+                                @if ($completedProjects->isEmpty())
                                     <tr>
-                                        <td style="vertical-align: middle; border-left: 1px solid #BBBEC5;">{{ $loop->iteration }}</td>
-                                        <td style="vertical-align: middle;">{{ $project->nama }}</td>
-                                        <td style="vertical-align: middle;">{{ $project->status }}</td>
-                                        <td style="vertical-align: middle;">Rp{{ number_format($project->jumlah_pendanaan, 0, ',', '.') }}</td>
-                                        <td style="vertical-align: middle;">{{ $project->start_date ? \Carbon\Carbon::parse($project->start_date)->format('j M, Y') : 'N/A' }}</td>
-                                        <td style="vertical-align: middle;">{{ $project->end_date ? \Carbon\Carbon::parse($project->end_date)->format('j M, Y') : 'N/A' }}</td>
-                                        <td style="vertical-align: middle; border-right: 1px solid #BBBEC5; text-align: center;">
-                                            <a href="detail/{{ $project->id }}" style="color: black; text-decoration: underline;">Detail</a>
-                                        </td>
+                                        <td colspan="7" class="text-center" style="border-left: 1px solid #BBBEC5; border-right: 1px solid #BBBEC5;">Tidak ada proyek yang ditemukan.</td>
                                     </tr>
-                                @endforeach
+                                @else
+                                    @foreach ($completedProjects as $project)
+                                        <tr>
+                                            <td style="vertical-align: middle; border-left: 1px solid #BBBEC5;">{{ $loop->iteration }}</td>
+                                            <td style="vertical-align: middle;">{{ $project->nama }}</td>
+                                            <td style="vertical-align: middle;">{{ $project->status }}</td>
+                                            <td style="vertical-align: middle;">Rp{{ number_format($project->jumlah_pendanaan, 0, ',', '.') }}</td>
+                                            <td style="vertical-align: middle;">{{ $project->start_date ? \Carbon\Carbon::parse($project->start_date)->format('j M, Y') : 'N/A' }}</td>
+                                            <td style="vertical-align: middle;">{{ $project->end_date ? \Carbon\Carbon::parse($project->end_date)->format('j M, Y') : 'N/A' }}</td>
+                                            <td style="vertical-align: middle; border-right: 1px solid #BBBEC5; text-align: center;">
+                                                <a href="{{ route('projects.view', ['id' => $project->id, 'status' => $status,'company_id' => $companyId]) }}" style="color: black; text-decoration: underline;">Detail</a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>

@@ -186,7 +186,7 @@ margin-top: 20px;
                         @endif
                     </li>
                     <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
-                        <a href="{{ route('kelolapengeluaran', ['company_id' => $companyId]) }}" style="text-decoration: none; color: #212B36;">Financial Management</a>
+                        <a href="{{ route('kelolapengeluaran', ['company_id' => $companyId, 'status' => $status]) }}" style="text-decoration: none; color: #212B36;">Financial Management</a>
                     </li>
                     <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
                         <a href="{{ url()->previous() }}" style="text-decoration: none; color: #212B36;">Expense Details</a>

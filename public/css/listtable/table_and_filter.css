@@ -1,5 +1,5 @@
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Poppins', sans-serif; /* Set font to Poppins */
     font-size: 14px;
     font-weight: 400; /* 400 adalah berat untuk regular */
 }
@@ -15,6 +15,7 @@ body {
     border: 1px solid #ddd;
     border-radius: 5px; /* 0.3125rem */
     overflow: hidden;
+    font-family: 'Poppins';
 }
 .search-container input {
     border: none;
@@ -23,6 +24,7 @@ body {
     flex-grow: 1;
     border-top-left-radius: 10px; /* 0.625rem */
     border-bottom-left-radius: 10px; /* 0.625rem */
+    font-family: 'Poppins';
 }
 .search-container button {
     background-color: #6257CB;
@@ -32,6 +34,7 @@ body {
     cursor: pointer;
     border-top-left-radius: 0; /* 0 */
     border-bottom-left-radius: 0; /* 0 */
+    font-family: 'Poppins';
 }
 .search-container button:hover {
     background-color: #5146a6;
@@ -51,6 +54,7 @@ body {
     margin-left: 5px; /* 0.3125rem */
     text-align: start;
     font-weight: 400; /* Tidak ada unit */
+    font-family: 'Poppins';
 }
 
 .header a {

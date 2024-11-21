@@ -4,12 +4,39 @@
 
 @section('css')
     <!-- Tambahkan CSS tambahan jika diperlukan -->
+    <style>
+    .btn-create-project {
+        background-color: #5940CB;
+        color: white;
+        width: 200px;
+        height: 40px;
+        border: none;
+        border-radius: 5px;
+    }
+    </style>
 @endsection
 
 @section('content')
-<div class="container mt-5">
-    <h1>Pengajuan Innovation Hub</h1>
-
+<div class="container">
+    <nav aria-label="breadcrumb" style="margin-bottom: 32px;">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                <a href="{{ route('landingpage') }}" style="text-decoration: none; color: #212B36;">Home</a>
+            </li>
+            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                <a href="#" style="text-decoration: none; color: #212B36;">Hubs</a>
+            </li>
+        </ol>
+    </nav>
+    <div class="row" style="justify-content: space-between; margin: 0px;">
+        <h2>Pengajuan Innovation Hub</h2>
+        {{-- Tombol Membuat Innovation Hub --}}
+        <div class="col-md-4 text-right">
+            <a href="{{ route('hubs.create') }}">
+                <button class="btn-primary btn-create-project">Create New Hubs</button>
+            </a>
+        </div>
+    </div>
     <!-- Menampilkan pesan sukses -->
     @if (session('success'))
         <div class="alert alert-success">
@@ -48,8 +75,7 @@
                         </td>
                         <td>{{ $hub->created_at->format('d M Y H:i') }}</td>
                         <td>
-                            <a href="{{ route('hubs.show', $hub->id) }}" class="btn btn-sm btn-info">Lihat</a>
-                            <!-- Tambahkan aksi lain jika diperlukan -->
+                            <a href="{{ route('hubs.hubsubmission.detail', $hub->id) }}" class="btn btn-sm btn-info">Lihat Detail</a>
                         </td>
                     </tr>
                 @endforeach

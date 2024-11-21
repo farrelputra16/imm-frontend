@@ -20,7 +20,7 @@ class CompanyFinanceController extends Controller
         $isUserRole = $user->role === 'USER';
 
         // Menentukan jumlah baris per halaman (default 10)
-        $rowsPerPage = $request->get('rows', 1);
+        $rowsPerPage = $request->get('rows', 10);
 
         // Mengambil data dengan pagination
         $finances = CompanyFinance::where('company_id', $companyId);

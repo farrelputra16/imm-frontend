@@ -2,9 +2,23 @@
 
 @section('content')
 <!-- Custom Font from Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
 <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 <style>
+    body {
+        font-family: 'Poppins', sans-serif; /* Menggunakan Inter untuk isi/content */
+    }
+
+    /* Mengatur font family untuk heading */
+    h1, h2, h3, h4 {
+        font-family: 'Poppins', sans-serif; /* Menggunakan Work Sans untuk heading */
+    }
+
+    /* Mengatur font family untuk sub-heading dan body */
+    .sub-heading-1, .sub-heading-2, .body-1, .body-2 {
+        font-family: 'Poppins', sans-serif; /* Set font to Poppins */
+    }
 /* Custom width for columns */
 th:nth-child(1),
 td:nth-child(1) {

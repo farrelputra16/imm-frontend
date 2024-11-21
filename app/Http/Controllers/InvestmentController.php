@@ -111,9 +111,10 @@ class InvestmentController extends Controller
     }
 
     // Menampilkan daftar pending investment untuk investor
-    public function pending()
+    public function pending(Request $request)
     {
         $investor = Investor::where('user_id', Auth::id())->first();
+        $rowsPerPage = $request->input('rows', 10);
 
         if (!$investor) {
             // Redirect back with an error message if the investor is not found
@@ -121,17 +122,12 @@ class InvestmentController extends Controller
         }
 
         // Ambil semua investasi untuk investor yang terdaftar
-        $investments = Investment::where('investor_id', $investor->id)->get();
+        $investments = Investment::where('investor_id', $investor->id)->paginate($rowsPerPage);
 
         // Jika Anda ingin menambahkan label investasi ke setiap investasi
         foreach ($investments as $investment) {
             $investment->investment_type_label = $investment->investment_type_label; // Menggunakan accessor
         }
-
-        return view('investments.pending', compact('investments'));
-
-        // Ambil semua investasi milik investor yang login tanpa memfilter status
-        $investments = Investment::where('investor_id', $investor->id)->get();
 
         return view('investments.pending', compact('investments'));
     }

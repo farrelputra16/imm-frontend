@@ -4,6 +4,20 @@
 <link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
 <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 <style>
+     /* Mengatur font family untuk seluruh halaman */
+    body {
+        font-family: 'Poppins', sans-serif; /* Menggunakan Inter untuk isi/content */
+    }
+
+    /* Mengatur font family untuk heading */
+    h1, h2, h3, h4 {
+        font-family: 'Poppins', sans-serif; /* Menggunakan Work Sans untuk heading */
+    }
+
+    /* Mengatur font family untuk sub-heading dan body */
+    .sub-heading-1, .sub-heading-2, .body-1, .body-2 {
+        font-family: 'Poppins', sans-serif; /* Set font to Poppins */
+    }
     .breadcrumb {
         background-color: white;
         padding: 0;

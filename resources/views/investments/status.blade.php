@@ -1,8 +1,31 @@
-@extends('layouts.app-investments')
+@extends('layouts.app-investors')
 
 @section('content')
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 <!-- Embedded CSS -->
 <style>
+     /* Mengatur font family untuk seluruh halaman */
+    body {
+        font-family: 'Poppins', sans-serif; /* Menggunakan Inter untuk isi/content */
+    }
+
+    /* Mengatur font family untuk heading */
+    h1, h2, h3, h4 {
+        font-family: 'Poppins', sans-serif; /* Menggunakan Work Sans untuk heading */
+    }
+
+    /* Mengatur font family untuk sub-heading dan body */
+    .sub-heading-1, .sub-heading-2, .body-1, .body-2 {
+        font-family: 'Poppins', sans-serif; /* Set font to Poppins */
+    }
+
+    .container {
+        flex: 1; /* Membuat kontainer mengambil ruang yang tersedia */
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
     .status-bar-container {
         margin-top: 30px;
     }
@@ -20,15 +43,15 @@
 
     /* The background will change dynamically based on the status */
     .status-bar.submitted {
-        background: linear-gradient(to right, #7b61ff 0%, #7b61ff 33.33%, #e0e0e0 33.33%, #e0e0e0 100%);
+        background: linear-gradient(to right, #6256CA 0%, #6256CA 33.33%, #e0e0e0 33.33%, #e0e0e0 100%);
     }
 
     .status-bar.processed {
-        background: linear-gradient(to right, #7b61ff 0%, #7b61ff 50%, #e0e0e0 50%, #e0e0e0 100%);
+        background: linear-gradient(to right, #6256CA 0%, #6256CA 50%, #e0e0e0 50%, #e0e0e0 100%);
     }
 
     .status-bar.approved {
-        background: linear-gradient(to right, #7b61ff 0%, #7b61ff 100%);
+        background: linear-gradient(to right, #6256CA 0%, #6256CA 100%);
     }
 
     .status-bar .bar-section {
@@ -68,7 +91,7 @@
     }
 
     .status-text {
-        color: #7b61ff;
+        color: #6256CA;
         font-weight: bold;
         margin-top: 20px;
     }
@@ -85,7 +108,6 @@
 
 <div class="container text-center">
     <h2 class="status-text">Investment Status</h2>
-
     <!-- Status Bar -->
     <div class="status-bar-container">
         <div class="status-bar

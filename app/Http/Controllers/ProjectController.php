@@ -21,10 +21,15 @@ class ProjectController extends Controller
 {
     public function index(Request $request)
     {
+        $status = null;
         $user = Auth::user();
         // Cek apakah role pengguna adalah "USER"
         $isUserRole = $user->role === 'USER';
         $search = $request->input('search');
+
+        if ($request->has('status')) {
+            $status = $request->input('status');
+        }
 
         if ($isUserRole) {
             $allProjectsQuery = Project::with('tags', 'sdgs', 'indicators', 'metrics', 'targetPelanggan', 'dana')
@@ -40,13 +45,17 @@ class ProjectController extends Controller
             $ongoingProjects = $allProjects->where('status', 'Belum selesai');
             $completedProjects = $allProjects->where('status', 'Selesai');
 
-            return view('myproject.myproject', compact('allProjects', 'ongoingProjects', 'completedProjects', 'search', 'isUserRole'));
+            return view('myproject.myproject', compact('allProjects', 'ongoingProjects', 'completedProjects', 'search', 'isUserRole', 'status'));
         } else {
             $companyId = $request->input('company_id'); // Mengambil company_id dari request
+            if($companyId == null){
+                $companyId = $request->input('companyId');
+            }
             $rowsPerPage = $request->input('rows', 10); // Default 10 rows per page
 
             // Pastikan company_id ada dan valid
             if (!$companyId) {
+                ddd("Masuk sini bro");
                 return redirect()->back()->with('error', 'Company ID tidak valid.');
             }
 
@@ -62,7 +71,7 @@ class ProjectController extends Controller
             $ongoingProjects = $allProjectsQuery->where('status', 'Belum selesai')->paginate($rowsPerPage)->appends(['search' => $search, 'rows' => $rowsPerPage]);
             $completedProjects = $allProjectsQuery->where('status', 'Selesai')->paginate($rowsPerPage)->appends(['search' => $search, 'rows' => $rowsPerPage]);
 
-            return view('myproject.myproject', compact('ongoingProjects', 'completedProjects', 'search', 'isUserRole', 'rowsPerPage', 'companyId'));
+            return view('myproject.myproject', compact('ongoingProjects', 'completedProjects', 'search', 'isUserRole', 'rowsPerPage', 'companyId', 'status'));
         }
     }
 
@@ -250,6 +259,11 @@ class ProjectController extends Controller
         if ($request->has('companyId'))
         {
             $companyId = $request->input('companyId');
+        }
+
+        if ($companyId == null)
+        {
+            $companyId = $request->input('company_id');
         }
 
         $projectData = $this->relationshipsToArray($project);

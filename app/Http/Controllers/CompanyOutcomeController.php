@@ -38,8 +38,12 @@ class CompanyOutcomeController extends Controller
         return $projects;
     }
 
-    public function detailOutcome($project_id)
+    public function detailOutcome(Request $request, $project_id)
     {
+        $status = null;
+        if ($request->has('status')) {
+            $status = $request->status;
+        }
         $rowsPerPage = request('rows') ?? 10;
 
         // Make sure you are always paginating, even if outcomes are empty
@@ -56,7 +60,7 @@ class CompanyOutcomeController extends Controller
         $companyName = strtolower(str_replace(' ', '_', $company->nama));
         $companyId = $company->id;
 
-        return view('homepageimm.detailbiaya', compact('outcomes', 'project_id', 'project', 'isCompany', 'companyName', 'companyId'));
+        return view('homepageimm.detailbiaya', compact('outcomes', 'project_id', 'project', 'isCompany', 'companyName', 'companyId', 'status'));
     }
 
     public function create($project_id)

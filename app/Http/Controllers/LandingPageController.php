@@ -16,7 +16,7 @@ class LandingPageController extends Controller
     public function index()
     {
         // Ambil 10 data investor dari database
-        $investors = Investor::take(10)->get();
+        $investors = Investor::take(20)->get();
 
         // Ambil 10 data company dari database
         $companies = Company::getFilteredCompanies();

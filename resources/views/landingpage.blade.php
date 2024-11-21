@@ -115,7 +115,7 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         padding: 20px;
         background-color: #fff;
-        max-width: 600px;
+        max-width: 800px;
         margin: 0 auto;
         text-align: center;
     }
@@ -132,7 +132,7 @@
     }
 
     .this-week-section .col-6 {
-        width: 50%;
+        width: 100%;
         text-align: center;
         padding: 20px 0;
     }
@@ -158,7 +158,7 @@
 
     @media (max-width: 768px) {
         .this-week-section {
-            width: 90%;
+            width: 100%;
         }
     }
     .fixed-width-table {
@@ -235,7 +235,7 @@
     .card-inner {
         border-radius: 20px;
         background-color: #fff;
-        width: 80%;
+        width: 10F0%;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         cursor: pointer; /* Show pointer */
     }
@@ -479,7 +479,7 @@
                 <div class="card-inner">
                     <img src="images/landingpage/cardfix1.png" class="card-img-top" alt="Filters Image">
                 </div>
-                <p class="card-info">Discover companies with search and AI-powered recommendations</p>
+                <p class="card-info" style="font-size: 20px; font-weight: 700;">Discover companies with search and AI-powered recommendations</p>
             </a>
         </div>
 
@@ -489,7 +489,7 @@
                 <div class="card-inner">
                     <img src="images/landingpage/cardfix2.png" class="card-img-top" alt="Growth Outlook Image">
                 </div>
-                <p class="card-info">Stay informed with intelligent insights and real-time alerts</p>
+                <p class="card-info" style="font-size: 20px; font-weight: 700;">Stay informed with intelligent insights and real-time alerts</p>
             </a>
         </div>
 
@@ -499,17 +499,7 @@
                 <div class="card-inner">
                     <img src="images/landingpage/cardfix3.png" class="card-img-top" alt="Galax Image">
                 </div>
-                <p class="card-info">Take action at the right time with personalized workflow tools</p>
-            </a>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-12 text-center">
-            <a href="#" class="btn btn-success">
-                <i class="fas fa-bolt"></i> SEE PLANS
+                <p class="card-info" style="font-size: 20px; font-weight: 700;">Take action at the right time with personalized workflow tools</p>
             </a>
         </div>
     </div>
@@ -525,7 +515,7 @@
                     <span>INSIGHTS & ANALYSIS</span>
                 </h1>
             </div>
-            <div class="col-md-4 text-end"  style="padding-left: 100px;">
+            <div class="col-md-4 text-end"  style="padding-left: 200px;">
                 <img src="images/landingpage/logocrunch.png" class="image-crunchbase" alt="Crunchbase Insights & Analysis Logo">
             </div>
         </div>
@@ -610,7 +600,7 @@
                 </div>
             </div>
 
-            <div class="promo-card animate-right mt-4">
+            <div class="promo-card animate-right mt-4" style="margin-bottom: 40px;">
                 <div class="row align-items-center">
                     <!-- Left Side: Text and Button -->
                     <div class="col-md-8">
@@ -629,7 +619,7 @@
                 </div>
 
                 <!-- Extra Images Below the Promo Card -->
-                <div class="extra-images d-flex justify-content-between">
+                <div class="extra-images d-flex justify-content-between" style="margin-bottom: 0px;">
                     <img src="images/landingpage/bitcoin-promo.png" alt="Extra Image 1">
                     <img src="images/landingpage/bitcoin-promo.png" alt="Extra Image 2">
                 </div>
@@ -659,7 +649,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($companies as $company)
+                            @foreach ($companies->take(5) as $company)
                             <tr>
                                 <td>{{ $loop->iteration < 10 ? '0' . $loop->iteration : $loop->iteration }}</td> <!-- Menampilkan nomor urut dengan format 01, 02, dst. -->
                                 <td>{{ $company->nama }}</td>
@@ -686,7 +676,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($people as $person)
+                            @foreach ($people->take(5) as $person)
                             <tr>
                                 <td>{{ $person->name }}</td>
                                 <td>{{ $person->role }}</td>

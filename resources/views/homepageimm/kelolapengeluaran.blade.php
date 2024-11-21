@@ -1,10 +1,38 @@
-@extends('layouts.app-imm')
+@php
+    $layout = ($isUserRole == 'USER' && $status != 'benchmark') ? 'layouts.app-imm' : 'layouts.app-landingpage';
+    if ($status == 'investor'){
+        $layout = 'layouts.app-investors';
+    }
+@endphp
+
+@extends($layout)
 @section('title', 'Kelola Pengeluaran')
 
-@section('css')
+@section('content')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 <link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
 <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 <style>
+     /* Mengatur font family untuk seluruh halaman */
+     body {
+        font-family: 'Poppins', sans-serif; /* Menggunakan Inter untuk isi/content */
+    }
+
+    /* Mengatur font family untuk heading */
+    h1, h2, h3, h4 {
+        font-family: 'Poppins', sans-serif; /* Menggunakan Work Sans untuk heading */
+    }
+
+    /* Mengatur font family untuk sub-heading dan body */
+    .sub-heading-1, .sub-heading-2, .body-1, .body-2 {
+        font-family: 'Poppins', sans-serif; /* Set font to Poppins */
+    }
+
+    .container {
+        flex: 1; /* Membuat kontainer mengambil ruang yang tersedia */
+        max-width: 1400px;
+        margin: 0 auto;
+    }
     /* Styling tetap sama */
     * {
         margin: 0;
@@ -125,9 +153,7 @@
         margin-bottom: -1px; /* Menghindari overlap dengan border bawah tab tidak aktif */
     }
 </style>
-@endsection
 
-@section('content')
 @php
     // Mapping antara funding type dan label yang ingin ditampilkan
     $fundingTypes = [
@@ -175,10 +201,10 @@
     @if (!$isUserRole)
         <ul class="navtabs">
             <li class="nav-item" style="margin-right: 0px;">
-                <a class="navlinkexpend project-reports sub-heading-1" href="{{ route('myproject.myproject', ['company_id' => $company->id]) }}" style="text-decoration: none; color: #212B36;">Project Reports</a>
+                <a class="navlinkexpend project-reports sub-heading-1" href="{{ route('myproject.myproject', ['companyId' => $company->id, 'status' => $status]) }}" style="text-decoration: none; color: #212B36;">Project Reports</a>
             </li>
             <li class="nav-item" style="margin-left: 0px;">
-                <a class="nav-link-active sub-heading-1" href="{{ route('kelolapengeluaran', ['company_id' => $company->id]) }}" style="text-decoration: none; color: #6256CA;">Expenditure Reports</a>
+                <a class="nav-link-active sub-heading-1" href="{{ route('kelolapengeluaran', ['company_id' => $company->id, 'status' => $status]) }}" style="text-decoration: none; color: #6256CA;">Expenditure Reports</a>
             </li>
         </ul>
     @endif
@@ -331,7 +357,7 @@
                                         <td style="vertical-align: middle;">{{ $project->end_date ? \Carbon\Carbon::parse($project->end_date)->format('j M, Y') : 'N/A' }}</td>
                                     @endif
                                     <td style="vertical-align: middle; border-right: 1px solid #BBBEC5; text-align: center;">
-                                        <a href="{{ route('homepageimm.detailbiaya', ['project_id' => $project->id]) }}" style="text-decoration: underline;">Check here</a>
+                                        <a href="{{ route('homepageimm.detailbiaya', ['project_id' => $project->id, 'status' => $status]) }}" style="text-decoration: underline;">Check here</a>
                                     </td>
                                 </tr>
                             @endforeach
