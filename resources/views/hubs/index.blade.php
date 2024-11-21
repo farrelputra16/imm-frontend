@@ -100,7 +100,7 @@ td:nth-child(9)  /* Job Departments */ {
         <div class="col-md-3">
             <div class="filter-header"  style="vertical-align: center;  justify-content: flex-start;">
                 <h4><b>FILTER</b></h4>
-                <img src="{{ asset('images/filter.svg') }}" alt="Search Icon" style="width: 20px; height: 20px; margin-left: 120px;">
+                <img src="{{ asset('images/filter.svg') }}" alt="Search Icon" style="width: 20px; height: 20px; margin-left: 140px;">
             </div>
             <div class="filter-section">
                 <form method="GET" action="{{ route('hubs.index') }}" id="hubsFilterForm">

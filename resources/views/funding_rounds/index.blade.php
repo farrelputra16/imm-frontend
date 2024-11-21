@@ -41,7 +41,7 @@
             <!-- Filter Header -->
             <div class="filter-header d-flex align-items-center mb-3">
                 <h4><b>FILTER</b></h4>
-                <img src="{{ asset('images/filter.svg') }}" alt="Search Icon" style="width: 20px; height: 20px; margin-left: 120px;">
+                <img src="{{ asset('images/filter.svg') }}" alt="Search Icon" style="width: 20px; height: 20px; margin-left: 140px;">
             </div>
 
             <!-- Filter Form -->
