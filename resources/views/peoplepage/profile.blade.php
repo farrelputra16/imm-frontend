@@ -14,7 +14,6 @@
         }
         body {
             background-color: #f8f9fa;
-            font-family: Arial, sans-serif;
         }
         .profile-header {
             margin-top: 50px;
@@ -171,7 +170,6 @@
             justify-content: center;
         }
 
-
         .btn-edit-profile i {
             font-size: 18px;
         }
@@ -179,6 +177,54 @@
         .linkedin-icon a {
             color: #0077B5;
             font-size: 24px; /* Smaller LinkedIn icon */
+        }
+
+        .upload-box-custom {
+            border: 2px solid #9b59b6;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            cursor: pointer;
+            background-color: none;
+        }
+
+        .upload-box-custom img {
+            width: 40px;
+            height: 40px;
+            color: #9b59b6;
+        }
+
+        .upload-box-custom p {
+            margin-top: 10px;
+            color: #666;
+        }
+
+        .upload-box-custom input[type="file"] {
+            display: none;
+            background-color: none;
+        }
+
+        .upload-box-custom.dragover {
+            border-color: #007bff; /* Warna border saat dragover */
+            background-color: #f0f8ff; /* Warna latar belakang saat dragover */
+        }
+        .edit-btn {
+            margin-top: 10px;
+            color: #007bff; /* Warna tombol edit */
+            text-decoration: none; /* Menghilangkan garis bawah */
+            cursor: pointer; /* Menunjukkan bahwa ini dapat diklik */
+        }
+
+        .upload-card {
+            border: 2px solid #9b59b6;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        #submit-btn {
+            display: none; /* Sembunyikan tombol submit secara default */
         }
     </style>
 @section('content')
@@ -505,6 +551,50 @@
             </div>
         </div>
     </div>
+
+    <form id="upload-form" action="{{ route('upload.document') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="upload-card">
+                    <div class="upload-box-custom" id="cv-dropzone">
+                        <img src="{{ asset('images/upload.svg') }}" alt="Upload icon">
+                        <p>Upload your CV in PDF format.</p>
+                        <input type="file" id="cv-upload" name="cv" accept=".pdf" style="display:none;">
+                    </div>
+                    <div id="cv-preview">
+                        @if(isset($people->cv_path))
+                            <embed src="{{ asset($people->cv_path) }}" width="100%" height="500px" />
+                            <p>File name: {{ basename($people->cv_path) }}</p>
+                        @endif
+                    </div>
+                    <button class="btn btn-link edit-btn" type="button" onclick="toggleUpload('cv')">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="upload-card">
+                    <div class="upload-box-custom" id="portfolio-dropzone">
+                        <img src="{{ asset('images/upload.svg') }}" alt="Upload icon">
+                        <p>Upload your Portfolio in PDF format.</p>
+                        <input type="file" id="portfolio-upload" name="portfolio" accept=".pdf" style="display:none;">
+                    </div>
+                    <div id="portfolio-preview">
+                        @if(isset($people->portfolio_path))
+                            <embed src="{{ asset($people->portfolio_path) }}" width="100%" height="500px" />
+                            <p>File name: {{ basename($people->portfolio_path) }}</p>
+                        @endif
+                    </div>
+                    <button class="btn btn-link edit-btn" type="button" onclick="toggleUpload('portfolio')">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+        <button id="submit-btn" type="submit" class="btn btn-primary mt-3" style="display:none; width: 100%;">Submit</button>
+    </form>
 @endsection
 
 @section('js')
@@ -522,5 +612,83 @@
         container.appendChild(newSkillDiv);
     }
 </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function handleFileUpload(input, previewContainer) {
+            var file = input.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var pdfPreview = document.createElement('embed');
+                    pdfPreview.src = e.target.result;
+                    pdfPreview.width = '100%';
+                    pdfPreview.height = '500px';
+                    previewContainer.innerHTML = '';
+                    previewContainer.appendChild(pdfPreview);
+                    previewContainer.innerHTML += `<p>File name: ${file.name}</p>`;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function setupFileInput(dropzoneId, inputId, previewContainerId) {
+            var dropzone = document.getElementById(dropzoneId);
+            var input = document.getElementById(inputId);
+            var previewContainer = document.getElementById(previewContainerId);
+
+            // Fungsi untuk menangani klik pada dropzone
+            dropzone.addEventListener('click', function() {
+                input.click();
+            });
+
+            // Event listener untuk input file
+            input.addEventListener('change', function() {
+                handleFileUpload(input, previewContainer);
+                document.getElementById('submit-btn').style.display = 'block'; // Tampilkan tombol submit setelah file dipilih
+            });
+
+            // Event listener untuk drag-and-drop
+            dropzone.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                dropzone.classList.add('dragover');
+            });
+
+            dropzone.addEventListener('dragleave', function() {
+                dropzone.classList.remove('dragover');
+            });
+
+            dropzone.addEventListener('drop', function(e) {
+                e.preventDefault();
+                dropzone.classList.remove('dragover');
+                var files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    input.files = files;
+                    handleFileUpload(input, previewContainer);
+                    document.getElementById('submit-btn').style.display = 'block'; // Tampilkan tombol submit setelah file dipilih
+                }
+            });
+        }
+
+        // Setup untuk setiap dropzone
+        setupFileInput('cv-dropzone', 'cv-upload', 'cv-preview');
+        setupFileInput('portfolio-dropzone', 'portfolio-upload', 'portfolio-preview');
+    });
+
+    function toggleUpload(type) {
+        const uploadBox = document.getElementById(type === 'cv' ? 'cv-dropzone' : 'portfolio-dropzone');
+        const inputFile = document.getElementById(type === 'cv' ? 'cv-upload' : 'portfolio-upload');
+
+        // Jika upload box terlihat, sembunyikan
+        if (uploadBox.style.display === "none" || uploadBox.style.display === "") {
+            uploadBox.style.display = "block"; // Tampilkan upload box
+            inputFile.click(); // Buka dialog file
+        } else {
+            uploadBox.style.display = "none"; // Sembunyikan upload box
+        }
+    }
+
+    // Menyembunyikan upload box saat awal
+    document.getElementById('cv-dropzone').style.display = "none";
+    document.getElementById('portfolio-dropzone').style.display = "none";
+</script>
 @endsection

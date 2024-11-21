@@ -159,6 +159,7 @@ class PeopleController extends Controller
     {
         // Fetch the specific person using the ID
         $people = People::findOrFail($id);
+        $people->image = $people->user->img ? asset('images/' . $people->user->img) : asset('images/default_user.webp');
 
         // Return the people detail view
         return view('people.show', compact('people'));
@@ -177,6 +178,7 @@ class PeopleController extends Controller
         // Tampilkan halaman profil
         return view('peoplepage.profile', compact('user','people','companies'));
     }
+
     public function updateDescription(Request $request)
     {
         $request->validate([
@@ -189,6 +191,7 @@ class PeopleController extends Controller
 
         return redirect()->back()->with('success', 'Description updated successfully!');
     }
+
     public function addExperience(Request $request)
     {
         $request->validate([
@@ -250,6 +253,7 @@ class PeopleController extends Controller
 
         return redirect()->back()->with('success', 'Education added successfully!');
     }
+
     public function addSkills(Request $request)
     {
         $request->validate([
@@ -297,6 +301,41 @@ class PeopleController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Profile updated successfully!');
+    }
+
+    public function updateCvPortofolio(Request $request)
+    {
+        // Validasi file
+        $request->validate([
+            'cv' => 'nullable|file|mimes:pdf|max:2048',
+            'portfolio' => 'nullable|file|mimes:pdf|max:2048',
+        ]);
+
+        // Ambil data orang berdasarkan ID
+        $people = People::where('user_id', Auth::id())->firstOrFail();
+
+        // Ambil nama orang
+        $name = str_replace(' ', '_', strtolower($people->name));
+        $folderPath = "people/{$name}/document";
+
+        // Simpan file CV jika ada
+        if ($request->hasFile('cv')) {
+            $cvFileName = time() . '-cv.' . $request->file('cv')->extension();
+            $request->file('cv')->storeAs($folderPath, $cvFileName, 'public');
+            $people->cv_path = "/storage/{$folderPath}/{$cvFileName}";
+        }
+
+        // Simpan file Portofolio jika ada
+        if ($request->hasFile('portfolio')) {
+            $portfolioFileName = time() . '-portfolio.' . $request->file('portfolio')->extension();
+            $request->file('portfolio')->storeAs($folderPath, $portfolioFileName, 'public');
+            $people->portfolio_path = "/storage/{$folderPath}/{$portfolioFileName}";
+        }
+
+        // Simpan perubahan ke database
+        $people->save();
+
+        return redirect()->back()->with('success', 'Files uploaded successfully.');
     }
 
     public function showUpcomingEvents()

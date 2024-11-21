@@ -95,12 +95,18 @@ class InvestorController extends Controller
     }
 
     // New show method
-    public function show($id)
+    public function show(Request $request, $id)
     {
+        $rowsPerPage = $request->input('rows', 10);
+
         // Fetch the specific investor using the ID
         $investor = Investor::with('investments.company')->findOrFail($id);
+        $investor->image = $investor->user->img ? asset('images/' . $investor->user->img) : asset('images/default_user.webp');
+
+        // Paginate investments
+        $investments = $investor->investments()->paginate($rowsPerPage);
 
         // Return the investor detail view
-        return view('investors.show', compact('investor'));
+        return view('investors.show', compact('investor', 'investments'));
     }
 }
