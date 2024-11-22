@@ -149,7 +149,7 @@ td:nth-child(9) {
 
     <!-- Button for New Funding Round -->
     <div class="mt-4">
-        <a href="{{ route('company.funding_rounds.create') }}" class="btn btn-success">Create New Funding Round</a>
+        <a href="{{ route('company.funding_rounds.create') }}" class="btn btn-primary">Create New Funding Round</a>
     </div>
 </div>
 @endsection

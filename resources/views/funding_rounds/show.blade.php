@@ -1,7 +1,22 @@
 @extends('layouts.app-landingpage')
-
+@section('css')
+<link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
 <!-- Styles -->
 <style>
+      /* Mengatur font family untuk seluruh halaman */
+      body {
+        font-family: 'Poppins', sans-serif; /* Menggunakan Inter untuk isi/content */
+    }
+
+    /* Mengatur font family untuk heading */
+    h1, h2, h3, h4 {
+        font-family: 'Poppins', sans-serif; /* Menggunakan Work Sans untuk heading */
+    }
+
+    /* Mengatur font family untuk sub-heading dan body */
+    .sub-heading-1, .sub-heading-2, .body-1, .body-2 {
+        font-family: 'Poppins', sans-serif; /* Set font to Poppins */
+    }
     .btn-invest {
         background-color: #6256CA;
         color: white;
@@ -60,29 +75,25 @@
         text-align: right;
     }
 </style>
-
+@endsection
 @section('content')
-<div class="container mt-4">
-    <nav aria-label="breadcrumb">
+<div class="container">
+    <nav aria-label="breadcrumb" style="margin-bottom: 32px;">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="#">
-                    Home
-                </a>
+            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                <a href="{{ route('landingpage') }}" style="text-decoration: none; color: #212B36;">Home</a>
             </li>
-            <li class="breadcrumb-item">
-                <a href="{{ route('people.index') }}">
-                    Funding Rounds
-                </a>
+            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                <a href="#" style="text-decoration: none; color: #212B36;">Funding Rounds</a>
             </li>
-            <li aria-current="page" class="breadcrumb-item active">
-                Funding Details
+            <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
+                <a href="#" style="text-decoration: none; color: #212B36;">Details</a>
             </li>
         </ol>
     </nav>
 
     <h1 class="mentor-profile-title">
-        Funding Round Details
+    Details
     </h1>
 
     <div class="profile-card p-4 bg-white">

@@ -62,6 +62,19 @@
         animation: float 3s ease-in-out infinite;
     }
 
+
+    @keyframes float {
+        0% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-30px);
+        }
+        100% {
+            transform: translateY(0px);
+        }
+    }
+
     .this-week-section {
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -390,9 +403,8 @@
     }
 
     .btn-link {
-        color: #6c63ff;
+        color: black;
         text-decoration: none;
-        font-weight: bold;
     }
 
     .btn-link:hover {
@@ -521,7 +533,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <a class="btn-link" href="{{ route('investors.index') }}">SHOW ALL INVESTORS ></a>
+                    <a class="btn-link" href="{{ route('investors.index') }}">SHOW ALL</a>
                 </div>
             </div>
         </div>
@@ -595,7 +607,7 @@
                     <table class="table fixed-width-table">
                         <thead>
                             <tr>
-                                <th>#</th> <!-- Kolom untuk nomor urut -->
+                                <th>No</th> <!-- Kolom untuk nomor urut -->
                                 <th>Company</th>
                                 <th>Logo</th>
                             </tr>
@@ -637,7 +649,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <a class="btn-link" href="#">SHOW ALL People ></a>
+                    <a class="btn-link" href="#">SHOW ALL</a>
                 </div>
             </div>
         </div>
