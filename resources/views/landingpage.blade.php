@@ -62,54 +62,6 @@
         animation: float 3s ease-in-out infinite;
     }
 
-    /* Animasi untuk muncul dari sisi kiri */
-.animate-left {
-    opacity: 0;
-    transform: translateX(-100%);
-    transition: all 1.0s ease;
-}
-
-.animate-left.show {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-/* Animasi untuk muncul dari sisi kanan */
-.animate-right {
-    opacity: 0;
-    transform: translateX(100%);
-    transition: all 1.0s ease;
-}
-
-.animate-right.show {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-/* Animasi untuk muncul dari atas */
-.animate-top {
-    opacity: 0;
-    transform: translateY(-100%);
-    transition: all 1.0s ease;
-}
-
-.animate-top.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-    @keyframes float {
-        0% {
-            transform: translateY(0px);
-        }
-        50% {
-            transform: translateY(-30px);
-        }
-        100% {
-            transform: translateY(0px);
-        }
-    }
-
     .this-week-section {
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

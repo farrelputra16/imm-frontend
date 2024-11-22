@@ -29,7 +29,7 @@
     }
 
     h2 {
-        color: #5940cb;
+        color: #6256CA;
         font-size: 30px;
         font-weight: bold;
         display: flex;
@@ -63,7 +63,7 @@
 
     .login-form h2 {
         font-size: 24px;
-        color: #5940cb;
+        color: #6256CA;
         font-weight: bold;
         margin-bottom: 10px;
     }
@@ -109,7 +109,7 @@
 
     .btn-login {
         padding: 12px 20px;
-        background-color: #6c63ff;
+        background-color: #6256CA;
         color: #fff;
         border: none;
         border-radius: 8px;
@@ -120,7 +120,7 @@
     }
 
     .btn-login:hover {
-        background-color: #524eff;
+        background-color: #6256CA;
     }
 
     .register-link {
@@ -130,7 +130,7 @@
     }
 
     .register-link a {
-        color: #6c63ff;
+        color: #6256CA;
         text-decoration: none;
         font-weight: bold;
     }

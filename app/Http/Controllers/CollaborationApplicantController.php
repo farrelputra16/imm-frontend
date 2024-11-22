@@ -50,7 +50,7 @@ class CollaborationApplicantController extends Controller
             'status' => 'pending' // default status
         ]);
 
-        return redirect()->back()->with('success', 'Application submitted successfully!');
+        return redirect()->route('people.home')->with('success', 'Application submitted successfully!');
     }
 
     public function approve($id)

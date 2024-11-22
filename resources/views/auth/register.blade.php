@@ -39,7 +39,7 @@
 
     .register-header h2 {
         font-size: 28px;
-        color: #5940cb;
+        color: #6256CA;
         font-weight: bold;
     }
 
@@ -82,7 +82,7 @@
 
     .btn-register {
         padding: 10px 20px;
-        background-color: #5940cb;
+        background-color: #6256CA;
         color: #fff;
         border: none;
         border-radius: 5px;
@@ -94,7 +94,7 @@
     }
 
     .btn-register:hover {
-        background-color: #524eff;
+        background-color: #6256CA;
         transform: scale(1.05);
     }
 

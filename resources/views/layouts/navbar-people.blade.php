@@ -5,7 +5,7 @@
         padding: 10px 20px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         font-family: 'Montserrat', sans-serif;
-        border-bottom: 1px solid #5940CB;
+        border-bottom: 1px solid #6256CA;
         position: fixed;
         top: 0;
         right: 0;
@@ -35,7 +35,7 @@
 
     .navbar-landingpage .logo img:hover {
         transform: scale(1.1) rotate(360deg);
-        filter: drop-shadow(0 0 10px #5940CB);
+        filter: drop-shadow(0 0 10px #6256CA);
     }
 
     .navbar-landingpage .navbar a {
@@ -51,7 +51,7 @@
         display: block;
         width: 0;
         height: 2px;
-        background: #5940CB;
+        background: #6256CA;
         transition: width 0.3s ease;
         position: absolute;
         left: 0;
@@ -63,7 +63,7 @@
     }
 
     .navbar-landingpage .navbar a:hover {
-        color: #5940CB;
+        color: #6256CA;
     }
 
     .navbar-landingpage .dropdown-menu {
@@ -80,8 +80,8 @@
     .navbar-landingpage .login-btn,
     .navbar-landingpage .register-btn {
         background-color: transparent;
-        color: #5940CB;
-        border: 2px solid #5940CB;
+        color: #6256CA;
+        border: 2px solid #6256CA;
         padding: 8px 20px;
         border-radius: 5px;
         font-size: 1rem;
@@ -90,7 +90,7 @@
     }
 
     .navbar-landingpage .register-btn {
-        background-color: #5940CB;
+        background-color: #6256CA;
         color: white;
     }
 
@@ -99,7 +99,7 @@
     }
 
     .navbar-landingpage .register-btn:hover {
-        background-color: #4829a0;
+        background-color: #6256CA;
     }
 
     .navbar-landingpage .profile-img {
