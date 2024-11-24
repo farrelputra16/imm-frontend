@@ -23,6 +23,10 @@
         border-top-left-radius: 0px;
         border-bottom-left-radius: 0px;
     }
+    .custom-badge {
+        background-color: #6256CA !important; /* Ganti warna latar belakang */
+        color: white !important; /* Ganti warna teks */
+    }
     </style>
 @endsection
 
@@ -86,8 +90,15 @@
                             <td  style="vertical-align: middle;">{{ $collaboration->title }}</td>
                             <td style="vertical-align: middle;"><img src="{{ Storage::url($collaboration->image) }}" width="100" height="auto" alt="Image"></td>
                             <td style="vertical-align: middle;">{{ \Str::limit($collaboration->description, 50) }}</td>
-                            <td style="vertical-align: middle;">{{ $collaboration->position }}</td>
                             <td style="vertical-align: middle;">
+                                @php
+                                    $positions = explode(', ', $collaboration->position);
+                                @endphp
+                                @foreach($positions as $position)
+                                    <span class="badge custom-badge me-1">{{ $position }}</span>
+                                @endforeach
+                            </td>
+                            <td style="vertical-align: middle; border-right: 1px solid #BBBEC5;">
                                 <a href="{{ route('collaboration.edit', $collaboration->id) }}" class="btn btn-outline-primary">Edit</a>
                                 <a href="{{ route('collaboration.applicant.index', $collaboration->id) }}" class="btn btn-outline-primary">Applicants</a>
                             </td>

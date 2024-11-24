@@ -75,7 +75,6 @@
                 </div>
                 <button type="button" id="add-position" class="btn btn-primary">+ Add Position</button>
             </div>
-
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
@@ -85,8 +84,18 @@
             let positionsWrapper = document.getElementById('positions-wrapper');
             let newPositionField = document.createElement('div');
             newPositionField.classList.add('position-field');
-            newPositionField.innerHTML = '<input type="text" name="positions[]" class="form-control" placeholder="Position Name" required>';
+            newPositionField.innerHTML = `
+                <div class="input-group mb-2">
+                    <input type="text" name="position[]" class="form-control" placeholder="Position Name" required>
+                    <button type="button" class="btn btn-danger remove-position">Remove</button>
+                </div>
+            `;
             positionsWrapper.appendChild(newPositionField);
+
+            // Tambahkan event listener untuk tombol remove
+            newPositionField.querySelector('.remove-position').addEventListener('click', function() {
+                positionsWrapper.removeChild(newPositionField);
+            });
         });
     </script>
 @endsection

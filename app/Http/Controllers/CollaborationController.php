@@ -27,10 +27,11 @@ class CollaborationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string',
-            'image' => 'required|image',
+            'title' => 'required|string|max:255',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'description' => 'required|string',
             'position' => 'required|array',
+            'position.*' => 'string|max:255'
         ]);
 
         $user = Auth::user();
@@ -41,13 +42,16 @@ class CollaborationController extends Controller
         // Upload image
         $imagePath = $request->file('image')->store('public/collaborations');
 
+        // Gabungkan posisi menjadi string dengan pemisah koma
+        $positionsString = implode(', ', $request->position);
+
         // Menyimpan data kolaborasi
-        Collaboration::create([
+        $collaboration = Collaboration::create([
             'company_id' => $company->id,
             'title' => $request->title,
             'image' => $imagePath,
             'description' => $request->description,
-            'position' => json_encode($request->positions), // Simpan sebagai JSON
+            'position' => $positionsString, // Simpan sebagai string
         ]);
 
         return redirect()->route('collaboration.index')->with('success', 'Collaboration registered successfully');
