@@ -2,14 +2,24 @@
 
 @section('title', 'Apply for Collaboration')
 
-@section('css')
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
+@section('content')
 <link rel="stylesheet" href="{{ asset('css/listtable/table_and_filter.css') }}">
 <link rel="stylesheet" href="{{ asset('css/Settings/style.css') }}">
 <style>
-    body { font-family: Arial, sans-serif; }
-    .header { font-size: 2.5rem; font-weight: bold; color: #6256CA; margin: 20px 0; }
+    /* Mengatur font family untuk seluruh halaman */
+    body {
+        font-family: 'Poppins', sans-serif; /* Menggunakan Inter untuk isi/content */
+    }
+
+    /* Mengatur font family untuk heading */
+    h1, h2, h3, h4 {
+        font-family: 'Poppins', sans-serif; /* Menggunakan Work Sans untuk heading */
+    }
+
+    /* Mengatur font family untuk sub-heading dan body */
+    .sub-heading-1, .sub-heading-2, .body-1, .body-2 {
+        font-family: 'Poppins', sans-serif; /* Set font to Poppins */
+    }
     .breadcrumb {
         background-color: white;
         padding: 0;
@@ -27,14 +37,12 @@
         font-weight: bold;
     }
 </style>
-@endsection
-@section('content')
-<div class="container"style="margin-bottom:60px; margin-top:20px;">
+<div class="container" style="margin-top: 60px;">
     <!-- Breadcrumb -->
-    <nav aria-label="breadcrumb" class="mb-5">
+    <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
             <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
-                <a href="{{ route('homepage') }}" style="text-decoration: none; color: #212B36;">Home</a>
+                <a href="{{ route('people.home') }}" style="text-decoration: none; color: #212B36;">Job</a>
             </li>
             <li class="breadcrumb-item sub-heading-1" style="margin-right: 4px;">
                 Apply
@@ -43,7 +51,7 @@
     </nav>
 
     <!-- Header -->
-    <div class="header">Apply for Collaboration</div>
+    <h2 style="margin-bottom: 24px;">Apply for Collaboration</h2>
 
     <!-- Form -->
     <form action="{{ route('collaboration.applicant.store') }}" method="POST" enctype="multipart/form-data">
@@ -66,7 +74,7 @@
         </div>
         <div class="mb-3">
             <label for="resume" class="form-label">Resume (PDF, DOC, DOCX)</label>
-            <input type="file" name="resume" class="form-control" required>
+            <input type="file" name="resume" class="form-control" accept=".pdf,.doc,.docx" required>
         </div>
         <button type="submit" class="btn btn-primary">Submit Application</button>
     </form>

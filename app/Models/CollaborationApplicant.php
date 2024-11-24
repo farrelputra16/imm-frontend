@@ -37,11 +37,11 @@ class CollaborationApplicant extends Model
     /**
      * Untuk menyimpan file resume
      */
-    public function setResumeAttribute($value)
-    {
-        if (is_file($value)) {
-            // Simpan file ke storage/public
-            $this->attributes['resume'] = $value->store('resumes', 'public');
-        }
-    }
+    // public function setResumeAttribute($value)
+    // {
+    //     if (is_file($value)) {
+    //         // Simpan file ke storage/public
+    //         $this->attributes['resume'] = $value->store('resumes', 'public');
+    //     }
+    // }
 }

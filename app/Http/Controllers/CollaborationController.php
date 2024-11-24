@@ -71,15 +71,19 @@ class CollaborationController extends Controller
             'title' => 'required|string',
             'image' => 'nullable|image',
             'description' => 'required|string',
-            'positions' => 'required|array',
+            'position' => 'required|array',
+            'position.*' => 'string|max:255'
         ]);
 
         $collaboration = Collaboration::findOrFail($id);
 
+        // Gabungkan posisi menjadi string dengan pemisah koma
+        $positionsString = implode(', ', $request->position);
+
         $collaboration->update([
             'title' => $request->title,
             'description' => $request->description,
-            'positions' => $request->positions,
+            'position' => $positionsString,
         ]);
 
         if ($request->hasFile('image')) {

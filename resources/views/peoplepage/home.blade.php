@@ -5,10 +5,6 @@
 @section('css')
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body {
-            background-color: white;
-            font-family: 'Arial', sans-serif;
-        }
         .service-offers {
             margin-top: 80px;
             background-color: white;
@@ -130,7 +126,7 @@
             @foreach($collaborations as $collaboration)
             <div class="col-md-4 mb-4">
                 <div class="card custom-card">
-                    <img src="{{ $collaboration->image }}" class="card-img-top" alt="{{ $collaboration->title }}" height="400" width="600">
+                    <img src="{{ Storage::url($collaboration->image) }}"" class="card-img-top" alt="{{ $collaboration->title }}" height="400" width="600">
                     <div class="card-body">
                         <h5 class="custom-card-title">{{ $collaboration->title }}</h5>
                         <p class="custom-card-text">{{ $collaboration->description }}</p>

@@ -427,7 +427,6 @@
     </style>
 @endsection
 @section('content')
-
     <body>
         {{-- Membuat notifikasi bila terjadi input yang belum di isi di dalam form required --}}
         <div class="popup-overlay" id="popup-overlay"></div>

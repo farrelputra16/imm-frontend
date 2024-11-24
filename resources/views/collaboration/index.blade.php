@@ -108,7 +108,7 @@
             </tbody>
         </table>
     </div>
-     <!-- Footer untuk Proyek Belum Selesai -->
+    <!-- Footer untuk Proyek Belum Selesai -->
     <div class="d-flex justify-content-between align-items-center mb-3 align-self-center" style="padding: 20px; background-color: #ffffff; border-bottom: 1px solid #ddd; border-left: 1px solid #ddd; border-right: 1px solid #ddd; border-top: 1px solid #BBBEC5; margin-top:0px; height:100px; border-end-end-radius: 20px; border-end-start-radius: 20px; height: 60px;">
         <form method="GET" action="{{ route('collaboration.index') }}" class="mb-0">
             <div class="d-flex align-items-center">

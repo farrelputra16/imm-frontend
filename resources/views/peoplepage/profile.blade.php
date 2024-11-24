@@ -24,7 +24,9 @@
             overflow: hidden;
         }
         .profile-header-top {
-            background-color: #6256CA;
+            background-image: url('/images/banner_atas.svg'); /* Ganti dengan path yang sesuai */
+            background-size: cover; /* Mengatur gambar agar menutupi seluruh area */
+            background-position: center; /* Memusatkan gambar di tengah */
             color: white;
             flex: 4;
             display: flex;
@@ -32,6 +34,7 @@
             align-items: center;
             justify-content: center;
             padding-top: 20px;
+            height: 200px; /* Atur tinggi sesuai kebutuhan */
         }
         .profile-header-bottom {
             background-color: white;
@@ -43,7 +46,12 @@
             padding: 10px;
             color: #333;
             position: relative;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Added shadow */
+            border-left: 1px solid #e9ecef; /* Garis vertikal */
+            border-right: 1px solid #e9ecef; /* Garis vertikal */
+            border-bottom: 1px solid #e9ecef; /* Garis horizontal */
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
         }
         .profile-header img {
             margin-right:1000px;

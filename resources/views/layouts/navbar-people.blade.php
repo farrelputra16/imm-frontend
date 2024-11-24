@@ -21,7 +21,7 @@
 
     .navbar-landingpage .navbar {
         display: flex;
-        gap: 20px;
+        gap: 20px; /* Tambahkan jarak antar link navbar */
         align-items: center;
         font-weight: 500;
         font-size: 1rem;
@@ -124,7 +124,7 @@
 
 <div class="navbar-landingpage">
     <div class="container">
-        <div class="d-flex align-items-center">
+        <div class="row align-items-center">
             <!-- Logo and Navbar Links Section -->
             <a class="navbar-brand logo" href="/">
                 <img src="/images/imm.png" alt="IMM Logo">

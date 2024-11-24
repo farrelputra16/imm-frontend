@@ -6,14 +6,14 @@
     <title>Landing Page</title>
     <style>
 
-.navbar-landingpage .navbar {
-    display: flex;
-    gap: 20px; /* Tambahkan jarak antar link navbar */
-    align-items: center;
-    font-weight: 500;
-    font-size: 1rem;
-    color: #333;
-}
+        .navbar-landingpage .navbar {
+            display: flex;
+            gap: 20px; /* Tambahkan jarak antar link navbar */
+            align-items: center;
+            font-weight: 500;
+            font-size: 1rem;
+            color: #333;
+        }
 
         .navbar-landingpage {
             background-color: #fff;

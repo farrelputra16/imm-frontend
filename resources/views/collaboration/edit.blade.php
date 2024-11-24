@@ -1,17 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Edit Collaboration</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { font-family: Arial, sans-serif; }
-        .container { max-width: 600px; margin-top: 50px; }
-        h1 { color: #6256CA; font-weight: bold; }
-        .btn-primary { background-color: #6256CA; border-color: #6256CA; }
-    </style>
-</head>
-<body>
+@extends('layouts.app-imm')
+
+@section('title', 'Register New Collaboration')
+
+@section('content')
     <div class="container">
         <h1>Edit Collaboration</h1>
         <form action="{{ route('collaboration.update', $collaboration->id) }}" method="POST" enctype="multipart/form-data">
@@ -34,12 +25,54 @@
                 <label for="description" class="form-label">Description</label>
                 <textarea name="description" class="form-control" id="description" rows="4" placeholder="Input the description of your project">{{ old('description', $collaboration->description) }}</textarea>
             </div>
-            <div class="mb-3">
+            <div class="positions-container">
                 <label for="positions" class="form-label">Positions</label>
-                <textarea name="positions[]" class="form-control" id="positions" rows="4" placeholder="Input positions available (one per line)">{{ old('positions', implode("\n", $collaboration->positions)) }}</textarea>
+                <div id="positions-wrapper">
+                    @php
+                        // Pisahkan string menjadi array
+                        $positions = explode(',', $collaboration->position);
+                    @endphp
+
+                    @foreach ($positions as $position)
+                        <div class="position-field">
+                            <div class="input-group mb-2">
+                                <input type="text" name="position[]" class="form-control" value="{{ trim($position) }}" placeholder="Position Name" required>
+                                <button type="button" class="btn btn-danger remove-position">Remove</button>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                <button type="button" id="add-position" class="btn btn-primary" style="margin-bottom: 10px;">+ Add Position</button>
             </div>
             <button type="submit" class="btn btn-primary">Update</button>
         </form>
     </div>
-</body>
-</html>
+
+    <script>
+        document.getElementById('add-position').addEventListener('click', function() {
+            let positionsWrapper = document.getElementById('positions-wrapper');
+            let newPositionField = document.createElement('div');
+            newPositionField.classList.add('position-field');
+            newPositionField.innerHTML = `
+                <div class="input-group mb-2">
+                    <input type="text" name="position[]" class="form-control" placeholder="Position Name" required>
+                    <button type="button" class="btn btn-danger remove-position">Remove</button>
+                </div>
+            `;
+            positionsWrapper.appendChild(newPositionField);
+
+            // Tambahkan event listener untuk tombol remove
+            newPositionField.querySelector('.remove-position').addEventListener('click', function() {
+                positionsWrapper.removeChild(newPositionField);
+            });
+        });
+
+        // Tambahkan event listener untuk tombol remove pada posisi yang sudah ada
+        document.querySelectorAll('.remove-position').forEach(function(button) {
+            button.addEventListener('click', function() {
+                let positionField = button.closest('.position-field');
+                positionField.parentNode.removeChild(positionField);
+            });
+        });
+    </script>
+@endsection
